@@ -1,0 +1,33 @@
+import { HttpClient, HttpParams } from '@angular/common/http';
+import { Inject, Injectable } from '@angular/core';
+import { Observable } from 'rxjs';
+import { API_CONFIG, ApiConfig } from '../tokens/api-config.token';
+
+@Injectable({ providedIn: 'root' })
+export class BrapciApiService {
+  constructor(
+    private readonly http: HttpClient,
+    @Inject(API_CONFIG) private readonly apiConfig: ApiConfig
+  ) {}
+
+  get<T>(endpoint = '', params?: Record<string, string | number | boolean>): Observable<T> {
+    let httpParams = new HttpParams();
+
+    if (params) {
+      for (const [key, value] of Object.entries(params)) {
+        httpParams = httpParams.set(key, String(value));
+      }
+    }
+
+    const cleanEndpoint = endpoint.startsWith('/') ? endpoint.substring(1) : endpoint;
+    const url = cleanEndpoint
+      ? `${this.apiConfig.brapciApiBaseUrl}/${cleanEndpoint}`
+      : this.apiConfig.brapciApiBaseUrl;
+
+    return this.http.get<T>(url, { params: httpParams });
+  }
+
+  search<T>(query: string): Observable<T> {
+    return this.get<T>('', { q: query });
+  }
+}

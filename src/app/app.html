@@ -1,0 +1,148 @@
+<nav class="navbar navbar-expand-lg navbar-dark bg-primary shadow-sm" role="navigation" aria-label="navegacao principal">
+  <div class="container">
+    <a class="navbar-brand fw-bold" href="#">Brapci</a>
+    <button
+      class="navbar-toggler"
+      type="button"
+      data-bs-toggle="collapse"
+      data-bs-target="#mainNavbar"
+      aria-controls="mainNavbar"
+      aria-expanded="false"
+      aria-label="Alternar navegacao"
+    >
+      <span class="navbar-toggler-icon"></span>
+    </button>
+
+    <div class="collapse navbar-collapse" id="mainNavbar">
+      <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+        <li class="nav-item">
+          <a class="nav-link active" href="#">Inicio</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href="#search">API</a>
+        </li>
+      </ul>
+
+      <div class="d-flex align-items-center gap-2">
+        <label class="text-white small" for="languageSelect">{{ 'language.label' | translate }}</label>
+        <select
+          id="languageSelect"
+          class="form-select form-select-sm"
+          style="width: 115px"
+          [ngModel]="selectedLanguage()"
+          (ngModelChange)="setLanguage($event)"
+          aria-label="Selecao de idioma"
+        >
+          @for (option of languageOptions; track option.code) {
+            <option [ngValue]="option.code">{{ option.label }}</option>
+          }
+        </select>
+      </div>
+    </div>
+  </div>
+</nav>
+
+<header class="hero py-5" role="banner">
+  <div class="container">
+    <div class="hero__content text-center text-lg-start">
+      <p class="eyebrow mb-1">Brapci | Angular 20</p>
+      <h1 class="display-5 fw-bold">{{ 'app.title' | translate }}</h1>
+      <p class="lead mb-0">{{ 'app.subtitle' | translate }}</p>
+    </div>
+  </div>
+</header>
+
+<main class="layout py-4" itemscope itemtype="https://schema.org/WebPage">
+  <div class="container">
+    <div class="row g-4">
+      <section class="col-12 col-lg-4" aria-labelledby="auth-title">
+        <div class="card h-100 shadow-sm border-0">
+          <div class="card-body">
+            <h2 id="auth-title" class="h4 mb-3">{{ 'auth.title' | translate }}</h2>
+
+            @if (!currentUser()) {
+              <form (ngSubmit)="login()" #loginForm="ngForm" class="auth-form">
+                <label for="username" class="form-label">{{ 'auth.username' | translate }}</label>
+                <input
+                  id="username"
+                  name="username"
+                  required
+                  [(ngModel)]="loginPayload.username"
+                  autocomplete="username"
+                  class="form-control"
+                />
+
+                <label for="password" class="form-label">{{ 'auth.password' | translate }}</label>
+                <input
+                  id="password"
+                  name="password"
+                  required
+                  type="password"
+                  [(ngModel)]="loginPayload.password"
+                  autocomplete="current-password"
+                  class="form-control"
+                />
+
+                <button type="submit" class="btn btn-primary mt-2" [disabled]="!loginForm.valid || loading()">
+                  {{ 'auth.submit' | translate }}
+                </button>
+              </form>
+
+              @if (authError()) {
+                <p class="error mt-3 mb-0">{{ 'auth.invalid' | translate }}</p>
+              }
+            } @else {
+              <p class="mb-3">
+                {{ 'auth.welcome' | translate }},
+                <strong>{{ currentUser()?.name }}</strong>
+              </p>
+
+              <button type="button" class="btn btn-outline-primary" (click)="logout()">
+                {{ 'auth.logout' | translate }}
+              </button>
+            }
+          </div>
+        </div>
+      </section>
+
+      <article class="col-12 col-lg-8" id="search" aria-labelledby="search-title" itemprop="mainEntity" itemscope itemtype="https://schema.org/Dataset">
+        <div class="card h-100 shadow-sm border-0">
+          <div class="card-body">
+            <h2 id="search-title" class="h4 mb-3">{{ 'search.title' | translate }}</h2>
+
+            <form (ngSubmit)="searchInBrapci()" class="search-form mb-3">
+              <label for="query" class="form-label">{{ 'search.input' | translate }}</label>
+              <div class="input-group">
+                <input id="query" name="query" class="form-control" [ngModel]="query()" (ngModelChange)="query.set($event)" />
+                <button type="submit" class="btn btn-primary" [disabled]="loading()">{{ 'search.button' | translate }}</button>
+              </div>
+            </form>
+
+            @if (!hasResults()) {
+              <p class="hint mb-0">{{ query().trim() ? ('search.empty' | translate) : ('search.idle' | translate) }}</p>
+            }
+
+            @if (hasResults()) {
+              <ul class="results">
+                @for (item of apiResults(); track $index) {
+                  <li>
+                    <pre>{{ item | json }}</pre>
+                  </li>
+                }
+              </ul>
+            }
+          </div>
+        </div>
+      </article>
+    </div>
+  </div>
+</main>
+
+<footer class="footer mt-auto py-3 border-top">
+  <div class="container d-flex flex-column flex-md-row justify-content-between align-items-center gap-2">
+    <small class="text-muted">Brapci © 2026</small>
+    <small class="text-muted">Angular 20 | API: cip.brapci.inf.br/api</small>
+  </div>
+</footer>
+
+<router-outlet></router-outlet>

@@ -1,0 +1,28 @@
+{
+  "app": {
+    "title": "Brapci",
+    "subtitle": "Portal con SEO semantico, autenticacion y busqueda en API"
+  },
+  "language": {
+    "label": "Idioma",
+    "pt": "Portugues",
+    "en": "Ingles",
+    "es": "Espanol"
+  },
+  "auth": {
+    "title": "Autenticacion",
+    "username": "Usuario",
+    "password": "Contrasena",
+    "submit": "Ingresar",
+    "logout": "Salir",
+    "welcome": "Bienvenido",
+    "invalid": "Credenciales invalidas. Use admin/admin123 o user/user123."
+  },
+  "search": {
+    "title": "Busqueda en API Brapci",
+    "input": "Escriba un termino",
+    "button": "Buscar",
+    "empty": "No se encontraron resultados para la consulta.",
+    "idle": "Escriba un termino para consultar la API Brapci."
+  }
+}
