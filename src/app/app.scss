@@ -33,9 +33,11 @@ h1 {
 	margin: 0.4rem 0;
 }
 
-.navbar-brand {
-	font-family: 'Bitter', Georgia, serif;
-	letter-spacing: 0.02rem;
+.navbar-logo {
+	display: block;
+	height: auto;
+	max-height: 40px;
+	width: clamp(120px, 16vw, 170px);
 }
 
 .layout {
