@@ -1,0 +1,115 @@
+@if (!currentUser()) {
+  @if (mode() === 'login') {
+    <form (ngSubmit)="login()" #loginForm="ngForm" class="auth-form" novalidate>
+      <label for="username" class="form-label">Usuario</label>
+      <input
+        id="username"
+        name="username"
+        required
+        [(ngModel)]="loginPayload.username"
+        autocomplete="username"
+        class="form-control"
+      />
+
+      <label for="password" class="form-label">Senha</label>
+      <input
+        id="password"
+        name="password"
+        required
+        type="password"
+        [(ngModel)]="loginPayload.password"
+        autocomplete="current-password"
+        class="form-control"
+      />
+
+      <button type="submit" class="btn btn-primary mt-2" [disabled]="!loginForm.valid || loading()">
+        Entrar
+      </button>
+
+      <div class="auth-links">
+        <button type="button" class="btn btn-link p-0" (click)="switchMode('forgot')">Reenviar senha</button>
+        <button type="button" class="btn btn-link p-0" (click)="switchMode('register')">Cadastrar-se</button>
+      </div>
+    </form>
+  }
+
+  @if (mode() === 'register') {
+    <form (ngSubmit)="register()" #registerForm="ngForm" class="auth-form" novalidate>
+      <label for="registerName" class="form-label">Nome completo</label>
+      <input id="registerName" name="registerName" required [(ngModel)]="registerPayload.name" class="form-control" />
+
+      <label for="registerUsername" class="form-label">Usuario</label>
+      <input id="registerUsername" name="registerUsername" required [(ngModel)]="registerPayload.username" class="form-control" />
+
+      <label for="registerEmail" class="form-label">Email</label>
+      <input
+        id="registerEmail"
+        name="registerEmail"
+        required
+        type="email"
+        [(ngModel)]="registerPayload.email"
+        autocomplete="email"
+        class="form-control"
+      />
+
+      <label for="registerPassword" class="form-label">Senha</label>
+      <input
+        id="registerPassword"
+        name="registerPassword"
+        required
+        type="password"
+        [(ngModel)]="registerPayload.password"
+        autocomplete="new-password"
+        class="form-control"
+      />
+
+      <button type="submit" class="btn btn-primary mt-2" [disabled]="!registerForm.valid || loading()">
+        Criar conta
+      </button>
+
+      <div class="auth-links auth-links--single">
+        <button type="button" class="btn btn-link p-0" (click)="switchMode('login')">Voltar para login</button>
+      </div>
+    </form>
+  }
+
+  @if (mode() === 'forgot') {
+    <form (ngSubmit)="resendPassword()" #forgotForm="ngForm" class="auth-form" novalidate>
+      <label for="forgotEmail" class="form-label">Email da conta</label>
+      <input
+        id="forgotEmail"
+        name="forgotEmail"
+        required
+        type="email"
+        [(ngModel)]="forgotPasswordPayload.email"
+        autocomplete="email"
+        class="form-control"
+      />
+
+      <button type="submit" class="btn btn-primary mt-2" [disabled]="!forgotForm.valid || loading()">
+        Reenviar senha
+      </button>
+
+      <div class="auth-links auth-links--single">
+        <button type="button" class="btn btn-link p-0" (click)="switchMode('login')">Voltar para login</button>
+      </div>
+    </form>
+  }
+
+  @if (errorMessage()) {
+    <p class="error mt-3 mb-0">{{ errorMessage() }}</p>
+  }
+
+  @if (successMessage()) {
+    <p class="success mt-3 mb-0">{{ successMessage() }}</p>
+  }
+} @else {
+  <p class="mb-3">
+    Bem-vindo,
+    <strong>{{ firstName() }}</strong>
+  </p>
+
+  <button type="button" class="btn btn-outline-primary" (click)="logout()">
+    Sair
+  </button>
+}

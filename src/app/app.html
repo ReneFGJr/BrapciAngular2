@@ -39,6 +39,22 @@
             <option [ngValue]="option.code">{{ option.label }}</option>
           }
         </select>
+
+        @if (!currentUser()) {
+          <a class="nav-login-link" href="#auth-title" aria-label="Fazer login">
+            <svg viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+              <path d="M12 12c2.76 0 5-2.24 5-5s-2.24-5-5-5-5 2.24-5 5 2.24 5 5 5Zm0 2c-3.34 0-10 1.68-10 5v3h20v-3c0-3.32-6.66-5-10-5Z" />
+            </svg>
+            <span>{{ 'auth.submit' | translate }}</span>
+          </a>
+        } @else {
+          <span class="nav-user-chip" aria-label="Usuario logado">
+            <svg viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+              <path d="M12 12c2.76 0 5-2.24 5-5s-2.24-5-5-5-5 2.24-5 5 2.24 5 5 5Zm0 2c-3.34 0-10 1.68-10 5v3h20v-3c0-3.32-6.66-5-10-5Z" />
+            </svg>
+            <span>{{ firstName() }}</span>
+          </span>
+        }
       </div>
     </div>
   </div>
@@ -61,48 +77,7 @@
         <div class="card h-100 shadow-sm border-0">
           <div class="card-body">
             <h2 id="auth-title" class="h4 mb-3">{{ 'auth.title' | translate }}</h2>
-
-            @if (!currentUser()) {
-              <form (ngSubmit)="login()" #loginForm="ngForm" class="auth-form">
-                <label for="username" class="form-label">{{ 'auth.username' | translate }}</label>
-                <input
-                  id="username"
-                  name="username"
-                  required
-                  [(ngModel)]="loginPayload.username"
-                  autocomplete="username"
-                  class="form-control"
-                />
-
-                <label for="password" class="form-label">{{ 'auth.password' | translate }}</label>
-                <input
-                  id="password"
-                  name="password"
-                  required
-                  type="password"
-                  [(ngModel)]="loginPayload.password"
-                  autocomplete="current-password"
-                  class="form-control"
-                />
-
-                <button type="submit" class="btn btn-primary mt-2" [disabled]="!loginForm.valid || loading()">
-                  {{ 'auth.submit' | translate }}
-                </button>
-              </form>
-
-              @if (authError()) {
-                <p class="error mt-3 mb-0">{{ 'auth.invalid' | translate }}</p>
-              }
-            } @else {
-              <p class="mb-3">
-                {{ 'auth.welcome' | translate }},
-                <strong>{{ currentUser()?.name }}</strong>
-              </p>
-
-              <button type="button" class="btn btn-outline-primary" (click)="logout()">
-                {{ 'auth.logout' | translate }}
-              </button>
-            }
+            <app-auth-panel></app-auth-panel>
           </div>
         </div>
       </section>

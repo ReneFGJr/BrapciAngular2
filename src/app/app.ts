@@ -8,11 +8,11 @@ import { AuthService } from './core/services/auth.service';
 import { BrapciApiService } from './core/services/brapci-api.service';
 import { LanguageService } from './core/services/language.service';
 import { SeoService } from './core/services/seo.service';
-import { LoginPayload } from './core/models/user.model';
+import { AuthPanelComponent } from './components/auth-panel/auth-panel.component';
 
 @Component({
   selector: 'app-root',
-  imports: [CommonModule, FormsModule, RouterOutlet, TranslateModule],
+  imports: [CommonModule, FormsModule, RouterOutlet, TranslateModule, AuthPanelComponent],
   templateUrl: './app.html',
   styleUrl: './app.scss'
 })
@@ -23,6 +23,15 @@ export class App {
   private readonly brapciApiService = inject(BrapciApiService);
 
   readonly currentUser = toSignal(this.authService.currentUser$, { initialValue: null });
+  readonly firstName = computed(() => {
+    const user = this.currentUser();
+    if (!user) {
+      return '';
+    }
+
+    const candidate = user.name.trim() || user.username.trim();
+    return candidate.split(/\s+/)[0] ?? '';
+  });
   readonly selectedLanguage = signal<'pt-br' | 'es' | 'en'>('pt-br');
   readonly languageOptions = [
     { code: 'pt-br' as const, label: 'PT-BR' },
@@ -30,13 +39,7 @@ export class App {
     { code: 'en' as const, label: 'EN' }
   ];
 
-  readonly loginPayload: LoginPayload = {
-    username: '',
-    password: ''
-  };
-
   readonly loading = signal(false);
-  readonly authError = signal(false);
   readonly apiResults = signal<unknown[]>([]);
   readonly query = signal('ciencia da informacao');
   readonly hasResults = computed(() => this.apiResults().length > 0);
@@ -55,20 +58,6 @@ export class App {
     this.selectedLanguage.set(language);
     this.languageService.setLanguage(language);
     this.seoService.updateHomeMetadata(language);
-  }
-
-  login(): void {
-    this.loading.set(true);
-    this.authError.set(false);
-
-    this.authService.login(this.loginPayload).subscribe((user) => {
-      this.loading.set(false);
-      this.authError.set(!user);
-    });
-  }
-
-  logout(): void {
-    this.authService.logout().subscribe();
   }
 
   searchInBrapci(): void {

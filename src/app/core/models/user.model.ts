@@ -10,6 +10,17 @@ export interface LoginPayload {
   password: string;
 }
 
+export interface RegisterPayload {
+  name: string;
+  username: string;
+  email: string;
+  password: string;
+}
+
+export interface ForgotPasswordPayload {
+  email: string;
+}
+
 export interface AuthResponse {
   authenticated: boolean;
   user: User | null;

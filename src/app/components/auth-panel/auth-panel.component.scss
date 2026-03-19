@@ -1,0 +1,24 @@
+.auth-form {
+  display: grid;
+  gap: 0.6rem;
+}
+
+.auth-links {
+  align-items: center;
+  display: flex;
+  gap: 1rem;
+  justify-content: space-between;
+  margin-top: 0.25rem;
+}
+
+.auth-links--single {
+  justify-content: flex-start;
+}
+
+.error {
+  color: #b42318;
+}
+
+.success {
+  color: #157347;
+}
