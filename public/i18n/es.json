@@ -70,6 +70,7 @@
     }
   },
   "journals": {
-    "accessLink": "Acceder a la revista"
+    "accessLink": "Acceder a la revista",
+    "publicationsList": "Lista de publicaciones"
   }
 }

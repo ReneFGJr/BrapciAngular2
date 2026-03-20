@@ -63,7 +63,14 @@ export class App {
   );
   readonly isDocRoute = computed(() => {
     const url = this.currentUrl();
-    return url.startsWith('/doc') || url.startsWith('/sobre/') || url.startsWith('/about/') || url.startsWith('/autoridade') || url.startsWith('/v/');
+    return (
+      url.startsWith('/doc') ||
+      url.startsWith('/sobre/') ||
+      url.startsWith('/about/') ||
+      url.startsWith('/autoridade') ||
+      url.startsWith('/v/') ||
+      url.startsWith('/revistas')
+    );
   });
 
   constructor() {

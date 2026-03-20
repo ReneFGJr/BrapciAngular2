@@ -1,5 +1,8 @@
 @if (hasResults()) {
   <div class="container revistas-grid">
+  <div class="col-12">
+    <h2>{{ 'journals.publicationsList' | translate }}</h2>
+  </div>
       @for (journal of journals(); track journal.id_jnl) {
       <div class="revista-card border p-3">
         @if (journal.cover) {
