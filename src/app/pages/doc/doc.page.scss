@@ -1,0 +1,31 @@
+.doc-wrap {
+  color: var(--theme-ink);
+}
+
+.doc-card {
+  background: var(--theme-card-bg);
+  border: 1px solid var(--theme-line);
+  border-radius: 0.9rem;
+}
+
+.doc-eyebrow {
+  font-size: 0.78rem;
+  letter-spacing: 0.16rem;
+  margin: 0;
+  text-transform: uppercase;
+}
+
+.doc-subtitle,
+.doc-note {
+  color: var(--theme-hint);
+}
+
+.doc-table {
+  --bs-table-bg: transparent;
+  --bs-table-color: var(--theme-ink);
+  --bs-table-border-color: var(--theme-line);
+}
+
+.doc-table code {
+  color: var(--theme-ink);
+}

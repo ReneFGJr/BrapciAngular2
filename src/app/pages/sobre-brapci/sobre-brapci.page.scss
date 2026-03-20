@@ -1,0 +1,64 @@
+.sobre-wrap {
+  color: var(--theme-ink);
+}
+
+.sobre-card {
+  background: var(--theme-card-bg);
+  border: 1px solid var(--theme-line);
+  border-radius: 0.9rem;
+}
+
+.sobre-content {
+  color: var(--theme-ink);
+  line-height: 1.65;
+}
+
+.sobre-content :where(h2, h3, h4) {
+  margin-top: 1.1rem;
+}
+
+.sobre-content :where(a) {
+  color: var(--theme-hint);
+}
+
+.sobre-error {
+  color: var(--theme-error);
+}
+
+.sobre-json {
+  background: var(--theme-sand);
+  border-radius: 0.45rem;
+  max-height: 360px;
+  overflow: auto;
+  padding: 0.8rem;
+}
+
+.sobre-json :where(.json-list) {
+  border-left: 2px solid var(--theme-line);
+  list-style: none;
+  margin: 0.3rem 0 0.3rem 0.2rem;
+  padding-left: 0.8rem;
+}
+
+.sobre-json :where(li) {
+  margin: 0.18rem 0;
+}
+
+.sobre-json :where(.json-key) {
+  color: var(--theme-hint);
+  font-weight: 700;
+  margin-right: 0.45rem;
+}
+
+.sobre-json :where(.json-string) {
+  color: var(--theme-ink);
+}
+
+.sobre-json :where(.json-primitive) {
+  color: var(--theme-hint);
+}
+
+.sobre-json :where(.json-null, .json-empty) {
+  color: var(--theme-muted);
+  font-style: italic;
+}

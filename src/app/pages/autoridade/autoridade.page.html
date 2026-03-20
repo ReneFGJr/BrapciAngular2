@@ -1,0 +1,48 @@
+<section class="autoridade-wrap py-4" aria-labelledby="autoridade-title">
+  <div class="container">
+    <div class="autoridade-card p-4 p-md-5">
+      <img class="autoridade-banner" src="assets/img/authority-banner.svg" alt="Controle de autoridade" />
+
+      <h1 id="autoridade-title" class="h2 mt-3 mb-3">Controle de Autoridade</h1>
+
+      <form class="autoridade-form mb-4" (ngSubmit)="search()">
+        <label for="term" class="form-label">Buscar termo</label>
+        <div class="input-group">
+          <input
+            id="term"
+            name="term"
+            class="form-control"
+            [ngModel]="term()"
+            (ngModelChange)="term.set($event)"
+            placeholder="Ex.: Rene Faustino"
+          />
+          <button type="submit" class="btn btn-primary" [disabled]="loading()">Buscar</button>
+        </div>
+      </form>
+
+      @if (loading()) {
+        <p class="mb-0">Carregando...</p>
+      }
+
+      @if (error()) {
+        <p class="autoridade-error mb-0">{{ error() }}</p>
+      }
+
+      @if (!loading() && !error()) {
+        <h2 class="h5 mb-2">Termos com use = ID</h2>
+
+        @if (hasResults()) {
+          <ul class="autoridade-results mb-0">
+            @for (entry of results(); track entry.id) {
+              <li>
+                <a class="autoridade-link" [href]="'/v/' + entry.id">{{ entry.term }}</a>
+              </li>
+            }
+          </ul>
+        } @else {
+          <p class="mb-0">Nenhum resultado com use = ID para o termo informado.</p>
+        }
+      }
+    </div>
+  </div>
+</section>

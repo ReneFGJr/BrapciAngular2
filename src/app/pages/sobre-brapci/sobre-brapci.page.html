@@ -1,0 +1,20 @@
+<section class="sobre-wrap py-4" aria-labelledby="sobre-title">
+  <div class="container">
+    <div class="sobre-card p-4 p-md-5">
+      @if (loading()) {
+        <p class="mb-0">Carregando conteudo...</p>
+      } @else if (error()) {
+        <p class="sobre-error mb-0">{{ error() }}</p>
+      } @else {
+        <h1 id="sobre-title" class="h2 mb-3">{{ title() }}</h1>
+
+        @if (htmlContent()) {
+          <article class="sobre-content" [innerHTML]="htmlContent()"></article>
+        } @else {
+          <p class="mb-2">A API nao retornou conteudo HTML formatado. Exibindo JSON formatado:</p>
+          <article class="sobre-json" [innerHTML]="jsonFallbackHtml()"></article>
+        }
+      }
+    </div>
+  </div>
+</section>

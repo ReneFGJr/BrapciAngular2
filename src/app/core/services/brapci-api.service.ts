@@ -30,4 +30,19 @@ export class BrapciApiService {
   search<T>(query: string): Observable<T> {
     return this.get<T>('', { q: query });
   }
+
+  authoritySearch<T>(term: string): Observable<T> {
+    const body = new HttpParams().set('term', term);
+    const url = `${this.apiConfig.brapciApiBaseUrl}/authority/search`;
+
+    return this.http.post<T>(url, body.toString(), {
+      headers: {
+        'Content-Type': 'application/x-www-form-urlencoded'
+      }
+    });
+  }
+
+  getById<T>(id: string): Observable<T> {
+    return this.get<T>(`brapci/get/v1/${id}`);
+  }
 }

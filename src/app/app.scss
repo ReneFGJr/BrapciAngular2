@@ -65,6 +65,36 @@ h1 {
 	background: rgb(255 255 255 / 12%);
 }
 
+.docs-dropdown .btn-link {
+	border: 0;
+	color: rgb(255 255 255 / 85%);
+	font-weight: 500;
+	padding: 0.5rem 0.8rem;
+	text-decoration: none;
+}
+
+.docs-dropdown .btn-link:hover,
+.docs-dropdown .btn-link:focus-visible,
+.docs-dropdown.show .btn-link {
+	color: #fff;
+}
+
+.docs-dropdown .dropdown-menu {
+	background: var(--theme-card-bg);
+	border: 1px solid var(--theme-line);
+	min-width: 13rem;
+}
+
+.docs-dropdown .dropdown-item {
+	color: var(--theme-ink);
+}
+
+.docs-dropdown .dropdown-item:hover,
+.docs-dropdown .dropdown-item:focus-visible {
+	background: var(--theme-sand);
+	color: var(--theme-ink);
+}
+
 .theme-switch .form-check-input {
 	cursor: pointer;
 }
@@ -73,6 +103,10 @@ h1 {
 	.nav-login-link,
 	.nav-user-chip {
 		margin: 0.45rem 0;
+	}
+
+	.docs-dropdown .dropdown-menu {
+		position: static;
 	}
 }
 

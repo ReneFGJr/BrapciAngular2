@@ -2,9 +2,10 @@ import { CommonModule, DOCUMENT, isPlatformBrowser } from '@angular/common';
 import { Component, computed, inject, signal } from '@angular/core';
 import { PLATFORM_ID } from '@angular/core';
 import { FormsModule } from '@angular/forms';
-import { RouterOutlet } from '@angular/router';
+import { NavigationEnd, Router, RouterLink, RouterOutlet } from '@angular/router';
 import { toSignal } from '@angular/core/rxjs-interop';
 import { TranslateModule } from '@ngx-translate/core';
+import { filter, map, startWith } from 'rxjs';
 import { AuthService } from './core/services/auth.service';
 import { BrapciApiService } from './core/services/brapci-api.service';
 import { LanguageService } from './core/services/language.service';
@@ -14,7 +15,7 @@ import { SessionService } from './core/services/session.service';
 
 @Component({
   selector: 'app-root',
-  imports: [CommonModule, FormsModule, RouterOutlet, TranslateModule, AuthPanelComponent],
+  imports: [CommonModule, FormsModule, RouterOutlet, RouterLink, TranslateModule, AuthPanelComponent],
   templateUrl: './app.html',
   styleUrl: './app.scss'
 })
@@ -26,6 +27,7 @@ export class App {
   private readonly sessionService = inject(SessionService);
   private readonly document = inject(DOCUMENT);
   private readonly platformId = inject(PLATFORM_ID);
+  private readonly router = inject(Router);
   private readonly themeCookieKey = 'brapci_theme';
 
   readonly currentUser = toSignal(this.authService.currentUser$, { initialValue: null });
@@ -47,9 +49,22 @@ export class App {
 
   readonly loading = signal(false);
   readonly isDarkMode = signal(false);
+  readonly docsMenuOpen = signal(false);
   readonly apiResults = signal<unknown[]>([]);
   readonly query = signal('ciencia da informacao');
   readonly hasResults = computed(() => this.apiResults().length > 0);
+  readonly currentUrl = toSignal(
+    this.router.events.pipe(
+      filter((event): event is NavigationEnd => event instanceof NavigationEnd),
+      map((event) => event.urlAfterRedirects),
+      startWith(this.router.url)
+    ),
+    { initialValue: this.router.url }
+  );
+  readonly isDocRoute = computed(() => {
+    const url = this.currentUrl();
+    return url.startsWith('/doc') || url.startsWith('/sobre/') || url.startsWith('/about/') || url.startsWith('/autoridade') || url.startsWith('/v/');
+  });
 
   constructor() {
     this.languageService.init();
@@ -79,6 +94,14 @@ export class App {
     }
 
     this.authService.updateThemePreference(enabled ? 'dark' : 'light');
+  }
+
+  toggleDocsMenu(): void {
+    this.docsMenuOpen.update((open) => !open);
+  }
+
+  closeDocsMenu(): void {
+    this.docsMenuOpen.set(false);
   }
 
   searchInBrapci(): void {

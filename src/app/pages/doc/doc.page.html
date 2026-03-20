@@ -1,0 +1,103 @@
+<section class="doc-wrap py-4" aria-labelledby="doc-title">
+  <div class="container">
+    <div class="doc-card p-4 p-md-5">
+      <p class="doc-eyebrow mb-2">Documentacao</p>
+      <h1 id="doc-title" class="h2 mb-2">Documentacao API</h1>
+      <p class="doc-subtitle mb-4">
+        Referencia das chamadas utilizadas pelos servicos <code>auth.service</code> e
+        <code>brapci-api.service</code>.
+      </p>
+
+      <h2 class="h4 mt-4 mb-3">AuthService</h2>
+      <div class="table-responsive mb-4">
+        <table class="table doc-table align-middle mb-0">
+          <thead>
+            <tr>
+              <th>Metodo</th>
+              <th>HTTP</th>
+              <th>Endpoint</th>
+              <th>Parametros</th>
+              <th>Resultado Esperado</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td><code>checkSession()</code></td>
+              <td><code>GET</code></td>
+              <td><code>/auth/me</code></td>
+              <td>Sem body.</td>
+              <td><code>&#123; authenticated: boolean, user: User | null &#125;</code></td>
+            </tr>
+            <tr>
+              <td><code>login(payload)</code></td>
+              <td><code>POST</code></td>
+              <td><code>/auth/login</code> ou <code>/auth/login-email</code></td>
+              <td><code>&#123; username: string, password: string &#125;</code></td>
+              <td><code>&#123; authenticated: boolean, user: User | null &#125;</code></td>
+            </tr>
+            <tr>
+              <td><code>register(payload)</code></td>
+              <td><code>POST</code></td>
+              <td><code>/auth/register</code></td>
+              <td><code>&#123; name: string, username: string, email: string, password: string &#125;</code></td>
+              <td><code>&#123; authenticated: boolean, user: User | null &#125;</code></td>
+            </tr>
+            <tr>
+              <td><code>resendPassword(payload)</code></td>
+              <td><code>POST</code></td>
+              <td><code>/auth/forgot-password</code></td>
+              <td><code>&#123; email: string &#125;</code></td>
+              <td><code>&#123; success?: boolean &#125;</code> (service converte para <code>boolean</code>)</td>
+            </tr>
+            <tr>
+              <td><code>logout()</code></td>
+              <td><code>POST</code></td>
+              <td><code>/auth/logout</code></td>
+              <td><code>&#123;&#125;</code></td>
+              <td><code>204 No Content</code></td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+
+      <h2 class="h4 mt-4 mb-3">BrapciApiService</h2>
+      <div class="table-responsive">
+        <table class="table doc-table align-middle mb-0">
+          <thead>
+            <tr>
+              <th>Metodo</th>
+              <th>HTTP</th>
+              <th>Endpoint</th>
+              <th>Parametros</th>
+              <th>Resultado Esperado</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td><code>get(endpoint, params)</code></td>
+              <td><code>GET</code></td>
+              <td><code>&#123;brapciApiBaseUrl&#125;/&#123;endpoint&#125;</code></td>
+              <td>
+                <code>endpoint?: string</code><br />
+                <code>params?: Record&lt;string, string | number | boolean&gt;</code>
+              </td>
+              <td><code>T</code> generico (retorno da API Brapci)</td>
+            </tr>
+            <tr>
+              <td><code>search(query)</code></td>
+              <td><code>GET</code></td>
+              <td><code>&#123;brapciApiBaseUrl&#125;?q=&#123;query&#125;</code></td>
+              <td><code>&#123; query: string &#125;</code></td>
+              <td><code>T</code> generico (resultado de busca)</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+
+      <p class="doc-note mt-4 mb-0">
+        Base de auth definida por <code>buildAuthUrl()</code> em <code>auth.service</code>.
+        Base Brapci definida em <code>API_CONFIG.brapciApiBaseUrl</code>.
+      </p>
+    </div>
+  </div>
+</section>

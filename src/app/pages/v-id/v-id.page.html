@@ -1,0 +1,36 @@
+<section class="v-wrap py-4" aria-labelledby="v-title">
+  <div class="container">
+    <div class="v-card p-4 p-md-5">
+      <h1 id="v-title" class="h3 mb-3">Registro /v/{{ id() }}</h1>
+
+      @if (loading()) {
+        <p class="mb-0">Carregando dados...</p>
+      } @else if (error()) {
+        <p class="v-error mb-0">{{ error() }}</p>
+      } @else {
+        <p class="mb-3"><strong>Classe:</strong> {{ classe() }}</p>
+
+        @if (isPerson()) {
+          <section class="author-gadget mb-4" aria-label="Dados do autor">
+            <h2 class="h5 mb-3">Gadget de Autor</h2>
+            <p class="mb-1"><strong>Nome:</strong> {{ authorName() }}</p>
+            <p class="mb-1"><strong>Nome ABNT:</strong> {{ authorNameAbnt() }}</p>
+            <p class="mb-3"><strong>ID:</strong> {{ authorId() }}</p>
+
+            <div class="author-metrics">
+              @for (metric of authorMetrics(); track metric.label) {
+                <div class="author-metric-item">
+                  <small>{{ metric.label }}</small>
+                  <strong>{{ metric.value }}</strong>
+                </div>
+              }
+            </div>
+          </section>
+        }
+
+        <h2 class="h5 mb-2">JSON</h2>
+        <pre class="mb-0">{{ jsonContent() }}</pre>
+      }
+    </div>
+  </div>
+</section>
