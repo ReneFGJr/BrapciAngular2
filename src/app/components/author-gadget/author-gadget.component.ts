@@ -3,6 +3,7 @@ import { Component, Input, computed, signal } from '@angular/core';
 import { TranslateModule } from '@ngx-translate/core';
 import { AuthorWorksComponent, AuthorWorksGroup } from '../author-works/author-works.component';
 import { BarChartComponent, BarChartPoint } from '../bar-chart/bar-chart.component';
+import { TagCloudComponent } from '../tag-cloud/tag-cloud.component';
 
 import type { Coauthor } from '../../core/models/coauthor.model';
 import type { NetworkGraph } from '../../core/models/network.model';
@@ -21,7 +22,7 @@ type AuthorLink = {
 
 @Component({
   selector: 'app-author-gadget',
-  imports: [CommonModule, TranslateModule, BarChartComponent, AuthorWorksComponent],
+  imports: [CommonModule, TranslateModule, BarChartComponent, TagCloudComponent, AuthorWorksComponent],
   templateUrl: './author-gadget.component.html',
   styleUrl: './author-gadget.component.scss'
 })
@@ -36,6 +37,7 @@ export class AuthorGadgetComponent {
   @Input() chartPoints: BarChartPoint[] = [];
   @Input() worksGroups: AuthorWorksGroup[] = [];
   @Input() dataJour: unknown = null;
+  @Input() dataTag: unknown = null;
   @Input() photoUrl = '';
   @Input() authorLinks: AuthorLink[] = [];
   @Input() coauthors: Coauthor[] = [];

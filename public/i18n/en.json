@@ -58,6 +58,10 @@
       "yearAxis": "X axis",
       "volumeAxis": "Y axis",
       "noData": "No dataJOUR data available to display."
+    },
+    "tags": {
+      "title": "Tag cloud",
+      "noData": "No dataTAG data available to display."
     }
   }
 }

@@ -21,6 +21,13 @@ type DispersionPoint = {
   radius: number;
 };
 
+type PieSlice = {
+  label: string;
+  value: number;
+  percentage: number;
+  color: string;
+};
+
 export type AuthorContentTab = {
   id: 'works' | 'coauthors' | 'network';
   label: string;
@@ -148,9 +155,83 @@ export class AuthorWorksComponent {
         r: point.radius,
         label: point.label,
         x: point.x,
-        y: point.y
+        y: point.y,
+        color: this.colorForLabel(point.label)
       };
     });
+  });
+
+  readonly summaryRows = computed(() => {
+    return [...this.dispersionPoints()]
+      .sort((a, b) => b.y - a.y || a.x - b.x)
+      .map((point) => ({
+        ...point,
+        color: this.colorForLabel(point.label)
+      }));
+  });
+
+  readonly pieSlices = computed(() => {
+    const totals = new Map<string, number>();
+    for (const point of this.dispersionPoints()) {
+      totals.set(point.label, (totals.get(point.label) ?? 0) + point.y);
+    }
+
+    const totalVolume = [...totals.values()].reduce((sum, value) => sum + value, 0);
+    if (totalVolume <= 0) {
+      return [] as PieSlice[];
+    }
+
+    const major: PieSlice[] = [];
+    let othersValue = 0;
+
+    for (const [label, value] of totals.entries()) {
+      const percentage = value / totalVolume;
+      if (percentage < 0.02) {
+        othersValue += value;
+        continue;
+      }
+
+      major.push({
+        label,
+        value,
+        percentage,
+        color: this.colorForLabel(label)
+      });
+    }
+
+    if (othersValue > 0) {
+      major.push({
+        label: 'author.summary.others',
+        value: othersValue,
+        percentage: othersValue / totalVolume,
+        color: '#9aa8b5'
+      });
+    }
+
+    return major.sort((a, b) => b.value - a.value);
+  });
+
+  readonly pieGradient = computed(() => {
+    const slices = this.pieSlices();
+    if (slices.length === 0) {
+      return 'conic-gradient(#d6e1e8 0deg 360deg)';
+    }
+
+    let current = 0;
+    const parts: string[] = [];
+
+    for (const slice of slices) {
+      const start = current;
+      const end = current + slice.percentage * 360;
+      parts.push(`${slice.color} ${start}deg ${end}deg`);
+      current = end;
+    }
+
+    if (current < 360) {
+      parts.push(`#d6e1e8 ${current}deg 360deg`);
+    }
+
+    return `conic-gradient(${parts.join(', ')})`;
   });
 
   setTab(tabId: string): void {
@@ -249,5 +330,11 @@ export class AuthorWorksComponent {
     }
 
     return [];
+  }
+
+  private colorForLabel(label: string): string {
+    const palette = ['#385a7c', '#4f7f9f', '#7b8f46', '#9f6d3a', '#8166a5', '#2e8b8b', '#b05757'];
+    const hash = [...label].reduce((acc, char) => acc + char.charCodeAt(0), 0);
+    return palette[hash % palette.length];
   }
 }

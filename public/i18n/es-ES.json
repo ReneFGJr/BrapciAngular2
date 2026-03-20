@@ -58,6 +58,10 @@
         "yearAxis": "Eje X",
         "volumeAxis": "Eje Y",
         "noData": "No hay datos de dataJOUR para mostrar."
+      },
+      "tags": {
+        "title": "Nube de etiquetas",
+        "noData": "No hay datos de dataTAG para mostrar."
       }
   }
 }

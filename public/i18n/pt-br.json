@@ -58,6 +58,10 @@
         "yearAxis": "Eixo X",
         "volumeAxis": "Eixo Y",
         "noData": "Sem dados de dataJOUR para exibicao."
+      },
+      "tags": {
+        "title": "Nuvem de tags",
+        "noData": "Sem dados de dataTAG para exibicao."
       }
   }
 }

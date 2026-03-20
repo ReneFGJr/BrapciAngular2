@@ -549,6 +549,16 @@ export class VIdPage {
     return data['dataJOUR'] ?? data['dataJour'] ?? data['data_jour'] ?? null;
   });
 
+  readonly dataTag = computed(() => {
+    const value = this.response();
+    if (!value || typeof value !== 'object') {
+      return null;
+    }
+
+    const data = value as Record<string, unknown>;
+    return data['dataTAG'] ?? data['dataTag'] ?? data['data_tag'] ?? null;
+  });
+
   constructor() {
     this.route.paramMap
       .pipe(
