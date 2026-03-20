@@ -539,6 +539,16 @@ export class VIdPage {
 
   readonly jsonContent = computed(() => JSON.stringify(this.response(), null, 2));
 
+  readonly dataJour = computed(() => {
+    const value = this.response();
+    if (!value || typeof value !== 'object') {
+      return null;
+    }
+
+    const data = value as Record<string, unknown>;
+    return data['dataJOUR'] ?? data['dataJour'] ?? data['data_jour'] ?? null;
+  });
+
   constructor() {
     this.route.paramMap
       .pipe(

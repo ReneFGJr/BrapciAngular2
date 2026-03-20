@@ -48,6 +48,16 @@
       "Book": "Books",
       "BookChapter": "Book Chapters",
       "Proceeding": "Conference Papers"
+    },
+    "summary": {
+      "label": "Summary",
+      "journals": "Journals",
+      "points": "Points",
+      "volume": "Volume",
+      "dispersionTitle": "Journal dispersion chart",
+      "yearAxis": "X axis",
+      "volumeAxis": "Y axis",
+      "noData": "No dataJOUR data available to display."
     }
   }
 }

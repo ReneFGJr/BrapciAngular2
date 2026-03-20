@@ -48,6 +48,16 @@
         "Book": "Livros",
         "BookChapter": "Capitulos",
         "Proceeding": "Trabalhos de eventos"
+      },
+      "summary": {
+        "label": "Resumo",
+        "journals": "Periodicos",
+        "points": "Pontos",
+        "volume": "Volume",
+        "dispersionTitle": "Grafico de dispersao por periodico",
+        "yearAxis": "Eixo X",
+        "volumeAxis": "Eixo Y",
+        "noData": "Sem dados de dataJOUR para exibicao."
       }
   }
 }

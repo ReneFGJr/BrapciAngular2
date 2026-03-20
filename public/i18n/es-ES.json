@@ -48,6 +48,16 @@
         "Book": "Libros",
         "BookChapter": "Capitulos",
         "Proceeding": "Trabajos de eventos"
+      },
+      "summary": {
+        "label": "Resumen",
+        "journals": "Revistas",
+        "points": "Puntos",
+        "volume": "Volumen",
+        "dispersionTitle": "Grafico de dispersion por revista",
+        "yearAxis": "Eje X",
+        "volumeAxis": "Eje Y",
+        "noData": "No hay datos de dataJOUR para mostrar."
       }
   }
 }

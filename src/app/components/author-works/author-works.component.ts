@@ -12,6 +12,15 @@ export type AuthorWorksGroup = {
   items: string[];
 };
 
+type WorkSubTabKey = AuthorWorksGroup['key'] | 'summary';
+
+type DispersionPoint = {
+  x: number;
+  y: number;
+  label: string;
+  radius: number;
+};
+
 export type AuthorContentTab = {
   id: 'works' | 'coauthors' | 'network';
   label: string;
@@ -27,6 +36,7 @@ export type AuthorContentTab = {
 })
 export class AuthorWorksComponent {
   @Input({ required: true }) groups: AuthorWorksGroup[] = [];
+  @Input() dataJour: unknown = null;
   @Input() coauthors: Coauthor[] = [];
   @Input() networkData: NetworkGraph = { nodes: [], edges: [] };
 
@@ -70,10 +80,77 @@ export class AuthorWorksComponent {
     return (worksTab?.data as AuthorWorksGroup[]) ?? [];
   });
 
-  readonly selectedWorkTab = signal<'Article' | 'Proceeding' | 'BookChapter' | 'Book'>('Article');
+  readonly selectedWorkTab = signal<WorkSubTabKey>('summary');
 
   readonly activeWorkGroup = computed(() => {
-    return this.worksGroups().find((g) => g.key === this.selectedWorkTab()) ?? null;
+    const selected = this.selectedWorkTab();
+    if (selected === 'summary') {
+      return null;
+    }
+
+    return this.worksGroups().find((g) => g.key === selected) ?? null;
+  });
+
+  readonly dispersionPoints = computed(() => this.parseDataJour(this.dataJour));
+
+  readonly dispersionXRange = computed(() => {
+    const points = this.dispersionPoints();
+    if (points.length === 0) {
+      return { min: 0, max: 1 };
+    }
+
+    const xs = points.map((point) => point.x);
+    const min = Math.min(...xs);
+    const max = Math.max(...xs);
+    return min === max ? { min: min - 1, max: max + 1 } : { min, max };
+  });
+
+  readonly dispersionYRange = computed(() => {
+    const points = this.dispersionPoints();
+    if (points.length === 0) {
+      return { min: 0, max: 1 };
+    }
+
+    const ys = points.map((point) => point.y);
+    const min = Math.min(...ys);
+    const max = Math.max(...ys);
+    return min === max ? { min: 0, max: max + 1 } : { min, max };
+  });
+
+  readonly summaryTotals = computed(() => {
+    const points = this.dispersionPoints();
+    const totalVolume = points.reduce((sum, point) => sum + point.y, 0);
+    const uniqueLabels = new Set(points.map((point) => point.label));
+
+    return {
+      journals: uniqueLabels.size,
+      points: points.length,
+      volume: totalVolume
+    };
+  });
+
+  readonly chartPoints = computed(() => {
+    const width = 640;
+    const height = 260;
+    const paddingX = 42;
+    const paddingY = 22;
+    const xRange = this.dispersionXRange();
+    const yRange = this.dispersionYRange();
+    const points = this.dispersionPoints();
+
+    return points.map((point) => {
+      const xRatio = (point.x - xRange.min) / (xRange.max - xRange.min);
+      const yRatio = (point.y - yRange.min) / (yRange.max - yRange.min);
+
+      return {
+        cx: paddingX + xRatio * (width - paddingX * 2),
+        cy: height - paddingY - yRatio * (height - paddingY * 2),
+        r: point.radius,
+        label: point.label,
+        x: point.x,
+        y: point.y
+      };
+    });
   });
 
   setTab(tabId: string): void {
@@ -82,7 +159,95 @@ export class AuthorWorksComponent {
     }
   }
 
-  setWorkTab(key: 'Article' | 'Proceeding' | 'BookChapter' | 'Book'): void {
+  setWorkTab(key: WorkSubTabKey): void {
     this.selectedWorkTab.set(key);
+  }
+
+  private parseDataJour(value: unknown): DispersionPoint[] {
+    const points = this.extractRawDataJourPoints(value)
+      .map((item) => ({
+        ...item,
+        x: Number(item.x),
+        y: Number(item.y)
+      }))
+      .filter((item) => Number.isFinite(item.x) && Number.isFinite(item.y) && item.y > 0);
+
+    if (points.length === 0) {
+      return [];
+    }
+
+    const maxY = Math.max(...points.map((point) => point.y));
+
+    return points.map((point) => ({
+      ...point,
+      radius: 3 + (maxY > 0 ? (point.y / maxY) * 5 : 0)
+    }));
+  }
+
+  private extractRawDataJourPoints(value: unknown): Array<{ x: number; y: number; label: string }> {
+    if (!value) {
+      return [];
+    }
+
+    if (Array.isArray(value)) {
+      return value
+        .map((item, index) => {
+          if (!item || typeof item !== 'object') {
+            return null;
+          }
+
+          const record = item as Record<string, unknown>;
+          const xCandidate = record['x'] ?? record['year'] ?? record['ano'] ?? record['Year'] ?? record['Ano'];
+          const yCandidate =
+            record['y'] ??
+            record['count'] ??
+            record['total'] ??
+            record['qtd'] ??
+            record['value'] ??
+            record['freq'];
+          const labelCandidate =
+            record['label'] ?? record['journal'] ?? record['periodico'] ?? record['source'] ?? `item ${index + 1}`;
+
+          return {
+            x: Number(xCandidate),
+            y: Number(yCandidate),
+            label: String(labelCandidate)
+          };
+        })
+        .filter((item): item is { x: number; y: number; label: string } => item !== null);
+    }
+
+    if (typeof value === 'object') {
+      const obj = value as Record<string, unknown>;
+
+      const labels = Array.isArray(obj['labels']) ? (obj['labels'] as unknown[]) : [];
+      const series = Array.isArray(obj['data']) ? (obj['data'] as unknown[]) : [];
+
+      if (labels.length > 0 && series.length > 0) {
+        return series.map((valueAtIndex, index) => {
+          const label = String(labels[index] ?? `item ${index + 1}`);
+          const maybeYear = Number(label);
+
+          return {
+            x: Number.isFinite(maybeYear) ? maybeYear : index + 1,
+            y: Number(valueAtIndex),
+            label
+          };
+        });
+      }
+
+      const points: Array<{ x: number; y: number; label: string }> = [];
+      for (const [key, rawValue] of Object.entries(obj)) {
+        const maybeX = Number(key);
+        const maybeY = Number(rawValue);
+        if (Number.isFinite(maybeX) && Number.isFinite(maybeY)) {
+          points.push({ x: maybeX, y: maybeY, label: key });
+        }
+      }
+
+      return points;
+    }
+
+    return [];
   }
 }

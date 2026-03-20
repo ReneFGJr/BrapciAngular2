@@ -103,6 +103,67 @@
   padding: 0.5rem 0;
 }
 
+.summary-panel {
+  display: grid;
+  gap: 0.7rem;
+}
+
+.summary-metrics {
+  display: grid;
+  gap: 0.55rem;
+  grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+}
+
+.summary-metric-item {
+  background: rgb(255 255 255 / 35%);
+  border: 1px solid var(--theme-line);
+  border-radius: 0.45rem;
+  display: grid;
+  gap: 0.1rem;
+  padding: 0.5rem 0.6rem;
+
+  small {
+    color: var(--theme-hint);
+  }
+}
+
+.dispersion-chart-wrap {
+  border: 1px solid var(--theme-line);
+  border-radius: 0.45rem;
+  padding: 0.55rem;
+}
+
+.dispersion-chart {
+  display: block;
+  height: 250px;
+  width: 100%;
+}
+
+.axis-line {
+  stroke: var(--theme-line);
+  stroke-width: 1;
+}
+
+.dispersion-point {
+  fill: var(--theme-link);
+  opacity: 0.76;
+}
+
+.dispersion-axis-labels {
+  color: var(--theme-hint);
+  display: flex;
+  font-size: 0.8rem;
+  justify-content: space-between;
+  margin-top: 0.35rem;
+}
+
+@media (max-width: 700px) {
+  .dispersion-axis-labels {
+    flex-direction: column;
+    gap: 0.25rem;
+  }
+}
+
 .badge-menu-outline {
   background-color: transparent;
   border: 1px solid var(--theme-sand);

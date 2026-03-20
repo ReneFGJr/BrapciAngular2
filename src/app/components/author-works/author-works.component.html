@@ -31,6 +31,18 @@
     @if (selectedTab() === 'works') {
       <div class="works-tab-content">
         <div class="nav nav-tabs nav-secondary" role="tablist">
+          <button
+            type="button"
+            class="nav-link"
+            [class.active]="selectedWorkTab() === 'summary'"
+            [attr.aria-selected]="selectedWorkTab() === 'summary'"
+            (click)="setWorkTab('summary')"
+            role="tab"
+          >
+            {{ 'author.summary.label' | translate }}
+            <span class="badge badge-menu-outline ms-1">{{ summaryTotals().points }}</span>
+          </button>
+
           @for (group of worksGroups(); track group.key) {
             <button
               type="button"
@@ -47,7 +59,51 @@
         </div>
 
         <div class="tab-content mt-2">
-          @if (activeWorkGroup(); as group) {
+          @if (selectedWorkTab() === 'summary') {
+            <section class="summary-panel" aria-label="Resumo da producao">
+              <div class="summary-metrics mb-2">
+                <div class="summary-metric-item">
+                  <small>{{ 'author.summary.journals' | translate }}</small>
+                  <strong>{{ summaryTotals().journals }}</strong>
+                </div>
+                <div class="summary-metric-item">
+                  <small>{{ 'author.summary.points' | translate }}</small>
+                  <strong>{{ summaryTotals().points }}</strong>
+                </div>
+                <div class="summary-metric-item">
+                  <small>{{ 'author.summary.volume' | translate }}</small>
+                  <strong>{{ summaryTotals().volume }}</strong>
+                </div>
+              </div>
+
+              @if (chartPoints().length > 0) {
+                <div class="dispersion-chart-wrap" role="img" [attr.aria-label]="'author.summary.dispersionTitle' | translate">
+                  <svg class="dispersion-chart" viewBox="0 0 640 260" preserveAspectRatio="none">
+                    <line x1="42" y1="238" x2="598" y2="238" class="axis-line"></line>
+                    <line x1="42" y1="22" x2="42" y2="238" class="axis-line"></line>
+
+                    @for (point of chartPoints(); track point.label + point.x + point.y) {
+                      <circle
+                        class="dispersion-point"
+                        [attr.cx]="point.cx"
+                        [attr.cy]="point.cy"
+                        [attr.r]="point.r"
+                      >
+                        <title>{{ point.label }} - {{ point.x }}: {{ point.y }}</title>
+                      </circle>
+                    }
+                  </svg>
+
+                  <div class="dispersion-axis-labels">
+                    <span>{{ 'author.summary.yearAxis' | translate }}: {{ dispersionXRange().min }} - {{ dispersionXRange().max }}</span>
+                    <span>{{ 'author.summary.volumeAxis' | translate }}: {{ dispersionYRange().min }} - {{ dispersionYRange().max }}</span>
+                  </div>
+                </div>
+              } @else {
+                <p class="works-empty mb-0">{{ 'author.summary.noData' | translate }}</p>
+              }
+            </section>
+          } @else if (activeWorkGroup(); as group) {
             @if (group.items.length === 0) {
               <p class="works-empty mb-0">{{ 'author.noRecords' | translate }}</p>
             } @else {

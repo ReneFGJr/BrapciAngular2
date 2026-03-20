@@ -35,11 +35,11 @@ export class AuthorGadgetComponent {
   @Input({ required: true }) metrics: AuthorMetric[] = [];
   @Input() chartPoints: BarChartPoint[] = [];
   @Input() worksGroups: AuthorWorksGroup[] = [];
+  @Input() dataJour: unknown = null;
   @Input() photoUrl = '';
   @Input() authorLinks: AuthorLink[] = [];
-
-    @Input() coauthors: Coauthor[] = [];
-    @Input() networkData: NetworkGraph = { nodes: [], edges: [] };
+  @Input() coauthors: Coauthor[] = [];
+  @Input() networkData: NetworkGraph = { nodes: [], edges: [] };
 
   readonly filteredChartPoints = computed(() => {
     const range = this.selectedRange();
