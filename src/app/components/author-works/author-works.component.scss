@@ -27,8 +27,8 @@
     font-size: 0.85rem;
 
     &.active {
-      border-bottom: 2px solid var(--theme-primary, #0d6efd);
-      color: var(--theme-primary, #0d6efd);
+      border-bottom: 2px solid var(--theme-link);
+      color: var(--theme-link);
       font-weight: 600;
       margin-bottom: -1px;
       padding-bottom: 0.35rem;
@@ -47,15 +47,15 @@
   transition: all 0.2s ease;
 
   &:hover {
-    color: var(--theme-primary, #0d6efd);
+    color: var(--theme-link);
     background: var(--theme-sand);
     border-radius: 0.3rem 0.3rem 0 0;
   }
 
   &.active {
     background: var(--theme-sand);
-    border-bottom: 2px solid var(--theme-primary, #0d6efd);
-    color: var(--theme-primary, #0d6efd);
+    border-bottom: 2px solid var(--theme-link);
+    color: var(--theme-link);
     font-weight: 600;
     margin-bottom: -2px;
     padding-bottom: 0.5rem;

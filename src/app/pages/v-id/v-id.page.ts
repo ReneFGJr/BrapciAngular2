@@ -204,9 +204,21 @@ export class VIdPage {
     }
 
     const data = value as Record<string, unknown>;
-    const raw = data['coauthors'];
-    const fromApi = Array.isArray(raw)
+    const raw = data['coauthors'] ?? data['coAuthors'] ?? data['Coauthors'] ?? data['CoAuthors'];
+    const coauthorsArray: unknown[] = Array.isArray(raw)
       ? raw
+      : typeof raw === 'string'
+        ? (() => {
+            try {
+              const parsed = JSON.parse(raw);
+              return Array.isArray(parsed) ? parsed : [];
+            } catch {
+              return [];
+            }
+          })()
+        : [];
+
+    const fromApi = coauthorsArray
       .map((item, index) => {
         if (typeof item === 'string' && item.trim()) {
           return {
@@ -221,7 +233,7 @@ export class VIdPage {
         }
 
         const obj = item as Record<string, unknown>;
-        const nameCandidate = obj['name'] ?? obj['Name'] ?? obj['author'] ?? obj['Author'];
+        const nameCandidate = obj['nome'] ?? obj['Nome'] ?? obj['name'] ?? obj['Name'] ?? obj['author'] ?? obj['Author'];
         const name = typeof nameCandidate === 'string' ? nameCandidate.trim() : '';
         if (!name) {
           return null;
@@ -237,18 +249,14 @@ export class VIdPage {
           typeof countRaw === 'number' ? countRaw : Number.parseInt(String(countRaw ?? '1'), 10) || 1;
 
         const idCandidate = obj['ID'] ?? obj['id'];
-        const id = typeof idCandidate === 'string' && idCandidate.trim() ? idCandidate.trim() : `coauthor_${index + 1}`;
+        const id =
+          typeof idCandidate === 'string' && idCandidate.trim()
+            ? idCandidate.trim()
+            : typeof idCandidate === 'number' && Number.isFinite(idCandidate)
+              ? String(idCandidate)
+              : `coauthor_${index + 1}`;
 
-        let link: string | undefined;
-        if (id && !id.startsWith('coauthor_')) {
-          link = `/v/${id}`;
-        } else if (typeof obj['link'] === 'string' && obj['link'].trim()) {
-          const rawLink = obj['link'].trim();
-          const match = rawLink.match(/\/v\/([^/?#]+)/i);
-          if (match?.[1]) {
-            link = `/v/${match[1]}`;
-          }
-        }
+        const link = id && !id.startsWith('coauthor_') ? `/v/${id}` : undefined;
 
         return {
           id,
@@ -258,8 +266,7 @@ export class VIdPage {
         } satisfies Coauthor;
       })
       .filter((item): item is Coauthor => item !== null)
-      .sort((a, b) => b.totalPublications - a.totalPublications)
-      : [];
+      .sort((a, b) => a.name.localeCompare(b.name, 'pt-BR', { sensitivity: 'base' }));
 
     if (fromApi.length > 0) {
       return fromApi;
@@ -302,13 +309,13 @@ export class VIdPage {
     }
 
     return [...counts.entries()]
-      .map(([normalized, value], index) => ({
+      .map(([normalized, entry], index) => ({
         id: `coauthor_${index + 1}_${normalized.slice(0, 16)}`,
-        name: value.displayName,
-        totalPublications: value.totalPublications,
-        link: value.link
+        name: entry.displayName,
+        totalPublications: entry.totalPublications,
+        link: entry.link
       }))
-      .sort((a, b) => b.totalPublications - a.totalPublications)
+      .sort((a, b) => a.name.localeCompare(b.name, 'pt-BR', { sensitivity: 'base' }))
       .slice(0, 30);
   });
 

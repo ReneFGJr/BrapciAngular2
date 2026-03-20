@@ -15,6 +15,7 @@ body.theme-master {
 	--theme-card-bg: #ffffffd9;
 	--theme-footer: #fffaf2;
 	--theme-muted: #58718f;
+	--theme-link: #385a7c;
 	--theme-bg:
 		radial-gradient(circle at 88% 8%, #ffe5ce 0%, transparent 25%),
 		radial-gradient(circle at 12% 94%, #cfefff 0%, transparent 30%),
@@ -40,6 +41,7 @@ body.theme-master.theme-dark {
 	--theme-card-bg: #122033;
 	--theme-footer: #0e1a2b;
 	--theme-muted: #9ab4d3;
+	--theme-link: #dddfff;
 	--theme-bg:
 		radial-gradient(circle at 88% 8%, #2a1f1a 0%, transparent 25%),
 		radial-gradient(circle at 12% 94%, #1a2a3d 0%, transparent 30%),
@@ -50,6 +52,10 @@ body.theme-master.theme-dark {
 	--bs-secondary-color: var(--theme-muted);
 	--bs-tertiary-bg: var(--theme-sand);
 	color-scheme: dark;
+}
+
+body.theme-master .layout a {
+	color: var(--theme-link);
 }
 
 body.theme-master .form-control,
@@ -79,4 +85,12 @@ html,
 body {
 	margin: 0;
 	padding: 0;
+}
+
+coauthor-name.a {
+  color: red;
+}
+
+a.coauthor-name {
+  color: red;
 }
