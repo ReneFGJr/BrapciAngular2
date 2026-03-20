@@ -1,0 +1,39 @@
+<section class="bar-chart" aria-label="Grafico de barras">
+  <h3 class="h6 mb-2">{{ title }}</h3>
+
+  @if (legend().length > 0) {
+    <div class="bar-chart__legend mb-2">
+      @for (item of legend(); track item.key) {
+        <span class="bar-chart__legend-item">
+          <span class="bar-chart__legend-color" [style.background]="item.color"></span>
+          <span>{{ item.label }}</span>
+        </span>
+      }
+    </div>
+  }
+
+  @if (hasData()) {
+    <div class="bar-chart__plot" role="img" [attr.aria-label]="title">
+      @for (point of displayPoints(); track point.label) {
+        <div class="bar-chart__item">
+          <div class="bar-chart__value">{{ point.total }}</div>
+          <div class="bar-chart__bar-wrap">
+            <div class="bar-chart__bar" [style.height.%]="point.height">
+              @for (segment of point.stackedSegments; track segment.key) {
+                <div
+                  class="bar-chart__segment"
+                  [style.height.%]="segment.height"
+                  [style.background]="segment.color"
+                  [attr.title]="segment.label + ': ' + segment.value"
+                ></div>
+              }
+            </div>
+          </div>
+          <div class="bar-chart__label">{{ point.label }}</div>
+        </div>
+      }
+    </div>
+  } @else {
+    <p class="mb-0">Sem dados para o grafico.</p>
+  }
+</section>

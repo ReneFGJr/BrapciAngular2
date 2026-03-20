@@ -1,0 +1,17 @@
+<section class="author-gadget" aria-label="Dados do autor">
+  <h2 class="h5 mb-3">Gadget de Autor</h2>
+  <p class="mb-1"><strong>Nome:</strong> {{ name }}</p>
+  <p class="mb-1"><strong>Nome ABNT:</strong> {{ nameAbnt }}</p>
+  <p class="mb-3"><strong>ID:</strong> {{ authorId }}</p>
+
+  <div class="author-metrics">
+    @for (metric of metrics; track metric.label) {
+      <div class="author-metric-item">
+        <small>{{ metric.label }}</small>
+        <strong>{{ metric.value }}</strong>
+      </div>
+    }
+  </div>
+
+  <app-bar-chart [title]="'Producoes por ano'" [points]="chartPoints"></app-bar-chart>
+</section>

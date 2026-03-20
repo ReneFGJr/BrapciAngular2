@@ -11,21 +11,14 @@
         <p class="mb-3"><strong>Classe:</strong> {{ classe() }}</p>
 
         @if (isPerson()) {
-          <section class="author-gadget mb-4" aria-label="Dados do autor">
-            <h2 class="h5 mb-3">Gadget de Autor</h2>
-            <p class="mb-1"><strong>Nome:</strong> {{ authorName() }}</p>
-            <p class="mb-1"><strong>Nome ABNT:</strong> {{ authorNameAbnt() }}</p>
-            <p class="mb-3"><strong>ID:</strong> {{ authorId() }}</p>
-
-            <div class="author-metrics">
-              @for (metric of authorMetrics(); track metric.label) {
-                <div class="author-metric-item">
-                  <small>{{ metric.label }}</small>
-                  <strong>{{ metric.value }}</strong>
-                </div>
-              }
-            </div>
-          </section>
+          <app-author-gadget
+            class="mb-4 d-block"
+            [name]="authorName()"
+            [nameAbnt]="authorNameAbnt()"
+            [authorId]="authorId()"
+            [metrics]="authorMetrics()"
+            [chartPoints]="chartYearsBars()"
+          ></app-author-gadget>
         }
 
         <h2 class="h5 mb-2">JSON</h2>

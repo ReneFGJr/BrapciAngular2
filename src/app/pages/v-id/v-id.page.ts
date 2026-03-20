@@ -4,10 +4,12 @@ import { ActivatedRoute } from '@angular/router';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { catchError, distinctUntilChanged, map, of, switchMap, tap } from 'rxjs';
 import { BrapciApiService } from '../../core/services/brapci-api.service';
+import { AuthorGadgetComponent } from '../../components/author-gadget/author-gadget.component';
+import { BarChartPoint } from '../../components/bar-chart/bar-chart.component';
 
 @Component({
   selector: 'app-v-id-page',
-  imports: [CommonModule],
+  imports: [CommonModule, AuthorGadgetComponent],
   templateUrl: './v-id.page.html',
   styleUrl: './v-id.page.scss'
 })
@@ -115,6 +117,60 @@ export class VIdPage {
       { label: 'Variantes', value: this.variantsCount().toString() },
       { label: 'Trabalhos', value: this.worksCount().toString() }
     ];
+  });
+
+  readonly chartYearsBars = computed(() => {
+    const value = this.response();
+    if (!value || typeof value !== 'object') {
+      return [] as BarChartPoint[];
+    }
+
+    const chartYears = (value as Record<string, unknown>)['chart_years'];
+    if (!chartYears || typeof chartYears !== 'object') {
+      return [] as BarChartPoint[];
+    }
+
+    const chartData = chartYears as Record<string, unknown>;
+    const labelsRaw = chartData['labels'];
+    const datasetsRaw = chartData['data'];
+
+    if (!Array.isArray(labelsRaw) || !datasetsRaw || typeof datasetsRaw !== 'object') {
+      return [] as BarChartPoint[];
+    }
+
+    const labels = labelsRaw.map((item) => String(item));
+    const seriesMap = datasetsRaw as Record<string, unknown>;
+    const palette = {
+      Article: '#5EA9FF',
+      Proceeding: '#4DCCBD',
+      BookChapter: '#F4A259',
+      Book: '#C084FC'
+    } as const;
+
+    const bars = labels.map((label, index) => {
+      const segments = Object.entries(palette).map(([key, color]) => {
+        const source = seriesMap[key];
+        const values = Array.isArray(source) ? source : [];
+        const raw = values[index];
+        const value = typeof raw === 'number' ? raw : 0;
+
+        return {
+          key,
+          label: key,
+          value,
+          color
+        };
+      });
+
+      return {
+        label,
+        segments
+      };
+    });
+
+    return bars
+      .filter((point) => point.segments.reduce((sum, segment) => sum + segment.value, 0) > 0)
+      .slice(-12);
   });
 
   readonly jsonContent = computed(() => JSON.stringify(this.response(), null, 2));
