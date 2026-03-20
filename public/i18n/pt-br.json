@@ -34,6 +34,14 @@
     "yearsProduction": "anos",
     "bibliographic": "Producoes bibliograficas",
     "total": "Total",
-    "noRecords": "Sem registros para este tipo."
+      "noRecords": "Sem registros para este tipo.",
+      "coauthors": {
+        "label": "Coautores",
+        "name": "Nome",
+        "publications": "Publicacoes"
+      },
+      "network": {
+        "label": "Rede de Colaboracao"
+      }
   }
 }

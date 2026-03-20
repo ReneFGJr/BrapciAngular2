@@ -53,5 +53,9 @@
 
   <app-bar-chart [title]="chartTitle()" [points]="filteredChartPoints()"></app-bar-chart>
 
-  <app-author-works [groups]="worksGroups"></app-author-works>
+  <app-author-works
+    [groups]="worksGroups"
+    [coauthors]="coauthors"
+    [networkData]="networkData">
+  </app-author-works>
 </section>

@@ -4,6 +4,9 @@ import { TranslateModule } from '@ngx-translate/core';
 import { AuthorWorksComponent, AuthorWorksGroup } from '../author-works/author-works.component';
 import { BarChartComponent, BarChartPoint } from '../bar-chart/bar-chart.component';
 
+import type { Coauthor } from '../../core/models/coauthor.model';
+import type { NetworkGraph } from '../../core/models/network.model';
+
 type AuthorMetric = {
   label: string;
   value: string;
@@ -34,6 +37,9 @@ export class AuthorGadgetComponent {
   @Input() worksGroups: AuthorWorksGroup[] = [];
   @Input() photoUrl = '';
   @Input() authorLinks: AuthorLink[] = [];
+
+    @Input() coauthors: Coauthor[] = [];
+    @Input() networkData: NetworkGraph = { nodes: [], edges: [] };
 
   readonly filteredChartPoints = computed(() => {
     const range = this.selectedRange();

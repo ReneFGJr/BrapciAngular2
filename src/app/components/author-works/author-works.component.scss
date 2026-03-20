@@ -18,6 +18,24 @@
   gap: 0.3rem;
 }
 
+.nav-tabs.nav-secondary {
+  border-bottom: 1px solid var(--theme-line);
+  margin-left: 1rem;
+  padding-left: 0.5rem;
+
+  .nav-link {
+    font-size: 0.85rem;
+
+    &.active {
+      border-bottom: 2px solid var(--theme-primary, #0d6efd);
+      color: var(--theme-primary, #0d6efd);
+      font-weight: 600;
+      margin-bottom: -1px;
+      padding-bottom: 0.35rem;
+    }
+  }
+}
+
 .nav-link {
   background: transparent;
   border: none;
@@ -46,6 +64,24 @@
 
 .tab-content {
   padding: 0.6rem 0;
+}
+
+.works-tab-content,
+.coauthors-tab-content,
+.network-tab-content {
+  animation: fadeIn 0.3s ease-in-out;
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(5px);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
 }
 
 .works-list {

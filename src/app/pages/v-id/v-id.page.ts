@@ -8,6 +8,9 @@ import { AuthorGadgetComponent } from '../../components/author-gadget/author-gad
 import type { AuthorWorksGroup } from '../../components/author-works/author-works.component';
 import { BarChartPoint } from '../../components/bar-chart/bar-chart.component';
 
+import type { Coauthor } from '../../core/models/coauthor.model';
+import type { NetworkGraph } from '../../core/models/network.model';
+
 type AuthorLink = {
   type: 'lattes' | 'orcid' | 'openalex' | 'googlescholar';
   icon: string;
@@ -194,6 +197,257 @@ export class VIdPage {
 
   readonly worksCount = computed(() => this.worksByType().reduce((sum, group) => sum + group.items.length, 0));
 
+  readonly coauthorsList = computed((): Coauthor[] => {
+    const value = this.response();
+    if (!value || typeof value !== 'object') {
+      return [];
+    }
+
+    const data = value as Record<string, unknown>;
+    const raw = data['coauthors'];
+    const fromApi = Array.isArray(raw)
+      ? raw
+      .map((item, index) => {
+        if (typeof item === 'string' && item.trim()) {
+          return {
+            id: `coauthor_${index + 1}`,
+            name: item.trim(),
+            totalPublications: 1
+          } satisfies Coauthor;
+        }
+
+        if (!item || typeof item !== 'object') {
+          return null;
+        }
+
+        const obj = item as Record<string, unknown>;
+        const nameCandidate = obj['name'] ?? obj['Name'] ?? obj['author'] ?? obj['Author'];
+        const name = typeof nameCandidate === 'string' ? nameCandidate.trim() : '';
+        if (!name) {
+          return null;
+        }
+
+        const countRaw =
+          obj['colaborations'] ??
+          obj['collaborations'] ??
+          obj['totalPublications'] ??
+          obj['publications'] ??
+          obj['count'];
+        const totalPublications =
+          typeof countRaw === 'number' ? countRaw : Number.parseInt(String(countRaw ?? '1'), 10) || 1;
+
+        const idCandidate = obj['ID'] ?? obj['id'];
+        const id = typeof idCandidate === 'string' && idCandidate.trim() ? idCandidate.trim() : `coauthor_${index + 1}`;
+
+        let link: string | undefined;
+        if (id && !id.startsWith('coauthor_')) {
+          link = `/v/${id}`;
+        } else if (typeof obj['link'] === 'string' && obj['link'].trim()) {
+          const rawLink = obj['link'].trim();
+          const match = rawLink.match(/\/v\/([^/?#]+)/i);
+          if (match?.[1]) {
+            link = `/v/${match[1]}`;
+          }
+        }
+
+        return {
+          id,
+          name,
+          totalPublications,
+          link
+        } satisfies Coauthor;
+      })
+      .filter((item): item is Coauthor => item !== null)
+      .sort((a, b) => b.totalPublications - a.totalPublications)
+      : [];
+
+    if (fromApi.length > 0) {
+      return fromApi;
+    }
+
+    const selfNameCandidates = [this.authorName(), this.authorNameAbnt()]
+      .map((name) => this.normalizeAuthorName(name))
+      .filter((name) => name.length > 0);
+
+    const counts = new Map<string, { displayName: string; totalPublications: number; link?: string }>();
+
+    for (const group of this.worksByType()) {
+      for (const item of group.items) {
+        const candidates = this.extractCoauthorCandidatesFromWorkItem(item);
+        for (const candidate of candidates) {
+          const normalized = this.normalizeAuthorName(candidate.name);
+          if (!normalized) {
+            continue;
+          }
+
+          if (selfNameCandidates.some((selfName) => selfName === normalized)) {
+            continue;
+          }
+
+          const found = counts.get(normalized);
+          if (found) {
+            found.totalPublications += 1;
+            if (!found.link && candidate.link) {
+              found.link = candidate.link;
+            }
+          } else {
+            counts.set(normalized, {
+              displayName: candidate.name,
+              totalPublications: 1,
+              link: candidate.link
+            });
+          }
+        }
+      }
+    }
+
+    return [...counts.entries()]
+      .map(([normalized, value], index) => ({
+        id: `coauthor_${index + 1}_${normalized.slice(0, 16)}`,
+        name: value.displayName,
+        totalPublications: value.totalPublications,
+        link: value.link
+      }))
+      .sort((a, b) => b.totalPublications - a.totalPublications)
+      .slice(0, 30);
+  });
+
+  readonly collaborationNetwork = computed((): NetworkGraph => {
+    const coauthors = this.coauthorsList();
+    if (coauthors.length === 0) {
+      return { nodes: [], edges: [] };
+    }
+
+    const mainId = this.authorId() || this.id() || 'main';
+    const mainName = this.authorName() || 'Autor';
+
+    const nodes: NetworkGraph['nodes'] = [
+      {
+        id: mainId,
+        label: mainName,
+        size: 3,
+        color: '#483d8b',
+        type: 'author'
+      }
+    ];
+
+    const edges: NetworkGraph['edges'] = [];
+
+    coauthors.forEach((coauthor, index) => {
+      const nodeId = coauthor.id || `coauthor_${index + 1}`;
+      nodes.push({
+        id: nodeId,
+        label: coauthor.name,
+        size: 1.5 + Math.min(coauthor.totalPublications / 10, 2.5),
+        color: '#5EA9FF',
+        type: 'author'
+      });
+
+      edges.push({
+        source: mainId,
+        target: nodeId,
+        weight: Math.max(1, coauthor.totalPublications),
+        label: `${coauthor.totalPublications}`
+      });
+    });
+
+    // Add lateral links for denser collaboration topology.
+    for (let i = 0; i < coauthors.length; i += 1) {
+      const sourceId = coauthors[i].id || `coauthor_${i + 1}`;
+      const next = coauthors[i + 1];
+      if (next) {
+        edges.push({
+          source: sourceId,
+          target: next.id || `coauthor_${i + 2}`,
+          weight: 1,
+          label: 'co'
+        });
+      }
+
+      const secondNext = coauthors[i + 2];
+      if (secondNext && i % 2 === 0) {
+        edges.push({
+          source: sourceId,
+          target: secondNext.id || `coauthor_${i + 3}`,
+          weight: 1,
+          label: 'co'
+        });
+      }
+    }
+
+    return { nodes, edges };
+  });
+
+  private extractCoauthorCandidatesFromWorkItem(item: string): Array<{ name: string; link?: string }> {
+    const byAnchors: Array<{ name: string; link?: string }> = [];
+    const anchorRegex = /<a[^>]*href=["']([^"']*\/v\/[^"']+)["'][^>]*>([^<]+)<\/a>/gi;
+    let anchorMatch: RegExpExecArray | null = anchorRegex.exec(item);
+    while (anchorMatch) {
+      const link = anchorMatch[1]?.trim();
+      const name = anchorMatch[2]?.replace(/\s+/g, ' ').trim();
+      if (name) {
+        byAnchors.push({ name, link });
+      }
+      anchorMatch = anchorRegex.exec(item);
+    }
+
+    if (byAnchors.length > 0) {
+      return byAnchors;
+    }
+
+    const plain = item
+      .replace(/<[^>]*>/g, ' ')
+      .replace(/&nbsp;/g, ' ')
+      .replace(/\s+/g, ' ')
+      .trim();
+
+    if (!plain) {
+      return [];
+    }
+
+    const head = plain.slice(0, 260);
+    const candidateChunks = head.split(';').map((chunk) => chunk.trim());
+    const collected: Array<{ name: string; link?: string }> = [];
+
+    for (const chunk of candidateChunks) {
+      const matches = chunk.match(/[A-ZÀ-Ý][A-ZÀ-Ý'`\-\s]+,\s*[A-ZÀ-Ý][^.;:0-9]{1,80}/g);
+      if (!matches) {
+        continue;
+      }
+
+      for (const match of matches) {
+        const cleaned = match.replace(/\s+/g, ' ').trim();
+        if (cleaned.length >= 5) {
+          collected.push({ name: cleaned });
+        }
+      }
+    }
+
+    const seen = new Set<string>();
+    const unique: Array<{ name: string; link?: string }> = [];
+    for (const candidate of collected) {
+      const key = this.normalizeAuthorName(candidate.name);
+      if (!key || seen.has(key)) {
+        continue;
+      }
+
+      seen.add(key);
+      unique.push(candidate);
+    }
+
+    return unique;
+  }
+
+  private normalizeAuthorName(name: string): string {
+    return name
+      .normalize('NFD')
+      .replace(/[\u0300-\u036f]/g, '')
+      .replace(/[^a-zA-Z,\s]/g, '')
+      .replace(/\s+/g, ' ')
+      .trim()
+      .toLowerCase();
+  }
+
   readonly authorMetrics = computed(() => {
     const value = this.response();
     if (!value || typeof value !== 'object') {
@@ -293,7 +547,6 @@ export class VIdPage {
           if (!id) {
             return of({ ok: false as const, data: null });
           }
-
           return this.brapciApiService.getById<unknown>(id).pipe(
             map((data) => ({ ok: true as const, data })),
             catchError(() => of({ ok: false as const, data: null }))

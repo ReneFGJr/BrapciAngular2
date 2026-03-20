@@ -1,36 +1,79 @@
-<section class="author-works mt-4" aria-label="Producoes bibliograficas">
+<section class="author-works mt-4" aria-label="Producoes bibliograficas e colaboracoes">
   <div class="author-works-header mb-3">
     <h3 class="h6 mb-0">{{ 'author.bibliographic' | translate }}</h3>
-    <span class="badge text-bg-light">{{ 'author.total' | translate }}: {{ totalWorks() }}</span>
   </div>
 
+  <!-- Main Content Tabs -->
   <div class="nav nav-tabs" role="tablist">
-    @for (group of groups; track group.key) {
+    @for (tab of contentTabs(); track tab.id) {
       <button
         type="button"
         class="nav-link"
-        [class.active]="selectedTab() === group.key"
-        [attr.aria-selected]="selectedTab() === group.key"
-        (click)="setTab(group.key)"
+        [class.active]="selectedTab() === tab.id"
+        [attr.aria-selected]="selectedTab() === tab.id"
+          (click)="setTab(tab.id)"
         role="tab"
       >
-        {{ group.label }}
-        <span class="badge bg-dark-subtle ms-1">{{ group.items.length }}</span>
+        {{ tab.label | translate }}
+        @if (tab.type === 'works') {
+          <span class="badge bg-dark-subtle ms-1">{{ totalWorks() }}</span>
+        } @else if (tab.type === 'coauthors') {
+          <span class="badge bg-dark-subtle ms-1">{{ coauthors.length }}</span>
+        } @else if (tab.type === 'network') {
+          <span class="badge bg-dark-subtle ms-1">{{ networkData.nodes.length }}</span>
+        }
       </button>
     }
   </div>
 
   <div class="tab-content mt-2">
-    @if (activeGroup(); as group) {
-      @if (group.items.length === 0) {
-        <p class="works-empty mb-0">{{ 'author.noRecords' | translate }}</p>
-      } @else {
-        <ol class="works-list mb-0">
-          @for (item of group.items; track $index) {
-            <li [innerHTML]="item"></li>
+    <!-- Works Tab Content -->
+    @if (selectedTab() === 'works') {
+      <div class="works-tab-content">
+        <div class="nav nav-tabs nav-secondary" role="tablist">
+          @for (group of worksGroups(); track group.key) {
+            <button
+              type="button"
+              class="nav-link"
+              [class.active]="selectedWorkTab() === group.key"
+              [attr.aria-selected]="selectedWorkTab() === group.key"
+              (click)="setWorkTab(group.key)"
+              role="tab"
+            >
+              {{ group.label }}
+              <span class="badge bg-dark-subtle ms-1">{{ group.items.length }}</span>
+            </button>
           }
-        </ol>
-      }
+        </div>
+
+        <div class="tab-content mt-2">
+          @if (activeWorkGroup(); as group) {
+            @if (group.items.length === 0) {
+              <p class="works-empty mb-0">{{ 'author.noRecords' | translate }}</p>
+            } @else {
+              <ol class="works-list mb-0">
+                @for (item of group.items; track $index) {
+                  <li [innerHTML]="item"></li>
+                }
+              </ol>
+            }
+          }
+        </div>
+      </div>
+    }
+
+    <!-- Coauthors Tab Content -->
+    @if (selectedTab() === 'coauthors') {
+      <div class="coauthors-tab-content mt-2">
+        <app-coauthors-list [coauthors]="coauthors"></app-coauthors-list>
+      </div>
+    }
+
+    <!-- Network Tab Content -->
+    @if (selectedTab() === 'network') {
+      <div class="network-tab-content mt-2">
+        <app-network-graph-3d [networkData]="networkData"></app-network-graph-3d>
+      </div>
     }
   </div>
 </section>

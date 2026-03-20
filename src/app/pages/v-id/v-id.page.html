@@ -18,7 +18,9 @@
             [worksGroups]="worksByType()"
             [photoUrl]="photoUrl()"
             [authorLinks]="authorLinks()"
-          ></app-author-gadget>
+              [coauthors]="coauthorsList()"
+              [networkData]="collaborationNetwork()"
+            ></app-author-gadget>
         }
 
         <h2 class="h5 mb-2">JSON</h2>
