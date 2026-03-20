@@ -102,3 +102,10 @@
   color: var(--theme-hint);
   padding: 0.5rem 0;
 }
+
+.badge-menu-outline {
+  background-color: transparent;
+  border: 1px solid var(--theme-sand);
+  border-radius: 999px;
+  color: #7f7f7f;
+}

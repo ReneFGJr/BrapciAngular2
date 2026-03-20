@@ -507,10 +507,10 @@ export class VIdPage {
     const labels = labelsRaw.map((item) => String(item));
     const seriesMap = datasetsRaw as Record<string, unknown>;
     const palette = {
-      Article: '#5EA9FF',
-      Proceeding: '#4DCCBD',
-      BookChapter: '#F4A259',
-      Book: '#C084FC'
+      Article: '#0f0fbd',
+      Proceeding: '#3f3fdd',
+      Book: '#927b00',
+      BookChapter: '#e2cb46',
     } as const;
 
     const bars = labels.map((label, index) => {

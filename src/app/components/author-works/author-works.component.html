@@ -16,11 +16,11 @@
       >
         {{ tab.label | translate }}
         @if (tab.type === 'works') {
-          <span class="badge bg-dark-subtle ms-1">{{ totalWorks() }}</span>
+          <span class="badge badge-menu-outline ms-1">{{ totalWorks() }}</span>
         } @else if (tab.type === 'coauthors') {
-          <span class="badge bg-dark-subtle ms-1">{{ coauthors.length }}</span>
+          <span class="badge badge-menu-outline ms-1">{{ coauthors.length }}</span>
         } @else if (tab.type === 'network') {
-          <span class="badge bg-dark-subtle ms-1">{{ networkData.nodes.length }}</span>
+          <span class="badge badge-menu-outline ms-1">{{ networkData.nodes.length }}</span>
         }
       </button>
     }
@@ -41,7 +41,7 @@
               role="tab"
             >
               {{ group.label }}
-              <span class="badge bg-dark-subtle ms-1">{{ group.items.length }}</span>
+              <span class="badge badge-menu-outline ms-1">{{ group.items.length }}</span>
             </button>
           }
         </div>
