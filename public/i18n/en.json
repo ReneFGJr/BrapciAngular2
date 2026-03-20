@@ -68,5 +68,8 @@
       "title": "Tag cloud",
       "noData": "No dataTAG data available to display."
     }
+  },
+  "journals": {
+    "accessLink": "Access journal"
   }
 }

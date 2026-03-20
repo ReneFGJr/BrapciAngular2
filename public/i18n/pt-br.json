@@ -68,5 +68,8 @@
         "title": "Nuvem de tags",
         "noData": "Sem dados de dataTAG para exibicao."
       }
+  },
+  "journals": {
+    "accessLink": "Acessar revista"
   }
 }

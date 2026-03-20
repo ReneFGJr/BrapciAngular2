@@ -1,0 +1,48 @@
+@if (hasResults()) {
+  <div class="container revistas-grid">
+      @for (journal of journals(); track journal.id_jnl) {
+      <div class="revista-card border p-3">
+        @if (journal.cover) {
+          <img class="revista-cover mb-3" [src]="journal.cover" [alt]="journal.jnl_name" />
+        }
+
+        <h2 class="h5 mb-2">{{ journal.jnl_name }}</h2>
+
+        @if (journal.jnl_name_abrev) {
+          <p class="small text-muted mb-2">{{ journal.jnl_name_abrev }}</p>
+        }
+
+        <div class="mb-2">
+          @if (journal.jnl_issn) {
+            <p class="mb-1">
+              <span class="badge bg-secondary">ISSN: {{ journal.jnl_issn }}</span>
+            </p>
+          }
+
+          @if (journal.jnl_eissn && journal.jnl_eissn !== '') {
+            <p class="mb-0">
+              <span class="badge bg-secondary">E-ISSN: {{ journal.jnl_eissn }}</span>
+            </p>
+          }
+        </div>
+
+        <div class="mb-2">
+          @if (journal.jnl_ano_inicio) {
+            <p class="small mb-0">
+              <strong>Desde:</strong> {{ journal.jnl_ano_inicio }}
+              @if (journal.jnl_ano_final && journal.jnl_ano_final !== '0') {
+                - {{ journal.jnl_ano_final }}
+              }
+            </p>
+          }
+        </div>
+
+        @if (journal.jnl_url) {
+          <p class="mb-0">
+            <a class="link" [href]="journal.jnl_url" target="_blank" rel="noreferrer">{{ 'journals.accessLink' | translate }} →</a>
+          </p>
+        }
+      </div>
+    }
+  </div>
+}
