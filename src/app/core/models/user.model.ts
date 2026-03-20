@@ -3,6 +3,7 @@ export interface User {
   username: string;
   name: string;
   role: 'admin' | 'user';
+  themePreference?: 'light' | 'dark';
 }
 
 export interface LoginPayload {

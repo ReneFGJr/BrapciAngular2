@@ -33,6 +33,40 @@ export class AuthService {
     return this.appServer ? `${this.appServer}${path}` : path;
   }
 
+  getThemePreference(): 'light' | 'dark' | null {
+    const current = this.userSubject.value;
+    if (current?.themePreference) {
+      return current.themePreference;
+    }
+
+    const cached = this.sessionService.getSessionValue(this.storageKey);
+    if (!cached) {
+      return null;
+    }
+
+    try {
+      const parsed = JSON.parse(cached) as User;
+      return parsed.themePreference ?? null;
+    } catch {
+      return null;
+    }
+  }
+
+  updateThemePreference(theme: 'light' | 'dark'): void {
+    const current = this.userSubject.value;
+    if (!current) {
+      return;
+    }
+
+    const updatedUser: User = {
+      ...current,
+      themePreference: theme
+    };
+
+    this.userSubject.next(updatedUser);
+    this.sessionService.setSessionValue(this.storageKey, JSON.stringify(updatedUser));
+  }
+
   loadUserFromSession(): void {
     const cached = this.sessionService.getSessionValue(this.storageKey);
 

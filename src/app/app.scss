@@ -1,22 +1,14 @@
 :host {
-	--ink: #102542;
-	--paper: #fffdf7;
-	--sand: #f6efe1;
-	--line: #d6e1e8;
-	--error: #b42318;
-	color: var(--ink);
+	color: var(--theme-ink);
 	display: flex;
 	flex-direction: column;
 	font-family: 'Source Sans 3', 'Trebuchet MS', sans-serif;
 	min-height: 100dvh;
-	background:
-		radial-gradient(circle at 88% 8%, #ffe5ce 0%, transparent 25%),
-		radial-gradient(circle at 12% 94%, #cfefff 0%, transparent 30%),
-		linear-gradient(180deg, #fff8ef 0%, var(--paper) 68%);
+	background: var(--theme-bg);
 }
 
 .hero {
-	border-bottom: 1px solid var(--line);
+	border-bottom: 1px solid var(--theme-line);
 }
 
 .eyebrow {
@@ -73,6 +65,10 @@ h1 {
 	background: rgb(255 255 255 / 12%);
 }
 
+.theme-switch .form-check-input {
+	cursor: pointer;
+}
+
 @media (max-width: 991.98px) {
 	.nav-login-link,
 	.nav-user-chip {
@@ -85,8 +81,8 @@ h1 {
 }
 
 .card {
-	background: #ffffffd9;
-	border: 1px solid var(--line);
+	background: var(--theme-card-bg);
+	border: 1px solid var(--theme-line);
 	border-radius: 0.9rem;
 }
 
@@ -96,7 +92,7 @@ h1 {
 }
 
 .hint {
-	color: #385a7c;
+	color: var(--theme-hint);
 }
 
 .results {
@@ -108,7 +104,7 @@ h1 {
 }
 
 pre {
-	background: var(--sand);
+	background: var(--theme-sand);
 	border-radius: 0.45rem;
 	margin: 0;
 	max-height: 280px;
@@ -117,5 +113,5 @@ pre {
 }
 
 .footer {
-	background: #fffaf2;
+	background: var(--theme-footer);
 }

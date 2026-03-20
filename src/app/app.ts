@@ -1,5 +1,6 @@
-import { CommonModule } from '@angular/common';
+import { CommonModule, DOCUMENT, isPlatformBrowser } from '@angular/common';
 import { Component, computed, inject, signal } from '@angular/core';
+import { PLATFORM_ID } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { RouterOutlet } from '@angular/router';
 import { toSignal } from '@angular/core/rxjs-interop';
@@ -9,6 +10,7 @@ import { BrapciApiService } from './core/services/brapci-api.service';
 import { LanguageService } from './core/services/language.service';
 import { SeoService } from './core/services/seo.service';
 import { AuthPanelComponent } from './components/auth-panel/auth-panel.component';
+import { SessionService } from './core/services/session.service';
 
 @Component({
   selector: 'app-root',
@@ -21,6 +23,10 @@ export class App {
   private readonly languageService = inject(LanguageService);
   private readonly seoService = inject(SeoService);
   private readonly brapciApiService = inject(BrapciApiService);
+  private readonly sessionService = inject(SessionService);
+  private readonly document = inject(DOCUMENT);
+  private readonly platformId = inject(PLATFORM_ID);
+  private readonly themeCookieKey = 'brapci_theme';
 
   readonly currentUser = toSignal(this.authService.currentUser$, { initialValue: null });
   readonly firstName = computed(() => {
@@ -40,6 +46,7 @@ export class App {
   ];
 
   readonly loading = signal(false);
+  readonly isDarkMode = signal(false);
   readonly apiResults = signal<unknown[]>([]);
   readonly query = signal('ciencia da informacao');
   readonly hasResults = computed(() => this.apiResults().length > 0);
@@ -51,6 +58,7 @@ export class App {
 
     this.seoService.updateHomeMetadata(currentLanguage);
     this.authService.loadUserFromSession();
+    this.initializeTheme();
     this.authService.checkSession().subscribe();
   }
 
@@ -58,6 +66,19 @@ export class App {
     this.selectedLanguage.set(language);
     this.languageService.setLanguage(language);
     this.seoService.updateHomeMetadata(language);
+  }
+
+  setDarkMode(enabled: boolean): void {
+    this.isDarkMode.set(enabled);
+    this.applyThemeClass();
+
+    if (isPlatformBrowser(this.platformId)) {
+      const mode = enabled ? 'dark' : 'light';
+      localStorage.setItem(this.themeCookieKey, mode);
+      this.sessionService.setCookie(this.themeCookieKey, mode);
+    }
+
+    this.authService.updateThemePreference(enabled ? 'dark' : 'light');
   }
 
   searchInBrapci(): void {
@@ -103,5 +124,35 @@ export class App {
     }
 
     return [];
+  }
+
+  private initializeTheme(): void {
+    const userTheme = this.authService.getThemePreference();
+
+    if (!isPlatformBrowser(this.platformId)) {
+      this.isDarkMode.set(userTheme === 'dark');
+      this.applyThemeClass();
+      return;
+    }
+
+    const cookieTheme = this.sessionService.getCookie(this.themeCookieKey);
+    const storedTheme = localStorage.getItem(this.themeCookieKey);
+    const preferredDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
+    const persisted = userTheme ?? cookieTheme ?? storedTheme;
+    const shouldUseDark = persisted ? persisted === 'dark' : preferredDark;
+
+    this.isDarkMode.set(shouldUseDark);
+    this.applyThemeClass();
+
+    const mode = shouldUseDark ? 'dark' : 'light';
+    localStorage.setItem(this.themeCookieKey, mode);
+    this.sessionService.setCookie(this.themeCookieKey, mode);
+    this.authService.updateThemePreference(mode);
+  }
+
+  private applyThemeClass(): void {
+    const body = this.document.body;
+    body.classList.add('theme-master');
+    body.classList.toggle('theme-dark', this.isDarkMode());
   }
 }

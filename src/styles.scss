@@ -4,6 +4,77 @@
 	box-sizing: border-box;
 }
 
+body.theme-master {
+	--theme-ink: #102542;
+	--theme-paper: #fffdf7;
+	--theme-sand: #f6efe1;
+	--theme-line: #d6e1e8;
+	--theme-hint: #385a7c;
+	--theme-error: #b42318;
+	--theme-success: #157347;
+	--theme-card-bg: #ffffffd9;
+	--theme-footer: #fffaf2;
+	--theme-muted: #58718f;
+	--theme-bg:
+		radial-gradient(circle at 88% 8%, #ffe5ce 0%, transparent 25%),
+		radial-gradient(circle at 12% 94%, #cfefff 0%, transparent 30%),
+		linear-gradient(180deg, #fff8ef 0%, var(--theme-paper) 68%);
+	--bs-body-color: var(--theme-ink);
+	--bs-body-bg: var(--theme-paper);
+	--bs-border-color: var(--theme-line);
+	--bs-secondary-color: var(--theme-muted);
+	--bs-tertiary-bg: var(--theme-sand);
+	color-scheme: light;
+	color: var(--theme-ink);
+	background-color: var(--theme-paper);
+}
+
+body.theme-master.theme-dark {
+	--theme-ink: #dbe9ff;
+	--theme-paper: #0d1727;
+	--theme-sand: #1a2a3d;
+	--theme-line: #30445f;
+	--theme-hint: #a8c1df;
+	--theme-error: #ff9b9b;
+	--theme-success: #74d6a7;
+	--theme-card-bg: #122033;
+	--theme-footer: #0e1a2b;
+	--theme-muted: #9ab4d3;
+	--theme-bg:
+		radial-gradient(circle at 88% 8%, #2a1f1a 0%, transparent 25%),
+		radial-gradient(circle at 12% 94%, #1a2a3d 0%, transparent 30%),
+		linear-gradient(180deg, #0c1523 0%, var(--theme-paper) 68%);
+	--bs-body-color: var(--theme-ink);
+	--bs-body-bg: var(--theme-paper);
+	--bs-border-color: var(--theme-line);
+	--bs-secondary-color: var(--theme-muted);
+	--bs-tertiary-bg: var(--theme-sand);
+	color-scheme: dark;
+}
+
+body.theme-master .form-control,
+body.theme-master .form-select {
+	background-color: var(--theme-paper);
+	border-color: var(--theme-line);
+	color: var(--theme-ink);
+}
+
+body.theme-master .form-control::placeholder {
+	color: var(--theme-muted);
+}
+
+body.theme-master .form-control:focus,
+body.theme-master .form-select:focus {
+	background-color: var(--theme-paper);
+	border-color: var(--theme-hint);
+	box-shadow: 0 0 0 0.2rem rgb(88 113 143 / 24%);
+	color: var(--theme-ink);
+}
+
+body.theme-master .text-muted {
+	color: var(--theme-muted) !important;
+}
+
 html,
 body {
 	margin: 0;

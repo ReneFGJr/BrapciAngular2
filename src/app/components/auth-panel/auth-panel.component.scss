@@ -3,6 +3,10 @@
   gap: 0.6rem;
 }
 
+.auth-form .form-label {
+  color: var(--theme-ink);
+}
+
 .auth-links {
   align-items: center;
   display: flex;
@@ -15,10 +19,21 @@
   justify-content: flex-start;
 }
 
+.auth-links .btn-link {
+  color: var(--theme-hint);
+  text-decoration: none;
+}
+
+.auth-links .btn-link:hover,
+.auth-links .btn-link:focus-visible {
+  color: var(--theme-ink);
+  text-decoration: underline;
+}
+
 .error {
-  color: #b42318;
+  color: var(--theme-error);
 }
 
 .success {
-  color: #157347;
+  color: var(--theme-success);
 }
