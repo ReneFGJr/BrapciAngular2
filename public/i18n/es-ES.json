@@ -42,6 +42,12 @@
       },
       "network": {
         "label": "Red de Colaboracion"
+      },
+      "workTypes": {
+        "Article": "Articulos",
+        "Book": "Libros",
+        "BookChapter": "Capitulos",
+        "Proceeding": "Trabajos de eventos"
       }
   }
 }

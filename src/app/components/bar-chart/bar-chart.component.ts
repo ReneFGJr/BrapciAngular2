@@ -1,5 +1,6 @@
 import { CommonModule } from '@angular/common';
 import { Component, Input, computed, signal } from '@angular/core';
+import { TranslateModule } from '@ngx-translate/core';
 
 export type BarChartSeriesSegment = {
   key: string;
@@ -15,7 +16,7 @@ export type BarChartPoint = {
 
 @Component({
   selector: 'app-bar-chart',
-  imports: [CommonModule],
+  imports: [CommonModule, TranslateModule],
   templateUrl: './bar-chart.component.html',
   styleUrl: './bar-chart.component.scss'
 })

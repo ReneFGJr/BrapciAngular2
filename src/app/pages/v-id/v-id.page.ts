@@ -167,7 +167,7 @@ export class VIdPage {
     const value = this.response();
     const groups: AuthorWorksGroup[] = this.worksKeys.map((key) => ({
       key,
-      label: key,
+      label: `author.workTypes.${key}`,
       items: []
     }));
 
@@ -522,7 +522,7 @@ export class VIdPage {
 
         return {
           key,
-          label: key,
+          label: `author.workTypes.${key}`,
           value,
           color
         };

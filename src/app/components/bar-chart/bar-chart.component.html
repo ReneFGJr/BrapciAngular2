@@ -6,7 +6,7 @@
       @for (item of legend(); track item.key) {
         <span class="bar-chart__legend-item">
           <span class="bar-chart__legend-color" [style.background]="item.color"></span>
-          <span>{{ item.label }}</span>
+          <span>{{ item.label | translate }}</span>
         </span>
       }
     </div>
@@ -24,7 +24,7 @@
                   class="bar-chart__segment"
                   [style.height.%]="segment.height"
                   [style.background]="segment.color"
-                  [attr.title]="segment.label + ': ' + segment.value"
+                  [attr.title]="(segment.label | translate) + ': ' + segment.value"
                 ></div>
               }
             </div>

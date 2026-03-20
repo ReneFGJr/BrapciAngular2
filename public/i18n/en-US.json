@@ -42,6 +42,12 @@
       },
       "network": {
         "label": "Collaboration Network"
+      },
+      "workTypes": {
+        "Article": "Articles",
+        "Book": "Books",
+        "BookChapter": "Book Chapters",
+        "Proceeding": "Conference Papers"
       }
   }
 }
