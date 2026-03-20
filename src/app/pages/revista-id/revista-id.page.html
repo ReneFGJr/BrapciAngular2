@@ -1,0 +1,65 @@
+<div class="container revista-detail py-4">
+  <p class="mb-3">
+    <a routerLink="/revistas" class="back-link">← Voltar para revistas</a>
+  </p>
+
+  @if (loading()) {
+    <div class="alert alert-info mb-0">Carregando revista...</div>
+  } @else if (error()) {
+    <div class="alert alert-warning mb-0">{{ error() }}</div>
+  } @else if (journal(); as item) {
+    <article class="card revista-card border-0 shadow-sm">
+      <div class="card-body p-4">
+        <div class="row g-4 align-items-start">
+          <div class="col-12 col-md-4 col-lg-3">
+            @if (item.cover) {
+              <img class="cover img-fluid" [src]="item.cover" [alt]="title()" />
+            } @else {
+              <div class="cover-placeholder">Sem capa</div>
+            }
+          </div>
+
+          <div class="col-12 col-md-8 col-lg-9">
+            <h1 class="h3 mb-2">{{ title() }}</h1>
+
+            @if (item.jnl_name_abrev) {
+              <p class="text-muted mb-3">{{ item.jnl_name_abrev }}</p>
+            }
+
+            <div class="meta-grid mb-3">
+              @if (item.id_jnl) {
+                <p><strong>ID:</strong> {{ item.id_jnl }}</p>
+              }
+              @if (item.jnl_issn) {
+                <p><strong>ISSN:</strong> {{ item.jnl_issn }}</p>
+              }
+              @if (item.jnl_eissn) {
+                <p><strong>E-ISSN:</strong> {{ item.jnl_eissn }}</p>
+              }
+              @if (item.jnl_ano_inicio) {
+                <p>
+                  <strong>Período:</strong>
+                  {{ item.jnl_ano_inicio }}
+                  @if (item.jnl_ano_final && item.jnl_ano_final !== '0') {
+                    - {{ item.jnl_ano_final }}
+                  }
+                </p>
+              }
+              @if (item.jnl_collection) {
+                <p><strong>Coleção:</strong> {{ item.jnl_collection }}</p>
+              }
+            </div>
+
+            @if (item.jnl_url) {
+              <p class="mb-0">
+                <a class="external-link" [href]="item.jnl_url" target="_blank" rel="noreferrer">
+                  {{ 'journals.accessLink' | translate }}
+                </a>
+              </p>
+            }
+          </div>
+        </div>
+      </div>
+    </article>
+  }
+</div>

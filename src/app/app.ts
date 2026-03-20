@@ -69,6 +69,7 @@ export class App {
       url.startsWith('/about/') ||
       url.startsWith('/autoridade') ||
       url.startsWith('/v/') ||
+      url.startsWith('/revista/') ||
       url.startsWith('/revistas')
     );
   });
