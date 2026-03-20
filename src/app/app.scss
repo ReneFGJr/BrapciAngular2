@@ -2,9 +2,30 @@
 	color: var(--theme-ink);
 	display: flex;
 	flex-direction: column;
-	font-family: 'Source Sans 3', 'Trebuchet MS', sans-serif;
+	font-family: 'Raleway', 'Trebuchet MS', sans-serif;
 	min-height: 100dvh;
 	background: var(--theme-bg);
+}
+
+.navbar {
+	background-color: #483d8b !important;
+	font-family: 'IBM Plex Mono', 'Raleway', 'Trebuchet MS', sans-serif !important;
+}
+
+.navbar * {
+	font-family: 'IBM Plex Mono', 'Raleway', 'Trebuchet MS', sans-serif !important;
+}
+
+.navbar-brand,
+.nav-item,
+.btn-link,
+.dropdown-item {
+	font-family: 'IBM Plex Mono', 'Raleway', 'Trebuchet MS', sans-serif !important;
+}
+
+.nav-link {
+	font-family: 'Barlow Condensed', 'IBM Plex Mono', 'Raleway', 'Trebuchet MS', sans-serif !important;
+	font-weight: 500;
 }
 
 .hero {
@@ -77,6 +98,19 @@ h1 {
 .docs-dropdown .btn-link:focus-visible,
 .docs-dropdown.show .btn-link {
 	color: #fff;
+}
+
+.language-select {
+	font-size: 1.2rem;
+	padding: 0.25rem 0.4rem !important;
+	background-color: transparent;
+	border: 1px solid rgb(255 255 255 / 35%);
+	color: #fff;
+}
+
+.language-select option {
+	color: #000;
+	background-color: #fff;
 }
 
 .docs-dropdown .dropdown-menu {

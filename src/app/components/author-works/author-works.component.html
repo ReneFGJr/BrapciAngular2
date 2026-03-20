@@ -1,0 +1,36 @@
+<section class="author-works mt-4" aria-label="Producoes bibliograficas">
+  <div class="author-works-header mb-3">
+    <h3 class="h6 mb-0">{{ 'author.bibliographic' | translate }}</h3>
+    <span class="badge text-bg-light">{{ 'author.total' | translate }}: {{ totalWorks() }}</span>
+  </div>
+
+  <div class="nav nav-tabs" role="tablist">
+    @for (group of groups; track group.key) {
+      <button
+        type="button"
+        class="nav-link"
+        [class.active]="selectedTab() === group.key"
+        [attr.aria-selected]="selectedTab() === group.key"
+        (click)="setTab(group.key)"
+        role="tab"
+      >
+        {{ group.label }}
+        <span class="badge bg-dark-subtle ms-1">{{ group.items.length }}</span>
+      </button>
+    }
+  </div>
+
+  <div class="tab-content mt-2">
+    @if (activeGroup(); as group) {
+      @if (group.items.length === 0) {
+        <p class="works-empty mb-0">{{ 'author.noRecords' | translate }}</p>
+      } @else {
+        <ol class="works-list mb-0">
+          @for (item of group.items; track $index) {
+            <li [innerHTML]="item"></li>
+          }
+        </ol>
+      }
+    }
+  </div>
+</section>

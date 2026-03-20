@@ -5,7 +5,15 @@ import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { catchError, distinctUntilChanged, map, of, switchMap, tap } from 'rxjs';
 import { BrapciApiService } from '../../core/services/brapci-api.service';
 import { AuthorGadgetComponent } from '../../components/author-gadget/author-gadget.component';
+import type { AuthorWorksGroup } from '../../components/author-works/author-works.component';
 import { BarChartPoint } from '../../components/bar-chart/bar-chart.component';
+
+type AuthorLink = {
+  type: 'lattes' | 'orcid' | 'openalex' | 'googlescholar';
+  icon: string;
+  label: string;
+  url: string;
+};
 
 @Component({
   selector: 'app-v-id-page',
@@ -17,6 +25,7 @@ export class VIdPage {
   private readonly route = inject(ActivatedRoute);
   private readonly destroyRef = inject(DestroyRef);
   private readonly brapciApiService = inject(BrapciApiService);
+  private readonly worksKeys = ['Article', 'Proceeding', 'BookChapter', 'Book'] as const;
 
   readonly id = signal('');
   readonly loading = signal(true);
@@ -69,6 +78,78 @@ export class VIdPage {
     return typeof candidate === 'string' && candidate.trim() ? candidate : this.id();
   });
 
+  readonly photoUrl = computed(() => {
+    const value = this.response();
+    if (!value || typeof value !== 'object') {
+      return '';
+    }
+
+    const data = value as Record<string, unknown>;
+    const candidate = data['Photo'];
+    return typeof candidate === 'string' && candidate.trim() ? candidate : '';
+  });
+
+  readonly authorLinks = computed(() => {
+    const value = this.response();
+    if (!value || typeof value !== 'object') {
+      return [] as AuthorLink[];
+    }
+
+    const data = value as Record<string, unknown>;
+    const idsRaw = data['IDs'];
+    if (!Array.isArray(idsRaw)) {
+      return [] as AuthorLink[];
+    }
+
+    const links: AuthorLink[] = [];
+
+    for (const idObj of idsRaw) {
+      if (!idObj || typeof idObj !== 'object') {
+        continue;
+      }
+
+      const obj = idObj as Record<string, unknown>;
+
+      if (obj['lattes']) {
+        links.push({
+          type: 'lattes',
+          icon: '🎓',
+          label: 'Lattes',
+          url: `https://lattes.cnpq.br/${obj['lattes']}`
+        });
+      }
+
+      if (obj['orcid']) {
+        links.push({
+          type: 'orcid',
+          icon: '🔗',
+          label: 'ORCID',
+          url: `https://orcid.org/${obj['orcid']}`
+        });
+      }
+
+      if (obj['OpenAlex']) {
+        links.push({
+          type: 'openalex',
+          icon: '🌐',
+          label: 'OpenAlex',
+          url: `https://openalex.org/${obj['OpenAlex']}`
+        });
+      }
+
+      if (obj['GoogleScholar']) {
+        links.push({
+          type: 'googlescholar',
+          icon: '📊',
+          label: 'Google Scholar',
+          url: `https://scholar.google.com/citations?user=${obj['GoogleScholar']}`
+        });
+      }
+    }
+
+    return links;
+  });
+
   readonly variantsCount = computed(() => {
     const value = this.response();
     if (!value || typeof value !== 'object') {
@@ -79,15 +160,39 @@ export class VIdPage {
     return Array.isArray(variants) ? variants.length : 0;
   });
 
-  readonly worksCount = computed(() => {
+  readonly worksByType = computed(() => {
     const value = this.response();
+    const groups: AuthorWorksGroup[] = this.worksKeys.map((key) => ({
+      key,
+      label: key,
+      items: []
+    }));
+
     if (!value || typeof value !== 'object') {
-      return 0;
+      return groups;
     }
 
     const works = (value as Record<string, unknown>)['works'];
-    return Array.isArray(works) ? works.length : 0;
+    if (!works || typeof works !== 'object') {
+      return groups;
+    }
+
+    const worksMap = works as Record<string, unknown>;
+
+    return groups.map((group) => {
+      const rawItems = worksMap[group.key];
+      const items = Array.isArray(rawItems)
+        ? rawItems.map((item) => String(item)).filter((item) => item.trim().length > 0)
+        : [];
+
+      return {
+        ...group,
+        items
+      };
+    });
   });
+
+  readonly worksCount = computed(() => this.worksByType().reduce((sum, group) => sum + group.items.length, 0));
 
   readonly authorMetrics = computed(() => {
     const value = this.response();

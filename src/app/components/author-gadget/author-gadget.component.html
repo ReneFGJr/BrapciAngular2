@@ -1,10 +1,24 @@
 <section class="author-gadget" aria-label="Dados do autor">
-  <h2 class="h5 mb-3">Gadget de Autor</h2>
-  <p class="mb-1"><strong>Nome:</strong> {{ name }}</p>
-  <p class="mb-1"><strong>Nome ABNT:</strong> {{ nameAbnt }}</p>
-  <p class="mb-3"><strong>ID:</strong> {{ authorId }}</p>
+  <div class="author-header d-flex align-items-start gap-2">
+    <div class="author-info flex-grow-1">
+      <h2 class="h5 mb-3">{{ 'author.gadget' | translate }}</h2>
+      <p class="mb-1"><strong>{{ 'author.name' | translate }}:</strong> {{ name }}</p>
+      <p class="mb-1"><strong>{{ 'author.nameAbnt' | translate }}:</strong> {{ nameAbnt }}</p>
+      <p class="mb-1"><strong>{{ 'author.id' | translate }}:</strong> {{ authorId }}</p>
+    </div>
+    <div class="author-links flex-shrink-0">
+      @for (link of authorLinks; track link.type) {
+        <a [href]="link.url" target="_blank" rel="noopener noreferrer" [title]="link.label" class="author-link">
+          {{ link.icon }}
+        </a>
+      }
+    </div>
+    @if (photoUrl) {
+      <img [src]="photoUrl" alt="Foto do autor" class="author-photo flex-shrink-0" />
+    }
+  </div>
 
-  <div class="author-metrics">
+  <div class="author-metrics mt-3">
     @for (metric of metrics; track metric.label) {
       <div class="author-metric-item">
         <small>{{ metric.label }}</small>
@@ -21,7 +35,7 @@
       [class.btn-outline-primary]="selectedRange() !== 'all'"
       (click)="setRange('all')"
     >
-      Toda producao
+      {{ 'author.allProduction' | translate }}
     </button>
 
     @for (years of rangeOptions; track years) {
@@ -32,10 +46,12 @@
         [class.btn-outline-primary]="selectedRange() !== years"
         (click)="setRange(years)"
       >
-        {{ years }} anos
+        {{ years }} {{ 'author.yearsProduction' | translate }}
       </button>
     }
   </div>
 
   <app-bar-chart [title]="chartTitle()" [points]="filteredChartPoints()"></app-bar-chart>
+
+  <app-author-works [groups]="worksGroups"></app-author-works>
 </section>

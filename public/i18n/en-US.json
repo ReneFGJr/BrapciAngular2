@@ -24,5 +24,16 @@
     "button": "Search",
     "empty": "No results found for this query.",
     "idle": "Type a term to query the Brapci API."
+  },
+  "author": {
+    "gadget": "Author Gadget",
+    "name": "Name",
+    "nameAbnt": "ABNT Name",
+    "id": "ID",
+    "allProduction": "All production",
+    "yearsProduction": "years",
+    "bibliographic": "Bibliographic productions",
+    "total": "Total",
+    "noRecords": "No records for this type."
   }
 }

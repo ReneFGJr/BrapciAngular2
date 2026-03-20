@@ -24,5 +24,16 @@
     "button": "Buscar",
     "empty": "No se encontraron resultados para la consulta.",
     "idle": "Escriba un termino para consultar la API Brapci."
+  },
+  "author": {
+    "gadget": "Widget de Autor",
+    "name": "Nombre",
+    "nameAbnt": "Nombre ABNT",
+    "id": "ID",
+    "allProduction": "Toda produccion",
+    "yearsProduction": "anos",
+    "bibliographic": "Producciones bibliograficas",
+    "total": "Total",
+    "noRecords": "Sin registros para este tipo."
   }
 }

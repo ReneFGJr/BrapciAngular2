@@ -96,17 +96,16 @@
           <label class="form-check-label text-white small" for="themeSwitch">Dark</label>
         </div>
 
-        <label class="text-white small" for="languageSelect">{{ 'language.label' | translate }}</label>
         <select
           id="languageSelect"
-          class="form-select form-select-sm"
-          style="width: 115px"
+          class="form-select form-select-sm language-select"
           [ngModel]="selectedLanguage()"
           (ngModelChange)="setLanguage($event)"
           aria-label="Selecao de idioma"
+          title="Selecionar idioma"
         >
           @for (option of languageOptions; track option.code) {
-            <option [ngValue]="option.code">{{ option.label }}</option>
+            <option [ngValue]="option.code">{{ option.flag }}</option>
           }
         </select>
 

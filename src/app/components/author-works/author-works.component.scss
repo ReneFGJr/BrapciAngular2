@@ -1,0 +1,68 @@
+.author-works {
+  background: var(--theme-card-bg);
+  border: 1px solid var(--theme-line);
+  border-radius: 0.7rem;
+  padding: 0.9rem;
+}
+
+.author-works-header {
+  align-items: center;
+  display: flex;
+  gap: 0.6rem;
+  justify-content: space-between;
+}
+
+.nav-tabs {
+  border-bottom: 2px solid var(--theme-line);
+  display: flex;
+  gap: 0.3rem;
+}
+
+.nav-link {
+  background: transparent;
+  border: none;
+  color: var(--theme-ink);
+  cursor: pointer;
+  font-size: 0.9rem;
+  padding: 0.5rem 0.8rem;
+  text-decoration: none;
+  transition: all 0.2s ease;
+
+  &:hover {
+    color: var(--theme-primary, #0d6efd);
+    background: var(--theme-sand);
+    border-radius: 0.3rem 0.3rem 0 0;
+  }
+
+  &.active {
+    background: var(--theme-sand);
+    border-bottom: 2px solid var(--theme-primary, #0d6efd);
+    color: var(--theme-primary, #0d6efd);
+    font-weight: 600;
+    margin-bottom: -2px;
+    padding-bottom: 0.5rem;
+  }
+}
+
+.tab-content {
+  padding: 0.6rem 0;
+}
+
+.works-list {
+  display: grid;
+  gap: 0.45rem;
+  padding-left: 1.15rem;
+}
+
+.works-list li {
+  line-height: 1.45;
+}
+
+.works-list a {
+  word-break: break-word;
+}
+
+.works-empty {
+  color: var(--theme-hint);
+  padding: 0.5rem 0;
+}

@@ -42,9 +42,9 @@ export class App {
   });
   readonly selectedLanguage = signal<'pt-br' | 'es' | 'en'>('pt-br');
   readonly languageOptions = [
-    { code: 'pt-br' as const, label: 'PT-BR' },
-    { code: 'es' as const, label: 'ES' },
-    { code: 'en' as const, label: 'EN' }
+    { code: 'pt-br' as const, label: 'PT-BR', flag: '🇧🇷' },
+    { code: 'es' as const, label: 'ES', flag: '🇪🇸' },
+    { code: 'en' as const, label: 'EN', flag: '🇺🇸' }
   ];
 
   readonly loading = signal(false);

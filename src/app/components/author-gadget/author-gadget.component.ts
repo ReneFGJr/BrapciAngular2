@@ -1,5 +1,7 @@
 import { CommonModule } from '@angular/common';
 import { Component, Input, computed, signal } from '@angular/core';
+import { TranslateModule } from '@ngx-translate/core';
+import { AuthorWorksComponent, AuthorWorksGroup } from '../author-works/author-works.component';
 import { BarChartComponent, BarChartPoint } from '../bar-chart/bar-chart.component';
 
 type AuthorMetric = {
@@ -7,9 +9,16 @@ type AuthorMetric = {
   value: string;
 };
 
+type AuthorLink = {
+  type: 'lattes' | 'orcid' | 'openalex' | 'googlescholar';
+  icon: string;
+  label: string;
+  url: string;
+};
+
 @Component({
   selector: 'app-author-gadget',
-  imports: [CommonModule, BarChartComponent],
+  imports: [CommonModule, TranslateModule, BarChartComponent, AuthorWorksComponent],
   templateUrl: './author-gadget.component.html',
   styleUrl: './author-gadget.component.scss'
 })
@@ -22,6 +31,9 @@ export class AuthorGadgetComponent {
   @Input({ required: true }) authorId = '-';
   @Input({ required: true }) metrics: AuthorMetric[] = [];
   @Input() chartPoints: BarChartPoint[] = [];
+  @Input() worksGroups: AuthorWorksGroup[] = [];
+  @Input() photoUrl = '';
+  @Input() authorLinks: AuthorLink[] = [];
 
   readonly filteredChartPoints = computed(() => {
     const range = this.selectedRange();
