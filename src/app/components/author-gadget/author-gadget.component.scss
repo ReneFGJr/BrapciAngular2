@@ -23,3 +23,9 @@
 .author-metric-item small {
   color: var(--theme-hint);
 }
+
+.author-range {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.45rem;
+}

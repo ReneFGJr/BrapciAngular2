@@ -168,9 +168,7 @@ export class VIdPage {
       };
     });
 
-    return bars
-      .filter((point) => point.segments.reduce((sum, segment) => sum + segment.value, 0) > 0)
-      .slice(-12);
+    return bars.filter((point) => point.segments.reduce((sum, segment) => sum + segment.value, 0) > 0);
   });
 
   readonly jsonContent = computed(() => JSON.stringify(this.response(), null, 2));

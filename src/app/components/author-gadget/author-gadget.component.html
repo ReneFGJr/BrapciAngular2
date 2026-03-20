@@ -13,5 +13,29 @@
     }
   </div>
 
-  <app-bar-chart [title]="'Producoes por ano'" [points]="chartPoints"></app-bar-chart>
+  <div class="author-range mt-3 mb-2" aria-label="Periodo da producao">
+    <button
+      type="button"
+      class="btn btn-sm"
+      [class.btn-primary]="selectedRange() === 'all'"
+      [class.btn-outline-primary]="selectedRange() !== 'all'"
+      (click)="setRange('all')"
+    >
+      Toda producao
+    </button>
+
+    @for (years of rangeOptions; track years) {
+      <button
+        type="button"
+        class="btn btn-sm"
+        [class.btn-primary]="selectedRange() === years"
+        [class.btn-outline-primary]="selectedRange() !== years"
+        (click)="setRange(years)"
+      >
+        {{ years }} anos
+      </button>
+    }
+  </div>
+
+  <app-bar-chart [title]="chartTitle()" [points]="filteredChartPoints()"></app-bar-chart>
 </section>
