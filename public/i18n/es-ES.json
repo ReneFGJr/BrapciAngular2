@@ -57,6 +57,11 @@
         "dispersionTitle": "Grafico de dispersion por revista",
         "yearAxis": "Eje X",
         "volumeAxis": "Eje Y",
+        "frequency": "Frecuencia",
+        "journal": "Revista",
+        "tableTitle": "Tabla de datos",
+        "pieTitle": "Distribucion por revista",
+        "others": "Otros",
         "noData": "No hay datos de dataJOUR para mostrar."
       },
       "tags": {

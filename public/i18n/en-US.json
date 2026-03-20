@@ -57,6 +57,11 @@
         "dispersionTitle": "Journal dispersion chart",
         "yearAxis": "X axis",
         "volumeAxis": "Y axis",
+        "frequency": "Frequency",
+        "journal": "Journal",
+        "tableTitle": "Data table",
+        "pieTitle": "Journal distribution",
+        "others": "Others",
         "noData": "No dataJOUR data available to display."
       },
       "tags": {

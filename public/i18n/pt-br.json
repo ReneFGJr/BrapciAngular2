@@ -57,6 +57,11 @@
         "dispersionTitle": "Grafico de dispersao por periodico",
         "yearAxis": "Eixo X",
         "volumeAxis": "Eixo Y",
+        "frequency": "Frequencia",
+        "journal": "Periodico",
+        "tableTitle": "Tabela de dados",
+        "pieTitle": "Distribuicao por periodico",
+        "others": "Outros",
         "noData": "Sem dados de dataJOUR para exibicao."
       },
       "tags": {

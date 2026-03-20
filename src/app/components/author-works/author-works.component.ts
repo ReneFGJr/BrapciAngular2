@@ -28,6 +28,13 @@ type PieSlice = {
   color: string;
 };
 
+type PieArc = PieSlice & {
+  d: string;
+  labelX: number;
+  labelY: number;
+  percentText: string;
+};
+
 export type AuthorContentTab = {
   id: 'works' | 'coauthors' | 'network';
   label: string;
@@ -199,39 +206,59 @@ export class AuthorWorksComponent {
       });
     }
 
+    const sortedMajor = [...major].sort((a, b) => b.value - a.value);
+    const topMajor = sortedMajor.slice(0, 10);
+
+    const trimmedOut = sortedMajor
+      .slice(10)
+      .reduce((sum, slice) => sum + slice.value, 0);
+
+    othersValue += trimmedOut;
+
     if (othersValue > 0) {
-      major.push({
+      topMajor.push({
         label: 'author.summary.others',
         value: othersValue,
         percentage: othersValue / totalVolume,
-        color: '#9aa8b5'
+        color: '#9aa3ad'
       });
     }
 
-    return major.sort((a, b) => b.value - a.value);
+    return topMajor;
   });
 
-  readonly pieGradient = computed(() => {
+  readonly pieArcs = computed(() => {
     const slices = this.pieSlices();
     if (slices.length === 0) {
-      return 'conic-gradient(#d6e1e8 0deg 360deg)';
+      return [] as PieArc[];
     }
 
-    let current = 0;
-    const parts: string[] = [];
+    const centerX = 100;
+    const centerY = 100;
+    const radius = 84;
+    const labelRadius = 52;
+    let currentAngle = -90;
 
-    for (const slice of slices) {
-      const start = current;
-      const end = current + slice.percentage * 360;
-      parts.push(`${slice.color} ${start}deg ${end}deg`);
-      current = end;
-    }
+    return slices.map((slice) => {
+      const sweep = slice.percentage * 360;
+      const startAngle = currentAngle;
+      const endAngle = currentAngle + sweep;
+      currentAngle = endAngle;
 
-    if (current < 360) {
-      parts.push(`#d6e1e8 ${current}deg 360deg`);
-    }
+      const start = this.polarToCartesian(centerX, centerY, radius, endAngle);
+      const end = this.polarToCartesian(centerX, centerY, radius, startAngle);
+      const largeArc = sweep > 180 ? 1 : 0;
+      const midAngle = startAngle + sweep / 2;
+      const labelPoint = this.polarToCartesian(centerX, centerY, labelRadius, midAngle);
 
-    return `conic-gradient(${parts.join(', ')})`;
+      return {
+        ...slice,
+        d: `M ${centerX} ${centerY} L ${start.x} ${start.y} A ${radius} ${radius} 0 ${largeArc} 0 ${end.x} ${end.y} Z`,
+        labelX: labelPoint.x,
+        labelY: labelPoint.y,
+        percentText: `${(slice.percentage * 100).toFixed(1)}%`
+      };
+    });
   });
 
   setTab(tabId: string): void {
@@ -333,8 +360,16 @@ export class AuthorWorksComponent {
   }
 
   private colorForLabel(label: string): string {
-    const palette = ['#385a7c', '#4f7f9f', '#7b8f46', '#9f6d3a', '#8166a5', '#2e8b8b', '#b05757'];
+    const palette = ['#c24d00', '#d66a1a', '#e9872f', '#f2a648', '#f9bf6b', '#ffcf86', '#ffdeab'];
     const hash = [...label].reduce((acc, char) => acc + char.charCodeAt(0), 0);
     return palette[hash % palette.length];
+  }
+
+  private polarToCartesian(centerX: number, centerY: number, radius: number, angleInDegrees: number): { x: number; y: number } {
+    const angleInRadians = (angleInDegrees * Math.PI) / 180;
+    return {
+      x: centerX + radius * Math.cos(angleInRadians),
+      y: centerY + radius * Math.sin(angleInRadians)
+    };
   }
 }

@@ -88,8 +88,9 @@
                         [attr.cx]="point.cx"
                         [attr.cy]="point.cy"
                         [attr.r]="point.r"
+                        [attr.fill]="point.color"
                       >
-                        <title>{{ point.label }} - {{ point.x }}: {{ point.y }}</title>
+                        <title>{{ 'author.summary.journal' | translate }}: {{ point.label }} | {{ 'author.summary.yearAxis' | translate }}: {{ point.x }} | {{ 'author.summary.volumeAxis' | translate }}: {{ point.y }}</title>
                       </circle>
                     }
                   </svg>
@@ -97,6 +98,60 @@
                   <div class="dispersion-axis-labels">
                     <span>{{ 'author.summary.yearAxis' | translate }}: {{ dispersionXRange().min }} - {{ dispersionXRange().max }}</span>
                     <span>{{ 'author.summary.volumeAxis' | translate }}: {{ dispersionYRange().min }} - {{ dispersionYRange().max }}</span>
+                  </div>
+                </div>
+
+                <div class="summary-table-wrap">
+                  <h4 class="h6 mb-2">{{ 'author.summary.tableTitle' | translate }}</h4>
+                  <div class="summary-table-scroll">
+                    <table class="summary-table">
+                      <thead>
+                        <tr>
+                          <th>{{ 'author.summary.journal' | translate }}</th>
+                          <th>{{ 'author.summary.yearAxis' | translate }}</th>
+                          <th>{{ 'author.summary.volumeAxis' | translate }}</th>
+                        </tr>
+                      </thead>
+                      <tbody>
+                        @for (row of summaryRows(); track row.label + row.x + row.y) {
+                          <tr>
+                            <td>
+                              <span class="summary-table-swatch" [style.background]="row.color"></span>
+                              {{ row.label }}
+                            </td>
+                            <td>{{ row.x }}</td>
+                            <td>{{ row.y }}</td>
+                          </tr>
+                        }
+                      </tbody>
+                    </table>
+                  </div>
+                </div>
+
+                <div class="summary-pie-wrap">
+                  <h4 class="h6 mb-2">{{ 'author.summary.pieTitle' | translate }}</h4>
+                  <div class="summary-pie-layout">
+                    <svg class="summary-pie" viewBox="0 0 200 200" role="img" [attr.aria-label]="'author.summary.pieTitle' | translate">
+                      @for (slice of pieArcs(); track slice.label) {
+                        <path [attr.d]="slice.d" [attr.fill]="slice.color">
+                          <title>
+                            {{ (slice.label.startsWith('author.') ? (slice.label | translate) : slice.label) }} |
+                            {{ 'author.summary.frequency' | translate }}: {{ slice.value }} |
+                            %: {{ (slice.percentage * 100).toFixed(1) }}
+                          </title>
+                        </path>
+
+                        <text
+                          class="summary-pie-percent"
+                          [attr.x]="slice.labelX"
+                          [attr.y]="slice.labelY"
+                          text-anchor="middle"
+                          dominant-baseline="middle"
+                        >
+                          {{ slice.percentText }}
+                        </text>
+                      }
+                    </svg>
                   </div>
                 </div>
               } @else {
