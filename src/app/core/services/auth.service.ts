@@ -22,8 +22,8 @@ export class AuthService {
     };
 
     const rawServer =
-      globalScope.process?.env?.['app.server'] ??
       globalScope.__env?.['app.server'] ??
+      globalScope.process?.env?.['app.server'] ??
       '';
 
     return rawServer.replace(/\/$/, '');
