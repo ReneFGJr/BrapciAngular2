@@ -135,12 +135,14 @@ export class AuthService {
     const usernameCandidate = String(data['email'] ?? data['persistent-id'] ?? data['givenName'] ?? '').trim();
     const nameCandidate = String(data['displayName'] ?? data['givenName'] ?? '').trim();
     const adminFlag = Boolean(data['admin']);
+    const tokenCandidate = typeof data['token'] === 'string' ? data['token'].trim() : '';
 
     return {
       id: Number.isFinite(idCandidate) ? idCandidate : 0,
       username: usernameCandidate || 'legacy-user',
       name: nameCandidate || usernameCandidate || 'Usuario',
-      role: adminFlag ? 'admin' : 'user'
+      role: adminFlag ? 'admin' : 'user',
+      token: tokenCandidate || undefined
     };
   }
 

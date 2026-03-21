@@ -14,6 +14,7 @@ import { AuthService } from '../../core/services/auth.service';
 })
 export class PerfilPage {
   private readonly authService = inject(AuthService);
+  private readonly externalProfileBaseUrl = 'https://cip.brapci.inf.br/social/token/?token=';
 
   readonly currentUser = toSignal(this.authService.currentUser$, { initialValue: null });
   readonly isLogged = computed(() => !!this.currentUser());
@@ -28,6 +29,10 @@ export class PerfilPage {
   readonly localSessionExpiresAtDate = computed(() => {
     const expiresAt = this.localSessionExpiresAt();
     return expiresAt ? new Date(expiresAt) : null;
+  });
+  readonly externalProfileUrl = computed(() => {
+    const token = this.currentUser()?.token || this.localUser()?.token || '';
+    return token ? `${this.externalProfileBaseUrl}${encodeURIComponent(token)}` : '';
   });
 
   logout(): void {

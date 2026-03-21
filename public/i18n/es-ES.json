@@ -109,6 +109,7 @@
     "role": "Perfil",
     "localUserTitle": "Datos de sesion local",
     "sessionExpiresAt": "Expira en",
-    "noLocalUser": "No se encontraron datos de sesion local."
+    "noLocalUser": "No se encontraron datos de sesion local.",
+    "openExternal": "Abrir perfil externo"
   }
 }

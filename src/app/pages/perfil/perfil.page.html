@@ -4,70 +4,97 @@
 
     <div class="perfil-card card border-0 shadow-sm">
       <div class="card-body p-4 p-md-5">
-        <h1 id="perfil-title" class="h3 mb-3">{{ 'profile.title' | translate }}</h1>
+        <h1 id="perfil-title" class="h3 mb-4">{{ 'profile.title' | translate }}</h1>
 
         @if (!isLogged()) {
-          <p class="mb-3">{{ 'profile.notLogged' | translate }}</p>
-          <a class="btn btn-primary" routerLink="/signin">{{ 'profile.goToLogin' | translate }}</a>
+          <div class="perfil-empty-state">
+            <p class="mb-3">{{ 'profile.notLogged' | translate }}</p>
+            <a class="btn btn-primary" routerLink="/signin">{{ 'profile.goToLogin' | translate }}</a>
+          </div>
         } @else {
           @if (currentUser(); as user) {
-            <dl class="perfil-grid mb-4">
+            <header class="perfil-header mb-4">
+              <div class="perfil-avatar" aria-hidden="true">{{ (user.name || '?').charAt(0).toUpperCase() }}</div>
               <div>
-                <dt>{{ 'profile.name' | translate }}</dt>
-                <dd>{{ user.name }}</dd>
+                <p class="perfil-overline mb-1">{{ 'auth.welcome' | translate }}</p>
+                <h2 class="perfil-name mb-0">{{ user.name }}</h2>
               </div>
-              <div>
-                <dt>{{ 'profile.username' | translate }}</dt>
-                <dd>{{ user.username }}</dd>
-              </div>
-              <div>
-                <dt>{{ 'profile.id' | translate }}</dt>
-                <dd>{{ user.id }}</dd>
-              </div>
-              <div>
-                <dt>{{ 'profile.role' | translate }}</dt>
-                <dd>{{ user.role }}</dd>
-              </div>
-            </dl>
+            </header>
 
-            <h2 class="h5 mb-3">{{ 'profile.localUserTitle' | translate }}</h2>
-
-            @if (localUser(); as localUserData) {
-              <dl class="perfil-grid mb-4">
-                <div>
+            <section class="perfil-section mb-4" aria-label="Dados do usuario">
+              <dl class="perfil-grid mb-0">
+                <div class="perfil-item">
                   <dt>{{ 'profile.name' | translate }}</dt>
-                  <dd>{{ localUserData.name }}</dd>
+                  <dd>{{ user.name }}</dd>
                 </div>
-                <div>
+                <div class="perfil-item">
                   <dt>{{ 'profile.username' | translate }}</dt>
-                  <dd>{{ localUserData.username }}</dd>
+                  <dd>{{ user.username }}</dd>
                 </div>
-                <div>
+                <div class="perfil-item">
                   <dt>{{ 'profile.id' | translate }}</dt>
-                  <dd>{{ localUserData.id }}</dd>
+                  <dd>{{ user.id }}</dd>
                 </div>
-                <div>
+                <div class="perfil-item">
                   <dt>{{ 'profile.role' | translate }}</dt>
-                  <dd>{{ localUserData.role }}</dd>
-                </div>
-                <div>
-                  <dt>{{ 'profile.sessionExpiresAt' | translate }}</dt>
-                  <dd>
-                    @if (localSessionExpiresAtDate(); as expiresDate) {
-                      {{ expiresDate | date: 'short' }}
-                    } @else {
-                      -
-                    }
-                  </dd>
+                  <dd>{{ user.role }}</dd>
                 </div>
               </dl>
-            } @else {
-              <p class="mb-4">{{ 'profile.noLocalUser' | translate }}</p>
-            }
+            </section>
 
-            <button type="button" class="btn btn-outline-primary" (click)="logout()">
-              {{ 'auth.logout' | translate }}
-            </button>
+            <section class="perfil-section mb-4" aria-label="Dados da sessao local">
+              <h2 class="h5 mb-3">{{ 'profile.localUserTitle' | translate }}</h2>
+
+              @if (localUser(); as localUserData) {
+                <dl class="perfil-grid mb-0">
+                  <div class="perfil-item">
+                    <dt>{{ 'profile.name' | translate }}</dt>
+                    <dd>{{ localUserData.name }}</dd>
+                  </div>
+                  <div class="perfil-item">
+                    <dt>{{ 'profile.username' | translate }}</dt>
+                    <dd>{{ localUserData.username }}</dd>
+                  </div>
+                  <div class="perfil-item">
+                    <dt>{{ 'profile.id' | translate }}</dt>
+                    <dd>{{ localUserData.id }}</dd>
+                  </div>
+                  <div class="perfil-item">
+                    <dt>{{ 'profile.role' | translate }}</dt>
+                    <dd>{{ localUserData.role }}</dd>
+                  </div>
+                  <div class="perfil-item">
+                    <dt>{{ 'profile.sessionExpiresAt' | translate }}</dt>
+                    <dd>
+                      @if (localSessionExpiresAtDate(); as expiresDate) {
+                        {{ expiresDate | date: 'short' }}
+                      } @else {
+                        -
+                      }
+                    </dd>
+                  </div>
+                </dl>
+              } @else {
+                <p class="mb-0">{{ 'profile.noLocalUser' | translate }}</p>
+              }
+            </section>
+
+            <div class="perfil-actions">
+              @if (externalProfileUrl()) {
+                <a
+                  class="btn btn-primary"
+                  [href]="externalProfileUrl()"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                >
+                  {{ 'profile.openExternal' | translate }}
+                </a>
+              }
+
+              <button type="button" class="btn btn-outline-primary" (click)="logout()">
+                {{ 'auth.logout' | translate }}
+              </button>
+            </div>
           }
         }
       </div>

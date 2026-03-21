@@ -109,6 +109,7 @@
     "role": "Role",
     "localUserTitle": "Local session data",
     "sessionExpiresAt": "Expires at",
-    "noLocalUser": "No local session data found."
+    "noLocalUser": "No local session data found.",
+    "openExternal": "Open external profile"
   }
 }

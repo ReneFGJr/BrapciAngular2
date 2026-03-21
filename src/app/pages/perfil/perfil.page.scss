@@ -1,12 +1,66 @@
 .perfil-card {
   background: var(--theme-card-bg);
   border: 1px solid var(--theme-line);
+  border-radius: 1rem;
+}
+
+.perfil-empty-state {
+  background: var(--theme-sand);
+  border: 1px solid var(--theme-line);
+  border-radius: 0.85rem;
+  padding: 1rem;
+}
+
+.perfil-header {
+  align-items: center;
+  display: flex;
+  gap: 0.9rem;
+}
+
+.perfil-avatar {
+  align-items: center;
+  background: #483d8b;
+  border-radius: 999px;
+  color: #fff;
+  display: inline-flex;
+  font-family: 'Barlow Condensed', 'Trebuchet MS', sans-serif;
+  font-size: 1.1rem;
+  font-weight: 700;
+  height: 2.7rem;
+  justify-content: center;
+  width: 2.7rem;
+}
+
+.perfil-overline {
+  color: var(--theme-hint);
+  font-size: 0.8rem;
+  letter-spacing: 0.05rem;
+  text-transform: uppercase;
+}
+
+.perfil-name {
+  font-size: 1.3rem;
+  font-weight: 700;
+}
+
+.perfil-section {
+  background: rgb(255 255 255 / 45%);
+  border: 1px solid var(--theme-line);
+  border-radius: 0.85rem;
+  padding: 1rem;
 }
 
 .perfil-grid {
   display: grid;
   gap: 1rem;
   grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+}
+
+.perfil-item {
+  background: var(--theme-card-bg);
+  border: 1px solid var(--theme-line);
+  border-radius: 0.7rem;
+  padding: 0.7rem 0.8rem;
 }
 
 .perfil-grid dt {
@@ -19,4 +73,10 @@
 .perfil-grid dd {
   font-size: 1rem;
   margin: 0;
+}
+
+.perfil-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.6rem;
 }
