@@ -1,6 +1,7 @@
 import { CommonModule } from '@angular/common';
 import { Component, computed, inject, signal } from '@angular/core';
 import { FormsModule } from '@angular/forms';
+import { TranslateModule, TranslateService } from '@ngx-translate/core';
 import { BrapciApiService } from '../../core/services/brapci-api.service';
 import { BreadcrumbsComponent } from '../../components/breadcrumbs/breadcrumbs.component';
 
@@ -23,14 +24,15 @@ type AuthorityResponse = {
 
 @Component({
   selector: 'app-autoridade-page',
-  imports: [CommonModule, FormsModule, BreadcrumbsComponent],
+  imports: [CommonModule, FormsModule, TranslateModule, BreadcrumbsComponent],
   templateUrl: './autoridade.page.html',
   styleUrl: './autoridade.page.scss'
 })
 export class AutoridadePage {
   private readonly brapciApiService = inject(BrapciApiService);
+  private readonly translate = inject(TranslateService);
 
-  readonly term = signal('Rene Faustino');
+  readonly term = signal('');
   readonly loading = signal(false);
   readonly error = signal('');
   readonly results = signal<AuthorityResult[]>([]);
@@ -66,7 +68,7 @@ export class AutoridadePage {
       },
       error: () => {
         this.results.set([]);
-        this.error.set('Nao foi possivel consultar a API de autoridade.');
+        this.error.set(this.translate.instant('authority.apiError'));
         this.loading.set(false);
       }
     });

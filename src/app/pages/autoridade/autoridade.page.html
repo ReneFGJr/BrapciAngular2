@@ -2,28 +2,28 @@
   <div class="container">
     <app-breadcrumbs></app-breadcrumbs>
 
-    <div class="autoridade-card p-4 p-md-5">
-      <img class="autoridade-banner" src="assets/img/authority-banner.svg" alt="Controle de autoridade" />
+    <div class="autoridade-card">
+      <img class="autoridade-banner" src="assets/img/banner_authority.png" [alt]="'authority.bannerAlt' | translate" />
 
-      <h1 id="autoridade-title" class="h2 mt-3 mb-3">Controle de Autoridade</h1>
+      <h1 id="autoridade-title" class="h2 mt-3 mb-3 p-3">{{ 'authority.title' | translate }}</h1>
 
       <form class="autoridade-form mb-4" (ngSubmit)="search()">
-        <label for="term" class="form-label">Buscar termo</label>
-        <div class="input-group">
+        <label for="term" class="form-label ps-3">{{ 'authority.searchLabel' | translate }}</label>
+        <div class="input-group ps-3 pe-3">
           <input
             id="term"
             name="term"
             class="form-control"
             [ngModel]="term()"
             (ngModelChange)="term.set($event)"
-            placeholder="Ex.: Rene Faustino"
+            [placeholder]="'authority.placeholder' | translate"
           />
-          <button type="submit" class="btn btn-primary" [disabled]="loading()">Buscar</button>
+          <button type="submit" class="btn btn-primary" [disabled]="loading()">{{ 'search.button' | translate }}</button>
         </div>
       </form>
 
       @if (loading()) {
-        <p class="mb-0">Carregando...</p>
+        <p class="mb-0">{{ 'authority.loading' | translate }}</p>
       }
 
       @if (error()) {
@@ -31,10 +31,10 @@
       }
 
       @if (!loading() && !error()) {
-        <h2 class="h5 mb-2">Termos com use = ID</h2>
+        <h2 class="h5 mb-2 ps-3 pe-3">{{ 'authority.resultsTitle' | translate }}</h2>
 
         @if (hasResults()) {
-          <ul class="autoridade-results mb-0">
+          <ul class="autoridade-results mb-0 ps-3 pe-3">
             @for (entry of results(); track entry.id) {
               <li>
                 <a class="autoridade-link" [href]="'/v/' + entry.id">{{ entry.term }}</a>
@@ -42,7 +42,7 @@
             }
           </ul>
         } @else {
-          <p class="mb-0">Nenhum resultado com use = ID para o termo informado.</p>
+          <p class="mb-0 ps-3 p-3">{{ 'authority.empty' | translate }}</p>
         }
       }
     </div>

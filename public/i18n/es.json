@@ -45,6 +45,16 @@
     "empty": "No se encontraron resultados para la consulta.",
     "idle": "Escriba un termino para consultar la API Brapci."
   },
+  "authority": {
+    "bannerAlt": "Control de autoridad",
+    "title": "Control de Autoridad",
+    "searchLabel": "Buscar termino",
+    "placeholder": "Ingrese el nombre del autor",
+    "loading": "Cargando...",
+    "resultsTitle": "Terminos con use = ID",
+    "empty": "No se encontraron resultados con use = ID para el termino informado.",
+    "apiError": "No fue posible consultar la API de autoridad."
+  },
   "author": {
     "gadget": "Widget de Autor",
     "name": "Nombre",

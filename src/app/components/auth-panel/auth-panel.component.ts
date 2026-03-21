@@ -25,8 +25,8 @@ export class AuthPanelComponent {
   readonly successMessage = signal('');
 
   readonly loginPayload: LoginPayload = {
-    username: '',
-    password: ''
+    user: '',
+    pwd: ''
   };
 
   readonly registerPayload: RegisterPayload = {
@@ -69,7 +69,7 @@ export class AuthPanelComponent {
         return;
       }
 
-      this.loginPayload.password = '';
+      this.loginPayload.pwd = '';
     });
   }
 

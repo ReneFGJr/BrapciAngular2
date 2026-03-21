@@ -96,11 +96,14 @@ export class AuthService {
   }
 
   login(payload: LoginPayload): Observable<User | null> {
-    let url = '/auth/login';
-    if (payload.username.includes('@')) {
-      url = '/auth/login-email';
-    }
-    return this.http.post<AuthResponse>(this.buildAuthUrl(url), payload).pipe(
+    let url = '/socials/signin';
+
+    const requestPayload = {
+      username: payload.user,
+      password: payload.pwd
+    };
+
+    return this.http.post<AuthResponse>(this.buildAuthUrl(url), requestPayload).pipe(
       map((response) => response.user),
       tap((user) => {
         this.userSubject.next(user);

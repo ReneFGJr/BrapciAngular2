@@ -45,6 +45,16 @@
     "empty": "No results found for this query.",
     "idle": "Type a term to query the Brapci API."
   },
+  "authority": {
+    "bannerAlt": "Authority control",
+    "title": "Authority Control",
+    "searchLabel": "Search term",
+    "placeholder": "Enter the author name",
+    "loading": "Loading...",
+    "resultsTitle": "Terms where use = ID",
+    "empty": "No results where use = ID for the informed term.",
+    "apiError": "Unable to query the authority API."
+  },
   "author": {
     "gadget": "Author Gadget",
     "name": "Name",
