@@ -1,0 +1,41 @@
+.signin-page {
+  background: var(--theme-bg);
+  min-height: calc(100dvh - 180px);
+}
+
+.signin-layout {
+  align-content: center;
+  min-height: 70vh;
+  row-gap: 1.4rem;
+}
+
+.signin-intro {
+  color: var(--theme-ink);
+}
+
+.signin-kicker {
+  color: var(--theme-hint);
+  font-family: 'Barlow Condensed', 'Trebuchet MS', sans-serif;
+  font-size: 0.9rem;
+  font-weight: 600;
+  letter-spacing: 0.08rem;
+  text-transform: uppercase;
+}
+
+.signin-title {
+  font-family: 'Raleway', 'Trebuchet MS', sans-serif;
+  font-size: clamp(1.55rem, 2.6vw, 2rem);
+  font-weight: 700;
+  line-height: 1.2;
+}
+
+.signin-subtitle {
+  color: var(--theme-hint);
+  font-size: 0.98rem;
+}
+
+@media (max-width: 991.98px) {
+  .signin-layout {
+    min-height: 60vh;
+  }
+}

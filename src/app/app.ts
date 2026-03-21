@@ -7,15 +7,21 @@ import { toSignal } from '@angular/core/rxjs-interop';
 import { TranslateModule } from '@ngx-translate/core';
 import { filter, map, startWith } from 'rxjs';
 import { AuthService } from './core/services/auth.service';
-import { BrapciApiService } from './core/services/brapci-api.service';
 import { LanguageService } from './core/services/language.service';
 import { SeoService } from './core/services/seo.service';
-import { AuthPanelComponent } from './components/auth-panel/auth-panel.component';
 import { SessionService } from './core/services/session.service';
+import { SearchArticlesComponent } from './components/search-articles/search-articles.component';
 
 @Component({
   selector: 'app-root',
-  imports: [CommonModule, FormsModule, RouterOutlet, RouterLink, TranslateModule, AuthPanelComponent],
+  imports: [
+    CommonModule,
+    FormsModule,
+    RouterOutlet,
+    RouterLink,
+    TranslateModule,
+    SearchArticlesComponent
+  ],
   templateUrl: './app.html',
   styleUrl: './app.scss'
 })
@@ -23,7 +29,6 @@ export class App {
   private readonly authService = inject(AuthService);
   private readonly languageService = inject(LanguageService);
   private readonly seoService = inject(SeoService);
-  private readonly brapciApiService = inject(BrapciApiService);
   private readonly sessionService = inject(SessionService);
   private readonly document = inject(DOCUMENT);
   private readonly platformId = inject(PLATFORM_ID);
@@ -47,12 +52,8 @@ export class App {
     { code: 'en' as const, label: 'EN', flag: '🇺🇸' }
   ];
 
-  readonly loading = signal(false);
   readonly isDarkMode = signal(false);
   readonly docsMenuOpen = signal(false);
-  readonly apiResults = signal<unknown[]>([]);
-  readonly query = signal('ciencia da informacao');
-  readonly hasResults = computed(() => this.apiResults().length > 0);
   readonly currentUrl = toSignal(
     this.router.events.pipe(
       filter((event): event is NavigationEnd => event instanceof NavigationEnd),
@@ -70,7 +71,8 @@ export class App {
       url.startsWith('/autoridade') ||
       url.startsWith('/v/') ||
       url.startsWith('/revista/') ||
-      url.startsWith('/revistas')
+      url.startsWith('/revistas') ||
+      url.startsWith('/signin')
     );
   });
 
@@ -110,51 +112,6 @@ export class App {
 
   closeDocsMenu(): void {
     this.docsMenuOpen.set(false);
-  }
-
-  searchInBrapci(): void {
-    const term = this.query().trim();
-
-    if (!term) {
-      this.apiResults.set([]);
-      return;
-    }
-
-    this.loading.set(true);
-
-    this.brapciApiService.search<unknown>(term).subscribe({
-      next: (response) => {
-        this.loading.set(false);
-        this.apiResults.set(this.normalizeApiResponse(response));
-      },
-      error: () => {
-        this.loading.set(false);
-        this.apiResults.set([]);
-      }
-    });
-  }
-
-  private normalizeApiResponse(response: unknown): unknown[] {
-    if (Array.isArray(response)) {
-      return response;
-    }
-
-    if (response && typeof response === 'object') {
-      const data = response as Record<string, unknown>;
-      if (Array.isArray(data['results'])) {
-        return data['results'];
-      }
-
-      if (Array.isArray(data['items'])) {
-        return data['items'];
-      }
-
-      if (Array.isArray(data['data'])) {
-        return data['data'];
-      }
-    }
-
-    return [];
   }
 
   private initializeTheme(): void {

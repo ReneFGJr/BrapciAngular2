@@ -1,0 +1,29 @@
+<article class="col-12" id="search" aria-labelledby="search-title" itemprop="mainEntity" itemscope itemtype="https://schema.org/Dataset">
+  <div class="card h-100 shadow-sm border-0">
+    <div class="card-body">
+      <h2 id="search-title" class="h4 mb-3">{{ 'search.title' | translate }}</h2>
+
+      <form (ngSubmit)="searchInBrapci()" class="search-form mb-3">
+        <label for="query" class="form-label">{{ 'search.input' | translate }}</label>
+        <div class="input-group">
+          <input id="query" name="query" class="form-control" [ngModel]="query()" (ngModelChange)="query.set($event)" />
+          <button type="submit" class="btn btn-primary" [disabled]="loading()">{{ 'search.button' | translate }}</button>
+        </div>
+      </form>
+
+      @if (!hasResults()) {
+        <p class="hint mb-0">{{ query().trim() ? ('search.empty' | translate) : ('search.idle' | translate) }}</p>
+      }
+
+      @if (hasResults()) {
+        <ul class="results">
+          @for (item of apiResults(); track $index) {
+            <li>
+              <pre>{{ item | json }}</pre>
+            </li>
+          }
+        </ul>
+      }
+    </div>
+  </div>
+</article>

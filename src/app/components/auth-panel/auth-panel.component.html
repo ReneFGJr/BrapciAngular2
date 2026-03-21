@@ -1,7 +1,7 @@
 @if (!currentUser()) {
   @if (mode() === 'login') {
     <form (ngSubmit)="login()" #loginForm="ngForm" class="auth-form" novalidate>
-      <label for="username" class="form-label">Usuario</label>
+      <label for="username" class="form-label">{{ 'auth.username' | translate }}</label>
       <input
         id="username"
         name="username"
@@ -11,7 +11,7 @@
         class="form-control"
       />
 
-      <label for="password" class="form-label">Senha</label>
+      <label for="password" class="form-label">{{ 'auth.password' | translate }}</label>
       <input
         id="password"
         name="password"
@@ -23,25 +23,25 @@
       />
 
       <button type="submit" class="btn btn-primary mt-2" [disabled]="!loginForm.valid || loading()">
-        Entrar
+        {{ 'auth.submit' | translate }}
       </button>
 
       <div class="auth-links">
-        <button type="button" class="btn btn-link p-0" (click)="switchMode('forgot')">Reenviar senha</button>
-        <button type="button" class="btn btn-link p-0" (click)="switchMode('register')">Cadastrar-se</button>
+        <button type="button" class="btn btn-link p-0" (click)="switchMode('forgot')">{{ 'auth.resendPassword' | translate }}</button>
+        <button type="button" class="btn btn-link p-0" (click)="switchMode('register')">{{ 'auth.register' | translate }}</button>
       </div>
     </form>
   }
 
   @if (mode() === 'register') {
     <form (ngSubmit)="register()" #registerForm="ngForm" class="auth-form" novalidate>
-      <label for="registerName" class="form-label">Nome completo</label>
+      <label for="registerName" class="form-label">{{ 'auth.fullName' | translate }}</label>
       <input id="registerName" name="registerName" required [(ngModel)]="registerPayload.name" class="form-control" />
 
-      <label for="registerUsername" class="form-label">Usuario</label>
+      <label for="registerUsername" class="form-label">{{ 'auth.username' | translate }}</label>
       <input id="registerUsername" name="registerUsername" required [(ngModel)]="registerPayload.username" class="form-control" />
 
-      <label for="registerEmail" class="form-label">Email</label>
+      <label for="registerEmail" class="form-label">{{ 'auth.email' | translate }}</label>
       <input
         id="registerEmail"
         name="registerEmail"
@@ -52,7 +52,7 @@
         class="form-control"
       />
 
-      <label for="registerPassword" class="form-label">Senha</label>
+      <label for="registerPassword" class="form-label">{{ 'auth.password' | translate }}</label>
       <input
         id="registerPassword"
         name="registerPassword"
@@ -64,18 +64,18 @@
       />
 
       <button type="submit" class="btn btn-primary mt-2" [disabled]="!registerForm.valid || loading()">
-        Criar conta
+        {{ 'auth.createAccount' | translate }}
       </button>
 
       <div class="auth-links auth-links--single">
-        <button type="button" class="btn btn-link p-0" (click)="switchMode('login')">Voltar para login</button>
+        <button type="button" class="btn btn-link p-0" (click)="switchMode('login')">{{ 'auth.backToLogin' | translate }}</button>
       </div>
     </form>
   }
 
   @if (mode() === 'forgot') {
     <form (ngSubmit)="resendPassword()" #forgotForm="ngForm" class="auth-form" novalidate>
-      <label for="forgotEmail" class="form-label">Email da conta</label>
+      <label for="forgotEmail" class="form-label">{{ 'auth.accountEmail' | translate }}</label>
       <input
         id="forgotEmail"
         name="forgotEmail"
@@ -87,11 +87,11 @@
       />
 
       <button type="submit" class="btn btn-primary mt-2" [disabled]="!forgotForm.valid || loading()">
-        Reenviar senha
+        {{ 'auth.resendPassword' | translate }}
       </button>
 
       <div class="auth-links auth-links--single">
-        <button type="button" class="btn btn-link p-0" (click)="switchMode('login')">Voltar para login</button>
+        <button type="button" class="btn btn-link p-0" (click)="switchMode('login')">{{ 'auth.backToLogin' | translate }}</button>
       </div>
     </form>
   }
@@ -105,11 +105,11 @@
   }
 } @else {
   <p class="mb-3">
-    Bem-vindo,
+    {{ 'auth.welcome' | translate }},
     <strong>{{ firstName() }}</strong>
   </p>
 
   <button type="button" class="btn btn-outline-primary" (click)="logout()">
-    Sair
+    {{ 'auth.logout' | translate }}
   </button>
 }

@@ -11,12 +11,32 @@
   },
   "auth": {
     "title": "Authentication",
+    "fullName": "Full name",
     "username": "Username",
+    "email": "Email",
+    "accountEmail": "Account email",
     "password": "Password",
-    "submit": "Sign in",
+    "submit": "Entrar",
+    "register": "Create account",
+    "createAccount": "Create account",
+    "backToLogin": "Back to login",
+    "resendPassword": "Resend password",
     "logout": "Sign out",
     "welcome": "Welcome",
-    "invalid": "Invalid credentials. Use admin/admin123 or user/user123."
+    "invalid": "Invalid credentials. Use admin/admin123 or user/user123.",
+    "messages": {
+      "invalidCredentials": "Invalid username or password.",
+      "registerFailed": "Unable to create your account. Please review your data and try again.",
+      "registerSuccess": "Account created successfully.",
+      "resendFailed": "Unable to resend password right now.",
+      "resendSuccess": "If the email exists, we will send recovery instructions."
+    }
+  },
+  "signin": {
+    "kicker": "Brapci Access",
+    "title": "Institutional authentication portal",
+    "subtitle": "Sign in to access personalized platform features.",
+    "cardSubtitle": "Use your username and password to sign in."
   },
   "search": {
     "title": "Brapci API Search",

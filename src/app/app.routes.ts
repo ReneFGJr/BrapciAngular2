@@ -32,6 +32,10 @@ export const routes: Routes = [
     loadComponent: () => import('./pages/revistas/revistas.page').then((m) => m.RevistasPage),
   },
   {
+    path: 'signin',
+    loadComponent: () => import('./pages/signin/signin.page').then((m) => m.SigninPage),
+  },
+  {
     path: '',
     loadComponent: () => import('./pages/home/home.page').then((m) => m.HomePage),
   }

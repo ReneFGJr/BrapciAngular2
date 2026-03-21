@@ -11,12 +11,32 @@
   },
   "auth": {
     "title": "Autenticacao",
+    "fullName": "Nome completo",
     "username": "Usuario",
+    "email": "Email",
+    "accountEmail": "Email da conta",
     "password": "Senha",
     "submit": "Entrar",
+    "register": "Cadastrar-se",
+    "createAccount": "Criar conta",
+    "backToLogin": "Voltar para login",
+    "resendPassword": "Reenviar senha",
     "logout": "Sair",
     "welcome": "Bem-vindo",
-    "invalid": "Credenciais invalidas. Use admin/admin123 ou user/user123."
+    "invalid": "Credenciais invalidas. Use admin/admin123 ou user/user123.",
+    "messages": {
+      "invalidCredentials": "Usuario ou senha invalidos.",
+      "registerFailed": "Nao foi possivel cadastrar. Verifique os dados e tente novamente.",
+      "registerSuccess": "Cadastro realizado com sucesso.",
+      "resendFailed": "Nao foi possivel reenviar a senha no momento.",
+      "resendSuccess": "Se o email existir, enviaremos as instrucoes de recuperacao."
+    }
+  },
+  "signin": {
+    "kicker": "Acesso Brapci",
+    "title": "Portal institucional de autenticacao",
+    "subtitle": "Entre com sua conta para acessar recursos personalizados da plataforma.",
+    "cardSubtitle": "Use seu usuario e senha para entrar na plataforma."
   },
   "search": {
     "title": "Pesquisa na API Brapci",
