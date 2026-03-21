@@ -5,6 +5,7 @@ import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { catchError, distinctUntilChanged, map, of, switchMap, tap } from 'rxjs';
 import { BrapciApiService } from '../../core/services/brapci-api.service';
 import { AuthorGadgetComponent } from '../../components/author-gadget/author-gadget.component';
+import { BreadcrumbsComponent } from '../../components/breadcrumbs/breadcrumbs.component';
 import type { AuthorWorksGroup } from '../../components/author-works/author-works.component';
 import { BarChartPoint } from '../../components/bar-chart/bar-chart.component';
 
@@ -20,7 +21,7 @@ type AuthorLink = {
 
 @Component({
   selector: 'app-v-id-page',
-  imports: [CommonModule, AuthorGadgetComponent],
+  imports: [CommonModule, AuthorGadgetComponent, BreadcrumbsComponent],
   templateUrl: './v-id.page.html',
   styleUrl: './v-id.page.scss'
 })

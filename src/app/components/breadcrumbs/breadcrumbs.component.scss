@@ -1,0 +1,27 @@
+.bc-wrap {
+  padding-top: 0.25rem;
+}
+
+.breadcrumb {
+  margin-bottom: 0;
+}
+
+.breadcrumb-item,
+.breadcrumb-item a,
+.breadcrumb-item span {
+  color: var(--theme-hint, #6c757d);
+  font-size: 0.9rem;
+  text-decoration: none;
+}
+
+.breadcrumb-item a:hover,
+.breadcrumb-item a:focus-visible {
+  color: var(--theme-ink, #212529);
+  text-decoration: underline;
+}
+
+.breadcrumb-item.active,
+.breadcrumb-item.active span {
+  color: var(--theme-ink, #212529);
+  font-weight: 600;
+}

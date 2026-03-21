@@ -3,6 +3,7 @@ import { Component, computed, inject, signal } from '@angular/core';
 import { Router } from '@angular/router';
 import { TranslateModule } from '@ngx-translate/core';
 import { BrapciApiService } from '../../core/services/brapci-api.service';
+import { BreadcrumbsComponent } from '../../components/breadcrumbs/breadcrumbs.component';
 
 type Journal = {
   id_jnl: string;
@@ -21,7 +22,7 @@ type Journal = {
 
 @Component({
   selector: 'app-revistas-page',
-  imports: [CommonModule, TranslateModule],
+  imports: [CommonModule, TranslateModule, BreadcrumbsComponent],
   templateUrl: './revistas.page.html',
   styleUrl: './revistas.page.scss'
 })

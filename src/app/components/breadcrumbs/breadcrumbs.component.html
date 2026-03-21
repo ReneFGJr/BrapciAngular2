@@ -1,0 +1,13 @@
+<nav class="bc-wrap" aria-label="Breadcrumb">
+  <ol class="breadcrumb mb-3">
+    @for (item of items(); track item.url) {
+      <li class="breadcrumb-item" [class.active]="item.active" [attr.aria-current]="item.active ? 'page' : null">
+        @if (item.active) {
+          <span>{{ item.label }}</span>
+        } @else {
+          <a [routerLink]="item.url">{{ item.label }}</a>
+        }
+      </li>
+    }
+  </ol>
+</nav>

@@ -4,10 +4,11 @@ import { ActivatedRoute } from '@angular/router';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { catchError, distinctUntilChanged, map, of, switchMap, tap } from 'rxjs';
 import { BrapciApiService } from '../../core/services/brapci-api.service';
+import { BreadcrumbsComponent } from '../../components/breadcrumbs/breadcrumbs.component';
 
 @Component({
   selector: 'app-sobre-brapci-page',
-  imports: [CommonModule],
+  imports: [CommonModule, BreadcrumbsComponent],
   templateUrl: './sobre-brapci.page.html',
   styleUrl: './sobre-brapci.page.scss'
 })

@@ -1,5 +1,7 @@
 <section class="v-wrap py-0" aria-labelledby="v-title">
   <div class="container">
+      <app-breadcrumbs></app-breadcrumbs>
+
       @if (loading()) {
         <p class="mb-0">Carregando dados...</p>
       } @else if (error()) {

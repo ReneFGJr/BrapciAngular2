@@ -2,6 +2,7 @@ import { CommonModule } from '@angular/common';
 import { Component, computed, inject, signal } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { BrapciApiService } from '../../core/services/brapci-api.service';
+import { BreadcrumbsComponent } from '../../components/breadcrumbs/breadcrumbs.component';
 
 type AuthorityItem = {
   ID?: string;
@@ -22,7 +23,7 @@ type AuthorityResponse = {
 
 @Component({
   selector: 'app-autoridade-page',
-  imports: [CommonModule, FormsModule],
+  imports: [CommonModule, FormsModule, BreadcrumbsComponent],
   templateUrl: './autoridade.page.html',
   styleUrl: './autoridade.page.scss'
 })
