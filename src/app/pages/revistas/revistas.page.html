@@ -7,7 +7,7 @@
   <div class="container revistas-grid">
     @for (journal of journals(); track journal.id_jnl) {
       <div class="revista-card border p-3">
-        <div style="cursor: pointer" (click)="openJournal(journal)">XX
+        <div style="cursor: pointer" (click)="openJournal(journal)">
         @if (journal.cover) {
           <img class="revista-cover mb-3" [src]="journal.cover" [alt]="journal.jnl_name" />
         }
