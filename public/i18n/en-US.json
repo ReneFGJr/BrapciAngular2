@@ -106,6 +106,9 @@
     "name": "Name",
     "username": "Username",
     "id": "ID",
-    "role": "Role"
+    "role": "Role",
+    "localUserTitle": "Local session data",
+    "sessionExpiresAt": "Expires at",
+    "noLocalUser": "No local session data found."
   }
 }

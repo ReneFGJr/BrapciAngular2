@@ -91,7 +91,7 @@ export class AuthService {
     storage.removeItem(this.localStorageKey);
   }
 
-  private readUserFromLocalStorage(): User | null {
+  private readStoredSessionFromLocalStorage(): StoredAuthSession | null {
     const storage = this.getLocalStorage();
     if (!storage) {
       return null;
@@ -111,11 +111,18 @@ export class AuthService {
         return null;
       }
 
-      return parsed.user as User;
+      return {
+        user: parsed.user as User,
+        expiresAt
+      };
     } catch {
       this.clearUserFromLocalStorage();
       return null;
     }
+  }
+
+  private readUserFromLocalStorage(): User | null {
+    return this.readStoredSessionFromLocalStorage()?.user ?? null;
   }
 
   private normalizeLegacyUser(raw: unknown): User | null {
@@ -290,6 +297,14 @@ export class AuthService {
   public getUser(): User | null {
     this.loadUserFromSession();
     return this.user;
+  }
+
+  public getLocalUser(): User | null {
+    return this.readStoredSessionFromLocalStorage()?.user ?? null;
+  }
+
+  public getLocalSessionExpiresAt(): number | null {
+    return this.readStoredSessionFromLocalStorage()?.expiresAt ?? null;
   }
 
   public checkLogin(res: unknown): boolean {

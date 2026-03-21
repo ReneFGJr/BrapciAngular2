@@ -30,6 +30,41 @@
               </div>
             </dl>
 
+            <h2 class="h5 mb-3">{{ 'profile.localUserTitle' | translate }}</h2>
+
+            @if (localUser(); as localUserData) {
+              <dl class="perfil-grid mb-4">
+                <div>
+                  <dt>{{ 'profile.name' | translate }}</dt>
+                  <dd>{{ localUserData.name }}</dd>
+                </div>
+                <div>
+                  <dt>{{ 'profile.username' | translate }}</dt>
+                  <dd>{{ localUserData.username }}</dd>
+                </div>
+                <div>
+                  <dt>{{ 'profile.id' | translate }}</dt>
+                  <dd>{{ localUserData.id }}</dd>
+                </div>
+                <div>
+                  <dt>{{ 'profile.role' | translate }}</dt>
+                  <dd>{{ localUserData.role }}</dd>
+                </div>
+                <div>
+                  <dt>{{ 'profile.sessionExpiresAt' | translate }}</dt>
+                  <dd>
+                    @if (localSessionExpiresAtDate(); as expiresDate) {
+                      {{ expiresDate | date: 'short' }}
+                    } @else {
+                      -
+                    }
+                  </dd>
+                </div>
+              </dl>
+            } @else {
+              <p class="mb-4">{{ 'profile.noLocalUser' | translate }}</p>
+            }
+
             <button type="button" class="btn btn-outline-primary" (click)="logout()">
               {{ 'auth.logout' | translate }}
             </button>

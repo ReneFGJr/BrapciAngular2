@@ -110,6 +110,9 @@
     "name": "Nome",
     "username": "Usuario",
     "id": "ID",
-    "role": "Perfil"
+    "role": "Perfil",
+    "localUserTitle": "Dados de sessao local",
+    "sessionExpiresAt": "Expira em",
+    "noLocalUser": "Nenhum dado de sessao local encontrado."
   }
 }
