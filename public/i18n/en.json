@@ -102,5 +102,14 @@
   "journals": {
     "accessLink": "Access journal",
     "publicationsList": "Publications list"
+  },
+  "profile": {
+    "title": "User Profile",
+    "notLogged": "You need to be logged in to view your profile.",
+    "goToLogin": "Go to login",
+    "name": "Name",
+    "username": "Username",
+    "id": "ID",
+    "role": "Role"
   }
 }

@@ -98,5 +98,14 @@
         "title": "Tag cloud",
         "noData": "No dataTAG data available to display."
       }
+  },
+  "profile": {
+    "title": "User Profile",
+    "notLogged": "You need to be logged in to view your profile.",
+    "goToLogin": "Go to login",
+    "name": "Name",
+    "username": "Username",
+    "id": "ID",
+    "role": "Role"
   }
 }

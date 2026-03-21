@@ -102,5 +102,14 @@
   "journals": {
     "accessLink": "Acceder a la revista",
     "publicationsList": "Lista de publicaciones"
+  },
+  "profile": {
+    "title": "Perfil del Usuario",
+    "notLogged": "Necesita iniciar sesion para ver su perfil.",
+    "goToLogin": "Ir al inicio de sesion",
+    "name": "Nombre",
+    "username": "Usuario",
+    "id": "ID",
+    "role": "Perfil"
   }
 }

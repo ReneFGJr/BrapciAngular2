@@ -1,0 +1,41 @@
+<section class="perfil-wrap py-4" aria-labelledby="perfil-title">
+  <div class="container">
+    <app-breadcrumbs></app-breadcrumbs>
+
+    <div class="perfil-card card border-0 shadow-sm">
+      <div class="card-body p-4 p-md-5">
+        <h1 id="perfil-title" class="h3 mb-3">{{ 'profile.title' | translate }}</h1>
+
+        @if (!isLogged()) {
+          <p class="mb-3">{{ 'profile.notLogged' | translate }}</p>
+          <a class="btn btn-primary" routerLink="/signin">{{ 'profile.goToLogin' | translate }}</a>
+        } @else {
+          @if (currentUser(); as user) {
+            <dl class="perfil-grid mb-4">
+              <div>
+                <dt>{{ 'profile.name' | translate }}</dt>
+                <dd>{{ user.name }}</dd>
+              </div>
+              <div>
+                <dt>{{ 'profile.username' | translate }}</dt>
+                <dd>{{ user.username }}</dd>
+              </div>
+              <div>
+                <dt>{{ 'profile.id' | translate }}</dt>
+                <dd>{{ user.id }}</dd>
+              </div>
+              <div>
+                <dt>{{ 'profile.role' | translate }}</dt>
+                <dd>{{ user.role }}</dd>
+              </div>
+            </dl>
+
+            <button type="button" class="btn btn-outline-primary" (click)="logout()">
+              {{ 'auth.logout' | translate }}
+            </button>
+          }
+        }
+      </div>
+    </div>
+  </div>
+</section>

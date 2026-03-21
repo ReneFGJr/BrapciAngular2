@@ -117,12 +117,12 @@
             <span>{{ 'auth.submit' | translate }}</span>
           </a>
         } @else {
-          <span class="nav-user-chip" aria-label="Usuario logado">
+          <a class="nav-user-chip" routerLink="/perfil" (click)="closeDocsMenu()" aria-label="Perfil do usuario">
             <svg viewBox="0 0 24 24" aria-hidden="true" focusable="false">
               <path d="M12 12c2.76 0 5-2.24 5-5s-2.24-5-5-5-5 2.24-5 5 2.24 5 5 5Zm0 2c-3.34 0-10 1.68-10 5v3h20v-3c0-3.32-6.66-5-10-5Z" />
             </svg>
             <span>{{ firstName() }}</span>
-          </span>
+          </a>
         }
       </div>
     </div>

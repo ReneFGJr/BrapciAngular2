@@ -1,0 +1,22 @@
+.perfil-card {
+  background: var(--theme-card-bg);
+  border: 1px solid var(--theme-line);
+}
+
+.perfil-grid {
+  display: grid;
+  gap: 1rem;
+  grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+}
+
+.perfil-grid dt {
+  color: var(--theme-hint);
+  font-size: 0.85rem;
+  margin-bottom: 0.25rem;
+  text-transform: uppercase;
+}
+
+.perfil-grid dd {
+  font-size: 1rem;
+  margin: 0;
+}
