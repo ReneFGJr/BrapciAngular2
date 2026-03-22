@@ -1,6 +1,5 @@
 import { CommonModule } from '@angular/common';
 import { Component, computed, inject, signal } from '@angular/core';
-import { Router } from '@angular/router';
 import { TranslateModule } from '@ngx-translate/core';
 import { BrapciApiService } from '../../core/services/brapci-api.service';
 import { BreadcrumbsComponent } from '../../components/breadcrumbs/breadcrumbs.component';
@@ -28,7 +27,6 @@ type Journal = {
 })
 export class RevistasPage {
   private readonly brapciApiService = inject(BrapciApiService);
-  private readonly router = inject(Router);
 
   readonly loading = signal(true);
   readonly error = signal('');
@@ -74,15 +72,6 @@ export class RevistasPage {
         this.loading.set(false);
       }
     });
-  }
-
-  openJournal(journal: Journal): void {
-    const id = String(journal?.id_jnl ?? '').trim();
-    if (!id) {
-      return;
-    }
-
-    this.router.navigate(['/revista', id]);
   }
 
   setTypeFilter(type: 'ALL' | 'JA' | 'JE'): void {

@@ -10,10 +10,6 @@ export const routes: Routes = [
     loadComponent: () => import('./pages/v-id/v-id.page').then((m) => m.VIdPage),
   },
   {
-    path: 'revista/:id',
-    loadComponent: () => import('./pages/revista-id/revista-id.page').then((m) => m.RevistaIdPage),
-  },
-  {
     path: 'sobre/brapci',
     redirectTo: 'about/brapci',
     pathMatch: 'full',
