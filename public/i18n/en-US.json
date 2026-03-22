@@ -99,6 +99,16 @@
         "noData": "No dataTAG data available to display."
       }
   },
+  "journals": {
+    "accessLink": "Access journal",
+    "publicationsList": "Publications list",
+    "eventsList": "Events list",
+    "filterAll": "All",
+    "filterJA": "JA - Brazilian journals",
+    "filterJE": "JE - Foreign journals",
+    "searchPlaceholder": "Search by title",
+    "noResultsForFilters": "No journals found for the selected filters."
+  },
   "profile": {
     "title": "User Profile",
     "notLogged": "You need to be logged in to view your profile.",

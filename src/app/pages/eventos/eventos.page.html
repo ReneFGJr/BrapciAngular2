@@ -1,0 +1,77 @@
+<section class="perfil-wrap py-4" aria-labelledby="eventos-title">
+  <div class="container">
+    <app-breadcrumbs></app-breadcrumbs>
+  </div>
+
+@if (hasResults()) {
+  <div class="container mt-0 mb-4">
+    <div class="col-12">
+      <h2 id="eventos-title" class="eventos-title mb-0">{{ 'journals.eventsList' | translate }}</h2>
+    </div>
+  </div>
+
+  <div class="container mb-4">
+    <div class="d-flex flex-wrap gap-2 align-items-center">
+
+    <!--
+      <button
+        type="button"
+        class="btn btn-sm"
+        [class.btn-primary]="typeFilter() === 'ALL'"
+        [class.btn-outline-primary]="typeFilter() !== 'ALL'"
+        (click)="setTypeFilter('ALL')"
+      >
+        Todos
+      </button>
+      <button
+        type="button"
+        class="btn btn-sm"
+        [class.btn-primary]="typeFilter() === 'JA'"
+        [class.btn-outline-primary]="typeFilter() !== 'JA'"
+        (click)="setTypeFilter('JA')"
+      >
+        JA - Revistas Brasileiras
+      </button>
+      <button
+        type="button"
+        class="btn btn-sm"
+        [class.btn-primary]="typeFilter() === 'JE'"
+        [class.btn-outline-primary]="typeFilter() !== 'JE'"
+        (click)="setTypeFilter('JE')"
+      >
+        JE - Revistas Estrangeiras
+      </button>
+      -->
+
+      <input
+        class="form-control form-control-sm ms-lg-auto"
+        style="max-width: 320px"
+        type="text"
+        [placeholder]="'journals.searchPlaceholder' | translate"
+        [value]="titleQuery()"
+        (input)="setTitleQuery($any($event.target).value)"
+      />
+    </div>
+  </div>
+
+  @if (!hasFilteredResults()) {
+    <div class="container mb-4">
+      <p class="mb-0 text-secondary">{{ 'journals.noResultsForFilters' | translate }}</p>
+    </div>
+  }
+
+  <div class="container revistas-grid">
+    @for (journal of filteredJournals(); track journal.id_jnl) {
+      <div class="revista-card border p-0">
+        <div style="cursor: pointer" (click)="openV(journal)">
+        @if (journal.cover) {
+          <img class="revista-cover" [src]="journal.cover" [alt]="journal.jnl_name" />
+        }
+
+        <span class="mb-2 small">{{ journal.jnl_name_abrev }}</span>
+        </div>
+      </div>
+    }
+  </div>
+}
+</section>

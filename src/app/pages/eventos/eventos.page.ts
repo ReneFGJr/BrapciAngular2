@@ -1,8 +1,8 @@
 import { CommonModule } from '@angular/common';
+import { HttpClient } from '@angular/common/http';
 import { Component, computed, inject, signal } from '@angular/core';
 import { Router } from '@angular/router';
 import { TranslateModule } from '@ngx-translate/core';
-import { BrapciApiService } from '../../core/services/brapci-api.service';
 import { BreadcrumbsComponent } from '../../components/breadcrumbs/breadcrumbs.component';
 
 type Journal = {
@@ -14,6 +14,7 @@ type Journal = {
   jnl_ano_inicio?: string;
   jnl_ano_final?: string;
   jnl_active?: string;
+  jnl_frbr?: string;
   jnl_url?: string;
   cover?: string;
   jnl_collection?: string;
@@ -21,13 +22,13 @@ type Journal = {
 };
 
 @Component({
-  selector: 'app-revistas-page',
+  selector: 'app-eventos-page',
   imports: [CommonModule, TranslateModule, BreadcrumbsComponent],
-  templateUrl: './revistas.page.html',
-  styleUrl: './revistas.page.scss'
+  templateUrl: './eventos.page.html',
+  styleUrl: './eventos.page.scss',
 })
-export class RevistasPage {
-  private readonly brapciApiService = inject(BrapciApiService);
+export class EventosPage {
+  private readonly http = inject(HttpClient);
   private readonly router = inject(Router);
 
   readonly loading = signal(true);
@@ -62,7 +63,7 @@ export class RevistasPage {
     this.loading.set(true);
     this.error.set('');
 
-    this.brapciApiService.get<Journal[]>('brapci/source/journal').subscribe({
+    this.http.get<Journal[]>('https://cip.brapci.inf.br/api/brapci/source/E').subscribe({
       next: (response) => {
         const items = Array.isArray(response) ? response : [];
         this.journals.set(items);
@@ -72,17 +73,17 @@ export class RevistasPage {
         this.journals.set([]);
         this.error.set('Não foi possível carregar as revistas. Tente novamente mais tarde.');
         this.loading.set(false);
-      }
+      },
     });
   }
 
-  openJournal(journal: Journal): void {
-    const id = String(journal?.id_jnl ?? '').trim();
+  openV(journal: Journal): void {
+    const id = String(journal?.jnl_frbr ?? '').trim();
     if (!id) {
       return;
     }
 
-    this.router.navigate(['/revista', id]);
+    this.router.navigate(['/v/', id]);
   }
 
   setTypeFilter(type: 'ALL' | 'JA' | 'JE'): void {

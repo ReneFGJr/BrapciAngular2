@@ -101,7 +101,13 @@
   },
   "journals": {
     "accessLink": "Acceder a la revista",
-    "publicationsList": "Lista de publicaciones"
+    "publicationsList": "Lista de publicaciones",
+    "eventsList": "Lista de eventos",
+    "filterAll": "Todos",
+    "filterJA": "JA - Revistas brasileñas",
+    "filterJE": "JE - Revistas extranjeras",
+    "searchPlaceholder": "Buscar por titulo",
+    "noResultsForFilters": "No se encontraron revistas para los filtros seleccionados."
   },
   "profile": {
     "title": "Perfil del Usuario",
