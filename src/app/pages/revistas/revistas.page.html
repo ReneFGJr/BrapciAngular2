@@ -1,4 +1,4 @@
-<section class="perfil-wrap py-4" aria-labelledby="publications-title">
+<section class="revistas-wrap py-4" aria-labelledby="publications-title">
   <div class="container">
     <app-breadcrumbs></app-breadcrumbs>
   </div>
@@ -12,6 +12,36 @@
 
   <div class="container mb-4">
     <div class="d-flex flex-wrap gap-2 align-items-center">
+      <div class="btn-group btn-group-sm" role="group" [attr.aria-label]="'journals.filterAriaLabel' | translate">
+        <button
+          type="button"
+          class="btn"
+          [class.btn-primary]="typeFilter() === 'ALL'"
+          [class.btn-outline-primary]="typeFilter() !== 'ALL'"
+          (click)="setTypeFilter('ALL')"
+        >
+          {{ 'journals.filterAll' | translate }}
+        </button>
+        <button
+          type="button"
+          class="btn"
+          [class.btn-primary]="typeFilter() === 'JA'"
+          [class.btn-outline-primary]="typeFilter() !== 'JA'"
+          (click)="setTypeFilter('JA')"
+        >
+          {{ 'journals.filterJa' | translate }}
+        </button>
+        <button
+          type="button"
+          class="btn"
+          [class.btn-primary]="typeFilter() === 'JE'"
+          [class.btn-outline-primary]="typeFilter() !== 'JE'"
+          (click)="setTypeFilter('JE')"
+        >
+          {{ 'journals.filterJe' | translate }}
+        </button>
+      </div>
+
       <input
         class="form-control form-control-sm ms-lg-auto"
         style="max-width: 320px"
@@ -31,7 +61,7 @@
 
   <div class="container revistas-grid">
     @for (journal of filteredJournals(); track journal.id_jnl) {
-      <div class="revista-card border p-0">
+      <div class="revista-card border p-0" (click)="openV(journal)" style="cursor: pointer">
         <div>
           @if (journal.cover) {
             <img class="revista-cover" [src]="journal.cover" [alt]="journal.jnl_name" />

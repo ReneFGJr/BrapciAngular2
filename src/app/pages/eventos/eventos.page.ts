@@ -34,26 +34,8 @@ export class EventosPage {
   readonly loading = signal(true);
   readonly error = signal('');
   readonly journals = signal<Journal[]>([]);
-  readonly typeFilter = signal<'ALL' | 'JA' | 'JE'>('ALL');
-  readonly titleQuery = signal('');
-
-  readonly filteredJournals = computed(() => {
-    const activeType = this.typeFilter();
-    const query = this.titleQuery().trim().toLowerCase();
-
-    return this.journals().filter((journal) => {
-      const collection = String(journal.jnl_collection ?? '').trim().toUpperCase();
-      const title = String(journal.jnl_name ?? '').toLowerCase();
-
-      const matchesType = activeType === 'ALL' ? true : collection === activeType;
-      const matchesTitle = query ? title.includes(query) : true;
-
-      return matchesType && matchesTitle;
-    });
-  });
 
   readonly hasResults = computed(() => this.journals().length > 0);
-  readonly hasFilteredResults = computed(() => this.filteredJournals().length > 0);
 
   constructor() {
     this.loadJournals();
@@ -84,13 +66,5 @@ export class EventosPage {
     }
 
     this.router.navigate(['/v/', id]);
-  }
-
-  setTypeFilter(type: 'ALL' | 'JA' | 'JE'): void {
-    this.typeFilter.set(type);
-  }
-
-  setTitleQuery(value: string): void {
-    this.titleQuery.set(value);
   }
 }

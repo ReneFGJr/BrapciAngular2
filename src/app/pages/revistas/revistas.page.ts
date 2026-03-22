@@ -1,5 +1,6 @@
 import { CommonModule } from '@angular/common';
 import { Component, computed, inject, signal } from '@angular/core';
+import { Router } from '@angular/router';
 import { TranslateModule } from '@ngx-translate/core';
 import { BrapciApiService } from '../../core/services/brapci-api.service';
 import { BreadcrumbsComponent } from '../../components/breadcrumbs/breadcrumbs.component';
@@ -13,6 +14,7 @@ type Journal = {
   jnl_ano_inicio?: string;
   jnl_ano_final?: string;
   jnl_active?: string;
+  jnl_frbr?: string;
   jnl_url?: string;
   cover?: string;
   jnl_collection?: string;
@@ -23,10 +25,11 @@ type Journal = {
   selector: 'app-revistas-page',
   imports: [CommonModule, TranslateModule, BreadcrumbsComponent],
   templateUrl: './revistas.page.html',
-  styleUrl: './revistas.page.scss'
+  styleUrl: './revistas.page.scss',
 })
 export class RevistasPage {
   private readonly brapciApiService = inject(BrapciApiService);
+  private readonly router = inject(Router);
 
   readonly loading = signal(true);
   readonly error = signal('');
@@ -39,7 +42,9 @@ export class RevistasPage {
     const query = this.titleQuery().trim().toLowerCase();
 
     return this.journals().filter((journal) => {
-      const collection = String(journal.jnl_collection ?? '').trim().toUpperCase();
+      const collection = String(journal.jnl_collection ?? '')
+        .trim()
+        .toUpperCase();
       const title = String(journal.jnl_name ?? '').toLowerCase();
 
       const matchesType = activeType === 'ALL' ? true : collection === activeType;
@@ -70,7 +75,7 @@ export class RevistasPage {
         this.journals.set([]);
         this.error.set('Não foi possível carregar as revistas. Tente novamente mais tarde.');
         this.loading.set(false);
-      }
+      },
     });
   }
 
@@ -80,5 +85,14 @@ export class RevistasPage {
 
   setTitleQuery(value: string): void {
     this.titleQuery.set(value);
+  }
+
+  openV(journal: Journal): void {
+    const id = String(journal?.jnl_frbr ?? '').trim();
+    if (!id) {
+      return;
+    }
+
+    this.router.navigate(['/v/', id]);
   }
 }

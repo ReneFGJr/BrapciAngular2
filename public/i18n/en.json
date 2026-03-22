@@ -103,11 +103,12 @@
     "accessLink": "Access journal",
     "publicationsList": "Publications list",
     "eventsList": "Events list",
+    "filterAriaLabel": "Filter by publication type",
     "filterAll": "All",
-    "filterJA": "JA - Brazilian journals",
-    "filterJE": "JE - Foreign journals",
+    "filterJa": "JA - Brazilian journals",
+    "filterJe": "JE - Foreign journals",
     "searchPlaceholder": "Search by title",
-    "noResultsForFilters": "No journals found for the selected filters."
+    "noResultsForFilters": "No results for the selected filters."
   },
   "profile": {
     "title": "User Profile",
