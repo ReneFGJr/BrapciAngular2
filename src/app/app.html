@@ -96,18 +96,38 @@
           <label class="form-check-label text-white small" for="themeSwitch">Dark</label>
         </div>
 
-        <select
-          id="languageSelect"
-          class="form-select form-select-sm language-select"
-          [ngModel]="selectedLanguage()"
-          (ngModelChange)="setLanguage($event)"
-          aria-label="Selecao de idioma"
-          title="Selecionar idioma"
-        >
-          @for (option of languageOptions; track option.code) {
-            <option [ngValue]="option.code">{{ option.flag }}</option>
+        <div class="language-picker">
+          <button
+            type="button"
+            class="language-flag-btn"
+            (click)="toggleLanguageMenu()"
+            aria-label="Abrir selecao de idioma"
+            title="Selecionar idioma"
+          >
+            <img
+              class="language-flag"
+              [src]="selectedLanguageOption().flagSrc"
+              [alt]="selectedLanguageOption().label"
+              width="18"
+              height="12"
+            />
+          </button>
+
+          @if (languageMenuOpen()) {
+            <select
+              id="languageSelect"
+              class="form-select form-select-sm language-select"
+              [ngModel]="selectedLanguage()"
+              (ngModelChange)="setLanguage($event)"
+              aria-label="Selecao de idioma"
+              title="Selecionar idioma"
+            >
+              @for (option of languageOptions; track option.code) {
+                <option [ngValue]="option.code">{{ option.label }}</option>
+              }
+            </select>
           }
-        </select>
+        </div>
 
         @if (!currentUser()) {
           <a class="nav-login-link" routerLink="/signin" (click)="closeDocsMenu()" aria-label="Fazer login">

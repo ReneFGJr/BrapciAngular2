@@ -3,3 +3,40 @@
   border: 1px solid var(--theme-line);
   border-radius: 0.9rem;
 }
+
+.tab-nav {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+}
+
+.tab-btn {
+  background: transparent;
+  border: 1px solid var(--theme-line);
+  border-radius: 999px;
+  color: var(--theme-ink);
+  cursor: pointer;
+  font-size: 0.9rem;
+  padding: 0.35rem 0.7rem;
+}
+
+.tab-btn.active {
+  background: var(--theme-sand);
+  border-color: var(--theme-hint);
+  font-weight: 600;
+}
+
+.tab-panel {
+  background: rgb(255 255 255 / 28%);
+  border: 1px solid var(--theme-line);
+  border-radius: 0.6rem;
+  padding: 0.85rem;
+}
+
+.json-block {
+  background: var(--theme-sand);
+  border-radius: 0.45rem;
+  max-height: 420px;
+  overflow: auto;
+  padding: 0.7rem;
+}

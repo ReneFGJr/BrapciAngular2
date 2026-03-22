@@ -47,13 +47,17 @@ export class App {
   });
   readonly selectedLanguage = signal<'pt-br' | 'es' | 'en'>('pt-br');
   readonly languageOptions = [
-    { code: 'pt-br' as const, label: 'PT-BR', flag: '🇧🇷' },
-    { code: 'es' as const, label: 'ES', flag: '🇪🇸' },
-    { code: 'en' as const, label: 'EN', flag: '🇺🇸' }
+    { code: 'pt-br' as const, label: 'PT-BR', flagSrc: 'assets/img/flags/br.svg' },
+    { code: 'es' as const, label: 'ES', flagSrc: 'assets/img/flags/es.svg' },
+    { code: 'en' as const, label: 'EN', flagSrc: 'assets/img/flags/gb.svg' }
   ];
+  readonly selectedLanguageOption = computed(
+    () => this.languageOptions.find((option) => option.code === this.selectedLanguage()) ?? this.languageOptions[0]
+  );
 
   readonly isDarkMode = signal(false);
   readonly docsMenuOpen = signal(false);
+  readonly languageMenuOpen = signal(false);
   readonly currentUrl = toSignal(
     this.router.events.pipe(
       filter((event): event is NavigationEnd => event instanceof NavigationEnd),
@@ -92,6 +96,11 @@ export class App {
     this.selectedLanguage.set(language);
     this.languageService.setLanguage(language);
     this.seoService.updateHomeMetadata(language);
+    this.languageMenuOpen.set(false);
+  }
+
+  toggleLanguageMenu(): void {
+    this.languageMenuOpen.update((open) => !open);
   }
 
   setDarkMode(enabled: boolean): void {

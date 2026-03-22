@@ -107,9 +107,33 @@ h1 {
 	color: #fff;
 }
 
+.language-picker {
+	display: inline-flex;
+	align-items: center;
+	gap: 0.35rem;
+}
+
+.language-flag-btn {
+	background: transparent;
+	border: 0;
+	padding: 0;
+	line-height: 0;
+	cursor: pointer;
+}
+
+.language-flag {
+	display: inline-block;
+	width: 18px;
+	height: 12px;
+	object-fit: cover;
+	border-radius: 2px;
+	border: 1px solid rgb(255 255 255 / 45%);
+}
+
 .language-select {
-	font-size: 1.2rem;
-	padding: 0.25rem 0.4rem !important;
+	font-size: 0.92rem;
+	padding: 0.08rem 1.2rem 0.08rem 0.35rem !important;
+	line-height: 1.1;
 	background-color: transparent;
 	border: 1px solid rgb(255 255 255 / 35%);
 	color: #fff;
