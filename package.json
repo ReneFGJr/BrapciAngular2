@@ -9,6 +9,7 @@
     "preserve:ssr:brapci": "node scripts/generate-env.mjs",
     "start": "ng serve",
     "build": "ng build",
+    "build:web2": "ng build --configuration web2",
     "watch": "ng build --watch --configuration development",
     "test": "ng test",
     "serve:ssr:brapci": "node dist/brapci/server/server.mjs"

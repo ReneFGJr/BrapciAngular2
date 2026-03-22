@@ -6,6 +6,9 @@ import { catchError, distinctUntilChanged, map, of, switchMap, tap } from 'rxjs'
 import { BrapciApiService } from '../../core/services/brapci-api.service';
 import { AuthorGadgetComponent } from '../../components/author-gadget/author-gadget.component';
 import { BreadcrumbsComponent } from '../../components/breadcrumbs/breadcrumbs.component';
+import { ViewJournalComponent } from '../../components/view-journal/view-journal.component';
+import { ViewEventComponent } from '../../components/view-event/view-event.component';
+import { ViewEnancibComponent } from '../../components/view-enancib/view-enancib.component';
 import type { AuthorWorksGroup } from '../../components/author-works/author-works.component';
 import { BarChartPoint } from '../../components/bar-chart/bar-chart.component';
 
@@ -21,7 +24,14 @@ type AuthorLink = {
 
 @Component({
   selector: 'app-v-id-page',
-  imports: [CommonModule, AuthorGadgetComponent, BreadcrumbsComponent],
+  imports: [
+    CommonModule,
+    AuthorGadgetComponent,
+    BreadcrumbsComponent,
+    ViewJournalComponent,
+    ViewEventComponent,
+    ViewEnancibComponent
+  ],
   templateUrl: './v-id.page.html',
   styleUrl: './v-id.page.scss'
 })
@@ -48,6 +58,30 @@ export class VIdPage {
   });
 
   readonly isPerson = computed(() => this.classe().toLowerCase() === 'person');
+
+  readonly publicationView = computed<'journal' | 'event' | 'enancib'>(() => {
+    const value = this.response();
+    if (!value || typeof value !== 'object') {
+      return 'journal';
+    }
+
+    const data = value as Record<string, unknown>;
+    const idJnlRaw = data['id_jnl'] ?? data['ID_jnl'] ?? data['ID_JNL'];
+    const idJnl = String(idJnlRaw ?? '').trim();
+
+    if (idJnl === '75') {
+      return 'enancib';
+    }
+
+    const collectionRaw = data['jnl_collection'] ?? data['JNL_COLLECTION'] ?? data['collection'];
+    const collection = String(collectionRaw ?? '').trim().toUpperCase();
+
+    if (collection === 'EV') {
+      return 'event';
+    }
+
+    return 'journal';
+  });
 
   readonly authorName = computed(() => {
     const value = this.response();

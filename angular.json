@@ -68,6 +68,12 @@
               "optimization": false,
               "extractLicenses": false,
               "sourceMap": true
+            },
+            "web2": {
+              "baseHref": "/web2/",
+              "deployUrl": "/web2/",
+              "prerender": false,
+              "outputHashing": "all"
             }
           },
           "defaultConfiguration": "production"
