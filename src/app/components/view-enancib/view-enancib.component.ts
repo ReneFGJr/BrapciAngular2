@@ -1,8 +1,9 @@
 import { CommonModule } from '@angular/common';
 import { Component, Input, computed, signal } from '@angular/core';
+import { ViewType01Component } from '../issue/view-type-01/view-type-01.component';
 
 type JsonRecord = Record<string, unknown>;
-type TabId = 'editions' | 'summary' | 'authors' | 'json';
+type TabId = 'editions' | 'summary' | 'authors' | 'issue' | 'json';
 
 @Component({
   selector: 'app-view-enancib',
@@ -13,6 +14,7 @@ type TabId = 'editions' | 'summary' | 'authors' | 'json';
 export class ViewEnancibComponent {
   @Input({ required: true }) data: unknown = null;
   readonly activeTab = signal<TabId>('summary');
+  readonly issueViewComponent = ViewType01Component;
 
   readonly title = computed(() => this.field(['jnl_name', 'title', 'name']));
   readonly editions = computed(() => {
@@ -68,6 +70,24 @@ export class ViewEnancibComponent {
       .filter((text) => text.length > 0)
       .filter((value, index, arr) => arr.indexOf(value) === index)
       .sort((a, b) => a.localeCompare(b, 'pt-BR', { sensitivity: 'base' }));
+  });
+
+  readonly issueItems = computed(() => {
+    const record = this.asRecord(this.data);
+    if (!record) {
+      return [] as unknown[];
+    }
+
+    const issues = record['issue'];
+    if (Array.isArray(issues)) {
+      return issues;
+    }
+
+    if (issues && typeof issues === 'object') {
+      return [issues];
+    }
+
+    return [] as unknown[];
   });
 
   readonly jsonContent = computed(() => JSON.stringify(this.data, null, 2));

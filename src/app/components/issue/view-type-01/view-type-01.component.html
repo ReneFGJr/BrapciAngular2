@@ -1,0 +1,18 @@
+@if (viewItems().length) {
+  <div class="container">
+  <div class="row">
+    @for (item of viewItems(); track $index) {
+      <div class="col-12 col-lg-4">
+        <article class="issue-item">
+          <div class="issue-name">{{ item.journal || '-' }}</div>
+          <div class="issue-nr"> {{ item.vol || '-' }}</div>
+          <div class="issue-place">Rio de Janeiro, RJ</div>
+          <div class="issue-year">{{ item.year || '-' }}</div>
+        </article>
+      </div>
+    }
+  </div>
+  </div>
+} @else {
+  <p class="mb-0">Sem edicoes disponiveis na variavel issue.</p>
+}

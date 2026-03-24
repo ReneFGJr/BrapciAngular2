@@ -5,6 +5,9 @@
     <button type="button" class="tab-btn" [class.active]="activeTab() === 'editions'" (click)="setTab('editions')">
       Lista das edicoes do evento
     </button>
+    <button type="button" class="tab-btn" [class.active]="activeTab() === 'issue'" (click)="setTab('issue')">
+      Issue
+    </button>
     <button type="button" class="tab-btn" [class.active]="activeTab() === 'summary'" (click)="setTab('summary')">
       Resumo
     </button>
@@ -54,6 +57,10 @@
       @case ('json') {
         <pre class="json-block mb-0">{{ jsonContent() }}</pre>
       }
+    }
+
+    @if (activeTab() === 'issue') {
+      <ng-container *ngComponentOutlet="issueViewComponent; inputs: { issues: issueItems() }"></ng-container>
     }
   </div>
 </article>
