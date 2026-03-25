@@ -1,5 +1,6 @@
 import { CommonModule } from '@angular/common';
 import { Component, Input, computed, signal } from '@angular/core';
+import { Router } from '@angular/router';
 
 type JsonRecord = Record<string, unknown>;
 
@@ -20,6 +21,8 @@ type IssueViewItem = {
 })
 export class ViewType01Component {
   private readonly issuesSignal = signal<unknown[]>([]);
+
+  constructor(private readonly router: Router) {}
 
   @Input() set issues(value: unknown) {
     if (Array.isArray(value)) {
@@ -53,6 +56,14 @@ export class ViewType01Component {
         return this.toSortableNumber(b.nr) - this.toSortableNumber(a.nr);
       })
   );
+
+  onClickItem(item: IssueViewItem): void {
+    if (!item?.id) {
+      return;
+    }
+
+    this.router.navigateByUrl(`/v/${item.id}`);
+  }
 
   private normalizeItem(item: unknown): IssueViewItem | null {
     if (!item || typeof item !== 'object') {
