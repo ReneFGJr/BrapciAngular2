@@ -9,6 +9,7 @@ import { BreadcrumbsComponent } from '../../components/breadcrumbs/breadcrumbs.c
 import { ViewJournalComponent } from '../../components/view-journal/view-journal.component';
 import { ViewEventComponent } from '../../components/view-event/view-event.component';
 import { ViewEnancibComponent } from '../../components/view-enancib/view-enancib.component';
+import { ViewIssueComponent } from '../../components/view-issue/view-issue.component';
 import type { AuthorWorksGroup } from '../../components/author-works/author-works.component';
 import { BarChartPoint } from '../../components/bar-chart/bar-chart.component';
 
@@ -40,6 +41,7 @@ export class VIdPage {
   private readonly destroyRef = inject(DestroyRef);
   private readonly brapciApiService = inject(BrapciApiService);
   private readonly worksKeys = ['Article', 'Proceeding', 'BookChapter', 'Book'] as const;
+  readonly issueViewComponent = ViewIssueComponent;
 
   readonly id = signal('');
   readonly loading = signal(true);
@@ -58,6 +60,7 @@ export class VIdPage {
   });
 
   readonly isPerson = computed(() => this.classe().toLowerCase() === 'person');
+  readonly isIssue = computed(() => this.classe().toLowerCase() === 'issue');
 
   readonly publicationView = computed<'journal' | 'event' | 'enancib'>(() => {
     const value = this.response();

@@ -1,0 +1,54 @@
+<article class="view-card p-3 p-md-4">
+  <h2 class="h5 mb-1">Issue</h2>
+  <p class="mb-3"><strong>Titulo:</strong> {{ title() }}</p>
+
+  <div class="tab-nav mb-3" role="tablist" aria-label="Abas de conteudo da issue">
+    <button type="button" class="tab-btn" [class.active]="activeTab() === 'works'" (click)="setTab('works')">
+      Trabalhos
+    </button>
+    <button type="button" class="tab-btn" [class.active]="activeTab() === 'authors'" (click)="setTab('authors')">
+      Autores
+    </button>
+    <button type="button" class="tab-btn" [class.active]="activeTab() === 'json'" (click)="setTab('json')">
+      JSON
+    </button>
+  </div>
+
+  <div class="tab-panel">
+    @switch (activeTab()) {
+      @case ('works') {
+        @if (works().length) {
+          <ul class="mb-0 ps-3">
+            @for (work of works(); track $index) {
+              <li class="mb-1">
+                @if (work.link) {
+                  <a [href]="work.link">{{ work.text }}</a>
+                } @else {
+                  {{ work.text }}
+                }
+              </li>
+            }
+          </ul>
+        } @else {
+          <p class="mb-0">Sem trabalhos disponiveis.</p>
+        }
+      }
+
+      @case ('authors') {
+        @if (authors().length) {
+          <ul class="mb-0 ps-3">
+            @for (author of authors(); track author) {
+              <li class="mb-1">{{ author }}</li>
+            }
+          </ul>
+        } @else {
+          <p class="mb-0">Sem autores disponiveis.</p>
+        }
+      }
+
+      @case ('json') {
+        <pre class="json-block mb-0">{{ jsonContent() }}</pre>
+      }
+    }
+  </div>
+</article>
