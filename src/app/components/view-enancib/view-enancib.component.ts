@@ -78,7 +78,7 @@ export class ViewEnancibComponent {
       return [] as unknown[];
     }
 
-    const issues = record['issue'];
+    const issues = record['issues'] ?? record['issue'];
     if (Array.isArray(issues)) {
       return issues;
     }

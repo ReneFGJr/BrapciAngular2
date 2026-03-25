@@ -9,6 +9,7 @@ type IssueViewItem = {
   journal: string;
   vol: string;
   nr: string;
+  place: string;
 };
 
 @Component({
@@ -59,17 +60,25 @@ export class ViewType01Component {
     }
 
     const data = item as JsonRecord;
-    const id = this.pick(data, ['ID', 'id']);
-    const year = this.pick(data, ['YEAR', 'year', 'ano']);
-    const journal = this.pick(data, ['JOURNAL', 'journal']);
-    const vol = this.pick(data, ['VOL', 'vol', 'volume']);
-    const nr = this.pick(data, ['NR', 'nr', 'number']);
+    const id = this.pick(data, ['ID', 'id', 'issue_id', 'id_issue', 'id_edition']);
+    const year = this.pick(data, ['YEAR', 'year', 'ano', 'issue_year', 'edition_year']);
+    const journal = this.pick(data, [
+      'JOURNAL',
+      'journal',
+      'jnl_name',
+      'journal_name',
+      'issue_journal',
+      'source'
+    ]);
+    const vol = this.pick(data, ['VOL', 'vol', 'volume', 'issue_vol', 'issue_volume']);
+    const nr = this.pick(data, ['NR', 'nr', 'number', 'num', 'issue_nr', 'issue_number']);
+    const place = this.pick(data, ['place', 'city', 'cidade', 'location', 'local']);
 
-    if (!id && !year && !journal && !vol && !nr) {
+    if (!id && !year && !journal && !vol && !nr && !place) {
       return null;
     }
 
-    return { id, year, journal, vol, nr };
+    return { id, year, journal, vol, nr, place };
   }
 
   private pick(data: JsonRecord, keys: string[]): string {
