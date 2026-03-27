@@ -1,6 +1,7 @@
 import { CommonModule } from '@angular/common';
 import { Component, computed, inject, signal } from '@angular/core';
 import { FormsModule } from '@angular/forms';
+import { Router } from '@angular/router';
 import { toSignal } from '@angular/core/rxjs-interop';
 import { TranslateModule, TranslateService } from '@ngx-translate/core';
 import { AuthService } from '../../core/services/auth.service';
@@ -17,6 +18,7 @@ type AuthMode = 'login' | 'register' | 'forgot';
 export class AuthPanelComponent {
   private readonly authService = inject(AuthService);
   private readonly translate = inject(TranslateService);
+  private readonly router = inject(Router);
 
   readonly currentUser = toSignal(this.authService.currentUser$, { initialValue: null });
   readonly mode = signal<AuthMode>('login');
@@ -70,6 +72,7 @@ export class AuthPanelComponent {
       }
 
       this.loginPayload.pwd = '';
+      this.router.navigate(['/perfil']);
     });
   }
 
@@ -88,6 +91,7 @@ export class AuthPanelComponent {
 
       this.successMessage.set(this.translate.instant('auth.messages.registerSuccess'));
       this.registerPayload.password = '';
+      this.router.navigate(['/perfil']);
     });
   }
 
