@@ -32,27 +32,29 @@
         <li class="nav-item">
           <a class="nav-link" href="#">Livros</a>
         </li>
-        <li class="nav-item dropdown docs-dropdown" [class.show]="toolsMenuOpen()">
-          <button
-            type="button"
-            class="nav-link dropdown-toggle btn btn-link"
-            [attr.aria-expanded]="toolsMenuOpen()"
-            (click)="toggleToolsMenu()"
-          >
-            {{ 'menu.tools' | translate }}
-          </button>
-          <ul class="dropdown-menu" [class.show]="toolsMenuOpen()">
-            <li>
-              <a class="dropdown-item" routerLink="/tools_bibliografics" (click)="closeToolsMenu()">{{ 'menu.toolsBibliographics' | translate }}</a>
-            </li>
-            <li>
-              <a class="dropdown-item" routerLink="/tools_bibliometric" (click)="closeToolsMenu()">{{ 'menu.toolsBibliometric' | translate }}</a>
-            </li>
-            <li>
-              <a class="dropdown-item" routerLink="/tools_text" (click)="closeToolsMenu()">{{ 'menu.toolsText' | translate }}</a>
-            </li>
-          </ul>
-        </li>
+        @if (currentUser()) {
+          <li class="nav-item dropdown docs-dropdown" [class.show]="toolsMenuOpen()">
+            <button
+              type="button"
+              class="nav-link dropdown-toggle btn btn-link"
+              [attr.aria-expanded]="toolsMenuOpen()"
+              (click)="toggleToolsMenu()"
+            >
+              {{ 'menu.tools' | translate }}
+            </button>
+            <ul class="dropdown-menu" [class.show]="toolsMenuOpen()">
+              <li>
+                <a class="dropdown-item" routerLink="/tools_bibliografics" (click)="closeToolsMenu()">{{ 'menu.toolsBibliographics' | translate }}</a>
+              </li>
+              <li>
+                <a class="dropdown-item" routerLink="/tools_bibliometric" (click)="closeToolsMenu()">{{ 'menu.toolsBibliometric' | translate }}</a>
+              </li>
+              <li>
+                <a class="dropdown-item" routerLink="/tools_text" (click)="closeToolsMenu()">{{ 'menu.toolsText' | translate }}</a>
+              </li>
+            </ul>
+          </li>
+        }
         <li class="nav-item dropdown docs-dropdown" [class.show]="docsMenuOpen()">
           <button
             type="button"
