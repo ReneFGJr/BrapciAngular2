@@ -122,5 +122,38 @@
     "sessionExpiresAt": "Expires at",
     "noLocalUser": "No local session data found.",
     "openExternal": "Open external profile"
+  },
+  "menu": {
+    "tools": "Tools",
+    "toolsBibliographics": "Bibliographic tools",
+    "toolsBibliometric": "Bibliometric tools",
+    "toolsText": "Text tools"
+  },
+  "tools": {
+    "kicker": "Tools",
+    "bibliographics": {
+      "title": "Bibliographic tools",
+      "subtitle": "Area dedicated to utilities for citation, references, and bibliographic organization.",
+      "card1Title": "Reference normalization",
+      "card1Text": "Standardize references according to academic styles and export to common formats.",
+      "card2Title": "Citation generator",
+      "card2Text": "Build direct and indirect citations from article metadata."
+    },
+    "bibliometric": {
+      "title": "Bibliometric tools",
+      "subtitle": "Area for bibliometric analysis, production indicators, and citation network exploration.",
+      "card1Title": "Impact indicators",
+      "card1Text": "Visualize citation metrics, production over time, and journal distribution.",
+      "card2Title": "Co-authorship analysis",
+      "card2Text": "Map author collaborations and discover research communities."
+    },
+    "text": {
+      "title": "Text tools",
+      "subtitle": "Resources for analysis, review, and textual preparation of scientific content.",
+      "card1Title": "Language reviewer",
+      "card1Text": "Support spelling review and clarity improvements for academic texts.",
+      "card2Title": "Keyword extraction",
+      "card2Text": "Identify key terms for indexing and information retrieval."
+    }
   }
 }

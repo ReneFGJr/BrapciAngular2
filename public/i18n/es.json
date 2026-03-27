@@ -122,5 +122,38 @@
     "sessionExpiresAt": "Expira en",
     "noLocalUser": "No se encontraron datos de sesion local.",
     "openExternal": "Abrir perfil externo"
+  },
+  "menu": {
+    "tools": "Herramientas",
+    "toolsBibliographics": "Herramientas bibliograficas",
+    "toolsBibliometric": "Herramientas bibliometricas",
+    "toolsText": "Herramientas textuales"
+  },
+  "tools": {
+    "kicker": "Herramientas",
+    "bibliographics": {
+      "title": "Herramientas bibliograficas",
+      "subtitle": "Area dedicada a utilidades para apoyo en citacion, referencias y organizacion bibliografica.",
+      "card1Title": "Normalizacion de referencias",
+      "card1Text": "Estandarice referencias segun normas academicas y exporte en formatos comunes.",
+      "card2Title": "Generador de citas",
+      "card2Text": "Construya citas directas e indirectas a partir de metadatos de articulos."
+    },
+    "bibliometric": {
+      "title": "Herramientas bibliometricas",
+      "subtitle": "Area para analisis bibliometricos, indicadores de produccion y exploracion de redes de citacion.",
+      "card1Title": "Indicadores de impacto",
+      "card1Text": "Visualice metricas de citacion, produccion por periodo y distribucion por revistas.",
+      "card2Title": "Analisis de coautoria",
+      "card2Text": "Mapee colaboraciones entre autores y descubra comunidades de investigacion."
+    },
+    "text": {
+      "title": "Herramientas textuales",
+      "subtitle": "Recursos para analisis, revision y preparacion textual de contenidos cientificos.",
+      "card1Title": "Revisor de lenguaje",
+      "card1Text": "Apoye la revision ortografica y la claridad de textos academicos.",
+      "card2Title": "Extraccion de palabras clave",
+      "card2Text": "Identifique terminos centrales para indexacion y recuperacion de informacion."
+    }
   }
 }

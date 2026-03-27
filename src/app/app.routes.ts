@@ -40,6 +40,21 @@ export const routes: Routes = [
     loadComponent: () => import('./pages/perfil/perfil.page').then((m) => m.PerfilPage),
   },
   {
+    path: 'tools_bibliografics',
+    loadComponent: () =>
+      import('./pages/tools-bibliografics/tools-bibliografics.page').then((m) => m.ToolsBibliograficsPage),
+  },
+  {
+    path: 'tools_bibliometric',
+    loadComponent: () =>
+      import('./pages/tools-bibliometric/tools-bibliometric.page').then((m) => m.ToolsBibliometricPage),
+  },
+  {
+    path: 'tools_text',
+    loadComponent: () =>
+      import('./pages/tools-text/tools-text.page').then((m) => m.ToolsTextPage),
+  },
+  {
     path: '',
     loadComponent: () => import('./pages/home/home.page').then((m) => m.HomePage),
   }

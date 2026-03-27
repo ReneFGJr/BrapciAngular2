@@ -122,5 +122,38 @@
     "sessionExpiresAt": "Expira em",
     "noLocalUser": "Nenhum dado de sessao local encontrado.",
     "openExternal": "Acessar perfil externo"
+  },
+  "menu": {
+    "tools": "Ferramentas",
+    "toolsBibliographics": "Ferramentas bibliograficas",
+    "toolsBibliometric": "Ferramentas bibliometricas",
+    "toolsText": "Ferramentas textuais"
+  },
+  "tools": {
+    "kicker": "Ferramentas",
+    "bibliographics": {
+      "title": "Ferramentas bibliograficas",
+      "subtitle": "Area dedicada a utilitarios para apoio em citacao, referencia e organizacao bibliografica.",
+      "card1Title": "Normalizacao de referencias",
+      "card1Text": "Padronize referencias segundo normas academicas e exporte em formatos comuns.",
+      "card2Title": "Gerador de citacoes",
+      "card2Text": "Monte citacoes diretas e indiretas com base em metadados de artigos."
+    },
+    "bibliometric": {
+      "title": "Ferramentas bibliometricas",
+      "subtitle": "Area para analises bibliometricas, indicadores de producao e exploracao de redes de citacao.",
+      "card1Title": "Indicadores de impacto",
+      "card1Text": "Visualize metricas de citacao, producao por periodo e distribuicao por periodicos.",
+      "card2Title": "Analise de coautoria",
+      "card2Text": "Mapeie colaboracoes entre autores e descubra comunidades de pesquisa."
+    },
+    "text": {
+      "title": "Ferramentas textuais",
+      "subtitle": "Recursos para analise, revisao e preparacao textual de conteudos cientificos.",
+      "card1Title": "Revisor de linguagem",
+      "card1Text": "Apoie a revisao ortografica e a clareza de textos academicos.",
+      "card2Title": "Extracao de palavras-chave",
+      "card2Text": "Identifique termos centrais para indexacao e recuperacao da informacao."
+    }
   }
 }
