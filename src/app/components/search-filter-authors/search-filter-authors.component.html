@@ -7,7 +7,7 @@
   <ul class="filter-list">
     @for (item of topItems(); track item.label + '-' + $index) {
       <li class="filter-item">
-        <a class="label" [href]="'/search-general?author=' + encode(item.label)" target="_blank" rel="noopener">{{ item.label }}</a>
+        <a class="link small" [href]="'/v/' + encode(item.label)" target="_blank" rel="noopener">{{ item.label }}</a>
         @if (item.count !== null) {
           <span class="badge">{{ item.count }}</span>
         }
@@ -26,7 +26,7 @@
       <ul class="panel-list">
         @for (item of panelItems(); track item.label + '-panel-' + $index) {
           <li class="panel-item">
-            <a [href]="'/search-general?author=' + encode(item.label)" target="_blank" rel="noopener">{{ item.label }}</a>
+            <a class="link small" [href]="'/v/' + encode(item.label)" target="_blank" rel="noopener">{{ item.label }}</a>
             @if (item.count !== null) {
               <span class="badge">{{ item.count }}</span>
             }

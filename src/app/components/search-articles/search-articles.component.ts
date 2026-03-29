@@ -45,11 +45,6 @@ export class SearchArticlesComponent {
           total: normalizedResults.length,
           sample: normalizedResults.slice(0, 2)
         });
-        console.log('[search-articles] Filtros normalizados', {
-          sources: filters.sources.length,
-          authors: filters.authors.length,
-          keywords: filters.keywords.length
-        });
         this.loading.set(false);
         this.apiResults.set(normalizedResults);
         this.filterSources.set(filters.sources);
