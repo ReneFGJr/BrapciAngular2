@@ -34,17 +34,11 @@ export class SearchArticlesComponent {
     }
 
     this.loading.set(true);
-    console.log('[search-articles] Iniciando busca', { term });
 
     this.brapciApiService.search<unknown>(term).subscribe({
       next: (response) => {
-        console.log('[search-articles] Resposta bruta da API', response);
         const normalizedResults = this.normalizeApiResponse(response);
         const filters = this.normalizeFilters(response);
-        console.log('[search-articles] Resposta normalizada', {
-          total: normalizedResults.length,
-          sample: normalizedResults.slice(0, 2)
-        });
         this.loading.set(false);
         this.apiResults.set(normalizedResults);
         this.filterSources.set(filters.sources);

@@ -7,6 +7,25 @@
 	background: var(--theme-bg);
 }
 
+.supersmall
+{
+  font-size: 0.75rem;
+  color: green($color: #00FF00)
+}
+
+.link a
+{
+  //color: var(--theme-link);
+  color: blue;
+  text-decoration: none;
+}
+.link:hover,
+.link:focus-visible {
+  text-decoration: underline;
+  color: red;
+  //color: var(--theme-link);
+}
+
 .navbar {
 	background-color: #483d8b !important;
 	font-family: 'Barlow Condensed', sans-serif !important;
