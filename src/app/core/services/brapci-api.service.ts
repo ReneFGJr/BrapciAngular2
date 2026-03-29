@@ -28,7 +28,7 @@ export class BrapciApiService {
   }
 
   search<T>(query: string): Observable<T> {
-    return this.get<T>('', { q: query });
+    return this.get<T>('brapci/search/v3', { term: query, offset: 1000 });
   }
 
   authoritySearch<T>(term: string): Observable<T> {

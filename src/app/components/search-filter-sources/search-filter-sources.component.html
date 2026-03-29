@@ -1,0 +1,38 @@
+<section class="filter-block" aria-labelledby="search-filter-sources-title">
+  <header class="filter-head">
+    <h3 id="search-filter-sources-title" class="filter-title">Sources</h3>
+    <span class="filter-count">{{ normalizedItems().length }}</span>
+  </header>
+
+  <ul class="filter-list">
+    @for (item of topItems(); track item.label + '-' + $index) {
+      <li class="filter-item">
+        <a class="label" [href]="'/search-general?source=' + encode(item.label)" target="_blank" rel="noopener">{{ item.label }}</a>
+        @if (item.count !== null) {
+          <span class="badge">{{ item.count }}</span>
+        }
+      </li>
+    }
+  </ul>
+
+  @if (hasMoreThanTop()) {
+    <button type="button" class="view-more" (click)="togglePanel()">
+      {{ expanded() ? 'Close' : 'View more' }}
+    </button>
+  }
+
+  @if (expanded()) {
+    <section class="panel" aria-label="Sources list">
+      <ul class="panel-list">
+        @for (item of panelItems(); track item.label + '-panel-' + $index) {
+          <li class="panel-item">
+            <a [href]="'/search-general?source=' + encode(item.label)" target="_blank" rel="noopener">{{ item.label }}</a>
+            @if (item.count !== null) {
+              <span class="badge">{{ item.count }}</span>
+            }
+          </li>
+        }
+      </ul>
+    </section>
+  }
+</section>

@@ -1,0 +1,58 @@
+<section class="row g-3 results-layout">
+  <aside class="col-12 col-lg-3">
+    <div class="filters-stack">
+      <ng-container *ngComponentOutlet="sourcesFilterComponent; inputs: { items: sources }"></ng-container>
+      <ng-container *ngComponentOutlet="authorsFilterComponent; inputs: { items: authors }"></ng-container>
+      <ng-container *ngComponentOutlet="keywordsFilterComponent; inputs: { items: keywords }"></ng-container>
+    </div>
+  </aside>
+
+  <section class="col-12 col-lg-9">
+    <p class="results-count">{{ visibleTotal() }}/{{ totalResults() }}</p>
+
+    <ul class="results">
+      @for (card of visibleCards(); track card.id + '-' + $index) {
+        <li class="result-card">
+          <div class="cover-wrap">
+            @if (card.coverUrl) {
+              <img class="cover" [src]="card.coverUrl" [alt]="'Capa de ' + card.title" loading="lazy" />
+            } @else {
+              <div class="cover cover-fallback" aria-hidden="true">Sem capa</div>
+            }
+          </div>
+
+          <div class="content">
+            <header class="meta-top">
+              <span class="pill">{{ card.year }}</span>
+              <span class="pill">{{ card.type }}</span>
+              <span class="pill score">Score {{ card.score }}</span>
+            </header>
+
+            <h3 class="title">
+              <a class="title-link" [href]="'/v/' + card.id" target="_blank" rel="noopener">{{ card.title }}</a>
+            </h3>
+
+            <p class="authors">{{ card.authors }}</p>
+            <p class="journal">{{ card.journal }}</p>
+
+            @if (card.legend) {
+              <p class="legend">{{ card.legend }}</p>
+            }
+
+            @if (card.keywords.length) {
+              <div class="keywords">
+                @for (keyword of card.keywords; track keyword) {
+                  <span class="keyword">{{ keyword }}</span>
+                }
+              </div>
+            }
+          </div>
+        </li>
+      }
+    </ul>
+
+    @if (hasMore()) {
+      <p class="loading-more">Role a tela para carregar mais resultados...</p>
+    }
+  </section>
+</section>

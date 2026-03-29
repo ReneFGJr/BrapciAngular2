@@ -1,0 +1,76 @@
+.filter-block {
+  border: 1px solid color-mix(in srgb, var(--theme-line) 78%, transparent);
+  border-radius: 0.75rem;
+  background: color-mix(in srgb, var(--theme-card-bg) 84%, transparent);
+  padding: 0.8rem;
+}
+
+.filter-head {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 0.5rem;
+}
+
+.filter-title {
+  margin: 0;
+  font-size: 0.9rem;
+  font-family: 'Raleway', sans-serif;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+
+.filter-count,
+.badge {
+  font-size: 0.73rem;
+  font-weight: 700;
+  color: var(--theme-hint);
+  border: 1px solid color-mix(in srgb, var(--theme-line) 78%, transparent);
+  border-radius: 999px;
+  padding: 0.08rem 0.45rem;
+}
+
+.filter-list,
+.panel-list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: grid;
+  gap: 0.32rem;
+}
+
+.filter-item,
+.panel-item {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  gap: 0.5rem;
+}
+
+.label {
+  color: var(--theme-ink);
+  font-size: 0.78rem;
+}
+
+.panel-item span {
+  font-size: 0.78rem;
+}
+
+.view-more {
+  margin-top: 0.55rem;
+  border: 1px solid color-mix(in srgb, var(--theme-line) 80%, transparent);
+  border-radius: 0.55rem;
+  background: var(--theme-sand);
+  color: var(--theme-hint);
+  font-weight: 700;
+  font-size: 0.78rem;
+  padding: 0.3rem 0.55rem;
+}
+
+.panel {
+  margin-top: 0.55rem;
+  max-height: 230px;
+  overflow: auto;
+  border-top: 1px dashed color-mix(in srgb, var(--theme-line) 70%, transparent);
+  padding-top: 0.55rem;
+}

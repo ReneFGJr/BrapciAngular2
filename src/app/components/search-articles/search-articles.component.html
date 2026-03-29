@@ -11,19 +11,18 @@
         </div>
       </form>
 
-      @if (!hasResults()) {
+      <ng-container *ngIf="!hasResults()">
         <p class="hint mb-0">{{ query().trim() ? ('search.empty' | translate) : ('search.idle' | translate) }}</p>
-      }
+      </ng-container>
 
-      @if (hasResults()) {
-        <ul class="results">
-          @for (item of apiResults(); track $index) {
-            <li>
-              <pre>{{ item | json }}</pre>
-            </li>
-          }
-        </ul>
-      }
+      <ng-container *ngIf="hasResults()">
+        <app-search-result
+          [results]="apiResults()"
+          [sources]="filterSources()"
+          [authors]="filterAuthors()"
+          [keywords]="filterKeywords()"
+        ></app-search-result>
+      </ng-container>
     </div>
   </div>
 </article>
