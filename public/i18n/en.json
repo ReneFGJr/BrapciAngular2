@@ -9,6 +9,9 @@
     "en": "English",
     "es": "Spanish"
   },
+  "bollean": {
+    "title": "Boolean search"
+  },
   "auth": {
     "title": "Authentication",
     "fullName": "Full name",
@@ -39,11 +42,36 @@
     "cardSubtitle": "Use your username and password to sign in."
   },
   "search": {
+    "bollean": {
+      "title": "Boolean search",
+      "strategy": "Boolean search strategy",
+      "button": "Search"
+    },
     "title": "Brapci API Search",
     "input": "Type a term",
     "button": "Search",
     "empty": "No results found for this query.",
-    "idle": "Type a term to query the Brapci API."
+    "idle": "Type a term to query the Brapci API.",
+    "filters": {
+      "title": "Search filters",
+      "year_start": "Start year",
+      "year_end": "End year",
+      "publication_type": "Publication type",
+      "search_field": "Search field",
+      "types": {
+        "JA": "Brazilian journals",
+        "JE": "Foreign journals",
+        "BK": "Books and chapters",
+        "EV": "Conference proceedings"
+      },
+      "fields": {
+        "TI": "Title",
+        "AB": "Abstract",
+        "KW": "Keywords",
+        "AU": "Author",
+        "FL": "All fields"
+      }
+    }
   },
   "authority": {
     "bannerAlt": "Authority control",

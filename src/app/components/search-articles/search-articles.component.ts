@@ -1,18 +1,84 @@
 import { CommonModule } from '@angular/common';
 import { Component, computed, inject, signal } from '@angular/core';
+import { FormBuilder, FormGroup, FormControl, ReactiveFormsModule } from '@angular/forms';
 import { FormsModule } from '@angular/forms';
+import { RouterModule, Router } from '@angular/router';
 import { TranslateModule } from '@ngx-translate/core';
 import { BrapciApiService } from '../../core/services/brapci-api.service';
 import { SearchResultComponent } from '../search-result/search-result.component';
 
 @Component({
   selector: 'app-search-articles',
-  imports: [CommonModule, FormsModule, TranslateModule, SearchResultComponent],
+  imports: [
+    CommonModule,
+    FormsModule,
+    ReactiveFormsModule,
+    RouterModule,
+    TranslateModule,
+    SearchResultComponent,
+  ],
   templateUrl: './search-articles.component.html',
-  styleUrl: './search-articles.component.scss'
+  styleUrl: './search-articles.component.scss',
 })
 export class SearchArticlesComponent {
   private readonly brapciApiService = inject(BrapciApiService);
+  showFilters = false;
+
+  filtersForm: FormGroup;
+  yearsStart: number[] = [];
+  yearsEnd: number[] = [];
+  publicationTypes = [
+    { label: 'Revistas Brasileiras', value: 'JA' },
+    { label: 'Revistas estrangeiras', value: 'JE' },
+    { label: 'Livros e capítulo', value: 'BK' },
+    { label: 'Anais de eventos', value: 'EV' },
+  ];
+  searchFields = [
+    { label: 'Título', value: 'TI' },
+    { label: 'Resumo', value: 'AB' },
+    { label: 'Palavras-chave', value: 'KW' },
+    { label: 'Autor', value: 'AU' },
+    { label: 'Todos os campos', value: 'FL' },
+  ];
+
+  constructor(private router: Router) {
+    this.initYears();
+    // Marca todos os tipos de publicação por padrão
+    const allTypes = this.publicationTypes.map((t) => t.value);
+    this.filtersForm = new FormGroup({
+      year_start: new FormControl(this.yearsStart[0]),
+      year_end: new FormControl(this.yearsEnd[0]),
+      collection: new FormControl(allTypes),
+      fields: new FormControl('FL'),
+    });
+  }
+
+  goBooleanSearch() {
+    this.router.navigate(['/search-boolean']);
+  }
+
+  initYears() {
+    const currentYear = new Date().getFullYear();
+    for (let y = 1962; y <= currentYear + 1; y++) {
+      this.yearsStart.push(y);
+    }
+    for (let y = currentYear + 1; y >= 1962; y--) {
+      this.yearsEnd.push(y);
+    }
+  }
+
+  onCollectionChange(event: any) {
+    const value = event.target.value;
+    const checked = event.target.checked;
+    const collection = this.filtersForm.value.collection || [];
+    if (checked) {
+      if (!collection.includes(value)) {
+        this.filtersForm.patchValue({ collection: [...collection, value] });
+      }
+    } else {
+      this.filtersForm.patchValue({ collection: collection.filter((v: string) => v !== value) });
+    }
+  }
 
   readonly loading = signal(false);
   readonly apiResults = signal<unknown[]>([]);
@@ -25,6 +91,14 @@ export class SearchArticlesComponent {
   searchInBrapci(): void {
     const term = this.query().trim();
 
+    // Monta o array de filtros
+    const filters = [
+      { name: 'year_start', value: this.filtersForm.value.year_start },
+      { name: 'year_end', value: this.filtersForm.value.year_end },
+      { name: 'collection', value: this.filtersForm.value.collection },
+      { name: 'fields', value: this.filtersForm.value.fields },
+    ];
+
     if (!term) {
       this.apiResults.set([]);
       this.filterSources.set([]);
@@ -35,7 +109,7 @@ export class SearchArticlesComponent {
 
     this.loading.set(true);
 
-    this.brapciApiService.search<unknown>(term).subscribe({
+    this.brapciApiService.search<unknown>(term, filters).subscribe({
       next: (response) => {
         const normalizedResults = this.normalizeApiResponse(response);
         const filters = this.normalizeFilters(response);
@@ -56,11 +130,15 @@ export class SearchArticlesComponent {
         this.filterSources.set([]);
         this.filterAuthors.set([]);
         this.filterKeywords.set([]);
-      }
+      },
     });
   }
 
-  private normalizeFilters(response: unknown): { sources: unknown[]; authors: unknown[]; keywords: unknown[] } {
+  private normalizeFilters(response: unknown): {
+    sources: unknown[];
+    authors: unknown[];
+    keywords: unknown[];
+  } {
     if (!response || typeof response !== 'object') {
       return { sources: [], authors: [], keywords: [] };
     }
@@ -75,7 +153,7 @@ export class SearchArticlesComponent {
     return {
       sources: this.asArray(filters['sources']),
       authors: this.asArray(filters['authors']),
-      keywords: this.asArray(filters['keywords'])
+      keywords: this.asArray(filters['keywords']),
     };
   }
 
@@ -85,7 +163,10 @@ export class SearchArticlesComponent {
     }
 
     if (value && typeof value === 'object') {
-      return Object.entries(value as Record<string, unknown>).map(([key, count]) => ({ key, count }));
+      return Object.entries(value as Record<string, unknown>).map(([key, count]) => ({
+        key,
+        count,
+      }));
     }
 
     return [];

@@ -1,0 +1,12 @@
+<article class="col-12" id="search-boolean" aria-labelledby="search-boolean-title" itemprop="mainEntity" itemscope itemtype="https://schema.org/Dataset">
+  <div class="card h-100 shadow-sm border-0">
+    <div class="card-body">
+      <h2 id="search-boolean-title" class="h4 mb-3">{{ 'search.bollean.title' | translate }}</h2>
+      <form (ngSubmit)="searchBoolean()" class="search-form mb-3">
+        <label for="strategy" class="form-label">{{ 'search.bollean.strategy' | translate }}</label>
+        <textarea id="strategy" name="strategy" class="form-control" [(ngModel)]="strategy" rows="4"></textarea>
+        <button type="submit" class="btn btn-primary mt-3">{{ 'search.bollean.button' | translate }}</button>
+      </form>
+    </div>
+  </div>
+</article>

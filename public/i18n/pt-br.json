@@ -39,11 +39,36 @@
     "cardSubtitle": "Use seu usuario e senha para entrar na plataforma."
   },
   "search": {
+    "bollean": {
+      "title": "Busca booleana",
+      "strategy": "Estratégia de busca booleana",
+      "button": "Pesquisar"
+    },
     "title": "Pesquisa na API Brapci",
     "input": "Digite um termo",
     "button": "Buscar",
     "empty": "Nenhum resultado encontrado para a consulta.",
-    "idle": "Digite um termo para consultar a API Brapci."
+    "idle": "Digite um termo para consultar a API Brapci.",
+    "filters": {
+      "title": "Filtros da pesquisa",
+      "year_start": "Ano inicial",
+      "year_end": "Ano final",
+      "publication_type": "Tipo de publicação",
+      "search_field": "Local de pesquisa",
+      "types": {
+        "JA": "Revistas Brasileiras",
+        "JE": "Revistas estrangeiras",
+        "BK": "Livros e capítulo",
+        "EV": "Anais de eventos"
+      },
+      "fields": {
+        "TI": "Título",
+        "AB": "Resumo",
+        "KW": "Palavras-chave",
+        "AU": "Autor",
+        "FL": "Todos os campos"
+      }
+    }
   },
   "authority": {
     "bannerAlt": "Controle de autoridade",

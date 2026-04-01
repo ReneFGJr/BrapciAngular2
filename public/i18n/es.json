@@ -9,6 +9,9 @@
     "en": "Ingles",
     "es": "Espanol"
   },
+  "bollean": {
+    "title": "Búsqueda booleana"
+  },
   "auth": {
     "title": "Autenticacion",
     "fullName": "Nombre completo",
@@ -39,11 +42,36 @@
     "cardSubtitle": "Use su usuario y contrasena para ingresar a la plataforma."
   },
   "search": {
+    "bollean": {
+      "title": "Búsqueda booleana",
+      "strategy": "Estrategia de búsqueda booleana",
+      "button": "Buscar"
+    },
     "title": "Busqueda en API Brapci",
     "input": "Escriba un termino",
     "button": "Buscar",
     "empty": "No se encontraron resultados para la consulta.",
-    "idle": "Escriba un termino para consultar la API Brapci."
+    "idle": "Escriba un termino para consultar la API Brapci.",
+    "filters": {
+      "title": "Filtros de búsqueda",
+      "year_start": "Año inicial",
+      "year_end": "Año final",
+      "publication_type": "Tipo de publicación",
+      "search_field": "Campo de búsqueda",
+      "types": {
+        "JA": "Revistas brasileñas",
+        "JE": "Revistas extranjeras",
+        "BK": "Libros y capítulos",
+        "EV": "Anales de eventos"
+      },
+      "fields": {
+        "TI": "Título",
+        "AB": "Resumen",
+        "KW": "Palabras clave",
+        "AU": "Autor",
+        "FL": "Todos los campos"
+      }
+    }
   },
   "authority": {
     "bannerAlt": "Control de autoridad",

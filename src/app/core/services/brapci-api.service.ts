@@ -27,8 +27,17 @@ export class BrapciApiService {
     return this.http.get<T>(url, { params: httpParams });
   }
 
-  search<T>(query: string): Observable<T> {
-    return this.get<T>('brapci/search/v3', { term: query, offset: 1000 });
+  search<T>(query: string, filters?: Array<{ name: string, value: any }>): Observable<T> {
+    const params: Record<string, string | number | boolean> = { term: query, offset: 1000 };
+    if (filters && Array.isArray(filters)) {
+      for (const filter of filters) {
+        if (filter.value !== undefined && filter.value !== null && filter.value !== "") {
+          // Para arrays (ex: collection), transforma em string separada por vírgula
+          params[filter.name] = Array.isArray(filter.value) ? filter.value.join(',') : filter.value;
+        }
+      }
+    }
+    return this.get<T>('brapci/search/v3', params);
   }
 
   authoritySearch<T>(term: string): Observable<T> {

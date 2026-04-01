@@ -9,6 +9,7 @@
           <input id="query" name="query" class="form-control" [ngModel]="query()" (ngModelChange)="query.set($event)" />
           <button type="submit" class="btn btn-primary" [disabled]="loading()">{{ 'search.button' | translate }}</button>
         </div>
+
       </form>
 
       <ng-container *ngIf="!hasResults()">
@@ -25,4 +26,53 @@
       </ng-container>
     </div>
   </div>
+<!-- Filtros da Pesquisa -->
+
+<div style="margin-bottom: 1rem; display: flex; align-items: center; gap: 1rem;">
+  <span type="button" (click)="showFilters = !showFilters"
+    class="link" style="font-weight:600; display:flex; align-items:center; gap:0.5rem;">
+    {{ 'search.filters.title' | translate }}
+  </span>
+  <span style="font-weight:600;">|</span>
+  <span type="button" (click)="goBooleanSearch()"
+    class="link" style="font-weight:600; display:flex; align-items:center; gap:0.5rem;">
+    {{ 'search.bollean.title' | translate }}
+  </span>
+</div>
+
+<div *ngIf="showFilters" class="search-filters" style="border:1px solid #ccc; padding:1rem; border-radius:8px; margin-bottom:1rem; background:#f9f9f9;">
+  <form [formGroup]="filtersForm" style="display: flex; gap: 2rem; flex-wrap: wrap;">
+    <!-- Coluna 1: Anos -->
+    <div style="min-width: 100px;">
+      <label for="year_start">{{ 'search.filters.year_start' | translate }}</label>
+      <select id="year_start" formControlName="year_start" class="form-control">
+        <option *ngFor="let y of yearsStart" [value]="y">{{ y }}</option>
+      </select>
+    </div>
+    <div style="min-width: 100px;">
+      <label for="year_end">{{ 'search.filters.year_end' | translate }}</label>
+      <select id="year_end" formControlName="year_end" class="form-control">
+        <option *ngFor="let y of yearsEnd" [value]="y">{{ y }}</option>
+      </select>
+    </div>
+    <!-- Coluna 2: Tipo de publicação -->
+    <div style="min-width: 220px;">
+      <label style="font-weight:600;">{{ 'search.filters.publication_type' | translate }}</label>
+      <div *ngFor="let pub of publicationTypes">
+        <input type="checkbox" [value]="pub.value" (change)="onCollectionChange($event)" [checked]="filtersForm.value.collection.includes(pub.value)" id="col-{{pub.value}}" />
+        <label for="col-{{pub.value}}">&nbsp;{{ 'search.filters.types.' + pub.value | translate }}</label>
+      </div>
+    </div>
+    <!-- Coluna 3: Local de pesquisa -->
+    <div style="min-width: 220px;">
+      <label style="font-weight:600;">{{ 'search.filters.search_field' | translate }}</label>
+      <div *ngFor="let field of searchFields">
+        <input type="radio" name="fields" [value]="field.value" formControlName="fields" id="field-{{field.value}}" [checked]="filtersForm.value.fields === field.value" />
+        <label for="field-{{field.value}}">{{ 'search.filters.fields.' + field.value | translate }}</label>
+      </div>
+    </div>
+  </form>
+</div>
+
+<!-- ...existing code... -->
 </article>
