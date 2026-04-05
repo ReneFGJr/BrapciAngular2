@@ -45,7 +45,8 @@
     "bollean": {
       "title": "Búsqueda booleana",
       "strategy": "Estrategia de búsqueda booleana",
-      "button": "Buscar"
+      "button": "Buscar",
+      "linkBack": "Volver a la búsqueda normal"
     },
     "title": "Busqueda en API Brapci",
     "input": "Escriba un termino",

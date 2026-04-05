@@ -39,6 +39,9 @@
     "cardSubtitle": "Use your username and password to sign in."
   },
   "search": {
+    "bollean": {
+      "linkBack": "Back to normal search"
+    },
     "title": "Brapci API Search",
     "input": "Type a term",
     "button": "Search",

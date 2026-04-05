@@ -45,7 +45,8 @@
     "bollean": {
       "title": "Boolean search",
       "strategy": "Boolean search strategy",
-      "button": "Search"
+      "button": "Search",
+      "linkBack": "Back to normal search"
     },
     "title": "Brapci API Search",
     "input": "Type a term",
