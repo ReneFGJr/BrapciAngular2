@@ -218,7 +218,11 @@
       "copy": "Copiar"
     },
     "actions": {
-      "downloadPdf": "Baixar PDF"
+      "downloadPdf": "Baixar PDF",
+      "copyLink": "Copiar link",
+      "shareWhatsApp": "Compartilhar WhatsApp",
+      "shareInstagram": "Compartilhar no Instagram",
+      "shareLinkedIn": "Compartilhar no LinkedIn"
     }
   },
   "citation": {

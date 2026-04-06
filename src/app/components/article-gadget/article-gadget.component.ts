@@ -6,6 +6,7 @@ import { CitationTabsComponent } from '../citation-tabs/citation-tabs.component'
 import { ArticleAuthorsComponent } from '../article-authors/article-authors.component';
 import { ArticleKeywordsComponent } from '../article-keywords/article-keywords.component';
 import { ArticleDataComponent } from '../article-data/article-data.component';
+import { ArticlePdfLinkComponent } from '../article-pdf-link/article-pdf-link.component';
 
 type JsonRecord = Record<string, unknown>;
 
@@ -33,7 +34,7 @@ type CreatorAuthor = {
 
 @Component({
   selector: 'app-article-gadget',
-  imports: [CommonModule, TranslateModule, CitationTabsComponent, ArticleAuthorsComponent, ArticleKeywordsComponent, ArticleDataComponent],
+  imports: [CommonModule, TranslateModule, CitationTabsComponent, ArticleAuthorsComponent, ArticleKeywordsComponent, ArticleDataComponent, ArticlePdfLinkComponent],
   templateUrl: './article-gadget.component.html',
   styleUrl: './article-gadget.component.scss'
 })
@@ -262,6 +263,21 @@ export class ArticleGadgetComponent implements OnInit, OnChanges {
 
   pdfUrl(): string {
     return this.field(['resource_pdf']);
+  }
+
+  articleId(): string {
+    return this.field(['ID', 'id']);
+  }
+
+  articleAuthorsForShare(): string {
+    return this.creatorAuthors()
+      .map((author) => author.name)
+      .filter((name) => name.trim().length > 0)
+      .join('; ');
+  }
+
+  articleKeywordsForShare(): string {
+    return this.getKeywordsForMeta();
   }
 
   creatorAuthors(): CreatorAuthor[] {

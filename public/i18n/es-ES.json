@@ -122,5 +122,14 @@
     "sessionExpiresAt": "Expira en",
     "noLocalUser": "No se encontraron datos de sesion local.",
     "openExternal": "Abrir perfil externo"
+  },
+  "article": {
+    "actions": {
+      "downloadPdf": "Descargar PDF",
+      "copyLink": "Copiar enlace",
+      "shareWhatsApp": "Compartir en WhatsApp",
+      "shareInstagram": "Compartir en Instagram",
+      "shareLinkedIn": "Compartir en LinkedIn"
+    }
   }
 }

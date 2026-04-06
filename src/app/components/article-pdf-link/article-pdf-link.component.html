@@ -1,0 +1,75 @@
+<div class="article-pdf-link">
+  <!-- Download Button -->
+  <button
+    class="pdf-action-btn pdf-download-btn"
+    (click)="downloadPdf()"
+    [title]="'article.actions.downloadPdf' | translate"
+    [attr.aria-label]="'article.actions.downloadPdf' | translate"
+  >
+    <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+      <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path>
+      <polyline points="7 10 12 15 17 10"></polyline>
+      <line x1="12" y1="15" x2="12" y2="3"></line>
+    </svg>
+    <span class="btn-text">{{ 'article.actions.downloadPdf' | translate }}</span>
+  </button>
+
+  <!-- Copy Link and WhatsApp Action Buttons -->
+  <div class="pdf-action-row">
+    <!-- Copy Link Button -->
+    <button
+      class="pdf-action-btn pdf-copy-btn pdf-icon-btn"
+      [class.success]="copyLinkSuccess"
+      (click)="copyToClipboard()"
+      [title]="copyLinkSuccess ? 'Copiado!' : ('article.actions.copyLink' | translate)"
+      [attr.aria-label]="copyLinkSuccess ? 'Copiado!' : ('article.actions.copyLink' | translate)"
+    >
+      <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+        <path d="M16 4h2a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2h2"></path>
+        <rect x="8" y="2" width="8" height="4" rx="1" ry="1"></rect>
+      </svg>
+    </button>
+
+    <!-- Share on WhatsApp Button -->
+    <button
+      class="pdf-action-btn pdf-whatsapp-btn pdf-icon-btn"
+      (click)="shareOnWhatsApp()"
+      [title]="'article.actions.shareWhatsApp' | translate"
+      [attr.aria-label]="'article.actions.shareWhatsApp' | translate"
+    >
+      <svg class="icon whatsapp-icon" viewBox="0 0 24 24" fill="currentColor">
+        <path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.272-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.411-2.391-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.67-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.076 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421-7.403h-.004a6.963 6.963 0 00-6.946 6.96c0 1.836.577 3.603 1.659 5.089l-1.744 6.368 6.565-1.722c1.482.822 3.157 1.255 4.819 1.255 3.846 0 6.979-3.133 6.979-6.979 0-1.862-.72-3.612-2.04-4.932-1.32-1.32-3.07-2.047-4.939-2.047m11.226-1.16c1.934 1.933 3.032 4.507 3.032 7.25 0 5.653-4.596 10.25-10.25 10.25-2.408 0-4.663-.84-6.476-2.392l-7.368 1.931 1.968-7.181C2.75 15.848 2 14.289 2 12.572 2 6.918 6.597 2.322 12.25 2.322c2.757 0 5.331 1.099 7.268 3.036"/>
+      </svg>
+    </button>
+
+    <!-- Share on Instagram Button -->
+    <button
+      class="pdf-action-btn pdf-instagram-btn pdf-icon-btn"
+      (click)="shareOnInstagram()"
+      [title]="'article.actions.shareInstagram' | translate"
+      [attr.aria-label]="'article.actions.shareInstagram' | translate"
+    >
+      <svg class="icon instagram-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+        <rect x="3" y="3" width="18" height="18" rx="5" ry="5"></rect>
+        <circle cx="12" cy="12" r="4"></circle>
+        <circle cx="17.5" cy="6.5" r="1"></circle>
+      </svg>
+    </button>
+
+    <!-- Share on LinkedIn Button -->
+    <button
+      class="pdf-action-btn pdf-linkedin-btn pdf-icon-btn"
+      (click)="shareOnLinkedIn()"
+      [title]="'article.actions.shareLinkedIn' | translate"
+      [attr.aria-label]="'article.actions.shareLinkedIn' | translate"
+    >
+      <img
+        class="icon linkedin-image"
+        [src]="linkedInImageUrl"
+        (error)="onLinkedInImageError($event)"
+        alt=""
+        aria-hidden="true"
+      />
+    </button>
+  </div>
+</div>

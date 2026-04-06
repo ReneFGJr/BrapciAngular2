@@ -221,7 +221,11 @@
       "copy": "Copy"
     },
     "actions": {
-      "downloadPdf": "Download PDF"
+      "downloadPdf": "Download PDF",
+      "copyLink": "Copy link",
+      "shareWhatsApp": "Share on WhatsApp",
+      "shareInstagram": "Share on Instagram",
+      "shareLinkedIn": "Share on LinkedIn"
     }
   },
   "citation": {

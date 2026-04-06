@@ -1,0 +1,242 @@
+.article-pdf-link {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  width: 100%;
+}
+
+.pdf-action-row {
+  display: flex;
+  gap: 0.4rem;
+  align-items: center;
+}
+
+.pdf-icon-btn {
+  padding: 0.5rem !important;
+  gap: 0 !important;
+  width: auto !important;
+
+  .icon {
+    width: 1.2rem;
+    height: 1.2rem;
+  }
+}
+
+.pdf-icon-btn .btn-text {
+  display: none;
+}
+
+.pdf-action-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  padding: 0.6rem 1rem;
+  border: none;
+  border-radius: 0.4rem;
+  font-size: 0.9rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  text-decoration: none;
+  color: var(--theme-paper, #fff);
+  white-space: nowrap;
+
+  &:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+  }
+
+  &:active {
+    transform: translateY(0);
+  }
+
+  &:focus-visible {
+    outline: 2px solid var(--theme-link);
+    outline-offset: 2px;
+  }
+}
+
+.pdf-download-btn {
+  background: #D91E18;
+  color: var(--theme-paper, #fff);
+
+  &:hover {
+    background: #c41810;
+  }
+
+  &:active {
+    background: #a91410;
+  }
+}
+
+.pdf-copy-btn {
+  background: #5b77b5;
+  color: var(--theme-paper, #fff);
+
+  &:hover {
+    background: #4a5f99;
+  }
+
+  &:active {
+    background: #3a4f89;
+  }
+
+  &.success {
+    background: #28a745;
+
+    .copy-text::after {
+      content: ' ✓';
+    }
+  }
+}
+
+.pdf-whatsapp-btn {
+  background: #25d366;
+  color: #fff;
+
+  &:hover {
+    background: #1fa85d;
+  }
+
+  &:active {
+    background: #1a8d53;
+  }
+}
+
+.pdf-instagram-btn {
+  background: #e1306c;
+  color: #fff;
+
+  &:hover {
+    background: #c62a5c;
+  }
+
+  &:active {
+    background: #aa244f;
+  }
+}
+
+.pdf-linkedin-btn {
+  background: #0a66c2;
+  color: #fff;
+
+  &:hover {
+    background: #0957a5;
+  }
+
+  &:active {
+    background: #084a8c;
+  }
+}
+
+.icon {
+  width: 1rem;
+  height: 1rem;
+  flex-shrink: 0;
+  stroke: currentColor;
+
+  &.whatsapp-icon {
+    fill: currentColor;
+  }
+
+  &.linkedin-icon {
+    fill: currentColor;
+    stroke: none;
+  }
+
+  &.linkedin-image {
+    object-fit: contain;
+    border-radius: 2px;
+    stroke: none;
+  }
+}
+
+.btn-text {
+  @media (max-width: 768px) {
+    font-size: 0.8rem;
+  }
+
+  @media (max-width: 480px) {
+    font-size: 0.75rem;
+  }
+}
+
+.copy-text {
+  transition: all 0.3s ease;
+}
+
+.whatsapp-text {
+  @media (max-width: 480px) {
+    display: none;
+  }
+}
+
+@media (max-width: 768px) {
+  .article-pdf-link {
+    gap: 0.4rem;
+  }
+
+  .pdf-action-btn {
+    padding: 0.5rem 0.8rem;
+    font-size: 0.85rem;
+  }
+}
+
+@media (max-width: 480px) {
+  .article-pdf-link {
+    gap: 0.3rem;
+  }
+
+  .pdf-action-btn {
+    padding: 0.45rem 0.6rem;
+    font-size: 0.75rem;
+    flex: 1;
+
+    &:hover {
+      transform: translateY(-1px);
+    }
+  }
+}
+
+@media (prefers-color-scheme: dark) {
+  .pdf-copy-btn {
+    background: #4a7ab5;
+
+    &:hover {
+      background: #3a6aa5;
+    }
+
+    &:active {
+      background: #2a5a95;
+    }
+
+    &.success {
+      background: #2da849;
+    }
+  }
+
+  .pdf-instagram-btn {
+    background: #c02a5a;
+
+    &:hover {
+      background: #a9244f;
+    }
+
+    &:active {
+      background: #922045;
+    }
+  }
+
+  .pdf-linkedin-btn {
+    background: #0857a3;
+
+    &:hover {
+      background: #074b8d;
+    }
+
+    &:active {
+      background: #063f77;
+    }
+  }
+}

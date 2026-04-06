@@ -66,16 +66,15 @@
         </div>
       }
 
-      <!-- PDF -->
+      <!-- PDF Download, Copy Link, and WhatsApp Share -->
       @if (pdfUrl() && pdfUrl() !== '-') {
-        <a
-          class="article-btn mt-3"
-          [href]="pdfUrl()"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          {{ 'article.actions.downloadPdf' | translate }}
-        </a>
+        <app-article-pdf-link
+          [pdfUrl]="pdfUrl()"
+          [articleId]="articleId()"
+          [articleTitle]="primaryTitle()"
+          [articleAuthors]="articleAuthorsForShare()"
+          [articleKeywords]="articleKeywordsForShare()"
+        ></app-article-pdf-link>
       }
     </div>
   </header>
