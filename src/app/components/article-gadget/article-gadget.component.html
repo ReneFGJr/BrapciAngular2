@@ -1,0 +1,32 @@
+<section class="article-gadget" aria-label="Dados do artigo">
+  <div class="article-header">
+    <h2 class="h5 mb-3">Artigo</h2>
+    <p class="mb-1"><strong>Titulo:</strong> {{ field(['title', 'titulo', 'Title']) }}</p>
+    <p class="mb-1"><strong>Fonte:</strong> {{ field(['jnl_name', 'journal', 'source']) }}</p>
+    <p class="mb-1"><strong>Ano:</strong> {{ field(['year', 'ano']) }}</p>
+    <p class="mb-1"><strong>DOI:</strong> {{ field(['doi', 'DOI']) }}</p>
+    <p class="mb-0"><strong>Idioma:</strong> {{ field(['language', 'idioma']) }}</p>
+
+    @if (listField(['authors', 'autores', 'Authors']).length > 0) {
+      <p class="mb-0 mt-2">
+        <strong>Autores:</strong>
+        {{ listField(['authors', 'autores', 'Authors']).join('; ') }}
+      </p>
+    }
+  </div>
+
+  <div class="article-metrics mt-3">
+    @for (metric of metrics; track metric.label) {
+      <div class="article-metric-item">
+        <small>{{ metric.label }}</small>
+        <strong>{{ metric.value }}</strong>
+      </div>
+    }
+  </div>
+
+  <app-bar-chart class="mt-3" title="Indicadores por ano" [points]="chartPoints"></app-bar-chart>
+
+  <app-tag-cloud [dataTag]="dataTag"></app-tag-cloud>
+
+  <app-author-works [groups]="worksGroups" [dataJour]="dataJour"></app-author-works>
+</section>

@@ -11,7 +11,17 @@
 
         <p class="mb-3"><strong>Classe:</strong> {{ classe() }}</p>
 
-        @if (isPerson()) {
+        @if (isArticle()) {
+          <app-article-gadget
+            class="mb-4 d-block"
+            [data]="response()"
+            [metrics]="articleMetrics()"
+            [chartPoints]="chartYearsBars()"
+            [worksGroups]="worksByType()"
+            [dataJour]="dataJour()"
+            [dataTag]="dataTag()"
+          ></app-article-gadget>
+        } @else if (isPerson()) {
           <app-author-gadget
             class="mb-4 d-block"
             [name]="authorName()"

@@ -5,6 +5,7 @@ import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { catchError, distinctUntilChanged, map, of, switchMap, tap } from 'rxjs';
 import { BrapciApiService } from '../../core/services/brapci-api.service';
 import { AuthorGadgetComponent } from '../../components/author-gadget/author-gadget.component';
+import { ArticleGadgetComponent } from '../../components/article-gadget/article-gadget.component';
 import { BreadcrumbsComponent } from '../../components/breadcrumbs/breadcrumbs.component';
 import { ViewJournalComponent } from '../../components/view-journal/view-journal.component';
 import { ViewEventComponent } from '../../components/view-event/view-event.component';
@@ -28,13 +29,14 @@ type AuthorLink = {
   imports: [
     CommonModule,
     AuthorGadgetComponent,
+    ArticleGadgetComponent,
     BreadcrumbsComponent,
     ViewJournalComponent,
     ViewEventComponent,
-    ViewEnancibComponent
+    ViewEnancibComponent,
   ],
   templateUrl: './v-id.page.html',
-  styleUrl: './v-id.page.scss'
+  styleUrl: './v-id.page.scss',
 })
 export class VIdPage {
   private readonly route = inject(ActivatedRoute);
@@ -61,6 +63,10 @@ export class VIdPage {
 
   readonly isPerson = computed(() => this.classe().toLowerCase() === 'person');
   readonly isIssue = computed(() => this.classe().toLowerCase() === 'issue');
+  readonly isArticle = computed(() => this.classe().toLowerCase() === 'article');
+  readonly isBook = computed(() => this.classe().toLowerCase() === 'book');
+  readonly isProceeding = computed(() => this.classe().toLowerCase() === 'proceeding');
+  readonly isBookChapter = computed(() => this.classe().toLowerCase() === 'bookchapter');
 
   readonly publicationView = computed<'journal' | 'event' | 'enancib'>(() => {
     const value = this.response();
@@ -77,7 +83,9 @@ export class VIdPage {
     }
 
     const collectionRaw = data['jnl_collection'] ?? data['JNL_COLLECTION'] ?? data['collection'];
-    const collection = String(collectionRaw ?? '').trim().toUpperCase();
+    const collection = String(collectionRaw ?? '')
+      .trim()
+      .toUpperCase();
 
     if (collection === 'EV') {
       return 'event';
@@ -156,7 +164,7 @@ export class VIdPage {
           type: 'lattes',
           icon: '🎓',
           label: 'Lattes',
-          url: `https://lattes.cnpq.br/${obj['lattes']}`
+          url: `https://lattes.cnpq.br/${obj['lattes']}`,
         });
       }
 
@@ -165,7 +173,7 @@ export class VIdPage {
           type: 'orcid',
           icon: '🔗',
           label: 'ORCID',
-          url: `https://orcid.org/${obj['orcid']}`
+          url: `https://orcid.org/${obj['orcid']}`,
         });
       }
 
@@ -174,7 +182,7 @@ export class VIdPage {
           type: 'openalex',
           icon: '🌐',
           label: 'OpenAlex',
-          url: `https://openalex.org/${obj['OpenAlex']}`
+          url: `https://openalex.org/${obj['OpenAlex']}`,
         });
       }
 
@@ -183,7 +191,7 @@ export class VIdPage {
           type: 'googlescholar',
           icon: '📊',
           label: 'Google Scholar',
-          url: `https://scholar.google.com/citations?user=${obj['GoogleScholar']}`
+          url: `https://scholar.google.com/citations?user=${obj['GoogleScholar']}`,
         });
       }
     }
@@ -206,7 +214,7 @@ export class VIdPage {
     const groups: AuthorWorksGroup[] = this.worksKeys.map((key) => ({
       key,
       label: `author.workTypes.${key}`,
-      items: []
+      items: [],
     }));
 
     if (!value || typeof value !== 'object') {
@@ -228,12 +236,14 @@ export class VIdPage {
 
       return {
         ...group,
-        items
+        items,
       };
     });
   });
 
-  readonly worksCount = computed(() => this.worksByType().reduce((sum, group) => sum + group.items.length, 0));
+  readonly worksCount = computed(() =>
+    this.worksByType().reduce((sum, group) => sum + group.items.length, 0),
+  );
 
   readonly coauthorsList = computed((): Coauthor[] => {
     const value = this.response();
@@ -262,7 +272,7 @@ export class VIdPage {
           return {
             id: `coauthor_${index + 1}`,
             name: item.trim(),
-            totalPublications: 1
+            totalPublications: 1,
           } satisfies Coauthor;
         }
 
@@ -271,7 +281,13 @@ export class VIdPage {
         }
 
         const obj = item as Record<string, unknown>;
-        const nameCandidate = obj['nome'] ?? obj['Nome'] ?? obj['name'] ?? obj['Name'] ?? obj['author'] ?? obj['Author'];
+        const nameCandidate =
+          obj['nome'] ??
+          obj['Nome'] ??
+          obj['name'] ??
+          obj['Name'] ??
+          obj['author'] ??
+          obj['Author'];
         const name = typeof nameCandidate === 'string' ? nameCandidate.trim() : '';
         if (!name) {
           return null;
@@ -284,7 +300,9 @@ export class VIdPage {
           obj['publications'] ??
           obj['count'];
         const totalPublications =
-          typeof countRaw === 'number' ? countRaw : Number.parseInt(String(countRaw ?? '1'), 10) || 1;
+          typeof countRaw === 'number'
+            ? countRaw
+            : Number.parseInt(String(countRaw ?? '1'), 10) || 1;
 
         const idCandidate = obj['ID'] ?? obj['id'];
         const id =
@@ -300,7 +318,7 @@ export class VIdPage {
           id,
           name,
           totalPublications,
-          link
+          link,
         } satisfies Coauthor;
       })
       .filter((item): item is Coauthor => item !== null)
@@ -314,7 +332,10 @@ export class VIdPage {
       .map((name) => this.normalizeAuthorName(name))
       .filter((name) => name.length > 0);
 
-    const counts = new Map<string, { displayName: string; totalPublications: number; link?: string }>();
+    const counts = new Map<
+      string,
+      { displayName: string; totalPublications: number; link?: string }
+    >();
 
     for (const group of this.worksByType()) {
       for (const item of group.items) {
@@ -339,7 +360,7 @@ export class VIdPage {
             counts.set(normalized, {
               displayName: candidate.name,
               totalPublications: 1,
-              link: candidate.link
+              link: candidate.link,
             });
           }
         }
@@ -351,7 +372,7 @@ export class VIdPage {
         id: `coauthor_${index + 1}_${normalized.slice(0, 16)}`,
         name: entry.displayName,
         totalPublications: entry.totalPublications,
-        link: entry.link
+        link: entry.link,
       }))
       .sort((a, b) => a.name.localeCompare(b.name, 'pt-BR', { sensitivity: 'base' }))
       .slice(0, 30);
@@ -372,8 +393,8 @@ export class VIdPage {
         label: mainName,
         size: 3,
         color: '#483d8b',
-        type: 'author'
-      }
+        type: 'author',
+      },
     ];
 
     const edges: NetworkGraph['edges'] = [];
@@ -385,14 +406,14 @@ export class VIdPage {
         label: coauthor.name,
         size: 1.5 + Math.min(coauthor.totalPublications / 10, 2.5),
         color: '#5EA9FF',
-        type: 'author'
+        type: 'author',
       });
 
       edges.push({
         source: mainId,
         target: nodeId,
         weight: Math.max(1, coauthor.totalPublications),
-        label: `${coauthor.totalPublications}`
+        label: `${coauthor.totalPublications}`,
       });
     });
 
@@ -405,7 +426,7 @@ export class VIdPage {
           source: sourceId,
           target: next.id || `coauthor_${i + 2}`,
           weight: 1,
-          label: 'co'
+          label: 'co',
         });
       }
 
@@ -415,7 +436,7 @@ export class VIdPage {
           source: sourceId,
           target: secondNext.id || `coauthor_${i + 3}`,
           weight: 1,
-          label: 'co'
+          label: 'co',
         });
       }
     }
@@ -423,7 +444,9 @@ export class VIdPage {
     return { nodes, edges };
   });
 
-  private extractCoauthorCandidatesFromWorkItem(item: string): Array<{ name: string; link?: string }> {
+  private extractCoauthorCandidatesFromWorkItem(
+    item: string,
+  ): Array<{ name: string; link?: string }> {
     const byAnchors: Array<{ name: string; link?: string }> = [];
     const anchorRegex = /<a[^>]*href=["']([^"']*\/v\/[^"']+)["'][^>]*>([^<]+)<\/a>/gi;
     let anchorMatch: RegExpExecArray | null = anchorRegex.exec(item);
@@ -519,7 +542,37 @@ export class VIdPage {
       { label: 'Curtidas', value: toValue('Likes') },
       { label: 'Citacoes', value: toValue('cited') },
       { label: 'Variantes', value: this.variantsCount().toString() },
-      { label: 'Trabalhos', value: this.worksCount().toString() }
+      { label: 'Trabalhos', value: this.worksCount().toString() },
+    ];
+  });
+
+  readonly articleMetrics = computed(() => {
+    const value = this.response();
+    if (!value || typeof value !== 'object') {
+      return [] as Array<{ label: string; value: string }>;
+    }
+
+    const data = value as Record<string, unknown>;
+    const toValue = (field: string): string => {
+      const raw = data[field];
+      if (typeof raw === 'number') {
+        return raw.toLocaleString('pt-BR');
+      }
+
+      if (typeof raw === 'string' && raw.trim()) {
+        return raw;
+      }
+
+      return '-';
+    };
+
+    return [
+      { label: 'Visualizacoes', value: toValue('Views') },
+      { label: 'Downloads', value: toValue('Download') },
+      { label: 'Curtidas', value: toValue('Likes') },
+      { label: 'Citacoes', value: toValue('cited') },
+      { label: 'Ano', value: toValue('year') },
+      { label: 'Idioma', value: toValue('language') },
     ];
   });
 
@@ -562,17 +615,19 @@ export class VIdPage {
           key,
           label: `author.workTypes.${key}`,
           value,
-          color
+          color,
         };
       });
 
       return {
         label,
-        segments
+        segments,
       };
     });
 
-    return bars.filter((point) => point.segments.reduce((sum, segment) => sum + segment.value, 0) > 0);
+    return bars.filter(
+      (point) => point.segments.reduce((sum, segment) => sum + segment.value, 0) > 0,
+    );
   });
 
   readonly jsonContent = computed(() => JSON.stringify(this.response(), null, 2));
@@ -614,10 +669,10 @@ export class VIdPage {
           }
           return this.brapciApiService.getById<unknown>(id).pipe(
             map((data) => ({ ok: true as const, data })),
-            catchError(() => of({ ok: false as const, data: null }))
+            catchError(() => of({ ok: false as const, data: null })),
           );
         }),
-        takeUntilDestroyed(this.destroyRef)
+        takeUntilDestroyed(this.destroyRef),
       )
       .subscribe((result) => {
         if (!result.ok) {
