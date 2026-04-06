@@ -1,0 +1,23 @@
+<section class="area-statistics" aria-labelledby="area-statistics-title">
+  <header class="area-statistics-header">
+    <h3 id="area-statistics-title" class="area-statistics-title">Estatisticas da base</h3>
+  </header>
+
+  <p *ngIf="loading()" class="area-statistics-state">Carregando estatisticas...</p>
+  <p *ngIf="error()" class="area-statistics-state area-statistics-state-error">{{ error() }}</p>
+
+  <ul *ngIf="!loading() && !error() && stats().length" class="area-statistics-list">
+    <li *ngFor="let item of stats(); trackBy: trackByName" class="area-statistics-item">
+      <span class="area-statistics-name">{{ item.name }}</span>
+      <strong class="area-statistics-total">{{ item.total }}</strong>
+    </li>
+  </ul>
+
+  <p *ngIf="!loading() && !error() && !stats().length" class="area-statistics-state">
+    Nenhuma estatistica encontrada.
+  </p>
+
+  <small *ngIf="!loading() && !error() && updateDate()" class="area-statistics-update">
+    Atualizado em: {{ updateDate() }}
+  </small>
+</section>

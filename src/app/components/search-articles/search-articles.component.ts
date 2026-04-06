@@ -5,6 +5,9 @@ import { FormsModule } from '@angular/forms';
 import { RouterModule, Router } from '@angular/router';
 import { TranslateModule } from '@ngx-translate/core';
 import { BrapciApiService } from '../../core/services/brapci-api.service';
+import { AreaEventsComponent } from '../area-events/area-events.component';
+import { AreaNewsComponent } from '../area-news/area-news.component';
+import { AreaStatisticsComponent } from '../area-statistics/area-statistics.component';
 import { SearchResultComponent } from '../search-result/search-result.component';
 
 @Component({
@@ -22,6 +25,9 @@ import { SearchResultComponent } from '../search-result/search-result.component'
 })
 export class SearchArticlesComponent {
   private readonly brapciApiService = inject(BrapciApiService);
+  readonly areaNewsComponent = AreaNewsComponent;
+  readonly areaEventsComponent = AreaEventsComponent;
+  readonly areaStatisticsComponent = AreaStatisticsComponent;
   showFilters = false;
   search = false;
 
@@ -101,6 +107,7 @@ export class SearchArticlesComponent {
     ];
 
     if (!term) {
+      this.search = false;
       this.apiResults.set([]);
       this.filterSources.set([]);
       this.filterAuthors.set([]);
@@ -108,13 +115,13 @@ export class SearchArticlesComponent {
       return;
     }
 
+    this.search = true;
     this.loading.set(true);
 
     this.brapciApiService.search<unknown>(term, filters).subscribe({
       next: (response) => {
         const normalizedResults = this.normalizeApiResponse(response);
         const filters = this.normalizeFilters(response);
-        this.search = true;
         this.loading.set(false);
         this.apiResults.set(normalizedResults);
         this.filterSources.set(filters.sources);

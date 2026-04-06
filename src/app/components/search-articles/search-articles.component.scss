@@ -62,3 +62,65 @@
 .search-filter-title {
   font-weight: 600;
 }
+
+.idle-layout {
+  margin-top: 1rem;
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 1rem;
+}
+
+.idle-col {
+  border: 1px solid var(--theme-line);
+  border-radius: 12px;
+  background: var(--theme-card-bg);
+  padding: 1rem;
+  min-height: 100%;
+}
+
+.idle-title {
+  margin: 0 0 0.5rem;
+  font-size: 1rem;
+  color: var(--theme-title);
+}
+
+.idle-text {
+  margin: 0 0 0.75rem;
+  font-size: 0.9rem;
+  color: var(--theme-muted);
+}
+
+.idle-links {
+  display: grid;
+  gap: 0.5rem;
+}
+
+.idle-link {
+  color: var(--bs-link-color);
+  text-decoration: underline;
+  cursor: pointer;
+}
+
+.idle-col-events {
+  padding: 0;
+  border: none;
+  background: transparent;
+}
+
+.idle-col-news {
+  padding: 0;
+  border: none;
+  background: transparent;
+}
+
+.idle-col-stats {
+  padding: 0;
+  border: none;
+  background: transparent;
+}
+
+@media (max-width: 991.98px) {
+  .idle-layout {
+    grid-template-columns: 1fr;
+  }
+}

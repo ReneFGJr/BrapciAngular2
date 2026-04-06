@@ -36,6 +36,12 @@
           [keywords]="filterKeywords()"
         ></app-search-result>
       </ng-container>
+
+      <ng-container *ngIf="search && !loading() && !hasResults()">
+        <p class="hint mb-0 mt-3">
+          {{ 'search.empty' | translate }}
+        </p>
+      </ng-container>
     </div>
   </div>
 
@@ -112,18 +118,17 @@
     </form>
   </div>
 
+  <div *ngIf="!search" class="idle-layout mt-5">
+    <section class="idle-col idle-col-news">
+      <ng-container *ngComponentOutlet="areaNewsComponent"></ng-container>
+    </section>
 
-    <div
-    *ngIf="showFilters"
-    class="search-filters"
-  >
-    =={{search}}==
-     <ng-container *ngIf="!hasResults()">
-        <p class="hint mb-0">
-          {{ query().trim() ? ('search.empty' | translate) : ('search.idle' | translate) }}
-        </p>
-      </ng-container>
+    <section class="idle-col idle-col-stats">
+      <ng-container *ngComponentOutlet="areaStatisticsComponent"></ng-container>
+    </section>
+
+    <section class="idle-col idle-col-events">
+      <ng-container *ngComponentOutlet="areaEventsComponent"></ng-container>
+    </section>
   </div>
-
-  <!-- ...existing code... -->
 </article>
