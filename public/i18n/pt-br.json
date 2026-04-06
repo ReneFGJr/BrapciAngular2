@@ -213,6 +213,10 @@
       "likes": "Curtidas",
       "citations": "Citacoes"
     },
+    "data": {
+      "title": "Dados",
+      "copy": "Copiar"
+    },
     "actions": {
       "downloadPdf": "Baixar PDF"
     }

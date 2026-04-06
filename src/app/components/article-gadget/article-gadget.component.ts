@@ -1,12 +1,10 @@
 import { CommonModule } from '@angular/common';
 import { Component, Input } from '@angular/core';
 import { TranslateModule } from '@ngx-translate/core';
-import { AuthorWorksComponent, AuthorWorksGroup } from '../author-works/author-works.component';
-import { BarChartComponent, BarChartPoint } from '../bar-chart/bar-chart.component';
-import { TagCloudComponent } from '../tag-cloud/tag-cloud.component';
 import { CitationTabsComponent } from '../citation-tabs/citation-tabs.component';
 import { ArticleAuthorsComponent } from '../article-authors/article-authors.component';
 import { ArticleKeywordsComponent } from '../article-keywords/article-keywords.component';
+import { ArticleDataComponent } from '../article-data/article-data.component';
 
 type JsonRecord = Record<string, unknown>;
 
@@ -16,21 +14,15 @@ type ArticleMetric = {
 };
 
 type LocalizedTitle = {
-  language: 'pt' | 'es' | 'en' | 'fr' | 'other';
+  language: 'pt' | 'es' | 'en' | 'fr';
   languageLabel: string;
   title: string;
 };
 
 type LocalizedText = {
-  language: 'pt' | 'es' | 'en' | 'fr' | 'other';
+  language: 'pt' | 'es' | 'en' | 'fr';
   languageLabel: string;
   text: string;
-};
-
-type LocalizedKeywords = {
-  language: 'pt' | 'es' | 'en' | 'fr' | 'other';
-  languageLabel: string;
-  keywords: string[];
 };
 
 type CreatorAuthor = {
@@ -40,19 +32,16 @@ type CreatorAuthor = {
 
 @Component({
   selector: 'app-article-gadget',
-  imports: [CommonModule, TranslateModule, BarChartComponent, TagCloudComponent, AuthorWorksComponent, CitationTabsComponent, ArticleAuthorsComponent, ArticleKeywordsComponent],
+  imports: [CommonModule, TranslateModule, CitationTabsComponent, ArticleAuthorsComponent, ArticleKeywordsComponent, ArticleDataComponent],
   templateUrl: './article-gadget.component.html',
   styleUrl: './article-gadget.component.scss'
 })
 export class ArticleGadgetComponent {
   @Input({ required: true }) data: unknown = null;
   @Input() metrics: ArticleMetric[] = [];
-  @Input() chartPoints: BarChartPoint[] = [];
-  @Input() worksGroups: AuthorWorksGroup[] = [];
-  @Input() dataJour: unknown = null;
   @Input() dataTag: unknown = null;
 
-  readonly preferredLanguageOrder: Array<LocalizedTitle['language']> = ['pt', 'es', 'en', 'fr', 'other'];
+  readonly preferredLanguageOrder: Array<LocalizedTitle['language']> = ['pt', 'es', 'en', 'fr'];
 
   field(keys: string[]): string {
     const record = this.asRecord(this.data);
@@ -155,6 +144,45 @@ export class ArticleGadgetComponent {
     }
 
     return this.field(['title', 'titulo', 'Title']);
+  }
+
+  getAbstractLabel(language: LocalizedTitle['language']): string {
+    if (language === 'pt') {
+      return 'Resumo';
+    }
+
+    if (language === 'es') {
+      return 'Resumen';
+    }
+
+    if (language === 'en') {
+      return 'Abstract';
+    }
+
+    if (language === 'fr') {
+      return 'Résumé';
+    }
+
+    return 'Resumo';
+  }
+
+  abstractLanguage(abstract: LocalizedText): LocalizedText['language'] {
+    return abstract.language;
+  }
+
+  subjectData(): unknown {
+    const record = this.asRecord(this.data);
+    if (!record) {
+      return null;
+    }
+
+    return (
+      this.asRecord(record['data'])?.['hasSubject'] ??
+      this.asRecord(record['data'])?.['subjects'] ??
+      record['subject'] ??
+      record['subjects'] ??
+      null
+    );
   }
 
   journalCoverUrl(): string {
@@ -350,10 +378,6 @@ export class ArticleGadgetComponent {
       .trim()
       .toLowerCase();
 
-    if (!text) {
-      return 'other';
-    }
-
     if (text === 'pt' || text === 'pt-br' || text.includes('portug')) {
       return 'pt';
     }
@@ -370,7 +394,7 @@ export class ArticleGadgetComponent {
       return 'fr';
     }
 
-    return 'other';
+    return 'pt';
   }
 
   private addVariantsFromArray(

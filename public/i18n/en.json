@@ -216,6 +216,10 @@
       "likes": "Likes",
       "citations": "Citations"
     },
+    "data": {
+      "title": "Data",
+      "copy": "Copy"
+    },
     "actions": {
       "downloadPdf": "Download PDF"
     }

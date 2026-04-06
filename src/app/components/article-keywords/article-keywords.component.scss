@@ -82,3 +82,12 @@
     border-color: var(--theme-link);
   }
 }
+
+.keyword-badge--link {
+  text-decoration: none;
+
+  &:focus-visible {
+    outline: 2px solid var(--theme-link);
+    outline-offset: 1px;
+  }
+}

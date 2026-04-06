@@ -1,0 +1,94 @@
+<div class="article-data">
+  <div class="data-tabs">
+    <button
+      class="data-tab"
+      [class.active]="selectedTab() === 'json'"
+      (click)="selectTab('json')"
+      aria-label="Ver dados em JSON"
+    >
+      JSON
+    </button>
+    <button
+      class="data-tab"
+      [class.active]="selectedTab() === 'rdf'"
+      (click)="selectTab('rdf')"
+      aria-label="Ver dados em RDF"
+    >
+      RDF (Turtle)
+    </button>
+    <button
+      class="data-tab"
+      [class.active]="selectedTab() === 'ris'"
+      (click)="selectTab('ris')"
+      aria-label="Ver dados em RIS"
+    >
+      RIS
+    </button>
+    <button
+      class="data-tab"
+      [class.active]="selectedTab() === 'marc21'"
+      (click)="selectTab('marc21')"
+      aria-label="Ver dados em MARC21"
+    >
+      MARC21
+    </button>
+  </div>
+
+  @if (selectedTab() === 'json') {
+    <div class="data-content">
+      <div class="data-toolbar">
+        <button
+          class="copy-btn"
+          (click)="copyToClipboard(getJsonData())"
+          title="Copiar JSON"
+          aria-label="Copiar JSON para área de transferência"
+        >
+          {{ 'article.data.copy' | translate }}
+        </button>
+      </div>
+      <pre class="data-code"><code>{{ getJsonData() }}</code></pre>
+    </div>
+  } @else if (selectedTab() === 'rdf') {
+    <div class="data-content">
+      <div class="data-toolbar">
+        <button
+          class="copy-btn"
+          (click)="copyToClipboard(getRdfData())"
+          title="Copiar RDF"
+          aria-label="Copiar RDF para área de transferência"
+        >
+          {{ 'article.data.copy' | translate }}
+        </button>
+      </div>
+      <pre class="data-code"><code>{{ getRdfData() }}</code></pre>
+    </div>
+  } @else if (selectedTab() === 'ris') {
+    <div class="data-content">
+      <div class="data-toolbar">
+        <button
+          class="copy-btn"
+          (click)="copyToClipboard(getRisData())"
+          title="Copiar RIS"
+          aria-label="Copiar RIS para area de transferencia"
+        >
+          {{ 'article.data.copy' | translate }}
+        </button>
+      </div>
+      <pre class="data-code"><code>{{ getRisData() }}</code></pre>
+    </div>
+  } @else if (selectedTab() === 'marc21') {
+    <div class="data-content">
+      <div class="data-toolbar">
+        <button
+          class="copy-btn"
+          (click)="copyToClipboard(getMarc21Data())"
+          title="Copiar MARC21"
+          aria-label="Copiar MARC21 para area de transferencia"
+        >
+          {{ 'article.data.copy' | translate }}
+        </button>
+      </div>
+      <pre class="data-code"><code>{{ getMarc21Data() }}</code></pre>
+    </div>
+  }
+</div>

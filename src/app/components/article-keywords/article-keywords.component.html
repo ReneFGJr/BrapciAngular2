@@ -1,14 +1,18 @@
-@if (keywordsList.length > 0) {
+@if (visibleKeywords) {
   <div class="article-keywords">
-    @for (item of keywordsList; track trackByLanguage($index, item)) {
-      <div class="keywords-group">
-        <h4 class="keywords-language">{{ item.languageLabel }}</h4>
-        <div class="keywords-list">
-          @for (keyword of item.keywords; track keyword) {
-            <span class="keyword-badge">{{ keyword }}</span>
+    <div class="keywords-group">
+      <h4 class="keywords-language">{{ visibleKeywords.languageLabel }}</h4>
+      <div class="keywords-list">
+        @for (keyword of visibleKeywords.keywords; track trackByKeyword($index, keyword)) {
+          @if (keyword.link) {
+            <a class="keyword-badge keyword-badge--link" [href]="keyword.link">{{ keyword.term }}</a>
+          } @else {
+            <span class="keyword-badge">{{ keyword.term }}</span>
           }
-        </div>
+        }
       </div>
-    }
+    </div>
   </div>
 }
+
+{{ subject | json }} => {{ abstractLanguage }}
