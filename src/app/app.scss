@@ -237,3 +237,13 @@ h1 {
 	border-color: var(--theme-hint);
 	color: var(--theme-ink);
 }
+
+.footer-meta {
+	display: grid;
+	gap: 0.1rem;
+}
+
+.footer-session {
+	font-size: 0.72rem;
+	letter-spacing: 0.01em;
+}

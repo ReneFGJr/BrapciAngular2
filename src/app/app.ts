@@ -45,6 +45,21 @@ export class App {
     const candidate = user.name.trim() || user.username.trim();
     return candidate.split(/\s+/)[0] ?? '';
   });
+  readonly sessionUserLabel = computed(() => {
+    const user = this.currentUser();
+    if (!user) {
+      return '';
+    }
+
+    const name = user.name.trim();
+    const username = user.username.trim();
+
+    if (name && username && name !== username) {
+      return `${name} (${username})`;
+    }
+
+    return name || username;
+  });
   readonly selectedLanguage = signal<'pt-br' | 'es' | 'en'>('pt-br');
   readonly languageOptions = [
     { code: 'pt-br' as const, label: 'PT-BR', flagSrc: 'assets/img/flags/br.svg' },
