@@ -1,5 +1,6 @@
 import { CommonModule } from '@angular/common';
-import { Component, Input } from '@angular/core';
+import { Component, Input, OnInit, OnChanges, SimpleChanges, inject } from '@angular/core';
+import { Meta, Title } from '@angular/platform-browser';
 import { TranslateModule } from '@ngx-translate/core';
 import { CitationTabsComponent } from '../citation-tabs/citation-tabs.component';
 import { ArticleAuthorsComponent } from '../article-authors/article-authors.component';
@@ -36,7 +37,9 @@ type CreatorAuthor = {
   templateUrl: './article-gadget.component.html',
   styleUrl: './article-gadget.component.scss'
 })
-export class ArticleGadgetComponent {
+export class ArticleGadgetComponent implements OnInit, OnChanges {
+  private metaService = inject(Meta);
+  private titleService = inject(Title);
   @Input({ required: true }) data: unknown = null;
   @Input() metrics: ArticleMetric[] = [];
   @Input() dataTag: unknown = null;
@@ -185,6 +188,64 @@ export class ArticleGadgetComponent {
     );
   }
 
+  metaRecord(): JsonRecord | null {
+    const record = this.asRecord(this.data);
+    if (!record) {
+      return null;
+    }
+
+    return this.asRecord(record['meta']) ?? this.asRecord(record['Meta']) ?? this.asRecord(this.asRecord(record['data'])?.['meta']) ?? this.asRecord(this.asRecord(record['data'])?.['Meta']);
+  }
+
+  metaField(keys: string[]): string {
+    const meta = this.metaRecord();
+    if (!meta) {
+      return this.field(keys);
+    }
+
+    for (const key of keys) {
+      const value = meta[key];
+      if (typeof value === 'string' && value.trim()) {
+        return value.trim();
+      }
+
+      if (typeof value === 'number' && Number.isFinite(value)) {
+        return String(value);
+      }
+    }
+
+    return this.field(keys);
+  }
+
+  abstractSummary(): string {
+    const abstracts = this.abstractVariants();
+    return abstracts.map((item) => item.text).join(' ').trim();
+  }
+
+  articleJsonLd(): string {
+    const authors = this.creatorAuthors().map((author) => ({
+      '@type': 'Person',
+      name: author.name,
+      url: author.id ? `/v/${author.id}` : undefined,
+    }));
+
+    const payload: Record<string, unknown> = {
+      '@context': 'https://schema.org',
+      '@type': 'ScholarlyArticle',
+      name: this.primaryTitle(),
+      headline: this.primaryTitle(),
+      description: this.abstractSummary() || undefined,
+      author: authors.length > 0 ? authors : undefined,
+      datePublished: this.metaField(['datePublished', 'year', 'ano']) || undefined,
+      inLanguage: this.metaField(['language', 'idioma']) || undefined,
+      isPartOf: this.journalName() || undefined,
+      identifier: this.metaField(['doi', 'DOI']) || undefined,
+      url: this.pdfUrl() || undefined,
+    };
+
+    return JSON.stringify(payload);
+  }
+
   journalCoverUrl(): string {
     return this.field(['cover']);
   }
@@ -192,7 +253,7 @@ export class ArticleGadgetComponent {
   journalName(): string {
     const issue = this.asRecord(this.asRecord(this.data)?.['Issue']);
     const issuePublisher = issue ? this.toText(issue['publisher']) : '';
-    return issuePublisher || this.field(['publisher', 'jnl_name', 'journal', 'source']);
+    return issuePublisher || this.metaField(['journal', 'jnl_name', 'publisher', 'source']);
   }
 
   legend(): string {
@@ -458,5 +519,188 @@ export class ArticleGadgetComponent {
 
   private asRecord(value: unknown): JsonRecord | null {
     return value && typeof value === 'object' ? (value as JsonRecord) : null;
+  }
+
+  ngOnInit(): void {
+    // Initial update when component initializes
+    this.updateDocumentHead();
+  }
+
+  ngOnChanges(changes: SimpleChanges): void {
+    // Update when inputs change
+    if (changes['data']) {
+      this.updateDocumentHead();
+    }
+  }
+
+  private updateDocumentHead(): void {
+    const title = this.primaryTitle();
+    const description = this.abstractSummary() || this.field(['description', 'descricao']);
+    const authors = this.creatorAuthors()
+      .map((author) => author.name)
+      .join('; ');
+    const keywords = this.getKeywordsForMeta();
+    const journal = this.journalName();
+    const year = this.field(['year', 'ano']);
+    const doi = this.field(['doi', 'DOI']);
+    const language = this.field(['language', 'idioma']) || 'pt';
+
+    // Update title tag
+    if (title && title !== '-') {
+      this.titleService.setTitle(title + ' - Brapci');
+    }
+
+    // Remove existing meta tags we manage
+    this.metaService.removeTag("name='description'");
+    this.metaService.removeTag("name='keywords'");
+    this.metaService.removeTag("property='og:title'");
+    this.metaService.removeTag("property='og:description'");
+    this.metaService.removeTag("property='og:type'");
+    this.metaService.removeTag("property='og:url'");
+    this.metaService.removeTag("name='citation_title'");
+    this.metaService.removeTag("name='citation_authors'");
+    this.metaService.removeTag("name='citation_publication_date'");
+    this.metaService.removeTag("name='citation_journal_title'");
+    this.metaService.removeTag("name='citation_doi'");
+    this.metaService.removeTag("name='citation_language'");
+
+    // Add new meta tags with article metadata
+    if (description && description !== '-') {
+      this.metaService.addTag({
+        name: 'description',
+        content: description.substring(0, 160) // Limit to 160 chars for SEO
+      });
+    }
+
+    if (keywords) {
+      this.metaService.addTag({
+        name: 'keywords',
+        content: keywords
+      });
+    }
+
+    // OpenGraph tags
+    if (title && title !== '-') {
+      this.metaService.addTag({
+        property: 'og:title',
+        content: title
+      });
+    }
+
+    if (description && description !== '-') {
+      this.metaService.addTag({
+        property: 'og:description',
+        content: description.substring(0, 160)
+      });
+    }
+
+    this.metaService.addTag({
+      property: 'og:type',
+      content: 'article'
+    });
+
+    // Citation metadata (for academic indexing)
+    if (title && title !== '-') {
+      this.metaService.addTag({
+        name: 'citation_title',
+        content: title
+      });
+    }
+
+    if (authors) {
+      const authorList = authors.split('; ');
+      for (const author of authorList) {
+        this.metaService.addTag({
+          name: 'citation_author',
+          content: author.trim()
+        });
+      }
+    }
+
+    if (year && year !== '-') {
+      this.metaService.addTag({
+        name: 'citation_publication_date',
+        content: year
+      });
+    }
+
+    if (journal && journal !== '-') {
+      this.metaService.addTag({
+        name: 'citation_journal_title',
+        content: journal
+      });
+    }
+
+    if (doi && doi !== '-') {
+      this.metaService.addTag({
+        name: 'citation_doi',
+        content: doi
+      });
+    }
+
+    if (language && language !== '-') {
+      this.metaService.addTag({
+        name: 'citation_language',
+        content: language.substring(0, 2)
+      });
+    }
+  }
+
+  private getKeywordsForMeta(): string {
+    const record = this.asRecord(this.data);
+    if (!record) {
+      return '';
+    }
+
+    const keywords: string[] = [];
+
+    // Try to get keywords from subject/subjects field
+    const subject = record['subject'];
+    if (subject && typeof subject === 'object') {
+      for (const [lang, items] of Object.entries(subject)) {
+        if (Array.isArray(items)) {
+          for (const item of items) {
+            if (typeof item === 'string') {
+              keywords.push(item);
+            } else if (item && typeof item === 'object') {
+              const term = this.toText(
+                (item as Record<string, unknown>)['name'] ||
+                  (item as Record<string, unknown>)['term'] ||
+                  (item as Record<string, unknown>)['label']
+              );
+              if (term) {
+                keywords.push(term);
+              }
+            }
+          }
+        }
+      }
+    }
+
+    // Also check data.hasSubject
+    const dataRecord = this.asRecord(record['data']);
+    const hasSubject = this.asRecord(dataRecord?.['hasSubject']);
+    if (hasSubject) {
+      for (const [lang, items] of Object.entries(hasSubject)) {
+        if (Array.isArray(items)) {
+          for (const item of items) {
+            if (typeof item === 'string') {
+              keywords.push(item);
+            } else if (item && typeof item === 'object') {
+              const term = this.toText(
+                (item as Record<string, unknown>)['name'] ||
+                  (item as Record<string, unknown>)['term'] ||
+                  (item as Record<string, unknown>)['label']
+              );
+              if (term) {
+                keywords.push(term);
+              }
+            }
+          }
+        }
+      }
+    }
+
+    return [...new Set(keywords)].slice(0, 10).join(', ');
   }
 }

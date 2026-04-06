@@ -1,5 +1,15 @@
-<article class="article-gadget" aria-label="Pagina de artigo">
+<article class="article-gadget" aria-label="Pagina de artigo" itemscope itemtype="https://schema.org/ScholarlyArticle">
   <header class="article-hero">
+    <script type="application/ld+json">{{ articleJsonLd() }}</script>
+    <div class="article-seo-meta" aria-hidden="true">
+      <meta itemprop="name" [attr.content]="primaryTitle()" />
+      <meta itemprop="headline" [attr.content]="primaryTitle()" />
+      <meta itemprop="description" [attr.content]="abstractSummary()" />
+      <meta itemprop="datePublished" [attr.content]="metaField(['datePublished', 'year', 'ano'])" />
+      <meta itemprop="inLanguage" [attr.content]="metaField(['language', 'idioma'])" />
+      <meta itemprop="identifier" [attr.content]="metaField(['doi', 'DOI'])" />
+      <meta itemprop="publisher" [attr.content]="journalName()" />
+    </div>
     @if (legend() && legend() !== '-') {
       <p class="article-legend mb-3">{{ legend() }}</p>
     }
@@ -27,11 +37,11 @@
       }
 
       <div class="article-meta-grid">
-        <div><strong>{{ 'article.meta.journal' | translate }}:</strong> {{ journalName() }}</div>
-        <div><strong>{{ 'article.meta.year' | translate }}:</strong> {{ field(['year', 'ano']) }}</div>
-        <div><strong>{{ 'article.meta.doi' | translate }}:</strong> {{ field(['doi', 'DOI']) }}</div>
+        <div><strong>{{ 'article.meta.journal' | translate }}:</strong> {{ metaField(['journal', 'jnl_name', 'publisher', 'source']) }}</div>
+        <div><strong>{{ 'article.meta.year' | translate }}:</strong> {{ metaField(['datePublished', 'year', 'ano']) }}</div>
+        <div><strong>{{ 'article.meta.doi' | translate }}:</strong> {{ metaField(['doi', 'DOI']) }}</div>
         <div>
-          <strong>{{ 'article.meta.language' | translate }}:</strong> {{ field(['language', 'idioma']) }}
+          <strong>{{ 'article.meta.language' | translate }}:</strong> {{ metaField(['language', 'idioma']) }}
         </div>
         @if (sectionNames().length > 0) {
           <div>
