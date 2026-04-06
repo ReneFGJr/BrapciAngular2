@@ -1,0 +1,42 @@
+<section class="citation-tabs" aria-label="Estilos de citacao">
+  <div class="citation-tabs__header">
+    <nav class="citation-tabs__nav" role="tablist">
+      @for (tab of getVisibleTabs(); track tab.id) {
+        <button
+          class="citation-tabs__button"
+          [class.citation-tabs__button--active]="selectedTab() === tab.id"
+          [attr.aria-selected]="selectedTab() === tab.id"
+          [attr.aria-controls]="'citation-' + tab.id"
+          role="tab"
+          (click)="selectTab(tab.id)"
+        >
+          {{ 'citation.styles.' + tab.id | translate }}
+        </button>
+      }
+    </nav>
+  </div>
+
+  <div class="citation-tabs__content">
+    @for (tab of getVisibleTabs(); track tab.id) {
+      @if (selectedTab() === tab.id) {
+        <div
+          class="citation-tabs__panel"
+          [id]="'citation-' + tab.id"
+          role="tabpanel"
+          [attr.aria-labelledby]="'citation-tab-' + tab.id"
+        >
+          <div class="citation-text">
+            @if (isAbntTab(tab.id)) {
+              <p [innerHTML]="getTabContent(tab.id)"></p>
+            } @else {
+              <p>{{ getTabContent(tab.id) }}</p>
+            }
+          </div>
+          <button class="citation-copy-btn" (click)="copyToClipboard(tab.id)" aria-label="Copiar citacao">
+            {{ 'citation.actions.copy' | translate }}
+          </button>
+        </div>
+      }
+    }
+  </div>
+</section>

@@ -1,32 +1,111 @@
-<section class="article-gadget" aria-label="Dados do artigo">
-  <div class="article-header">
-    <h2 class="h5 mb-3">Artigo</h2>
-    <p class="mb-1"><strong>Titulo:</strong> {{ field(['title', 'titulo', 'Title']) }}</p>
-    <p class="mb-1"><strong>Fonte:</strong> {{ field(['jnl_name', 'journal', 'source']) }}</p>
-    <p class="mb-1"><strong>Ano:</strong> {{ field(['year', 'ano']) }}</p>
-    <p class="mb-1"><strong>DOI:</strong> {{ field(['doi', 'DOI']) }}</p>
-    <p class="mb-0"><strong>Idioma:</strong> {{ field(['language', 'idioma']) }}</p>
-
-    @if (listField(['authors', 'autores', 'Authors']).length > 0) {
-      <p class="mb-0 mt-2">
-        <strong>Autores:</strong>
-        {{ listField(['authors', 'autores', 'Authors']).join('; ') }}
-      </p>
+<article class="article-gadget" aria-label="Pagina de artigo">
+  <header class="article-hero">
+    @if (legend() && legend() !== '-') {
+      <p class="article-legend mb-3">{{ legend() }}</p>
     }
-  </div>
 
-  <div class="article-metrics mt-3">
-    @for (metric of metrics; track metric.label) {
-      <div class="article-metric-item">
-        <small>{{ metric.label }}</small>
-        <strong>{{ metric.value }}</strong>
+    <div class="article-hero-content">
+      <div class="article-kicker">{{ 'article.kicker' | translate }}</div>
+      <h2 class="article-main-title">{{ primaryTitle() }}</h2>
+
+      @if (titleVariants().length > 1) {
+        <ul class="article-title-variants">
+          @for (variant of titleVariants(); track variant.language) {
+            <li>
+              <strong>{{ variant.languageLabel }}:</strong>
+              {{ variant.title }}
+            </li>
+          }
+        </ul>
+      }
+
+      @if (creatorAuthors().length > 0) {
+        <div class="article-authors-line">
+          <span class="article-authors-label">{{ 'article.authors.label' | translate }}: </span>
+          <app-article-authors [authors]="creatorAuthors()"></app-article-authors>
+        </div>
+      }
+
+      <div class="article-meta-grid">
+        <div><strong>{{ 'article.meta.journal' | translate }}:</strong> {{ journalName() }}</div>
+        <div><strong>{{ 'article.meta.year' | translate }}:</strong> {{ field(['year', 'ano']) }}</div>
+        <div><strong>{{ 'article.meta.doi' | translate }}:</strong> {{ field(['doi', 'DOI']) }}</div>
+        <div>
+          <strong>{{ 'article.meta.language' | translate }}:</strong> {{ field(['language', 'idioma']) }}
+        </div>
+        @if (sectionNames().length > 0) {
+          <div>
+            <strong>{{ 'article.sections.label' | translate }}:</strong> {{ sectionNames().join(', ') }}
+          </div>
+        }
       </div>
-    }
-  </div>
+    </div>
 
-  <app-bar-chart class="mt-3" title="Indicadores por ano" [points]="chartPoints"></app-bar-chart>
+    <!-- Imagem da revista -->
+    <div class="article-cover-wrap">
+      @if (journalCoverUrl() && journalCoverUrl() !== '-') {
+        <img
+          class="article-cover"
+          [src]="journalCoverUrl()"
+          [alt]="'Capa da revista ' + journalName()"
+          (error)="hasImageError($event)"
+        />
+      } @else {
+        <div class="article-cover article-cover--placeholder" aria-hidden="true">
+          {{ 'article.noCover' | translate }}
+        </div>
+      }
+
+      <!-- PDF -->
+      @if (pdfUrl() && pdfUrl() !== '-') {
+        <a
+          class="article-btn mt-3"
+          [href]="pdfUrl()"
+          target="_blank"
+          rel="noopener noreferrer"
+        >
+          {{ 'article.actions.downloadPdf' | translate }}
+        </a>
+      }
+    </div>
+  </header>
+
+  @if (abstractVariants().length > 0) {
+    <section class="article-section">
+      <h3 class="section-title">{{ 'article.abstract.title' | translate }}</h3>
+      <div class="abstract-list">
+        @for (abstract of abstractVariants(); track abstract.language) {
+          <article class="abstract-card">
+            <h4>{{ abstract.languageLabel }}</h4>
+            <p>{{ abstract.text }}</p>
+          </article>
+        }
+      </div>
+    </section>
+  }
+
+  @if (hasCitationData()) {
+    <section class="article-section">
+      <h3 class="section-title">{{ 'article.citation.title' | translate }}</h3>
+      <app-citation-tabs [citations]="getCitations()"></app-citation-tabs>
+    </section>
+  }
+
+  <section class="article-section">
+    <h3 class="section-title">{{ 'article.indicators.title' | translate }}</h3>
+    <div class="article-metrics">
+      @for (metric of metrics; track metric.label) {
+        <div class="article-metric-item">
+          <small>{{ metric.label }}</small>
+          <strong>{{ metric.value }}</strong>
+        </div>
+      }
+    </div>
+
+    <app-bar-chart class="mt-3" title="Indicadores por ano" [points]="chartPoints"></app-bar-chart>
+  </section>
 
   <app-tag-cloud [dataTag]="dataTag"></app-tag-cloud>
 
   <app-author-works [groups]="worksGroups" [dataJour]="dataJour"></app-author-works>
-</section>
+</article>

@@ -7,7 +7,7 @@
         <p class="v-error mb-0">{{ error() }}</p>
       } @else {
 
-        <app-breadcrumbs></app-breadcrumbs>
+        <app-breadcrumbs [labels]="breadcrumbLabels()"></app-breadcrumbs>
 
         <p class="mb-3"><strong>Classe:</strong> {{ classe() }}</p>
 

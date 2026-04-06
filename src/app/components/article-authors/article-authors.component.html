@@ -1,0 +1,15 @@
+@if (authors.length > 0) {
+  <span class="article-authors">
+    @for (author of authors; track author.name; let last = $last) {
+      @if (author.id) {
+        <a [href]="getAuthorLink(author)" class="article-authors__link">{{ author.name }}</a>
+      } @else {
+        <span class="article-authors__text">{{ author.name }}</span>
+      }
+      @if (!last) {
+        <span class="article-authors__separator">, </span>
+      }
+    }
+    <span class="article-authors__period">.</span>
+  </span>
+}

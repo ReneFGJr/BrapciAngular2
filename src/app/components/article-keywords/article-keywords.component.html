@@ -1,0 +1,14 @@
+@if (keywordsList.length > 0) {
+  <div class="article-keywords">
+    @for (item of keywordsList; track trackByLanguage($index, item)) {
+      <div class="keywords-group">
+        <h4 class="keywords-language">{{ item.languageLabel }}</h4>
+        <div class="keywords-list">
+          @for (keyword of item.keywords; track keyword) {
+            <span class="keyword-badge">{{ keyword }}</span>
+          }
+        </div>
+      </div>
+    }
+  </div>
+}

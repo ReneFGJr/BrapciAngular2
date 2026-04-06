@@ -184,5 +184,53 @@
       "card2Title": "Extraccion de palabras clave",
       "card2Text": "Identifique terminos centrales para indexacion y recuperacion de informacion."
     }
+  },
+  "article": {
+    "kicker": "Articulo Cientifico",
+    "noCover": "Imagen no disponible",
+    "sections": {
+      "label": "Seccion",
+      "title": "Secciones"
+    },
+    "authors": {
+      "label": "Autores",
+      "title": "Autores del articulo",
+      "profile": "Ver Perfil"
+    },
+    "meta": {
+      "journal": "Revista",
+      "year": "Ano",
+      "doi": "DOI",
+      "language": "Idioma"
+    },
+    "abstract": {
+      "title": "Resumen"
+    },
+    "citation": {
+      "title": "Como citar"
+    },
+    "indicators": {
+      "title": "Indicadores",
+      "views": "Vistas",
+      "downloads": "Descargas",
+      "likes": "Likes",
+      "citations": "Citaciones"
+    },
+    "actions": {
+      "downloadPdf": "Descargar PDF"
+    }
+  },
+  "citation": {
+    "styles": {
+      "abnt": "ABNT",
+      "apa": "APA",
+      "vancouver": "Vancouver"
+    },
+    "actions": {
+      "copy": "Copiar Citacion"
+    },
+    "aria": {
+      "tabs": "Estilos de citacion"
+    }
   }
 }

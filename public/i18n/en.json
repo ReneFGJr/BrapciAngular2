@@ -184,5 +184,53 @@
       "card2Title": "Keyword extraction",
       "card2Text": "Identify key terms for indexing and information retrieval."
     }
+  },
+  "article": {
+    "kicker": "Scientific Article",
+    "noCover": "Image not available",
+    "sections": {
+      "label": "Section",
+      "title": "Sections"
+    },
+    "authors": {
+      "label": "Authors",
+      "title": "Article Authors",
+      "profile": "View Profile"
+    },
+    "meta": {
+      "journal": "Journal",
+      "year": "Year",
+      "doi": "DOI",
+      "language": "Language"
+    },
+    "abstract": {
+      "title": "Abstract"
+    },
+    "citation": {
+      "title": "How to cite"
+    },
+    "indicators": {
+      "title": "Indicators",
+      "views": "Views",
+      "downloads": "Downloads",
+      "likes": "Likes",
+      "citations": "Citations"
+    },
+    "actions": {
+      "downloadPdf": "Download PDF"
+    }
+  },
+  "citation": {
+    "styles": {
+      "abnt": "ABNT",
+      "apa": "APA",
+      "vancouver": "Vancouver"
+    },
+    "actions": {
+      "copy": "Copy Citation"
+    },
+    "aria": {
+      "tabs": "Citation Styles"
+    }
   }
 }

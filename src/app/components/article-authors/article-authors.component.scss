@@ -1,0 +1,46 @@
+.article-authors {
+  display: inline;
+  font-size: 0.95rem;
+  line-height: 1.6;
+  color: var(--theme-ink);
+
+  @media (max-width: 768px) {
+    font-size: 0.9rem;
+  }
+
+  @media (max-width: 480px) {
+    font-size: 0.85rem;
+  }
+}
+
+.article-authors__link {
+  text-decoration: none;
+  color: var(--theme-link);
+  font-weight: 500;
+  transition: all 0.2s ease;
+
+  &:hover {
+    text-decoration: underline;
+    color: var(--theme-hint);
+  }
+
+  &:focus-visible {
+    outline: 2px solid var(--theme-link);
+    outline-offset: 2px;
+    border-radius: 2px;
+  }
+}
+
+.article-authors__text {
+  color: var(--theme-ink);
+  font-weight: 500;
+}
+
+.article-authors__separator {
+  margin: 0 0.15em;
+  color: var(--theme-muted);
+}
+
+.article-authors__period {
+  color: var(--theme-ink);
+}

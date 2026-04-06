@@ -68,6 +68,15 @@ export class VIdPage {
   readonly isProceeding = computed(() => this.classe().toLowerCase() === 'proceeding');
   readonly isBookChapter = computed(() => this.classe().toLowerCase() === 'bookchapter');
 
+  readonly breadcrumbLabels = computed<Record<string, string>>(() => {
+    const classe = this.classe();
+    if (!classe || classe === '-') {
+      return { v: 'Registro' };
+    }
+
+    return { v: classe };
+  });
+
   readonly publicationView = computed<'journal' | 'event' | 'enancib'>(() => {
     const value = this.response();
     if (!value || typeof value !== 'object') {
