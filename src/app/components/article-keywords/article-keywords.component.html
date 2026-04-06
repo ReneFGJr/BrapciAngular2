@@ -1,7 +1,7 @@
 @if (visibleKeywords) {
   <div class="article-keywords">
-    <div class="keywords-group">
-      <h4 class="keywords-language">{{ visibleKeywords.languageLabel }}</h4>
+    <div class="keywords-group keywords-group--inline">
+      <span class="keywords-language">{{ keywordsIntro(visibleKeywords.language) }}:</span>
       <div class="keywords-list">
         @for (keyword of visibleKeywords.keywords; track trackByKeyword($index, keyword)) {
           @if (keyword.link) {
@@ -14,5 +14,3 @@
     </div>
   </div>
 }
-
-{{ subject | json }} => {{ abstractLanguage }}

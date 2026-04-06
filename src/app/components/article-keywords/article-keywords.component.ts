@@ -48,6 +48,22 @@ export class ArticleKeywordsComponent {
     };
   }
 
+  keywordsIntro(language: 'pt' | 'es' | 'en' | 'fr'): string {
+    if (language === 'pt') {
+      return 'Palavras-chave';
+    }
+
+    if (language === 'en') {
+      return 'Keywords';
+    }
+
+    if (language === 'es') {
+      return 'Palabras clave';
+    }
+
+    return 'Mots clés';
+  }
+
   trackByKeyword(index: number, item: KeywordItem): string {
     return `${item.id ?? ''}-${item.term}`;
   }

@@ -177,10 +177,10 @@ export class ArticleGadgetComponent {
     }
 
     return (
-      this.asRecord(record['data'])?.['hasSubject'] ??
-      this.asRecord(record['data'])?.['subjects'] ??
       record['subject'] ??
       record['subjects'] ??
+      this.asRecord(record['data'])?.['hasSubject'] ??
+      this.asRecord(record['data'])?.['subjects'] ??
       null
     );
   }

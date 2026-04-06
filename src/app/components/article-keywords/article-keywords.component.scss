@@ -13,6 +13,11 @@
 }
 
 .keywords-group {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.45rem;
+
   @media (max-width: 480px) {
     &:not(:last-child) {
       padding-bottom: 0.6rem;
@@ -22,21 +27,20 @@
 }
 
 .keywords-language {
-  margin: 0 0 0.5rem;
+  margin: 0;
   font-size: 0.86rem;
   text-transform: uppercase;
   letter-spacing: 0.04em;
   color: var(--theme-muted);
   font-weight: 600;
+  white-space: nowrap;
 
   @media (max-width: 768px) {
     font-size: 0.82rem;
-    margin: 0 0 0.4rem;
   }
 
   @media (max-width: 480px) {
     font-size: 0.78rem;
-    margin: 0 0 0.35rem;
   }
 }
 
