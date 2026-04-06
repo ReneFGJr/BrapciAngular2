@@ -23,6 +23,7 @@ import { SearchResultComponent } from '../search-result/search-result.component'
 export class SearchArticlesComponent {
   private readonly brapciApiService = inject(BrapciApiService);
   showFilters = false;
+  search = false;
 
   filtersForm: FormGroup;
   yearsStart: number[] = [];
@@ -113,6 +114,7 @@ export class SearchArticlesComponent {
       next: (response) => {
         const normalizedResults = this.normalizeApiResponse(response);
         const filters = this.normalizeFilters(response);
+        this.search = true;
         this.loading.set(false);
         this.apiResults.set(normalizedResults);
         this.filterSources.set(filters.sources);

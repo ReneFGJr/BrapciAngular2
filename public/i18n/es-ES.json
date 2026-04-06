@@ -39,7 +39,7 @@
     "cardSubtitle": "Use su usuario y contrasena para ingresar a la plataforma."
   },
   "search": {
-    "title": "Busqueda en API Brapci",
+    "title": "¿Qué estás buscando?",
     "input": "Escriba un termino",
     "button": "Buscar",
     "empty": "No se encontraron resultados para la consulta.",

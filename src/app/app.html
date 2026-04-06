@@ -173,11 +173,10 @@
 </nav>
 
 @if (!isDocRoute()) {
-<header class="hero py-5" role="banner">
-  <div class="container">
-    <div class="hero__content text-center text-lg-start">
-      <img class="hero-logo mb-3" src="assets/img/brand_brapci_shadown.png" alt="Brapci" />
-    </div>
+
+<header class="hero pt-3" role="banner">
+  <div class="container text-center">
+      <img class="hero-logo text-center" src="assets/img/brand_brapci_shadown.png" alt="Brapci" />
   </div>
 </header>
 
@@ -190,7 +189,9 @@
 </main>
 }
 
-<router-outlet></router-outlet>
+@if (isDocRoute()) {
+  <router-outlet></router-outlet>
+}
 
 <footer class="footer mt-auto py-3 border-top">
   <div class="container d-flex flex-column flex-md-row justify-content-between align-items-center gap-2">

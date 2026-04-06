@@ -79,6 +79,7 @@ export class App {
       url.startsWith('/revistas') ||
       url.startsWith('/signin') ||
       url.startsWith('/perfil') ||
+      url.startsWith('/search-boolean') ||
       url.startsWith('/tools_')
     );
   });

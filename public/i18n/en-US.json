@@ -42,7 +42,7 @@
     "bollean": {
       "linkBack": "Back to normal search"
     },
-    "title": "Brapci API Search",
+    "title": "What are you looking for?",
     "input": "Type a term",
     "button": "Search",
     "empty": "No results found for this query.",

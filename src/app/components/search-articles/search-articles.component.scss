@@ -3,6 +3,62 @@
   gap: 0.6rem;
 }
 
+.search-title
+{
+  color: var(--theme-title);
+  text-align: left;
+  line-height: 10px;
+  size: 2rem;
+}
+
 .hint {
   color: var(--theme-hint);
+}
+
+.search-actions {
+  margin-bottom: 0;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  font-size: 0.75rem;
+}
+
+.search-action-link {
+  font-weight: 400;
+  font-size: 0.75rem;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.search-actions-separator {
+  font-weight: 600;
+  color: var(--theme-muted);
+}
+
+.search-filters {
+  border: 1px solid var(--theme-line);
+  padding: 1rem;
+  border-radius: 8px;
+  margin-bottom: 1rem;
+  background: var(--theme-card-bg);
+  color: var(--theme-ink);
+}
+
+.search-filters-form {
+  display: flex;
+  gap: 2rem;
+  flex-wrap: wrap;
+}
+
+.search-filter-col-year {
+  min-width: 100px;
+}
+
+.search-filter-col-wide {
+  min-width: 220px;
+}
+
+.search-filter-title {
+  font-weight: 600;
 }

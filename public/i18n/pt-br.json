@@ -45,7 +45,7 @@
       "button": "Pesquisar",
       "linkBack": "Voltar para a busca normal"
     },
-    "title": "Pesquisa na API Brapci",
+    "title": "O que está procurando?",
     "input": "Digite um termo",
     "button": "Buscar",
     "empty": "Nenhum resultado encontrado para a consulta.",
