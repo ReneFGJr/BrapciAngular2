@@ -28,20 +28,57 @@
         </div>
       </form>
 
-      <ng-container *ngIf="hasResults()">
-        <app-search-result
-          [results]="apiResults()"
-          [sources]="filterSources()"
-          [authors]="filterAuthors()"
-          [keywords]="filterKeywords()"
-        ></app-search-result>
-      </ng-container>
+      @if (search) {
+        <div class="search-results-grid mt-4">
+          <div class="search-results-main">
+            <ng-container *ngIf="hasResults()">
+              <app-search-result
+                [results]="apiResults()"
+                [sources]="filterSources()"
+                [authors]="filterAuthors()"
+                [keywords]="filterKeywords()"
+              ></app-search-result>
+            </ng-container>
 
-      <ng-container *ngIf="search && !loading() && !hasResults()">
-        <p class="hint mb-0 mt-3">
-          {{ 'search.empty' | translate }}
-        </p>
-      </ng-container>
+            <ng-container *ngIf="!loading() && !hasResults()">
+              <p class="hint mb-0 mt-3">
+                {{ 'search.empty' | translate }}
+              </p>
+            </ng-container>
+          </div>
+
+          <aside class="search-json-sidebar" aria-label="Menu lateral da consulta">
+            <div class="search-json-toolbar">
+              <button type="button" class="search-json-tab" [class.active]="!showJsonPanel()" (click)="showResultsPanel()">
+                Resultados
+              </button>
+              <button type="button" class="search-json-tab" [class.active]="showJsonPanel()" (click)="showJsonResponsePanel()">
+                JSON
+              </button>
+            </div>
+
+            @if (showJsonPanel()) {
+              <div class="search-json-card">
+                <div class="search-json-header">
+                  <h3 class="search-json-title">Resposta da consulta</h3>
+                  <p class="search-json-subtitle">Visualizacao bruta do retorno da API.</p>
+                </div>
+
+                @if (searchResponseJson()) {
+                  <pre class="search-json-pre">{{ searchResponseJson() }}</pre>
+                } @else {
+                  <p class="search-json-empty">Nenhuma resposta disponivel.</p>
+                }
+              </div>
+            } @else {
+              <div class="search-json-card search-json-card-help">
+                <h3 class="search-json-title">Menu lateral</h3>
+                <p class="search-json-subtitle">Clique em JSON para ver a resposta completa da consulta.</p>
+              </div>
+            }
+          </aside>
+        </div>
+      }
     </div>
   </div>
 

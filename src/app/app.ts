@@ -46,6 +46,7 @@ export class App {
     return candidate.split(/\s+/)[0] ?? '';
   });
   readonly sessionUserLabel = computed(() => {
+    console.log("==>", this.currentUser());
     const user = this.currentUser();
     if (!user) {
       return '';

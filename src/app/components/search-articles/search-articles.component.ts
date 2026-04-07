@@ -28,6 +28,7 @@ export class SearchArticlesComponent {
   readonly areaNewsComponent = AreaNewsComponent;
   readonly areaEventsComponent = AreaEventsComponent;
   readonly areaStatisticsComponent = AreaStatisticsComponent;
+  readonly showJsonPanel = signal(false);
   showFilters = false;
   search = false;
 
@@ -37,9 +38,8 @@ export class SearchArticlesComponent {
   publicationTypes = [
     { label: 'Revistas Brasileiras', value: 'JA' },
     { label: 'Revistas estrangeiras', value: 'JE' },
-    { label: 'Livros e capítulo', value: 'BK' },
     { label: 'Anais de eventos', value: 'EV' },
-  ];
+    { label: 'Livros e capítulo', value: 'BK' },  ];
   searchFields = [
     { label: 'Título', value: 'TI' },
     { label: 'Resumo', value: 'AB' },
@@ -92,8 +92,30 @@ export class SearchArticlesComponent {
   readonly filterSources = signal<unknown[]>([]);
   readonly filterAuthors = signal<unknown[]>([]);
   readonly filterKeywords = signal<unknown[]>([]);
+  readonly rawSearchResponse = signal<unknown>(null);
   readonly query = signal('ciencia da informacao');
   readonly hasResults = computed(() => this.apiResults().length > 0);
+  readonly searchResponseJson = computed(() => {
+    const response = this.rawSearchResponse();
+
+    if (response === null || response === undefined) {
+      return '';
+    }
+
+    try {
+      return JSON.stringify(response, null, 2);
+    } catch {
+      return '[Nao foi possivel serializar a resposta da consulta]';
+    }
+  });
+
+  showResultsPanel(): void {
+    this.showJsonPanel.set(false);
+  }
+
+  showJsonResponsePanel(): void {
+    this.showJsonPanel.set(true);
+  }
 
   searchInBrapci(): void {
     const term = this.query().trim();
@@ -108,10 +130,12 @@ export class SearchArticlesComponent {
 
     if (!term) {
       this.search = false;
+      this.showJsonPanel.set(false);
       this.apiResults.set([]);
       this.filterSources.set([]);
       this.filterAuthors.set([]);
       this.filterKeywords.set([]);
+      this.rawSearchResponse.set(null);
       return;
     }
 
@@ -123,6 +147,7 @@ export class SearchArticlesComponent {
         const normalizedResults = this.normalizeApiResponse(response);
         const filters = this.normalizeFilters(response);
         this.loading.set(false);
+        this.rawSearchResponse.set(response);
         this.apiResults.set(normalizedResults);
         this.filterSources.set(filters.sources);
         this.filterAuthors.set(filters.authors);
@@ -139,6 +164,7 @@ export class SearchArticlesComponent {
         this.filterSources.set([]);
         this.filterAuthors.set([]);
         this.filterKeywords.set([]);
+        this.rawSearchResponse.set({ error: 'Erro ao consultar a API' });
       },
     });
   }
