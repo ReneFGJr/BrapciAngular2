@@ -1,11 +1,30 @@
 <section class="container py-4">
   <h2>Trabalhos Selecionados</h2>
-  <div *ngIf="markedIds.length === 0" class="alert alert-info mt-3">
+
+  <div *ngIf="markedIds().length === 0 && !loading()" class="alert alert-info mt-3">
     Nenhum trabalho selecionado.
   </div>
-  <ul *ngIf="markedIds.length > 0" class="list-group mt-3">
-    <li *ngFor="let id of markedIds" class="list-group-item">
-      ID do trabalho: {{ id }}
-    </li>
-  </ul>
+
+  <div *ngIf="loading()" class="alert alert-secondary mt-3">
+    Carregando dados dos trabalhos...
+  </div>
+
+  <div *ngIf="error()" class="alert alert-danger mt-3">
+    {{ error() }}
+  </div>
+
+  <ng-container *ngIf="!loading() && !error() && results()">
+      <div *ngIf="data?.ABNT">
+        <div *ngFor="let categoria of ['Articles', 'Proceedings', 'Books', 'BooksChapter']">
+          <ng-container *ngIf="data.ABNT[categoria]?.length > 0">
+            <h4>{{ categoria }}</h4>
+            <ul class="list-group">
+              <li *ngFor="let item of data.ABNT[categoria]" class="list-group-item">
+                <span [innerHTML]="item"></span>
+              </li>
+            </ul>
+          </ng-container>
+        </div>
+      </div>
+  </ng-container>
 </section>
