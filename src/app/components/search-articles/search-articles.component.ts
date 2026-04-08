@@ -39,7 +39,8 @@ export class SearchArticlesComponent {
     { label: 'Revistas Brasileiras', value: 'JA' },
     { label: 'Revistas estrangeiras', value: 'JE' },
     { label: 'Anais de eventos', value: 'EV' },
-    { label: 'Livros e capítulo', value: 'BK' },  ];
+    { label: 'Livros e capítulo', value: 'BK' },
+  ];
   searchFields = [
     { label: 'Título', value: 'TI' },
     { label: 'Resumo', value: 'AB' },
@@ -58,10 +59,6 @@ export class SearchArticlesComponent {
       collection: new FormControl(allTypes),
       fields: new FormControl('FL'),
     });
-  }
-
-  goBooleanSearch() {
-    this.router.navigate(['/search-boolean']);
   }
 
   initYears() {
@@ -108,6 +105,54 @@ export class SearchArticlesComponent {
       return '[Nao foi possivel serializar a resposta da consulta]';
     }
   });
+
+  get works(): any[] {
+    const response = this.rawSearchResponse();
+    if (response && typeof response === 'object' && 'works' in response) {
+      return this.asArray((response as any).works);
+    }
+    return [];
+  }
+
+  get markedCount(): number {
+    try {
+      const marked = localStorage.getItem('marked');
+      return !!marked ? JSON.parse(marked).length : 0;
+    } catch {
+      return 0;
+    }
+  }
+
+  get hasMarked(): boolean {
+    // Acesso direto ao localStorage para simplificar, pode ser adaptado para usar o serviço
+    try {
+      const marked = localStorage.getItem('marked');
+      return !!marked && JSON.parse(marked).length > 0;
+    } catch {
+      return false;
+    }
+  }
+
+  clearMarked() {
+    if (window.confirm('Deseja realmente desmarcar todos os trabalhos selecionados?')) {
+      localStorage.removeItem('marked');
+      // Limpa também o basket do serviço para garantir atualização do menu
+      try {
+        const appBasket = (window as any).ng?.getInjector?.(this.constructor)?.get?.((window as any)['ngDevMode']?.BasketService) || null;
+        if (appBasket) {
+          if (typeof appBasket.getMarked === 'function' && typeof appBasket["changed"]?.emit === 'function') {
+            // Limpa o array interno se necessário
+            window.localStorage.setItem('marked', '[]');
+            appBasket.changed.emit();
+          }
+        }
+      } catch {}
+      // Também dispara evento de storage para outros listeners
+      window.dispatchEvent(
+        new StorageEvent('storage', { key: 'marked', oldValue: '', newValue: '' }),
+      );
+    }
+  }
 
   showResultsPanel(): void {
     this.showJsonPanel.set(false);
@@ -192,19 +237,35 @@ export class SearchArticlesComponent {
     };
   }
 
-  private asArray(value: unknown): unknown[] {
+  public asArray(value: unknown): any[] {
     if (Array.isArray(value)) {
       return value;
     }
-
     if (value && typeof value === 'object') {
       return Object.entries(value as Record<string, unknown>).map(([key, count]) => ({
         key,
         count,
       }));
     }
-
     return [];
+  }
+  selectAllWorks() {
+    const response = this.rawSearchResponse() as any;
+    const works = this.asArray(
+      response && typeof response === 'object' && 'works' in response ? response.works : [],
+    );
+    // Aqui você pode adicionar todos os IDs ao basket
+    const basket =
+      (window as any).ng
+        ?.getInjector?.(this.constructor)
+        ?.get?.((window as any)['ngDevMode']?.BasketService) || null;
+    if (basket && works.length) {
+      for (const work of works) {
+        if (work && typeof work === 'object' && 'id' in work) {
+          basket.add(Number((work as any).id));
+        }
+      }
+    }
   }
 
   private normalizeApiResponse(response: unknown): unknown[] {

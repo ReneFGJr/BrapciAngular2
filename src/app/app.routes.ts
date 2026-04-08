@@ -63,13 +63,6 @@ export const routes: Routes = [
     loadComponent: () => import('./pages/tools-text/tools-text.page').then((m) => m.ToolsTextPage),
   },
   {
-    path: 'search-boolean',
-    loadComponent: () =>
-      import('./components/search-boolean/search-boolean.component').then(
-        (m) => m.SearchBooleanComponent,
-      ),
-  },
-  {
     path: '',
     loadComponent: () => import('./pages/home/home.page').then((m) => m.HomePage),
   },

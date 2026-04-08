@@ -28,6 +28,44 @@
         </div>
       </form>
 
+      <!-- Filtros da Pesquisa -->
+      <div class="search-actions">
+        <span
+          type="button"
+          (click)="showFilters = !showFilters"
+          class="link search-action-link"
+        >
+          {{ 'search.filters.title' | translate }}
+        </span>
+
+        <span
+          *ngIf="hasMarked"
+          type="button"
+          class="link search-action-link text-success"
+          [routerLink]="'/basket/selected'"
+        >
+          | {{ 'search.selected' | translate }} ({{ markedCount }})
+        </span> |
+        <span
+          *ngIf="hasMarked"
+          type="button"
+          class="link search-action-link text-danger btn-outline-danger"
+          (click)="clearMarked()"
+        >
+          {{ 'search.clear_selected' | translate }}
+        </span>
+
+          <span
+            *ngIf="works.length > 0"
+            type="button"
+            class="link search-action-link"
+            (click)="selectAllWorks()"
+          >
+            Selecionar Todos
+          </span>
+
+      </div>
+
       @if (search) {
         <div class="search-results-grid mt-4">
           <div class="search-results-main">
@@ -80,28 +118,6 @@
         </div>
       }
     </div>
-  </div>
-
-  <!-- Filtros da Pesquisa -->
-  <div class="search-actions">
-    <span
-      type="button"
-      (click)="showFilters = !showFilters"
-      class="link search-action-link"
-    >
-      {{ 'search.filters.title' | translate }}
-    </span>
-    <span class="search-actions-separator">|</span>
-    <span
-      type="button"
-      (click)="goBooleanSearch()"
-      class="link search-action-link"
-    >
-      {{ 'search.bollean.title' | translate }}
-    </span>
-
-    [[selected MARKED]] | [[selected ALL]] | [[selected NONE]]
-
   </div>
 
   <div
