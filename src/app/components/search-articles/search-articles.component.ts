@@ -1,5 +1,6 @@
 import { CommonModule } from '@angular/common';
 import { Component, computed, inject, signal } from '@angular/core';
+import { BasketService } from '../../core/services/basket.service';
 import { FormBuilder, FormGroup, FormControl, ReactiveFormsModule } from '@angular/forms';
 import { FormsModule } from '@angular/forms';
 import { RouterModule, Router } from '@angular/router';
@@ -24,6 +25,7 @@ import { SearchResultComponent } from '../search-result/search-result.component'
   styleUrl: './search-articles.component.scss',
 })
 export class SearchArticlesComponent {
+    private readonly basketService = inject(BasketService);
   private readonly brapciApiService = inject(BrapciApiService);
   readonly areaNewsComponent = AreaNewsComponent;
   readonly areaEventsComponent = AreaEventsComponent;
@@ -135,22 +137,9 @@ export class SearchArticlesComponent {
 
   clearMarked() {
     if (window.confirm('Deseja realmente desmarcar todos os trabalhos selecionados?')) {
-      localStorage.removeItem('marked');
-      // Limpa também o basket do serviço para garantir atualização do menu
-      try {
-        const appBasket = (window as any).ng?.getInjector?.(this.constructor)?.get?.((window as any)['ngDevMode']?.BasketService) || null;
-        if (appBasket) {
-          if (typeof appBasket.getMarked === 'function' && typeof appBasket["changed"]?.emit === 'function') {
-            // Limpa o array interno se necessário
-            window.localStorage.setItem('marked', '[]');
-            appBasket.changed.emit();
-          }
-        }
-      } catch {}
-      // Também dispara evento de storage para outros listeners
-      window.dispatchEvent(
-        new StorageEvent('storage', { key: 'marked', oldValue: '', newValue: '' }),
-      );
+      // Use o serviço basket diretamente para garantir atualização reativa
+      window.localStorage.setItem('marked', '[]');
+      this.basketService.changed.emit();
     }
   }
 
