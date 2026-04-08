@@ -15,6 +15,11 @@ export const routes: Routes = [
     pathMatch: 'full',
   },
   {
+    path: 'basket/selected',
+    loadComponent: () =>
+      import('./pages/basket-selected/basket-selected.page').then((m) => m.BasketSelectedPage),
+  },
+  {
     path: 'about/:page',
     loadComponent: () =>
       import('./pages/sobre-brapci/sobre-brapci.page').then((m) => m.SobreBrapciPage),
@@ -42,24 +47,30 @@ export const routes: Routes = [
   {
     path: 'tools_bibliografics',
     loadComponent: () =>
-      import('./pages/tools-bibliografics/tools-bibliografics.page').then((m) => m.ToolsBibliograficsPage),
+      import('./pages/tools-bibliografics/tools-bibliografics.page').then(
+        (m) => m.ToolsBibliograficsPage,
+      ),
   },
   {
     path: 'tools_bibliometric',
     loadComponent: () =>
-      import('./pages/tools-bibliometric/tools-bibliometric.page').then((m) => m.ToolsBibliometricPage),
+      import('./pages/tools-bibliometric/tools-bibliometric.page').then(
+        (m) => m.ToolsBibliometricPage,
+      ),
   },
   {
     path: 'tools_text',
-    loadComponent: () =>
-      import('./pages/tools-text/tools-text.page').then((m) => m.ToolsTextPage),
+    loadComponent: () => import('./pages/tools-text/tools-text.page').then((m) => m.ToolsTextPage),
   },
   {
     path: 'search-boolean',
-    loadComponent: () => import('./components/search-boolean/search-boolean.component').then(m => m.SearchBooleanComponent)
+    loadComponent: () =>
+      import('./components/search-boolean/search-boolean.component').then(
+        (m) => m.SearchBooleanComponent,
+      ),
   },
   {
     path: '',
     loadComponent: () => import('./pages/home/home.page').then((m) => m.HomePage),
-  }
+  },
 ];

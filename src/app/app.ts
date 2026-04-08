@@ -99,7 +99,8 @@ export class App {
       url.startsWith('/signin') ||
       url.startsWith('/perfil') ||
       url.startsWith('/search-boolean') ||
-      url.startsWith('/tools_')
+      url.startsWith('/tools_') ||
+      url.startsWith('/basket/')
     );
   });
 

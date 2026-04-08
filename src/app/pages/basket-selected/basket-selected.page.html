@@ -1,0 +1,11 @@
+<section class="container py-4">
+  <h2>Trabalhos Selecionados</h2>
+  <div *ngIf="markedIds.length === 0" class="alert alert-info mt-3">
+    Nenhum trabalho selecionado.
+  </div>
+  <ul *ngIf="markedIds.length > 0" class="list-group mt-3">
+    <li *ngFor="let id of markedIds" class="list-group-item">
+      ID do trabalho: {{ id }}
+    </li>
+  </ul>
+</section>
