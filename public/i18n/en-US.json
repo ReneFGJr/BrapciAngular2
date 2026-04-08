@@ -38,6 +38,14 @@
     "subtitle": "Sign in to access personalized platform features.",
     "cardSubtitle": "Use your username and password to sign in."
   },
+    "basket": {
+      "selected": {
+        "Articles": "Articles",
+        "Books": "Books",
+        "BooksChapter": "Book Chapters",
+        "Proceedings": "Conference Proceedings"
+      }
+    },
   "search": {
     "bollean": {
       "linkBack": "Back to normal search"

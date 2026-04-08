@@ -1,11 +1,11 @@
 <section class="container py-4">
-  <h2>Trabalhos Selecionados</h2>
+  <h2>{{ 'basket.selected.title' | translate }}</h2>
 
   <div *ngIf="markedIds().length === 0 && !loading()" class="alert alert-info mt-3">
-    Nenhum trabalho selecionado.
+    {{ 'basket.selected.none' | translate }}
   </div>
 
-  <div *ngIf="loading()" class="alert alert-secondary mt-3">Carregando dados dos trabalhos...</div>
+  <div *ngIf="loading()" class="alert alert-secondary mt-3">{{ 'basket.selected.loading' | translate }}</div>
 
   <div *ngIf="error()" class="alert alert-danger mt-3">
     {{ error() }}
@@ -18,7 +18,7 @@
         <div class="card text-center h-100">
           <div class="card-body py-2">
             <div class="display-6 fw-bold">{{ abntCounts[i] }}</div>
-            <div class="small">{{ label }}</div>
+            <div class="small">{{ ('basket.selected.' + abntCategories[i] | translate) }}</div>
           </div>
         </div>
       </div>
@@ -28,7 +28,7 @@
       <ul class="nav nav-tabs mb-3">
         <li class="nav-item" *ngFor="let categoria of abntCategories; let i = index">
           <button class="nav-link" [class.active]="activeTab() === categoria" (click)="activeTab.set(categoria)">
-            {{ abntLabels[i] }}
+            {{ ('basket.selected.' + categoria | translate) }}
             <span class="badge bg-secondary ms-1">{{ abntCounts[i] }}</span>
           </button>
         </li>
@@ -37,19 +37,34 @@
       <!-- Tab content -->
       <div *ngFor="let categoria of abntCategories; let i = index">
         <div *ngIf="activeTab() === categoria">
-          <h4>{{ abntLabels[i] }}</h4>
+          <h4>{{ ('basket.selected.' + categoria | translate) }}</h4>
           <ul class="list-group" *ngIf="data.ABNT[categoria]?.length > 0">
             <li *ngFor="let item of data.ABNT[categoria]" class="list-group-item">
               <span [innerHTML]="item"></span>
             </li>
           </ul>
           <div *ngIf="!data.ABNT[categoria] || data.ABNT[categoria].length === 0" class="alert alert-warning mt-2">
-            Nenhum registro encontrado para esta categoria.
+            {{ 'basket.selected.none_category' | translate }}
           </div>
         </div>
       </div>
     </div>
 
-    <div class="col-md-2">Painel</div>
+    <!-- Painel movido para dentro do conteúdo da aba de trabalhos -->
+    <div *ngFor="let categoria of abntCategories; let i = index">
+      <div *ngIf="activeTab() === categoria">
+        <h4>{{ ('basket.selected.' + categoria | translate) }}</h4>
+        <ul class="list-group" *ngIf="data.ABNT[categoria]?.length > 0">
+          <li *ngFor="let item of data.ABNT[categoria]" class="list-group-item">
+            <span [innerHTML]="item"></span>
+          </li>
+        </ul>
+        <div *ngIf="!data.ABNT[categoria] || data.ABNT[categoria].length === 0" class="alert alert-warning mt-2">
+          {{ 'basket.selected.none_category' | translate }}
+        </div>
+        <!-- Painel dentro do conteúdo da aba -->
+        <div class="mt-3"><strong>Painel</strong></div>
+      </div>
+    </div>
   </ng-container>
 </section>

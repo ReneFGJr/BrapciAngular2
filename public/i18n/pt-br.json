@@ -9,6 +9,15 @@
     "en": "Ingles",
     "es": "Espanhol"
   },
+  "basket": {
+    "selected":
+    {
+      "Articles": "Artigos",
+      "Books": "Livros",
+      "BooksChapter": "Capitulos",
+      "Proceedings": "Trabalhos de eventos"
+    }
+  },
   "auth": {
     "title": "Autenticacao",
     "fullName": "Nome completo",

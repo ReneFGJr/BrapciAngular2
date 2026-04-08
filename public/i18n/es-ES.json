@@ -32,6 +32,14 @@
       "resendSuccess": "Si el correo existe, enviaremos instrucciones de recuperacion."
     }
   },
+    "basket": {
+      "selected": {
+        "Articles": "Artigos",
+        "Books": "Livros",
+        "BooksChapter": "Capitulos",
+        "Proceedings": "Trabalhos de eventos"
+      }
+    },
   "signin": {
     "kicker": "Acceso Brapci",
     "title": "Portal institucional de autenticacion",

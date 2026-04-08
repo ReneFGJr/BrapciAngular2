@@ -35,6 +35,14 @@
       "resendSuccess": "If the email exists, we will send recovery instructions."
     }
   },
+    "basket": {
+      "selected": {
+        "Articles": "Articles",
+        "Books": "Books",
+        "BooksChapter": "Book Chapters",
+        "Proceedings": "Conference Proceedings"
+      }
+    },
   "signin": {
     "kicker": "Brapci Access",
     "title": "Institutional authentication portal",
