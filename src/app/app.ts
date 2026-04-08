@@ -1,5 +1,6 @@
 import { CommonModule, DOCUMENT, isPlatformBrowser } from '@angular/common';
 import { Component, computed, inject, signal } from '@angular/core';
+import { BasketService } from './core/services/basket.service';
 import { PLATFORM_ID } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { NavigationEnd, Router, RouterLink, RouterOutlet } from '@angular/router';
@@ -26,6 +27,8 @@ import { SearchArticlesComponent } from './components/search-articles/search-art
   styleUrl: './app.scss'
 })
 export class App {
+  private readonly basket = inject(BasketService);
+    readonly markedCount = computed(() => this.basket.count());
   private readonly authService = inject(AuthService);
   private readonly languageService = inject(LanguageService);
   private readonly seoService = inject(SeoService);

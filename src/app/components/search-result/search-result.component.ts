@@ -1,5 +1,6 @@
 import { CommonModule } from '@angular/common';
-import { Component, HostListener, Input, computed, signal } from '@angular/core';
+import { Component, HostListener, Input, computed, signal, inject } from '@angular/core';
+import { BasketService } from '../../core/services/basket.service';
 import { SearchFilterAuthorsComponent } from '../search-filter-authors/search-filter-authors.component';
 import { SearchFilterKeywordsComponent } from '../search-filter-keywords/search-filter-keywords.component';
 import { SearchFilterSourcesComponent } from '../search-filter-sources/search-filter-sources.component';
@@ -44,6 +45,23 @@ type WorkCardView = {
   styleUrl: './search-result.component.scss'
 })
 export class SearchResultComponent {
+  basket = inject(BasketService);
+    isMarked(id: string): boolean {
+      return this.basket.isMarked(Number(id));
+    }
+
+    toggleMarked(id: string, checked: boolean) {
+      const numId = Number(id);
+      if (checked) {
+        this.basket.add(numId);
+      } else {
+        this.basket.remove(numId);
+      }
+    }
+
+    markedCount(): number {
+      return this.basket.count();
+    }
   private readonly pageSize = 5;
 
   @Input() set results(value: unknown[]) {

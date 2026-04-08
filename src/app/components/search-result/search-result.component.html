@@ -4,6 +4,9 @@
       <ng-container *ngComponentOutlet="sourcesFilterComponent; inputs: { items: sources }"></ng-container>
       <ng-container *ngComponentOutlet="authorsFilterComponent; inputs: { items: authors }"></ng-container>
       <ng-container *ngComponentOutlet="keywordsFilterComponent; inputs: { items: keywords }"></ng-container>
+      <button type="button" class="btn btn-primary mt-2 w-100">
+        Trabalhos marcados: {{ markedCount() }}
+      </button>
     </div>
   </aside>
 
@@ -29,6 +32,13 @@
             </header>
 
             <h3 class="title">
+            <input
+              type="checkbox"
+              [checked]="isMarked(card.id)"
+              (change)="toggleMarked(card.id, $event.target.checked)"
+              title="Marcar/desmarcar trabalho"
+              style="margin-right: 0.5em;"
+            />
               <a class="title-link link small" [href]="'/v/' + card.id" target="_blank" rel="noopener">{{ card.title }}</a>
             </h3>
 
