@@ -239,22 +239,24 @@ export class SearchArticlesComponent {
     return [];
   }
   selectAllWorks() {
+    // Recupera todos os IDs dos works
     const response = this.rawSearchResponse() as any;
     const works = this.asArray(
       response && typeof response === 'object' && 'works' in response ? response.works : [],
     );
-    // Aqui você pode adicionar todos os IDs ao basket
-    const basket =
-      (window as any).ng
-        ?.getInjector?.(this.constructor)
-        ?.get?.((window as any)['ngDevMode']?.BasketService) || null;
-    if (basket && works.length) {
-      for (const work of works) {
+    const ids = works
+      .map((work: any) => {
         if (work && typeof work === 'object' && 'id' in work) {
-          basket.add(Number((work as any).id));
+          return Number(work.id);
         }
-      }
-    }
+        return null;
+      })
+      .filter((id: number | null) => id !== null);
+
+    // Atualiza o localStorage diretamente
+    window.localStorage.setItem('marked', JSON.stringify(ids));
+    // Emite evento para atualizar menu/navbar
+    this.basketService.changed.emit();
   }
 
   private normalizeApiResponse(response: unknown): unknown[] {
