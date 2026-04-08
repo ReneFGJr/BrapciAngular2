@@ -1,4 +1,4 @@
-import { Injectable, Inject, PLATFORM_ID } from '@angular/core';
+import { Injectable, Inject, PLATFORM_ID, EventEmitter } from '@angular/core';
 import { isPlatformBrowser } from '@angular/common';
 
 @Injectable({
@@ -7,6 +7,8 @@ import { isPlatformBrowser } from '@angular/common';
 export class BasketService {
   private storageKey = 'marked';
   constructor(@Inject(PLATFORM_ID) private platformId: Object) {}
+
+  changed = new EventEmitter<void>();
 
   private isBrowser(): boolean {
     return isPlatformBrowser(this.platformId);
@@ -28,6 +30,7 @@ export class BasketService {
     if (!marked.includes(id)) {
       marked.push(id);
       window.localStorage.setItem(this.storageKey, JSON.stringify(marked));
+      this.changed.emit();
     }
   }
 
@@ -36,6 +39,7 @@ export class BasketService {
     let marked = this.getMarked();
     marked = marked.filter((item) => item !== id);
     window.localStorage.setItem(this.storageKey, JSON.stringify(marked));
+    this.changed.emit();
   }
 
   count(): number {

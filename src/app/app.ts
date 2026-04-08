@@ -28,8 +28,24 @@ import { SearchArticlesComponent } from './components/search-articles/search-art
 })
 export class App {
   private readonly basket = inject(BasketService);
-    readonly markedCount = computed(() => this.basket.count());
+  private readonly markedCountSignal = signal(0);
+  readonly markedCount = computed(() => this.markedCountSignal());
   private readonly authService = inject(AuthService);
+
+  constructor() {
+    this.languageService.init();
+    const currentLanguage = this.languageService.getCurrentLanguage() as 'pt-br' | 'es' | 'en';
+    this.selectedLanguage.set(currentLanguage);
+
+    this.seoService.updateHomeMetadata(currentLanguage);
+    this.authService.loadUserFromSession();
+    this.initializeTheme();
+    this.authService.checkSession().subscribe();
+    this.markedCountSignal.set(this.basket.count());
+    this.basket.changed.subscribe(() => {
+      this.markedCountSignal.set(this.basket.count());
+    });
+  }
   private readonly languageService = inject(LanguageService);
   private readonly seoService = inject(SeoService);
   private readonly sessionService = inject(SessionService);
@@ -104,16 +120,6 @@ export class App {
     );
   });
 
-  constructor() {
-    this.languageService.init();
-    const currentLanguage = this.languageService.getCurrentLanguage() as 'pt-br' | 'es' | 'en';
-    this.selectedLanguage.set(currentLanguage);
-
-    this.seoService.updateHomeMetadata(currentLanguage);
-    this.authService.loadUserFromSession();
-    this.initializeTheme();
-    this.authService.checkSession().subscribe();
-  }
 
   setLanguage(language: 'pt-br' | 'es' | 'en'): void {
     this.selectedLanguage.set(language);
