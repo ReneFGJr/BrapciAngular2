@@ -5,26 +5,51 @@
     Nenhum trabalho selecionado.
   </div>
 
-  <div *ngIf="loading()" class="alert alert-secondary mt-3">
-    Carregando dados dos trabalhos...
-  </div>
+  <div *ngIf="loading()" class="alert alert-secondary mt-3">Carregando dados dos trabalhos...</div>
 
   <div *ngIf="error()" class="alert alert-danger mt-3">
     {{ error() }}
   </div>
 
   <ng-container *ngIf="!loading() && !error() && results()">
-      <div *ngIf="data?.ABNT">
-        <div *ngFor="let categoria of ['Articles', 'Proceedings', 'Books', 'BooksChapter']">
-          <ng-container *ngIf="data.ABNT[categoria]?.length > 0">
-            <h4>{{ categoria }}</h4>
-            <ul class="list-group">
-              <li *ngFor="let item of data.ABNT[categoria]" class="list-group-item">
-                <span [innerHTML]="item"></span>
-              </li>
-            </ul>
-          </ng-container>
+    <!-- Resumo totalizador no topo -->
+    <div class="row mb-3 g-2" *ngIf="data?.ABNT">
+      <div class="col-6 col-md-3" *ngFor="let label of abntLabels; let i = index">
+        <div class="card text-center h-100">
+          <div class="card-body py-2">
+            <div class="display-6 fw-bold">{{ abntCounts[i] }}</div>
+            <div class="small">{{ label }}</div>
+          </div>
         </div>
       </div>
+    </div>
+    <div *ngIf="data?.ABNT" class="col-md-10">
+      <!-- Nav tabs -->
+      <ul class="nav nav-tabs mb-3">
+        <li class="nav-item" *ngFor="let categoria of abntCategories; let i = index">
+          <button class="nav-link" [class.active]="activeTab() === categoria" (click)="activeTab.set(categoria)">
+            {{ abntLabels[i] }}
+            <span class="badge bg-secondary ms-1">{{ abntCounts[i] }}</span>
+          </button>
+        </li>
+      </ul>
+
+      <!-- Tab content -->
+      <div *ngFor="let categoria of abntCategories; let i = index">
+        <div *ngIf="activeTab() === categoria">
+          <h4>{{ abntLabels[i] }}</h4>
+          <ul class="list-group" *ngIf="data.ABNT[categoria]?.length > 0">
+            <li *ngFor="let item of data.ABNT[categoria]" class="list-group-item">
+              <span [innerHTML]="item"></span>
+            </li>
+          </ul>
+          <div *ngIf="!data.ABNT[categoria] || data.ABNT[categoria].length === 0" class="alert alert-warning mt-2">
+            Nenhum registro encontrado para esta categoria.
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="col-md-2">Painel</div>
   </ng-container>
 </section>

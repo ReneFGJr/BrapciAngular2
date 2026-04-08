@@ -1,3 +1,4 @@
+// ...existing code...
 import { Component, inject, signal, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { HttpClient, HttpClientModule } from '@angular/common/http';
@@ -10,7 +11,23 @@ import { BasketService } from '../../core/services/basket.service';
   imports: [CommonModule, HttpClientModule],
 })
 export class BasketSelectedPage implements OnInit {
-  activeTab = signal<'categorias' | 'json'>('categorias');
+    public readonly abntCategories = ['Articles', 'Proceedings', 'Books', 'BooksChapter'];
+
+    public get abntLabels() {
+      return [
+        'Artigos',
+        'Trabalhos em Eventos',
+        'Livros',
+        'Capítulos de Livros'
+      ];
+    }
+
+    public get abntCounts() {
+      const data = this.data?.ABNT;
+      if (!data) return [0, 0, 0, 0];
+      return this.abntCategories.map(cat => Array.isArray(data[cat]) ? data[cat].length : 0);
+    }
+  activeTab = signal<string>('Articles');
   private readonly basket = inject(BasketService);
   private readonly http = inject(HttpClient);
 
