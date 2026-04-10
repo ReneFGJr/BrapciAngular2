@@ -35,7 +35,8 @@
               [networkData]="collaborationNetwork()"
             ></app-author-gadget>
         } @else if (isIssue()) {
-          <ng-container *ngComponentOutlet="issueViewComponent; inputs: { data: response() }"></ng-container>
+             <ng-container *ngComponentOutlet="issueViewComponent; inputs: { data: response() }"></ng-container>
+
         } @else {
           @switch (publicationView()) {
             @case ('enancib') {

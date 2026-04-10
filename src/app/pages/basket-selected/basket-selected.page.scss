@@ -1,0 +1,19 @@
+.nav-item {
+  // Estilo padrão
+}
+
+body.dark-mode .nav-item, .dark-mode .nav-item {
+  background-color: #222 !important;
+  color: #f1f1f1 !important;
+  border-color: #444 !important;
+}
+
+body.dark-mode .nav-link, .dark-mode .nav-link {
+  color: #f1f1f1 !important;
+}
+
+body.dark-mode .nav-link.active, .dark-mode .nav-link.active {
+  background-color: #333 !important;
+  color: #fff !important;
+  border-color: #666 !important;
+}

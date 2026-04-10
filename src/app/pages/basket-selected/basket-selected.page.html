@@ -46,9 +46,9 @@
           <div class="col-12">
             <div *ngFor="let categoria of abntCategories; let i = index">
               <div *ngIf="activeTab() === categoria">
-                <h4>{{ 'basket.selected.' + categoria | translate }}</h4>
+                <strong>{{ 'basket.selected.' + categoria | translate }}</strong>
                 <ul class="list-group" *ngIf="data.ABNT[categoria]?.length > 0">
-                  <li *ngFor="let item of data.ABNT[categoria]" class="list-group-item">
+                  <li *ngFor="let item of data.ABNT[categoria]" class="list-group-item small">
                     <span [innerHTML]="item"></span>
                   </li>
                 </ul>
