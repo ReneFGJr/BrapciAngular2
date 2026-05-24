@@ -226,7 +226,19 @@
     },
     "data": {
       "title": "Data",
-      "copy": "Copy"
+      "copy": "Copy",
+      "tabs": {
+        "json": "JSON",
+        "rdf": "RDF (Turtle)",
+        "ris": "RIS",
+        "marc21": "MARC21",
+        "references": "References",
+        "citations": "Citations"
+      },
+      "aria": {
+        "viewData": "View data in {{format}}",
+        "copyData": "Copy {{format}} to clipboard"
+      }
     },
     "actions": {
       "downloadPdf": "Download PDF",

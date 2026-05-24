@@ -11,10 +11,31 @@ import { TranslateModule } from '@ngx-translate/core';
 export class ArticleDataComponent {
   @Input({ required: true }) data: unknown = null;
 
-  selectedTab = signal<'json' | 'rdf' | 'ris' | 'marc21'>('json');
+  selectedTab = signal<'fulltext' | 'json' | 'rdf' | 'ris' | 'marc21' | 'references' | 'citations'>('fulltext');
 
-  selectTab(tabId: 'json' | 'rdf' | 'ris' | 'marc21'): void {
+  selectTab(tabId: 'fulltext' | 'json' | 'rdf' | 'ris' | 'marc21' | 'references' | 'citations'): void {
     this.selectedTab.set(tabId);
+  }
+
+  getFullTextData(): string {
+    const record = this.asRecord(this.data);
+    if (!record) {
+      return '';
+    }
+
+    return this.extractListOrText(record, [
+      'fulltext',
+      'full_text',
+      'texto_completo',
+      'textoCompleto',
+      'text',
+      'body',
+      'content',
+      'description',
+      'abstract',
+      'resumo',
+      'resumen',
+    ]);
   }
 
   getJsonData(): string {
@@ -182,6 +203,39 @@ export class ArticleDataComponent {
     return lines.join('\n');
   }
 
+  getReferencesData(): string {
+    const record = this.asRecord(this.data);
+    if (!record) {
+      return '';
+    }
+
+    return this.extractListOrText(record, [
+      'references',
+      'referencias',
+      'referências',
+      'refs',
+      'bibliography',
+      'bibliografia',
+    ]);
+  }
+
+  getCitationsData(): string {
+    const record = this.asRecord(this.data);
+    if (!record) {
+      return '';
+    }
+
+    return this.extractListOrText(record, [
+      'citations',
+      'citacoes',
+      'citações',
+      'cited_by',
+      'citedBy',
+      'citation_list',
+      'citationList',
+    ]);
+  }
+
   private asRecord(value: unknown): Record<string, unknown> | null {
     return value && typeof value === 'object' ? (value as Record<string, unknown>) : null;
   }
@@ -253,6 +307,69 @@ export class ArticleDataComponent {
     }
 
     return [...result];
+  }
+
+  private extractListOrText(record: Record<string, unknown>, keys: string[]): string {
+    for (const key of keys) {
+      const value = record[key];
+      const normalized = this.normalizeListOrText(value);
+      if (normalized) {
+        return normalized;
+      }
+    }
+
+    const nestedData = this.asRecord(record['data']);
+    if (nestedData) {
+      for (const key of keys) {
+        const value = nestedData[key];
+        const normalized = this.normalizeListOrText(value);
+        if (normalized) {
+          return normalized;
+        }
+      }
+    }
+
+    return '';
+  }
+
+  private normalizeListOrText(value: unknown): string {
+    if (Array.isArray(value)) {
+      const lines = value
+        .map((item) => {
+          if (typeof item === 'string') {
+            return item.trim();
+          }
+
+          if (item && typeof item === 'object') {
+            const entry = item as Record<string, unknown>;
+            const candidate = this.toText(entry['text']) || this.toText(entry['title']) || this.toText(entry['name']) || this.toText(entry['reference']) || this.toText(entry['citation']);
+            return candidate;
+          }
+
+          return '';
+        })
+        .filter((line) => line.length > 0);
+
+      if (lines.length > 0) {
+        return lines.map((line, index) => `${index + 1}. ${line}`).join('\n');
+      }
+
+      return '';
+    }
+
+    if (typeof value === 'string') {
+      return value.trim();
+    }
+
+    if (value && typeof value === 'object') {
+      try {
+        return JSON.stringify(value, null, 2);
+      } catch {
+        return '';
+      }
+    }
+
+    return '';
   }
 
   private escapeQuotes(text: string): string {

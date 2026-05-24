@@ -10,7 +10,6 @@
         <app-breadcrumbs [labels]="breadcrumbLabels()"></app-breadcrumbs>
 
         <p class="mb-3"><strong>Classe:</strong> {{ classe() }}</p>
-
         @if (isArticle()) {
           <app-article-gadget
             class="mb-4 d-block"
@@ -18,6 +17,13 @@
             [metrics]="articleMetrics()"
             [dataTag]="dataTag()"
           ></app-article-gadget>
+        } @else if (isProceeding()) {
+          <app-proceeding-gadget
+            class="mb-4 d-block"
+            [data]="response()"
+            [metrics]="articleMetrics()"
+            [dataTag]="dataTag()"
+          ></app-proceeding-gadget>
         } @else if (isPerson()) {
           <app-author-gadget
             class="mb-4 d-block"

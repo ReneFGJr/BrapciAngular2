@@ -558,8 +558,8 @@
   }
 }
 
-// Dark mode support
-@media (prefers-color-scheme: dark) {
+// Dark mode support (bound to app theme class, not OS preference)
+:host-context(body.theme-master.theme-dark) {
   .article-gadget {
     background: linear-gradient(180deg, #1a1a1f 0%, #131316 35%, #131316 100%);
   }

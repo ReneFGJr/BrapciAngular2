@@ -6,6 +6,7 @@ import { catchError, distinctUntilChanged, map, of, switchMap, tap } from 'rxjs'
 import { BrapciApiService } from '../../core/services/brapci-api.service';
 import { AuthorGadgetComponent } from '../../components/author-gadget/author-gadget.component';
 import { ArticleGadgetComponent } from '../../components/article-gadget/article-gadget.component';
+import { ProceedingGadgetComponent } from '../../components/proceeding-gadget/proceeding-gadget.component';
 import { BreadcrumbsComponent } from '../../components/breadcrumbs/breadcrumbs.component';
 import { ViewJournalComponent } from '../../components/view-journal/view-journal.component';
 import { ViewEventComponent } from '../../components/view-event/view-event.component';
@@ -30,6 +31,7 @@ type AuthorLink = {
     CommonModule,
     AuthorGadgetComponent,
     ArticleGadgetComponent,
+    ProceedingGadgetComponent,
     BreadcrumbsComponent,
     ViewJournalComponent,
     ViewEventComponent,

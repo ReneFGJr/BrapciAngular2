@@ -4,33 +4,51 @@
       class="data-tab"
       [class.active]="selectedTab() === 'json'"
       (click)="selectTab('json')"
-      aria-label="Ver dados em JSON"
+      [attr.aria-label]="'article.data.aria.viewData' | translate:{ format: ('article.data.tabs.json' | translate) }"
     >
-      JSON
+      {{ 'article.data.tabs.json' | translate }}
     </button>
     <button
       class="data-tab"
       [class.active]="selectedTab() === 'rdf'"
       (click)="selectTab('rdf')"
-      aria-label="Ver dados em RDF"
+      [attr.aria-label]="'article.data.aria.viewData' | translate:{ format: ('article.data.tabs.rdf' | translate) }"
     >
-      RDF (Turtle)
+      {{ 'article.data.tabs.rdf' | translate }}
     </button>
     <button
       class="data-tab"
       [class.active]="selectedTab() === 'ris'"
       (click)="selectTab('ris')"
-      aria-label="Ver dados em RIS"
+      [attr.aria-label]="'article.data.aria.viewData' | translate:{ format: ('article.data.tabs.ris' | translate) }"
     >
-      RIS
+      {{ 'article.data.tabs.ris' | translate }}
     </button>
     <button
       class="data-tab"
       [class.active]="selectedTab() === 'marc21'"
       (click)="selectTab('marc21')"
-      aria-label="Ver dados em MARC21"
+      [attr.aria-label]="'article.data.aria.viewData' | translate:{ format: ('article.data.tabs.marc21' | translate) }"
     >
-      MARC21
+      {{ 'article.data.tabs.marc21' | translate }}
+    </button>
+
+    <button
+      class="data-tab"
+      [class.active]="selectedTab() === 'references'"
+      (click)="selectTab('references')"
+      [attr.aria-label]="'article.data.aria.viewData' | translate:{ format: ('article.data.tabs.references' | translate) }"
+    >
+      {{ 'article.data.tabs.references' | translate }}
+    </button>
+
+    <button
+      class="data-tab"
+      [class.active]="selectedTab() === 'citations'"
+      (click)="selectTab('citations')"
+      [attr.aria-label]="'article.data.aria.viewData' | translate:{ format: ('article.data.tabs.citations' | translate) }"
+    >
+      {{ 'article.data.tabs.citations' | translate }}
     </button>
   </div>
 
@@ -40,8 +58,8 @@
         <button
           class="copy-btn"
           (click)="copyToClipboard(getJsonData())"
-          title="Copiar JSON"
-          aria-label="Copiar JSON para área de transferência"
+          [attr.title]="'article.data.aria.copyData' | translate:{ format: ('article.data.tabs.json' | translate) }"
+          [attr.aria-label]="'article.data.aria.copyData' | translate:{ format: ('article.data.tabs.json' | translate) }"
         >
           {{ 'article.data.copy' | translate }}
         </button>
@@ -54,8 +72,8 @@
         <button
           class="copy-btn"
           (click)="copyToClipboard(getRdfData())"
-          title="Copiar RDF"
-          aria-label="Copiar RDF para área de transferência"
+          [attr.title]="'article.data.aria.copyData' | translate:{ format: ('article.data.tabs.rdf' | translate) }"
+          [attr.aria-label]="'article.data.aria.copyData' | translate:{ format: ('article.data.tabs.rdf' | translate) }"
         >
           {{ 'article.data.copy' | translate }}
         </button>
@@ -68,8 +86,8 @@
         <button
           class="copy-btn"
           (click)="copyToClipboard(getRisData())"
-          title="Copiar RIS"
-          aria-label="Copiar RIS para area de transferencia"
+          [attr.title]="'article.data.aria.copyData' | translate:{ format: ('article.data.tabs.ris' | translate) }"
+          [attr.aria-label]="'article.data.aria.copyData' | translate:{ format: ('article.data.tabs.ris' | translate) }"
         >
           {{ 'article.data.copy' | translate }}
         </button>
@@ -82,13 +100,41 @@
         <button
           class="copy-btn"
           (click)="copyToClipboard(getMarc21Data())"
-          title="Copiar MARC21"
-          aria-label="Copiar MARC21 para area de transferencia"
+          [attr.title]="'article.data.aria.copyData' | translate:{ format: ('article.data.tabs.marc21' | translate) }"
+          [attr.aria-label]="'article.data.aria.copyData' | translate:{ format: ('article.data.tabs.marc21' | translate) }"
         >
           {{ 'article.data.copy' | translate }}
         </button>
       </div>
       <pre class="data-code"><code>{{ getMarc21Data() }}</code></pre>
+    </div>
+  } @else if (selectedTab() === 'references') {
+    <div class="data-content">
+      <div class="data-toolbar">
+        <button
+          class="copy-btn"
+          (click)="copyToClipboard(getReferencesData())"
+          [attr.title]="'article.data.aria.copyData' | translate:{ format: ('article.data.tabs.references' | translate) }"
+          [attr.aria-label]="'article.data.aria.copyData' | translate:{ format: ('article.data.tabs.references' | translate) }"
+        >
+          {{ 'article.data.copy' | translate }}
+        </button>
+      </div>
+      <pre class="data-code"><code>{{ getReferencesData() }}</code></pre>
+    </div>
+  } @else if (selectedTab() === 'citations') {
+    <div class="data-content">
+      <div class="data-toolbar">
+        <button
+          class="copy-btn"
+          (click)="copyToClipboard(getCitationsData())"
+          [attr.title]="'article.data.aria.copyData' | translate:{ format: ('article.data.tabs.citations' | translate) }"
+          [attr.aria-label]="'article.data.aria.copyData' | translate:{ format: ('article.data.tabs.citations' | translate) }"
+        >
+          {{ 'article.data.copy' | translate }}
+        </button>
+      </div>
+      <pre class="data-code"><code>{{ getCitationsData() }}</code></pre>
     </div>
   }
 </div>
