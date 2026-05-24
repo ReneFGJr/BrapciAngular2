@@ -1,10 +1,13 @@
 import { CommonModule } from '@angular/common';
 import { Component, Input, signal } from '@angular/core';
 import { TranslateModule } from '@ngx-translate/core';
+import { ArticleMarkdownViewerComponent } from './article-markdown-viewer.component';
+import { ArticleReferencesListComponent } from './article-references-list.component';
 
 @Component({
   selector: 'app-article-data',
-  imports: [CommonModule, TranslateModule],
+  standalone: true,
+  imports: [CommonModule, TranslateModule, ArticleMarkdownViewerComponent, ArticleReferencesListComponent],
   templateUrl: './article-data.component.html',
   styleUrl: './article-data.component.scss'
 })
@@ -36,6 +39,25 @@ export class ArticleDataComponent {
       'resumo',
       'resumen',
     ]);
+  }
+
+  getMarkdownData(): string {
+    const record = this.asRecord(this.data);
+    if (!record) {
+      return '';
+    }
+
+    const direct = this.pickText(record, ['markdown', 'md', 'fulltext_markdown']);
+    if (direct) {
+      return direct;
+    }
+
+    const nested = this.asRecord(record['data']);
+    if (!nested) {
+      return '';
+    }
+
+    return this.pickText(nested, ['markdown', 'md', 'fulltext_markdown']);
   }
 
   getJsonData(): string {
@@ -219,6 +241,22 @@ export class ArticleDataComponent {
     ]);
   }
 
+  getReferencesValue(): unknown {
+    const record = this.asRecord(this.data);
+    if (!record) {
+      return [];
+    }
+
+    return this.extractValue(record, [
+      'references',
+      'referencias',
+      'referências',
+      'refs',
+      'bibliography',
+      'bibliografia',
+    ]);
+  }
+
   getCitationsData(): string {
     const record = this.asRecord(this.data);
     if (!record) {
@@ -330,6 +368,29 @@ export class ArticleDataComponent {
     }
 
     return '';
+  }
+
+  private extractValue(record: Record<string, unknown>, keys: string[]): unknown {
+    for (const key of keys) {
+      const value = record[key];
+
+      if (value !== null && value !== undefined) {
+        return value;
+      }
+    }
+
+    const nestedData = this.asRecord(record['data']);
+    if (nestedData) {
+      for (const key of keys) {
+        const value = nestedData[key];
+
+        if (value !== null && value !== undefined) {
+          return value;
+        }
+      }
+    }
+
+    return [];
   }
 
   private normalizeListOrText(value: unknown): string {

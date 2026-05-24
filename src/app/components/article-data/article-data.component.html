@@ -2,6 +2,15 @@
   <div class="data-tabs">
     <button
       class="data-tab"
+      [class.active]="selectedTab() === 'fulltext'"
+      (click)="selectTab('fulltext')"
+      [attr.aria-label]="'article.data.aria.viewData' | translate:{ format: ('article.data.tabs.fulltext' | translate) }"
+    >
+      {{ 'article.data.tabs.fulltext' | translate }}
+    </button>
+
+    <button
+      class="data-tab"
       [class.active]="selectedTab() === 'json'"
       (click)="selectTab('json')"
       [attr.aria-label]="'article.data.aria.viewData' | translate:{ format: ('article.data.tabs.json' | translate) }"
@@ -52,7 +61,23 @@
     </button>
   </div>
 
-  @if (selectedTab() === 'json') {
+  @if (selectedTab() === 'fulltext') {
+    <div class="data-content">
+      <div class="data-toolbar">
+        <button
+          class="copy-btn"
+          (click)="copyToClipboard(getMarkdownData())"
+          [attr.title]="'article.data.aria.copyData' | translate:{ format: ('article.data.tabs.fulltext' | translate) }"
+          [attr.aria-label]="'article.data.aria.copyData' | translate:{ format: ('article.data.tabs.fulltext' | translate) }"
+        >
+          {{ 'article.data.copy' | translate }}
+        </button>
+      </div>
+      <div class="markdown-panel">
+        <app-article-markdown-viewer [markdown]="getMarkdownData()"></app-article-markdown-viewer>
+      </div>
+    </div>
+  } @else if (selectedTab() === 'json') {
     <div class="data-content">
       <div class="data-toolbar">
         <button
@@ -120,7 +145,9 @@
           {{ 'article.data.copy' | translate }}
         </button>
       </div>
-      <pre class="data-code"><code>{{ getReferencesData() }}</code></pre>
+      <div class="references-panel">
+        <app-article-references-list [references]="getReferencesValue()"></app-article-references-list>
+      </div>
     </div>
   } @else if (selectedTab() === 'citations') {
     <div class="data-content">

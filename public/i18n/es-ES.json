@@ -136,6 +136,7 @@
       "title": "Datos",
       "copy": "Copiar",
       "tabs": {
+        "fulltext": "Texto Completo",
         "json": "JSON",
         "rdf": "RDF (Turtle)",
         "ris": "RIS",

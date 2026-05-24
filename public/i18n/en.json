@@ -228,6 +228,7 @@
       "title": "Data",
       "copy": "Copy",
       "tabs": {
+        "fulltext": "Full Text",
         "json": "JSON",
         "rdf": "RDF (Turtle)",
         "ris": "RIS",
