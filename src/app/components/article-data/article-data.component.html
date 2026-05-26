@@ -74,7 +74,7 @@
         </button>
       </div>
       <div class="markdown-panel">
-        <app-article-markdown-viewer [markdown]="getMarkdownData()"></app-article-markdown-viewer>
+        <app-article-markdown-viewer [markdown]="getMarkdownData()" [articleId]="getArticleId()"></app-article-markdown-viewer>
       </div>
     </div>
   } @else if (selectedTab() === 'json') {

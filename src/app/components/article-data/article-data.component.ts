@@ -60,6 +60,34 @@ export class ArticleDataComponent {
     return this.pickText(nested, ['markdown', 'md', 'fulltext_markdown']);
   }
 
+  getArticleId(): string {
+    const record = this.asRecord(this.data);
+    if (!record) {
+      return '';
+    }
+
+    const readId = (obj: Record<string, unknown>): string => {
+      const raw = obj['ID'] ?? obj['id'];
+      if (typeof raw === 'number' && Number.isFinite(raw)) {
+        return String(raw);
+      }
+
+      return this.toText(raw);
+    };
+
+    const direct = readId(record);
+    if (direct) {
+      return direct;
+    }
+
+    const nested = this.asRecord(record['data']);
+    if (!nested) {
+      return '';
+    }
+
+    return readId(nested);
+  }
+
   getJsonData(): string {
     if (!this.data) {
       return '{}';

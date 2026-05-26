@@ -1,0 +1,53 @@
+<div class="markdown-wrapper">
+  <div class="markdown-toolbar">
+    <button
+      type="button"
+      class="markdown-process-btn"
+      (click)="onProcessFullText()"
+      aria-label="Processar texto completo"
+      title="Processar texto completo"
+    >
+      <span aria-hidden="true">&#9881;</span>
+    </button>
+  </div>
+
+  @if (panelOpen()) {
+    <section class="markdown-panel-overlay" role="dialog" aria-label="Painel de processamento" aria-modal="true">
+      <div class="markdown-panel-card">
+        <header class="markdown-panel-header">
+          <strong>Processar texto completo (NLM)</strong>
+          <button
+            type="button"
+            class="markdown-panel-close"
+            (click)="closePanel()"
+            aria-label="Fechar painel"
+            title="Fechar painel"
+          >
+            <span aria-hidden="true">&#10005;</span>
+          </button>
+        </header>
+
+        @if (iframeUrl()) {
+          <div>
+            <iframe
+              class="markdown-panel-iframe"
+              [src]="iframeSafeUrl()"
+              title="Ferramenta NLP de texto completo"
+              loading="lazy"
+              referrerpolicy="no-referrer"
+              style="border: 0px solid #000; width: 100%; height: 100%;"
+            ></iframe>
+          </div>
+        } @else {
+          <p class="markdown-panel-empty mb-0">ID do artigo indisponível para processar.</p>
+        }
+      </div>
+    </section>
+  }
+
+  @if (!markdownText().trim()) {
+    <p class="markdown-empty">Sem conteúdo markdown disponível.</p>
+  } @else {
+    <article class="markdown-body" [innerHTML]="renderedHtml()"></article>
+  }
+</div>
