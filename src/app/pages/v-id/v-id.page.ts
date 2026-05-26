@@ -663,6 +663,96 @@ export class VIdPage {
     return data['dataTAG'] ?? data['dataTag'] ?? data['data_tag'] ?? null;
   });
 
+  readonly citationsGrantedList = computed(() => {
+    const value = this.response();
+    if (!value || typeof value !== 'object') {
+      return [] as string[];
+    }
+
+    const data = value as Record<string, unknown>;
+    const candidates = [
+      data['citations_granted'],
+      data['citationsGranted'],
+      data['CitationsGranted'],
+      data['citacoes_concedidas'],
+      data['citacoesConcedidas'],
+      data['CITACOES_CONCEDIDAS'],
+      data['references'],
+      data['referencias'],
+      data['dataREF'],
+      data['dataRef'],
+      data['data_ref'],
+    ];
+
+    const fromCollections = candidates
+      .flatMap((entry) => this.toHtmlList(entry))
+      .map((item) => item.trim())
+      .filter((item) => item.length > 0);
+
+    return [...new Set(fromCollections)];
+  });
+
+  private toHtmlList(value: unknown): string[] {
+    if (Array.isArray(value)) {
+      return value
+        .map((entry) => {
+          if (typeof entry === 'string') {
+            return entry;
+          }
+
+          if (!entry || typeof entry !== 'object') {
+            return '';
+          }
+
+          const obj = entry as Record<string, unknown>;
+          const textCandidate =
+            obj['value'] ??
+            obj['text'] ??
+            obj['title'] ??
+            obj['reference'] ??
+            obj['referencia'] ??
+            obj['html'];
+
+          return typeof textCandidate === 'string' ? textCandidate : '';
+        })
+        .map((entry) => entry.trim())
+        .filter((entry) => entry.length > 0);
+    }
+
+    if (typeof value === 'string') {
+      const source = value.trim();
+      if (!source) {
+        return [];
+      }
+
+      if (source.includes('|')) {
+        return source
+          .split('|')
+          .map((entry) => entry.trim())
+          .filter((entry) => entry.length > 0);
+      }
+
+      if (source.includes('\n')) {
+        return source
+          .split('\n')
+          .map((entry) => entry.trim())
+          .filter((entry) => entry.length > 0);
+      }
+
+      return [source];
+    }
+
+    if (value && typeof value === 'object') {
+      const obj = value as Record<string, unknown>;
+      return Object.values(obj)
+        .flatMap((entry) => this.toHtmlList(entry))
+        .map((entry) => entry.trim())
+        .filter((entry) => entry.length > 0);
+    }
+
+    return [];
+  }
+
   constructor() {
     this.route.paramMap
       .pipe(

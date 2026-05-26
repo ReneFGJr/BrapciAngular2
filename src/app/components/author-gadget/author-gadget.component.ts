@@ -42,6 +42,7 @@ export class AuthorGadgetComponent {
   @Input() authorLinks: AuthorLink[] = [];
   @Input() coauthors: Coauthor[] = [];
   @Input() networkData: NetworkGraph = { nodes: [], edges: [] };
+  @Input() citationsGranted: string[] = [];
 
   readonly filteredChartPoints = computed(() => {
     const range = this.selectedRange();

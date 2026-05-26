@@ -81,6 +81,9 @@
       "network": {
         "label": "Red de Colaboracion"
       },
+      "citationsGranted": {
+        "label": "Citaciones concedidas"
+      },
       "workTypes": {
         "Article": "Articulos",
         "Book": "Libros",

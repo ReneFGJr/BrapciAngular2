@@ -36,10 +36,10 @@ type PieArc = PieSlice & {
 };
 
 export type AuthorContentTab = {
-  id: 'works' | 'coauthors' | 'network';
+  id: 'works' | 'coauthors' | 'network' | 'citationsGranted';
   label: string;
-  type: 'works' | 'coauthors' | 'network';
-  data?: AuthorWorksGroup[] | Coauthor[] | NetworkGraph;
+  type: 'works' | 'coauthors' | 'network' | 'citationsGranted';
+  data?: AuthorWorksGroup[] | Coauthor[] | NetworkGraph | string[];
 };
 
 @Component({
@@ -53,8 +53,9 @@ export class AuthorWorksComponent {
   @Input() dataJour: unknown = null;
   @Input() coauthors: Coauthor[] = [];
   @Input() networkData: NetworkGraph = { nodes: [], edges: [] };
+  @Input() citationsGranted: string[] = [];
 
-  readonly selectedTab = signal<'works' | 'coauthors' | 'network'>('works');
+  readonly selectedTab = signal<'works' | 'coauthors' | 'network' | 'citationsGranted'>('works');
 
   readonly contentTabs = computed(() => {
     const tabs: AuthorContentTab[] = [
@@ -75,6 +76,12 @@ export class AuthorWorksComponent {
         label: 'author.network.label',
         type: 'network',
         data: this.networkData
+      },
+      {
+        id: 'citationsGranted',
+        label: 'author.citationsGranted.label',
+        type: 'citationsGranted',
+        data: this.citationsGranted
       }
     ];
 
@@ -89,9 +96,18 @@ export class AuthorWorksComponent {
     return this.contentTabs().find((t) => t.type === 'works') as AuthorContentTab | undefined;
   });
 
+  readonly citationsGrantedTab = computed(() => {
+    return this.contentTabs().find((t) => t.type === 'citationsGranted') as AuthorContentTab | undefined;
+  });
+
   readonly worksGroups = computed(() => {
     const worksTab = this.worksTab();
     return (worksTab?.data as AuthorWorksGroup[]) ?? [];
+  });
+
+  readonly citationsGrantedItems = computed(() => {
+    const citationsGrantedTab = this.citationsGrantedTab();
+    return (citationsGrantedTab?.data as string[]) ?? [];
   });
 
   readonly selectedWorkTab = signal<WorkSubTabKey>('summary');
@@ -143,26 +159,49 @@ export class AuthorWorksComponent {
     };
   });
 
-  readonly chartPoints = computed(() => {
+  readonly chartBars = computed(() => {
     const width = 640;
     const height = 260;
-    const paddingX = 42;
-    const paddingY = 22;
-    const xRange = this.dispersionXRange();
-    const yRange = this.dispersionYRange();
-    const points = this.dispersionPoints();
+    const paddingLeft = 42;
+    const paddingRight = 18;
+    const paddingTop = 22;
+    const paddingBottom = 72;
+    const points = [...this.dispersionPoints()].sort((a, b) => b.y - a.y || a.x - b.x);
 
-    return points.map((point) => {
-      const xRatio = (point.x - xRange.min) / (xRange.max - xRange.min);
-      const yRatio = (point.y - yRange.min) / (yRange.max - yRange.min);
+    if (points.length === 0) {
+      return [] as Array<{
+        barX: number;
+        barY: number;
+        barWidth: number;
+        barHeight: number;
+        label: string;
+        shortLabel: string;
+        year: number;
+        value: number;
+        color: string;
+      }>;
+    }
+
+    const maxY = Math.max(...points.map((point) => point.y), 1);
+    const innerWidth = width - paddingLeft - paddingRight;
+    const innerHeight = height - paddingTop - paddingBottom;
+    const step = innerWidth / points.length;
+    const barWidth = Math.max(6, Math.min(34, step * 0.72));
+
+    return points.map((point, index) => {
+      const barHeight = (point.y / maxY) * innerHeight;
+      const barX = paddingLeft + index * step + (step - barWidth) / 2;
+      const barY = height - paddingBottom - barHeight;
 
       return {
-        cx: paddingX + xRatio * (width - paddingX * 2),
-        cy: height - paddingY - yRatio * (height - paddingY * 2),
-        r: point.radius,
+        barX,
+        barY,
+        barWidth,
+        barHeight,
         label: point.label,
-        x: point.x,
-        y: point.y,
+        shortLabel: point.label.length > 22 ? `${point.label.slice(0, 20)}...` : point.label,
+        year: point.x,
+        value: point.y,
         color: this.colorForLabel(point.label)
       };
     });
@@ -262,7 +301,12 @@ export class AuthorWorksComponent {
   });
 
   setTab(tabId: string): void {
-    if (tabId === 'works' || tabId === 'coauthors' || tabId === 'network') {
+    if (
+      tabId === 'works' ||
+      tabId === 'coauthors' ||
+      tabId === 'network' ||
+      tabId === 'citationsGranted'
+    ) {
       this.selectedTab.set(tabId);
     }
   }

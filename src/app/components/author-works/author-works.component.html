@@ -21,6 +21,8 @@
           <span class="badge badge-menu-outline ms-1">{{ coauthors.length }}</span>
         } @else if (tab.type === 'network') {
           <span class="badge badge-menu-outline ms-1">{{ networkData.nodes.length }}</span>
+        } @else if (tab.type === 'citationsGranted') {
+          <span class="badge badge-menu-outline ms-1">{{ citationsGrantedItems().length }}</span>
         }
       </button>
     }
@@ -76,27 +78,38 @@
                 </div>
               </div>
 
-              @if (chartPoints().length > 0) {
+              @if (chartBars().length > 0) {
                 <div class="dispersion-chart-wrap" role="img" [attr.aria-label]="'author.summary.dispersionTitle' | translate">
                   <svg class="dispersion-chart" viewBox="0 0 640 260" preserveAspectRatio="none">
-                    <line x1="42" y1="238" x2="598" y2="238" class="axis-line"></line>
-                    <line x1="42" y1="22" x2="42" y2="238" class="axis-line"></line>
+                    <line x1="42" y1="188" x2="622" y2="188" class="axis-line"></line>
+                    <line x1="42" y1="22" x2="42" y2="188" class="axis-line"></line>
 
-                    @for (point of chartPoints(); track point.label + point.x + point.y) {
-                      <circle
-                        class="dispersion-point"
-                        [attr.cx]="point.cx"
-                        [attr.cy]="point.cy"
-                        [attr.r]="point.r"
-                        [attr.fill]="point.color"
+                    @for (bar of chartBars(); track bar.label + bar.year + bar.value) {
+                      <rect
+                        class="dispersion-bar"
+                        [attr.x]="bar.barX"
+                        [attr.y]="bar.barY"
+                        [attr.width]="bar.barWidth"
+                        [attr.height]="bar.barHeight"
+                        [attr.fill]="bar.color"
                       >
-                        <title>{{ 'author.summary.journal' | translate }}: {{ point.label }} | {{ 'author.summary.yearAxis' | translate }}: {{ point.x }} | {{ 'author.summary.volumeAxis' | translate }}: {{ point.y }}</title>
-                      </circle>
+                        <title>{{ 'author.summary.journal' | translate }}: {{ bar.label }} | {{ 'author.summary.yearAxis' | translate }}: {{ bar.year }} | {{ 'author.summary.volumeAxis' | translate }}: {{ bar.value }}</title>
+                      </rect>
+
+                      <text
+                        class="dispersion-bar-label"
+                        [attr.x]="bar.barX + (bar.barWidth / 2)"
+                        y="196"
+                        text-anchor="end"
+                        [attr.transform]="'rotate(-45 ' + (bar.barX + (bar.barWidth / 2)) + ' 196)'"
+                      >
+                        {{ bar.shortLabel }}
+                      </text>
                     }
                   </svg>
 
                   <div class="dispersion-axis-labels">
-                    <span>{{ 'author.summary.yearAxis' | translate }}: {{ dispersionXRange().min }} - {{ dispersionXRange().max }}</span>
+                    <span>{{ 'author.summary.journals' | translate }}: {{ chartBars().length }}</span>
                     <span>{{ 'author.summary.volumeAxis' | translate }}: {{ dispersionYRange().min }} - {{ dispersionYRange().max }}</span>
                   </div>
                 </div>
@@ -184,6 +197,21 @@
     @if (selectedTab() === 'network') {
       <div class="network-tab-content mt-2">
         <app-network-graph-3d [networkData]="networkData"></app-network-graph-3d>
+      </div>
+    }
+
+    <!-- Citations Granted Tab Content -->
+    @if (selectedTab() === 'citationsGranted') {
+      <div class="citations-granted-tab-content mt-2">
+        @if (citationsGrantedItems().length === 0) {
+          <p class="works-empty mb-0">{{ 'author.noRecords' | translate }}</p>
+        } @else {
+          <ol class="works-list mb-0">
+            @for (item of citationsGrantedItems(); track $index) {
+              <li [innerHTML]="item"></li>
+            }
+          </ol>
+        }
       </div>
     }
   </div>
