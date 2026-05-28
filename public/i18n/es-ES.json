@@ -59,7 +59,7 @@
     "searchLabel": "Buscar termino",
     "placeholder": "Ingrese el nombre del autor",
     "loading": "Cargando...",
-    "resultsTitle": "Terminos con use = ID",
+    "resultsTitle": "",
     "empty": "No se encontraron resultados con use = ID para el termino informado.",
     "apiError": "No fue posible consultar la API de autoridad."
   },

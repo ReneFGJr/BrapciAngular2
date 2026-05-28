@@ -1,5 +1,6 @@
 import { CommonModule } from '@angular/common';
 import { Component, Input, computed, signal } from '@angular/core';
+import { DomSanitizer, SafeResourceUrl } from '@angular/platform-browser';
 
 type JsonRecord = Record<string, unknown>;
 
@@ -19,144 +20,79 @@ type ReferenceEntry = {
   selector: 'app-article-references-list',
   standalone: true,
   imports: [CommonModule],
-  template: `
-    <div class="references-wrapper">
-      @if (normalizedReferences().length === 0) {
-        <p class="references-empty">Nenhuma referência disponível.</p>
-      } @else {
-        <ol class="references-list" aria-label="Lista de referências">
-          @for (reference of normalizedReferences(); track reference.index) {
-            <li class="reference-card small">
-              <div class="reference-top">
-                <span class="reference-index">{{ reference.index }}</span>
-
-                <div class="reference-content">
-                  <p class="reference-citation">{{ reference.citation }}</p>
-
-                  @if (reference.authors) {
-                    <p class="reference-authors">{{ reference.authors }}</p>
-                  }
-                </div>
-              </div>
-            </li>
-          }
-        </ol>
-      }
-    </div>
-  `,
-  styles: [
-    `
-      :host {
-        display: block;
-        font-family: inherit;
-      }
-
-      .references-wrapper {
-        display: flex;
-        flex-direction: column;
-        gap: 1rem;
-      }
-
-      .references-empty {
-        margin: 0;
-        padding: 1rem;
-        text-align: center;
-        color: var(--theme-muted);
-        font-style: italic;
-      }
-
-      .references-list {
-        display: grid;
-        gap: 0.85rem;
-        margin: 0;
-        padding: 0;
-        list-style: none;
-      }
-
-      .reference-card {
-        padding: 1rem 1rem 0.9rem;
-        border: 1px solid var(--theme-line);
-        border-radius: 12px;
-        background: var(--theme-paper);
-        box-shadow: 0 1px 2px rgba(0, 0, 0, 0.04);
-      }
-
-      .reference-top {
-        display: grid;
-        grid-template-columns: auto minmax(0, 1fr);
-        gap: 0.75rem;
-        align-items: start;
-      }
-
-      .reference-index {
-        display: inline-flex;
-        align-items: center;
-        justify-content: center;
-        width: 2rem;
-        height: 2rem;
-        border-radius: 999px;
-        background: var(--theme-link);
-        color: var(--theme-paper);
-        font-size: 0.85rem;
-        font-weight: 700;
-        line-height: 1;
-      }
-
-      .reference-content {
-        min-width: 0;
-      }
-
-      .reference-citation {
-        margin: 0;
-        color: var(--theme-ink);
-        font-size: 0.95rem;
-        line-height: 1.55;
-        white-space: pre-wrap;
-      }
-
-      .reference-authors {
-        margin: 0.4rem 0 0;
-        color: var(--theme-muted);
-        font-size: 0.86rem;
-        line-height: 1.45;
-        white-space: pre-wrap;
-      }
-
-      .reference-meta {
-        display: flex;
-        flex-wrap: wrap;
-        gap: 0.45rem;
-        margin-top: 0.85rem;
-      }
-
-      .reference-chip {
-        display: inline-flex;
-        gap: 0.25rem;
-        align-items: center;
-        padding: 0.35rem 0.6rem;
-        border: 1px solid var(--theme-line);
-        border-radius: 999px;
-        background: var(--theme-sand);
-        color: var(--theme-ink);
-        font-size: 0.8rem;
-        line-height: 1.2;
-      }
-
-      .reference-chip strong {
-        font-weight: 700;
-      }
-    `,
-  ],
+  templateUrl: './article-references-list.component.html',
+  styleUrls: ['./article-references-list.component.scss'],
 })
 export class ArticleReferencesListComponent {
+  constructor(private readonly sanitizer: DomSanitizer) {}
+
+  @Input()
+  set article(value: unknown) {
+    this.rawArticle.set(value);
+    const extractedId = this.extractIdFromPayload(value);
+    if (extractedId.length > 0) {
+      this.referenceId.set(extractedId);
+    }
+  }
+
   @Input()
   set references(value: unknown) {
     this.rawReferences.set(value);
   }
 
+  @Input({ alias: 'id' })
+  set externalId(value: unknown) {
+    const id = this.toText(value);
+    if (id.length > 0) {
+      this.referenceId.set(id);
+      return;
+    }
+
+    const extractedId = this.extractIdFromPayload(this.rawArticle());
+    if (extractedId.length > 0) {
+      this.referenceId.set(extractedId);
+    }
+  }
+
+  @Input()
+  set articleId(value: unknown) {
+    const id = this.toText(value);
+    if (id.length > 0) {
+      this.referenceId.set(id);
+      return;
+    }
+
+    const extractedId = this.extractIdFromPayload(this.rawArticle());
+    if (extractedId.length > 0) {
+      this.referenceId.set(extractedId);
+    }
+  }
+
+  private readonly rawArticle = signal<unknown>(null);
   private readonly rawReferences = signal<unknown>([]);
+  private readonly referenceId = signal('');
+  readonly isImportPanelOpen = signal(false);
+  readonly extractedId = computed(() => this.referenceId());
 
   readonly normalizedReferences = computed(() => this.normalizeReferences(this.rawReferences()));
+  readonly importFrameUrl = computed<SafeResourceUrl | null>(() => {
+    const id = this.referenceId();
+    if (!id) {
+      return null;
+    }
+
+    return this.sanitizer.bypassSecurityTrustResourceUrl(
+      `https://cip.brapci.inf.br/tools/nlp/cited/${encodeURIComponent(id)}`,
+    );
+  });
+
+  openImportPanel(): void {
+    this.isImportPanelOpen.set(true);
+  }
+
+  closeImportPanel(): void {
+    this.isImportPanelOpen.set(false);
+  }
 
   private normalizeReferences(value: unknown): ReferenceEntry[] {
     if (Array.isArray(value)) {
@@ -309,5 +245,38 @@ export class ArticleReferencesListComponent {
     } catch {
       return undefined;
     }
+  }
+
+  private extractIdFromPayload(value: unknown): string {
+    if (!value) {
+      return '';
+    }
+
+    if (typeof value === 'string') {
+      const parsed = this.tryParseJson(value);
+      if (parsed !== undefined) {
+        return this.extractIdFromPayload(parsed);
+      }
+
+      return '';
+    }
+
+    if (Array.isArray(value)) {
+      for (const item of value) {
+        const id = this.extractIdFromPayload(item);
+        if (id.length > 0) {
+          return id;
+        }
+      }
+
+      return '';
+    }
+
+    if (typeof value !== 'object') {
+      return '';
+    }
+
+    const record = value as JsonRecord;
+    return this.pickText(record, ['ID', 'id', 'Id', 'id_ca', 'ca_id']);
   }
 }

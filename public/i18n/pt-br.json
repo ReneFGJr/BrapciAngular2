@@ -87,7 +87,7 @@
     "placeholder": "Informe o nome do autor",
     "loading": "Carregando...",
     "resultsTitle": "Termos com use = ID",
-    "empty": "Nenhum resultado com use = ID para o termo informado.",
+    "empty": "Nenhum resultado.",
     "apiError": "Nao foi possivel consultar a API de autoridade."
   },
   "author": {

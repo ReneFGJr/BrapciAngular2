@@ -146,7 +146,7 @@
         </button>
       </div>
       <div class="references-panel">
-        <app-article-references-list [references]="getReferencesValue()"></app-article-references-list>
+        <app-article-references-list [references]="getReferencesValue()" [article]="data"></app-article-references-list>
       </div>
     </div>
   } @else if (selectedTab() === 'citations') {

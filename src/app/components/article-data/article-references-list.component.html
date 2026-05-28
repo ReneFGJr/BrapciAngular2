@@ -1,0 +1,73 @@
+<div class="references-wrapper">
+  <div class="references-actions">
+    <button
+      type="button"
+      class="references-import-btn"
+      aria-label="Importar referências"
+      title="Importar referências"
+      (click)="openImportPanel()"
+    >
+      <svg viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+        <path
+          d="M5 20h14a1 1 0 0 0 1-1v-5h-2v4H6v-4H4v5a1 1 0 0 0 1 1Zm6-3h2v-7h3l-4-5-4 5h3v7Z"
+          fill="currentColor"
+        />
+      </svg>
+    </button>
+  </div>
+
+  @if (normalizedReferences().length === 0) {
+    <p class="references-empty">Nenhuma referência disponível.</p>
+  } @else {
+    <ol class="references-list" aria-label="Lista de referências">
+      @for (reference of normalizedReferences(); track reference.index) {
+        <li class="reference-card small">
+          <div class="reference-top">
+            <span class="reference-index">{{ reference.index }}</span>
+
+            <div class="reference-content">
+              <p class="reference-citation">{{ reference.citation }}</p>
+
+              @if (reference.authors) {
+                <p class="reference-authors">{{ reference.authors }}</p>
+              }
+            </div>
+          </div>
+        </li>
+      }
+    </ol>
+  }
+</div>
+
+@if (isImportPanelOpen()) {
+  <div class="references-import-overlay" (click)="closeImportPanel()">
+    <aside
+      class="references-import-panel"
+      role="dialog"
+      aria-modal="true"
+      aria-label="Importar referências"
+      (click)="$event.stopPropagation()"
+    >
+      <button
+        type="button"
+        class="references-import-close"
+        aria-label="Fechar painel"
+        title="Fechar"
+        (click)="closeImportPanel()"
+      >
+        <svg viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+          <path
+            d="m18.3 5.71-1.41-1.42L12 9.17 7.11 4.29 5.7 5.71 10.59 10.6 5.7 15.49l1.41 1.42L12 12.01l4.89 4.9 1.41-1.42-4.89-4.89 4.89-4.89Z"
+            fill="currentColor"
+          />
+        </svg>
+      </button>
+
+      @if (importFrameUrl(); as frameUrl) {
+        <iframe [src]="frameUrl" title="Importar referências" loading="lazy"></iframe>
+      } @else {
+        <p class="references-import-empty">ID do artigo não informado para importação.</p>
+      }
+    </aside>
+  </div>
+}
