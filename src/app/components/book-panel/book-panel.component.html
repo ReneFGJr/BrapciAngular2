@@ -1,0 +1,33 @@
+<div
+  class="book-panel__backdrop"
+  [class.book-panel__backdrop--visible]="open"
+  (click)="close()"
+  aria-hidden="true"
+></div>
+
+<aside
+  class="book-panel__drawer"
+  [class.book-panel__drawer--open]="open"
+  role="dialog"
+  aria-modal="true"
+  [attr.aria-label]="title || 'Detalhes do livro'"
+>
+  <button
+    type="button"
+    class="book-panel__close"
+    (click)="close()"
+    aria-label="Fechar painel"
+  >
+    ✕
+  </button>
+
+  @if (open && bookId) {
+    <div class="book-panel__content">
+      <app-book-gadget
+        [bookId]="bookId"
+        [cover]="cover"
+        [title]="title"
+      ></app-book-gadget>
+    </div>
+  }
+</aside>

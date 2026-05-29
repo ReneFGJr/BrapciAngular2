@@ -1,7 +1,7 @@
 import { CommonModule } from '@angular/common';
 import { Component, computed, inject, signal } from '@angular/core';
-import { RouterLink } from '@angular/router';
 import { BrapciApiService } from '../../core/services/brapci-api.service';
+import { BookPanelComponent } from '../book-panel/book-panel.component';
 
 type BookCarouselApiItem = {
   ID?: string;
@@ -23,7 +23,7 @@ type BookSlide = {
 
 @Component({
   selector: 'app-book-carousel',
-  imports: [CommonModule, RouterLink],
+  imports: [CommonModule, BookPanelComponent],
   templateUrl: './book-carousel.component.html',
   styleUrl: './book-carousel.component.scss',
 })
@@ -37,6 +37,11 @@ export class BookCarouselComponent {
   readonly activeIndex = signal(0);
   readonly hasMultipleBooks = computed(() => this.books().length > 1);
   readonly trackTransform = computed(() => `translateX(-${this.activeIndex() * this.stepSize}px)`);
+
+  readonly panelOpen = signal(false);
+  readonly panelBookId = signal('');
+  readonly panelCover = signal('');
+  readonly panelTitle = signal('');
 
   constructor() {
     this.loadBooks();
@@ -67,6 +72,18 @@ export class BookCarouselComponent {
     }
 
     this.activeIndex.set(index);
+  }
+
+  openPanel(book: BookSlide, index: number): void {
+    this.setActive(index);
+    this.panelBookId.set(book.id);
+    this.panelCover.set(book.cover);
+    this.panelTitle.set(book.title);
+    this.panelOpen.set(true);
+  }
+
+  closePanel(): void {
+    this.panelOpen.set(false);
   }
 
   getPositionClass(index: number): string {

@@ -1,0 +1,88 @@
+@if (loading()) {
+  <div class="book-gadget__loading" aria-live="polite">
+    <div class="book-gadget__skeleton-cover"></div>
+    <div class="book-gadget__skeleton-lines">
+      <div class="book-gadget__skeleton-line wide"></div>
+      <div class="book-gadget__skeleton-line medium"></div>
+      <div class="book-gadget__skeleton-line narrow"></div>
+    </div>
+  </div>
+} @else if (error()) {
+  <p class="book-gadget__error">{{ error() }}</p>
+} @else if (data()) {
+  <div class="book-gadget__body">
+
+    <div class="book-gadget__cover-col">
+      <img
+        class="book-gadget__cover"
+        [src]="str('hasCover') || cover"
+        [alt]="str('hasTitle') || title"
+        loading="lazy"
+      />
+      <a class="book-gadget__link-full" [routerLink]="['/v', bookId]">
+        Ver ficha completa →
+      </a>
+    </div>
+
+    <div class="book-gadget__info-col">
+      <p class="book-gadget__badge">Livro</p>
+
+      <h2 class="book-gadget__title">{{ str('hasTitle') || title }}</h2>
+
+      @if (str('hasSubtitle')) {
+        <p class="book-gadget__subtitle">{{ str('hasSubtitle') }}</p>
+      }
+
+      @if (arr('hasAuthor').length) {
+        <div class="book-gadget__section">
+          <span class="book-gadget__label">Autor(es)</span>
+          <ul class="book-gadget__list">
+            @for (author of arr('hasAuthor'); track author) {
+              <li>{{ author }}</li>
+            }
+          </ul>
+        </div>
+      }
+
+      @if (str('hasPublisher')) {
+        <div class="book-gadget__section">
+          <span class="book-gadget__label">Editora</span>
+          <span>{{ str('hasPublisher') }}</span>
+        </div>
+      }
+
+      @if (str('hasYear') || str('hasDate')) {
+        <div class="book-gadget__section">
+          <span class="book-gadget__label">Ano</span>
+          <span>{{ str('hasYear') || str('hasDate') }}</span>
+        </div>
+      }
+
+      @if (str('hasISBN')) {
+        <div class="book-gadget__section">
+          <span class="book-gadget__label">ISBN</span>
+          <span>{{ str('hasISBN') }}</span>
+        </div>
+      }
+
+      @if (arr('hasKeyword').length) {
+        <div class="book-gadget__section">
+          <span class="book-gadget__label">Palavras-chave</span>
+          <div class="book-gadget__tags">
+            @for (kw of arr('hasKeyword'); track kw) {
+              <span class="book-gadget__tag">{{ kw }}</span>
+            }
+          </div>
+        </div>
+      }
+
+      @if (str('hasAbstract') || str('hasDescription')) {
+        <div class="book-gadget__section">
+          <span class="book-gadget__label">Resumo</span>
+          <p class="book-gadget__abstract">{{ str('hasAbstract') || str('hasDescription') }}</p>
+        </div>
+      }
+    </div>
+
+  </div>
+}

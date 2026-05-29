@@ -1,0 +1,100 @@
+/* ── backdrop ── */
+.book-panel__backdrop {
+  position: fixed;
+  inset: 0;
+  z-index: 1040;
+  background: rgba(20, 12, 4, 0.45);
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.3s ease;
+}
+
+.book-panel__backdrop--visible {
+  opacity: 1;
+  pointer-events: all;
+}
+
+/* ── drawer ── */
+.book-panel__drawer {
+  position: fixed;
+  top: 0;
+  right: 0;
+  z-index: 1050;
+  width: min(80vw, 860px);
+  height: 100dvh;
+  background: #fdf8f2;
+  box-shadow: -8px 0 40px rgba(28, 17, 8, 0.18);
+  transform: translateX(100%);
+  transition: transform 0.35s cubic-bezier(0.4, 0, 0.2, 1);
+  display: flex;
+  flex-direction: column;
+}
+
+.book-panel__drawer--open {
+  transform: translateX(0);
+}
+
+/* ── close button ── */
+.book-panel__close {
+  position: absolute;
+  top: 1rem;
+  left: -2.8rem;
+  width: 2.4rem;
+  height: 2.4rem;
+  border-radius: 50%;
+  border: none;
+  background: #fdf8f2;
+  color: #7c562e;
+  font-size: 1rem;
+  cursor: pointer;
+  box-shadow: 0 2px 8px rgba(28, 17, 8, 0.16);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: background 0.2s ease, transform 0.2s ease;
+
+  &:hover {
+    background: #f5ece0;
+    transform: scale(1.1);
+  }
+}
+
+/* ── content ── */
+.book-panel__content {
+  flex: 1 1 auto;
+  overflow-y: auto;
+  padding: 2rem 2rem 3rem;
+}
+
+/* ── responsive ── */
+@media (max-width: 600px) {
+  .book-panel__drawer {
+    width: 100vw;
+  }
+
+  .book-panel__close {
+    left: auto;
+    right: 0.75rem;
+    top: 0.75rem;
+    position: fixed;
+  }
+}
+
+/* ── dark theme ── */
+:host-context(body.theme-master.theme-dark) {
+  .book-panel__drawer {
+    background: #1e1610;
+    box-shadow: -8px 0 40px rgba(0, 0, 0, 0.4);
+  }
+
+  .book-panel__close {
+    background: #2c2018;
+    color: #c09050;
+
+    &:hover { background: #3a2e1a; }
+  }
+
+  .book-panel__backdrop {
+    background: rgba(0, 0, 0, 0.6);
+  }
+}

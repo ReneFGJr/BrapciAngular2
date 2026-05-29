@@ -24,7 +24,8 @@
       <div class="book-carousel__viewport">
         <div class="book-carousel__slider" [style.transform]="trackTransform()">
           @for (book of books(); track book.id; let index = $index) {
-            <a
+            <button
+              type="button"
               class="book-carousel__item"
               [class.in-view]="getPositionClass(index) === 'in-view'"
               [class.right]="getPositionClass(index) === 'right'"
@@ -32,12 +33,11 @@
               [class.far-right]="getPositionClass(index) === 'far-right'"
               [class.far-left]="getPositionClass(index) === 'far-left'"
               [attr.aria-label]="book.title"
-              [routerLink]="['/v', book.id]"
-              (click)="setActive(index)"
+              (click)="openPanel(book, index)"
             >
               <img class="book-carousel__cover" [src]="book.cover" [alt]="book.title" loading="lazy" />
               <span class="book-carousel__book-title">{{ book.title }}</span>
-            </a>
+            </button>
           }
         </div>
       </div>
@@ -53,3 +53,11 @@
     </div>
   }
 </section>
+
+<app-book-panel
+  [bookId]="panelBookId()"
+  [cover]="panelCover()"
+  [title]="panelTitle()"
+  [open]="panelOpen()"
+  (closed)="closePanel()"
+></app-book-panel>
