@@ -12,21 +12,27 @@
   aria-modal="true"
   [attr.aria-label]="title || 'Detalhes do livro'"
 >
-  <button
-    type="button"
-    class="book-panel__close"
-    (click)="close()"
-    aria-label="Fechar painel"
-  >
-    ✕
-  </button>
+  ---------------
+  <pre>
+  {{ data | json}}
+  </pre>
+  --------------
 
   @if (open && bookId) {
     <div class="book-panel__content">
+      <button
+        type="button"
+        class="book-panel__close"
+        (click)="close()"
+        aria-label="Fechar painel"
+      >
+        ✕
+      </button>
       <app-book-gadget
         [bookId]="bookId"
         [cover]="cover"
         [title]="title"
+        [data]="data"
       ></app-book-gadget>
     </div>
   }

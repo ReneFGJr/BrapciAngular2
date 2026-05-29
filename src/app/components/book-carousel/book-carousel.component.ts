@@ -42,6 +42,7 @@ export class BookCarouselComponent {
   readonly panelBookId = signal('');
   readonly panelCover = signal('');
   readonly panelTitle = signal('');
+  readonly panelData = signal<Record<string, unknown> | null>(null);
 
   constructor() {
     this.loadBooks();
@@ -79,7 +80,19 @@ export class BookCarouselComponent {
     this.panelBookId.set(book.id);
     this.panelCover.set(book.cover);
     this.panelTitle.set(book.title);
-    this.panelOpen.set(true);
+    this.panelData.set(null);
+
+    // Carregar dados do livro antes de abrir o painel
+    this.brapciApiService.getById<Record<string, unknown>>(book.id).subscribe({
+      next: (data) => {
+        this.panelData.set(data);
+        this.panelOpen.set(true);
+      },
+      error: () => {
+        // Abre painel mesmo com erro, book-gadget trata o erro
+        this.panelOpen.set(true);
+      },
+    });
   }
 
   closePanel(): void {

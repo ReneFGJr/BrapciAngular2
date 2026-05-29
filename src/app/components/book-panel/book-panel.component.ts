@@ -13,6 +13,7 @@ export class BookPanelComponent {
   @Input() bookId = '';
   @Input() cover = '';
   @Input() title = '';
+  @Input() data: Record<string, unknown> | null = null;
   @Input() open = false;
   @Output() closed = new EventEmitter<void>();
 

@@ -16,15 +16,22 @@ export class BookGadgetComponent implements OnChanges {
   @Input({ required: true }) bookId = '';
   @Input() cover = '';
   @Input() title = '';
+  @Input() data: BookData | null = null;
 
   private readonly api = inject(BrapciApiService);
 
   readonly loading = signal(false);
   readonly error = signal('');
-  readonly data = signal<BookData | null>(null);
+  readonly bookData = signal<BookData | null>(null);
 
   ngOnChanges(changes: SimpleChanges): void {
-    if (changes['bookId'] && this.bookId) {
+    // Se dados foram recebidos como input, usar diretamente
+    if (this.data) {
+      this.bookData.set(this.data);
+      this.error.set('');
+      this.loading.set(false);
+    } else if (changes['bookId'] && this.bookId) {
+      // Caso contrário, carregar dados
       this.loadBook();
     }
   }
@@ -32,11 +39,11 @@ export class BookGadgetComponent implements OnChanges {
   private loadBook(): void {
     this.loading.set(true);
     this.error.set('');
-    this.data.set(null);
+    this.bookData.set(null);
 
-    this.api.get<BookData>(`v/${this.bookId}`).subscribe({
+    this.api.getById<BookData>(this.bookId).subscribe({
       next: (res) => {
-        this.data.set(res);
+        this.bookData.set(res);
         this.loading.set(false);
       },
       error: () => {
@@ -47,14 +54,14 @@ export class BookGadgetComponent implements OnChanges {
   }
 
   str(key: string): string {
-    const d = this.data();
+    const d = this.bookData();
     if (!d) return '';
     const v = d[key];
     return typeof v === 'string' && v.trim() ? v : '';
   }
 
   arr(key: string): string[] {
-    const d = this.data();
+    const d = this.bookData();
     if (!d) return [];
     const v = d[key];
     if (Array.isArray(v)) return v.filter((x): x is string => typeof x === 'string');
