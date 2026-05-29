@@ -1,0 +1,24 @@
+.image-div {
+  display: grid;
+  place-items: center;
+  width: 100vw;
+  margin-left: calc(50% - 50vw);
+  margin-right: calc(50% - 50vw);
+  padding: 1.2rem 1rem;
+  border-radius: 0;
+  background: url('/assets/img/background_library.webp') center center / cover no-repeat;
+  border: none;
+  box-shadow: none;
+}
+
+.logo {
+  display: block;
+  width: min(640px, 92%);
+  max-height: 160px;
+  object-fit: contain;
+  filter: drop-shadow(0 8px 20px rgba(39, 25, 14, 0.2));
+}
+
+:host-context(body.theme-master.theme-dark) .image-div {
+  background: url('/assets/img/background_library.webp') center center / cover no-repeat;
+}

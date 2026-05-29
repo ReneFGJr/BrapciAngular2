@@ -1,0 +1,14 @@
+.hero {
+  border-bottom: 1px solid var(--theme-line);
+}
+
+.hero-logo {
+  display: inline-block;
+  height: auto;
+  max-width: min(520px, 82vw);
+  width: 100%;
+}
+
+.layout {
+  flex: 1;
+}

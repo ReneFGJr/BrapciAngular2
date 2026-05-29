@@ -37,6 +37,14 @@ export const routes: Routes = [
     loadComponent: () => import('./pages/eventos/eventos.page').then((m) => m.EventosPage),
   },
   {
+    path: 'livros',
+    loadComponent: () => import('./pages/livros/livros.page').then((m) => m.LivrosPage),
+  },
+  {
+    path: 'livros/submit',
+    loadComponent: () => import('./pages/livros-submit/livros-submit.page').then((m) => m.LivrosSubmitPage),
+  },
+  {
     path: 'signin',
     loadComponent: () => import('./pages/signin/signin.page').then((m) => m.SigninPage),
   },

@@ -11,7 +11,6 @@ import { AuthService } from './core/services/auth.service';
 import { LanguageService } from './core/services/language.service';
 import { SeoService } from './core/services/seo.service';
 import { SessionService } from './core/services/session.service';
-import { SearchArticlesComponent } from './components/search-articles/search-articles.component';
 
 @Component({
   selector: 'app-root',
@@ -20,8 +19,7 @@ import { SearchArticlesComponent } from './components/search-articles/search-art
     FormsModule,
     RouterOutlet,
     RouterLink,
-    TranslateModule,
-    SearchArticlesComponent
+    TranslateModule
   ],
   templateUrl: './app.html',
   styleUrl: './app.scss'

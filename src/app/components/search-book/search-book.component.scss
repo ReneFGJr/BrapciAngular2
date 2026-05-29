@@ -1,0 +1,41 @@
+.search-book {
+  border-radius: 18px;
+  background: rgba(255, 255, 255, 0.58);
+}
+
+.search-book__frame {
+  padding: 1rem;
+  background: rgba(255, 255, 255, 0.62);
+}
+
+.search-book__results {
+  border-radius: 12px;
+  overflow: hidden;
+}
+
+.search-book__result-title {
+  margin: 0;
+  font-size: 1rem;
+  color: #2f2014;
+}
+
+.search-book__result-meta {
+  font-size: 0.9rem;
+  color: #6b5642;
+}
+
+:host-context(body.theme-master.theme-dark) .search-book {
+  background: rgba(30, 24, 21, 0.5);
+}
+
+:host-context(body.theme-master.theme-dark) .search-book__frame {
+  background: rgba(36, 30, 25, 0.75);
+}
+
+:host-context(body.theme-master.theme-dark) .search-book__result-title {
+  color: #f3e4d5;
+}
+
+:host-context(body.theme-master.theme-dark) .search-book__result-meta {
+  color: #d5c3b0;
+}

@@ -1,0 +1,121 @@
+.livros-wrap {
+  min-height: calc(100vh - 70px);
+  background:
+    radial-gradient(circle at top left, rgba(208, 223, 255, 0.9), transparent 34%),
+    linear-gradient(180deg, #f6f1e8 0%, #efe5d5 100%);
+}
+
+.livros-shell {
+  display: grid;
+  gap: 1.5rem;
+}
+
+.livros-hero {
+  padding: 2rem;
+  border-radius: 20px;
+  background: rgba(255, 252, 247, 0.88);
+  border: 1px solid rgba(124, 86, 46, 0.12);
+  box-shadow: 0 20px 45px rgba(92, 63, 29, 0.08);
+}
+
+.livros-kicker {
+  display: inline-block;
+  margin-bottom: 0.75rem;
+  font-size: 0.8rem;
+  font-weight: 700;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: #8a5a2b;
+}
+
+.livros-title {
+  margin: 0;
+  font-size: clamp(2rem, 4vw, 3.5rem);
+  color: #35210f;
+}
+
+.livros-lead {
+  max-width: 52rem;
+  margin-top: 1rem;
+  font-size: 1.05rem;
+  line-height: 1.7;
+  color: #5a4634;
+}
+
+.livros-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+  gap: 1rem;
+}
+
+.livros-search-row {
+  margin: 0;
+}
+
+.livros-card {
+  padding: 1.5rem;
+  border-radius: 18px;
+  background: rgba(255, 255, 255, 0.84);
+  border: 1px solid rgba(124, 86, 46, 0.1);
+  box-shadow: 0 14px 32px rgba(92, 63, 29, 0.06);
+
+  h2 {
+    margin-bottom: 0.75rem;
+    font-size: 1.15rem;
+    color: #35210f;
+  }
+
+  p {
+    margin: 0;
+    color: #5a4634;
+    line-height: 1.6;
+  }
+}
+
+.livros-card-accent {
+  background: linear-gradient(135deg, #4c2f19 0%, #7b5230 100%);
+
+  h2,
+  p {
+    color: #f8efe4;
+  }
+}
+
+.livros-link {
+  display: inline-flex;
+  margin-top: 1rem;
+  color: #fff4e6;
+  font-weight: 600;
+  text-decoration: none;
+}
+
+.livros-link:hover {
+  text-decoration: underline;
+}
+
+:host-context(body.theme-master.theme-dark) .livros-wrap {
+  background:
+    radial-gradient(circle at top left, rgba(89, 117, 168, 0.18), transparent 34%),
+    linear-gradient(180deg, #181512 0%, #241e19 100%);
+}
+
+:host-context(body.theme-master.theme-dark) .livros-hero,
+:host-context(body.theme-master.theme-dark) .livros-card {
+  background: rgba(37, 31, 26, 0.88);
+  border-color: rgba(232, 213, 190, 0.08);
+  box-shadow: 0 18px 38px rgba(0, 0, 0, 0.26);
+}
+
+:host-context(body.theme-master.theme-dark) .livros-kicker {
+  color: #d9a36a;
+}
+
+:host-context(body.theme-master.theme-dark) .livros-title,
+:host-context(body.theme-master.theme-dark) .livros-card h2 {
+  color: #f7ecdf;
+}
+
+:host-context(body.theme-master.theme-dark) .livros-lead,
+:host-context(body.theme-master.theme-dark) .livros-card p {
+  color: #d6c4b2;
+}

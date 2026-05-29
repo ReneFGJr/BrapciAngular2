@@ -1,0 +1,191 @@
+.book-carousel {
+  padding-bottom: 0.5rem;
+}
+
+.book-carousel__headline h2 {
+  font-family: 'Barlow Condensed', sans-serif;
+  font-size: 1.8rem;
+  font-weight: 700;
+  color: #35210f;
+}
+
+.book-carousel__catalog {
+  position: relative;
+  overflow: hidden;
+  padding: 1.25rem 3.5rem;
+  border-radius: 28px;
+  background: linear-gradient(180deg, rgba(255, 250, 243, 0.98) 0%, rgba(245, 236, 222, 0.98) 100%);
+  border: 1px solid rgba(124, 86, 46, 0.14);
+  box-shadow: 0 22px 44px rgba(92, 63, 29, 0.08);
+}
+
+.book-carousel__viewport {
+  overflow: hidden;
+}
+
+.book-carousel__slider,
+.book-carousel__loading-track {
+  display: flex;
+  align-items: flex-start;
+  gap: 1rem;
+  transition: transform 0.35s ease;
+  will-change: transform;
+}
+
+.book-carousel__item {
+  display: grid;
+  gap: 0.7rem;
+  width: 172px;
+  flex: 0 0 172px;
+  padding: 0;
+  background: transparent;
+  border: 0;
+  text-align: left;
+  cursor: pointer;
+  opacity: 1;
+  transform: scale(0.9);
+  transition: transform 0.3s ease;
+}
+
+.book-carousel__item.in-view {
+  opacity: 1;
+  transform: scale(1.08);
+  filter: drop-shadow(0 8px 18px rgba(39, 25, 14, 0.22));
+}
+
+.book-carousel__item.left,
+.book-carousel__item.right {
+  opacity: 1;
+  transform: scale(0.96);
+}
+
+.book-carousel__item.far-left,
+.book-carousel__item.far-right {
+  opacity: 1;
+}
+
+.book-carousel__cover {
+  display: block;
+  width: 172px;
+  height: 250px;
+  object-fit: cover;
+  border-radius: 14px;
+  box-shadow: 0 18px 30px rgba(28, 17, 8, 0.18);
+  background: #efe5d5;
+}
+
+.book-carousel__book-title {
+  display: -webkit-box;
+  min-height: 3.3em;
+  overflow: hidden;
+  font-size: 0.92rem;
+  line-height: 1.35;
+  color: #4e3926;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 3;
+}
+
+.book-carousel__scroll-btn {
+  position: absolute;
+  top: calc(50% - 1.25rem);
+  z-index: 2;
+  width: 2.5rem;
+  height: 2.5rem;
+  border: 0;
+  border-radius: 999px;
+  background: rgba(76, 47, 25, 0.92);
+  color: #fff7ed;
+  font-size: 1rem;
+  line-height: 1;
+  box-shadow: 0 10px 22px rgba(29, 18, 9, 0.2);
+}
+
+.book-carousel__scroll-btn.left {
+  left: 0.65rem;
+}
+
+.book-carousel__scroll-btn.right {
+  right: 0.65rem;
+}
+
+.book-carousel__message {
+  padding: 1rem 0;
+  color: #6d543d;
+}
+
+.book-carousel__skeleton-item {
+  width: 172px;
+  height: 250px;
+  flex: 0 0 172px;
+  border-radius: 14px;
+  background: linear-gradient(90deg, rgba(211, 194, 169, 0.55) 0%, rgba(242, 233, 221, 0.9) 50%, rgba(211, 194, 169, 0.55) 100%);
+  background-size: 200% 100%;
+  animation: book-carousel-shimmer 1.3s linear infinite;
+}
+
+@keyframes book-carousel-shimmer {
+  0% {
+    background-position: 200% 0;
+  }
+
+  100% {
+    background-position: -200% 0;
+  }
+}
+
+@media (max-width: 767.98px) {
+  .book-carousel__catalog {
+    padding: 1rem 2.8rem;
+  }
+
+  .book-carousel__item,
+  .book-carousel__cover,
+  .book-carousel__skeleton-item {
+    width: 136px;
+    flex-basis: 136px;
+  }
+
+  .book-carousel__cover,
+  .book-carousel__skeleton-item {
+    height: 200px;
+  }
+
+  .book-carousel__scroll-btn {
+    width: 2.2rem;
+    height: 2.2rem;
+  }
+}
+
+@media (max-width: 575.98px) {
+  .book-carousel__catalog {
+    padding-inline: 2.4rem;
+  }
+}
+
+:host-context(body.theme-master.theme-dark) .book-carousel {
+  background: transparent;
+}
+
+:host-context(body.theme-master.theme-dark) .book-carousel__headline h2 {
+  color: #f7ecdf;
+}
+
+:host-context(body.theme-master.theme-dark) .book-carousel__catalog {
+  background: linear-gradient(180deg, rgba(38, 31, 25, 0.98) 0%, rgba(28, 23, 20, 0.98) 100%);
+  border-color: rgba(232, 213, 190, 0.1);
+  box-shadow: 0 22px 44px rgba(0, 0, 0, 0.28);
+}
+
+:host-context(body.theme-master.theme-dark) .book-carousel__book-title,
+:host-context(body.theme-master.theme-dark) .book-carousel__message {
+  color: #d6c4b2;
+}
+
+:host-context(body.theme-master.theme-dark) .book-carousel__scroll-btn {
+  background: #d9a36a;
+  color: #24180f;
+}
+
+:host-context(body.theme-master.theme-dark) .book-carousel__cover {
+  background: #332a24;
+}

@@ -1,0 +1,69 @@
+<section class="livros-submit-wrap py-4" aria-labelledby="livros-submit-title">
+  <div class="container livros-submit-shell">
+    <app-breadcrumbs></app-breadcrumbs>
+
+    <div class="row g-4">
+      <div class="col-lg-6 col-12">
+        <article class="livros-submit-card h-100">
+          <h2 id="livros-submit-title">Termo de Indexacao</h2>
+
+          <p>
+            Ao submeter seu livro para indexacao na Brapci Livros, voce, como autor ou
+            representante autorizado, declara que:
+          </p>
+
+          <ul class="livros-submit-list">
+            <li>
+              Voce detem os direitos autorais ou esta devidamente autorizado a submeter o conteudo
+              para indexacao. Certifica que o material enviado e original e nao infringe direitos de
+              terceiros.
+            </li>
+            <li>
+              O conteudo do livro esta relacionado a temas pertinentes as areas de Ciencia da
+              Informacao, Biblioteconomia, Arquivologia, Museologia ou disciplinas correlatas,
+              alinhando-se ao escopo da Brapci Livros.
+            </li>
+            <li>
+              Autoriza a Brapci Livros a disponibilizar os metadados do livro para consulta publica em
+              sua plataforma. Esta autorizacao nao implica a disponibilizacao do texto completo da
+              obra, salvo indicacao explicita e consentimento do autor.
+            </li>
+          </ul>
+
+          <h5>Contato e Suporte</h5>
+          <ul class="livros-submit-list">
+            <li>
+              Em caso de duvidas ou solicitacoes relacionadas ao processo de indexacao, entre em
+              contato com a equipe da Brapci Livros por meio do e-mail:
+              <a href="mailto:brapcici@gmail.com">brapcici@gmail.com</a>.
+            </li>
+          </ul>
+        </article>
+      </div>
+
+      <div class="col-lg-6 col-12">
+        <section class="livros-submit-card h-100" aria-labelledby="upload-title">
+          <h3 id="upload-title" class="mb-3">bookSubmit</h3>
+
+          <div class="upload-head">UPLOAD de arquivos</div>
+
+          <div class="upload-body">
+            <p>Anexe o arquivo do livro</p>
+
+            <input type="file" class="form-control" aria-label="Selecionar arquivo do livro" />
+
+            <p class="upload-note mb-0 mt-3">
+              O arquivo sera usado para avaliacao da equipe da Brapci Livros durante o processo de
+              indexacao.
+            </p>
+          </div>
+
+          <div class="d-flex flex-wrap gap-2 mt-3">
+            <button type="button" class="btn btn-primary">Enviar arquivo</button>
+            <a class="btn btn-outline-secondary" routerLink="/livros">Voltar para Livros</a>
+          </div>
+        </section>
+      </div>
+    </div>
+  </div>
+</section>

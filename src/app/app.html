@@ -30,7 +30,7 @@
           <a class="nav-link" routerLink="/v/101894" (click)="closeDocsMenu()">BENANCIB</a>
         </li>
         <li class="nav-item">
-          <a class="nav-link" href="#">Livros</a>
+          <a class="nav-link" routerLink="/livros" (click)="closeDocsMenu()">Livros</a>
         </li>
         @if (currentUser()) {
           <li class="nav-item dropdown docs-dropdown" [class.show]="toolsMenuOpen()">
@@ -181,24 +181,6 @@
     </div>
   </div>
 </nav>
-
-@if (!isDocRoute()) {
-
-<header class="hero pt-3" role="banner">
-  <div class="container text-center">
-      <img class="hero-logo text-center" src="assets/img/brand_brapci_shadown.png" alt="Brapci" />
-  </div>
-</header>
-
-<main class="layout py-4" itemscope itemtype="https://schema.org/WebPage">
-  <div class="container">
-    <div class="row g-4">
-      <app-search-articles></app-search-articles>
-    </div>
-  </div>
-</main>
-}
-
 
 <router-outlet></router-outlet>
 

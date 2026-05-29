@@ -1,0 +1,55 @@
+<section class="book-carousel" aria-labelledby="book-carousel-title">
+  <div class="container">
+    <div class="row">
+      <div class="col-sm-12 book-carousel__headline">
+        <h2 id="book-carousel-title" class="mb-0">Novidades</h2>
+      </div>
+    </div>
+  </div>
+
+  @if (loading()) {
+    <div class="book-carousel__catalog container" aria-live="polite">
+      <div class="book-carousel__loading-track">
+        @for (item of [1, 2, 3, 4, 5]; track item) {
+          <div class="book-carousel__skeleton-item"></div>
+        }
+      </div>
+    </div>
+  } @else if (error()) {
+    <div class="book-carousel__catalog container" aria-live="polite">
+      <div class="book-carousel__message">{{ error() }}</div>
+    </div>
+  } @else {
+    <div class="book-carousel__catalog container">
+      <div class="book-carousel__viewport">
+        <div class="book-carousel__slider" [style.transform]="trackTransform()">
+          @for (book of books(); track book.id; let index = $index) {
+            <a
+              class="book-carousel__item"
+              [class.in-view]="getPositionClass(index) === 'in-view'"
+              [class.right]="getPositionClass(index) === 'right'"
+              [class.left]="getPositionClass(index) === 'left'"
+              [class.far-right]="getPositionClass(index) === 'far-right'"
+              [class.far-left]="getPositionClass(index) === 'far-left'"
+              [attr.aria-label]="book.title"
+              [routerLink]="['/v', book.id]"
+              (click)="setActive(index)"
+            >
+              <img class="book-carousel__cover" [src]="book.cover" [alt]="book.title" loading="lazy" />
+              <span class="book-carousel__book-title">{{ book.title }}</span>
+            </a>
+          }
+        </div>
+      </div>
+
+      @if (hasMultipleBooks()) {
+        <button type="button" class="book-carousel__scroll-btn left" (click)="prev()" aria-label="Livro anterior">
+          ◀
+        </button>
+        <button type="button" class="book-carousel__scroll-btn right" (click)="next()" aria-label="Proximo livro">
+          ▶
+        </button>
+      }
+    </div>
+  }
+</section>

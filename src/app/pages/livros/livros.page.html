@@ -1,0 +1,38 @@
+<app-banner-livros></app-banner-livros>
+
+<section class="livros-wrap py-4" aria-labelledby="livros-title">
+  <div class="container livros-shell">
+    <app-breadcrumbs></app-breadcrumbs>
+
+    <app-book-carousel></app-book-carousel>
+
+    <div class="row g-3 align-items-stretch livros-search-row">
+      <div class="col-sm-8 col-lg-9 col-12">
+        <app-search-book></app-search-book>
+      </div>
+
+      <div class="col-sm-4 col-lg-3 col-12">
+        <app-book-btn-submit></app-book-btn-submit>
+      </div>
+    </div>
+
+    <div class="livros-grid">
+      <article class="livros-card">
+        <h2>Catalogo em construcao</h2>
+        <p>
+          A rota /livros ja esta ativa e pronta para receber listagens, filtros e integracoes com a
+          API da plataforma.
+        </p>
+      </article>
+
+      <article class="livros-card livros-card-accent">
+        <h2>Proximo passo sugerido</h2>
+        <p>
+          Quando a fonte de dados estiver definida, esta pagina pode evoluir para uma vitrine com
+          busca, categorias e destaques editoriais.
+        </p>
+        <a class="livros-link" routerLink="/">Voltar para a pagina inicial</a>
+      </article>
+    </div>
+  </div>
+</section>
