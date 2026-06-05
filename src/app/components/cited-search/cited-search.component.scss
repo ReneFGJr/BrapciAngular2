@@ -14,91 +14,74 @@
 
 .cited-search__subtitle {
   margin: 0;
-  color: #616b75;
+  color: var(--theme-muted);
 }
 
 .cited-search__count {
   margin: 0;
-  color: #334155;
+  color: var(--theme-ink);
   font-weight: 600;
 }
 
-.cited-search__results {
-  display: grid;
-  gap: 1rem;
-  list-style: none;
-  margin: 0;
-  padding: 0;
-}
-
-.citation-card {
-  border: 1px solid #d9dee4;
+.cited-search__table-wrap {
+  overflow-x: auto;
+  border: 1px solid var(--theme-line);
   border-radius: 0.75rem;
-  background: #ffffff;
-  padding: 1rem;
-  box-shadow: 0 1px 2px rgba(15, 23, 42, 0.04);
+  background: var(--theme-card-bg);
 }
 
-.citation-card__header {
-  display: grid;
-  gap: 0.5rem;
-  margin-bottom: 0.75rem;
+.cited-search__table {
+  width: 100%;
+  border-collapse: collapse;
+  min-width: 760px;
 }
 
-.citation-card__meta {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 0.5rem;
-  color: #4f5965;
-  font-size: 0.92rem;
+.cited-search__table th,
+.cited-search__table td {
+  padding: 0.5rem 0.625rem;
+  border-bottom: 1px solid var(--theme-line);
+  vertical-align: top;
+  font-size: 0.9rem;
 }
 
-.citation-card__meta span,
-.citation-card__label {
-  display: inline-flex;
-  align-items: center;
-  padding: 0.18rem 0.55rem;
-  border-radius: 999px;
-  background: #f1f4f7;
-  color: #334155;
+.cited-search__table th {
+  background: var(--theme-sand);
+  color: var(--theme-ink);
+  font-weight: 600;
+  white-space: nowrap;
+  position: sticky;
+  top: 0;
+}
+
+.cited-search__table tbody tr:last-child td {
+  border-bottom: 0;
+}
+
+.cited-search__reference {
+  min-width: 28rem;
+  color: var(--theme-ink);
+  line-height: 1.35;
 }
 
 .citation-card__id-link {
-  display: inline-flex;
-  align-items: center;
-  padding: 0.18rem 0.55rem;
-  border-radius: 999px;
-  background: #f1f4f7;
-  color: #0d6efd;
+  color: var(--theme-link);
   text-decoration: none;
+  font-weight: 600;
 }
 
 .citation-card__id-link:hover {
+  color: var(--theme-hint);
   text-decoration: underline;
 }
 
-.citation-card__text {
-  margin: 0;
-  color: #1f2937;
-  line-height: 1.5;
-  white-space: pre-wrap;
-}
-
-.citation-card__footer {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 0.5rem;
-  margin-top: 0.85rem;
-  align-items: center;
-}
-
-.citation-card__value {
-  color: #334155;
+.cited-search__table td:last-child {
+  color: var(--theme-muted);
   word-break: break-word;
 }
 
 @media (max-width: 640px) {
-  .citation-card {
-    padding: 0.875rem;
+  .cited-search__table th,
+  .cited-search__table td {
+    padding: 0.45rem 0.5rem;
   }
 }
