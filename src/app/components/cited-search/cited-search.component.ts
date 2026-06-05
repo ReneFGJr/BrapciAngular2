@@ -102,6 +102,20 @@ export class CitedSearchComponent {
     };
   }
 
+  getDoiUrl(doi: string): string {
+    const trimmedDoi = doi.trim();
+
+    if (!trimmedDoi) {
+      return '';
+    }
+
+    if (/^https?:\/\//i.test(trimmedDoi)) {
+      return trimmedDoi;
+    }
+
+    return `https://doi.org/${trimmedDoi.replace(/^doi:\s*/i, '')}`;
+  }
+
   private asRecord(value: unknown): Record<string, unknown> {
     return value && typeof value === 'object' ? (value as Record<string, unknown>) : {};
   }

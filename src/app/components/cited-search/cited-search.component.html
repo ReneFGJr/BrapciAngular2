@@ -36,11 +36,11 @@
     <table class="cited-search__table">
       <thead>
         <tr>
-          <th>ID</th>
-          <th>Ano</th>
-          <th>Tipo</th>
-          <th>Referencia</th>
-          <th>DOI</th>
+          <th width="5%">ID</th>
+          <th width="5%">Ano</th>
+          <th width="5%">Tipo</th>
+          <th width="70%">Referencia</th>
+          <th width="15%">DOI</th>
         </tr>
       </thead>
       <tbody>
@@ -60,7 +60,18 @@
           <td>{{ card.year || '-' }}</td>
           <td>{{ card.type || '-' }}</td>
           <td class="cited-search__reference">{{ card.text }}</td>
-          <td>{{ card.doi || '-' }}</td>
+          <td>
+            <a
+              *ngIf="card.doi"
+              class="citation-card__id-link"
+              [href]="getDoiUrl(card.doi)"
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              {{ card.doi }}
+            </a>
+            <span *ngIf="!card.doi">-</span>
+          </td>
         </tr>
       </tbody>
     </table>
