@@ -37,11 +37,26 @@
   },
   "basket": {
     "selected": {
+      "title": "Documentos seleccionados",
+      "none": "No hay documentos seleccionados.",
+      "loading": "Cargando seleccion...",
+      "none_category": "No hay elementos en esta categoria.",
+      "clear": "Limpiar seleccion",
       "Articles": "Artigos",
       "Books": "Livros",
       "BooksChapter": "Capitulos",
       "Proceedings": "Trabalhos de eventos"
     }
+  },
+  "cited": {
+    "title": "Busqueda de citas",
+    "subtitle": "Busque trabajos y visualice los formatos de cita.",
+    "inputLabel": "Termino de busqueda",
+    "placeholder": "Escriba un termino, autor o titulo",
+    "searchButton": "Buscar citas",
+    "loading": "Buscando citas...",
+    "empty": "No se encontraron citas para el termino informado.",
+    "error": "Error al buscar citas."
   },
   "signin": {
     "kicker": "Acceso Brapci",

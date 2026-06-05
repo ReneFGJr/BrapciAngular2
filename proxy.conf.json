@@ -1,0 +1,14 @@
+{
+  "/auth": {
+    "target": "https://cip.brapci.inf.br/app",
+    "secure": false,
+    "changeOrigin": true,
+    "logLevel": "warn"
+  },
+  "/api": {
+    "target": "https://cip.brapci.inf.br",
+    "secure": true,
+    "changeOrigin": true,
+    "logLevel": "warn"
+  }
+}

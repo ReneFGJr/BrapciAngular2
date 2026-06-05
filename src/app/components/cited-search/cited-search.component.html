@@ -1,0 +1,61 @@
+<section class="cited-search" aria-labelledby="cited-title">
+  <header class="cited-search__header">
+    <h2 id="cited-title" class="cited-search__title">{{ 'cited.title' | translate }}</h2>
+    <p class="cited-search__subtitle">{{ 'cited.subtitle' | translate }}</p>
+  </header>
+
+  <form class="cited-search__form" (ngSubmit)="searchCitations()">
+    <label for="cited-query" class="form-label">{{ 'cited.inputLabel' | translate }}</label>
+    <div class="input-group">
+      <input
+        id="cited-query"
+        name="citedQuery"
+        class="form-control"
+        [ngModel]="query()"
+        (ngModelChange)="query.set($event)"
+        [placeholder]="'cited.placeholder' | translate"
+      />
+      <button type="submit" class="btn btn-primary" [disabled]="loading()">
+        {{ 'cited.searchButton' | translate }}
+      </button>
+    </div>
+  </form>
+
+  <div *ngIf="loading()" class="alert alert-secondary mt-3">{{ 'cited.loading' | translate }}</div>
+  <div *ngIf="error()" class="alert alert-danger mt-3">{{ error()! | translate }}</div>
+
+  <div *ngIf="searched() && !loading() && !error() && !hasResults()" class="alert alert-info mt-3">
+    {{ 'cited.empty' | translate }}
+  </div>
+
+  <p class="cited-search__count" *ngIf="!loading() && hasResults()">
+    Total de referencias localizadas: {{ cards().length }}
+  </p>
+
+  <ul class="cited-search__results" *ngIf="!loading() && hasResults()">
+    <li class="citation-card" *ngFor="let card of cards()">
+      <header class="citation-card__header">
+        <div class="citation-card__meta">
+          <span *ngIf="card.year">{{ card.year }}</span>
+          <span *ngIf="card.type">Tipo {{ card.type }}</span>
+          <a
+            *ngIf="card.rdf"
+            class="citation-card__id-link"
+            [routerLink]="['/v', card.rdf]"
+            target="_blank"
+            rel="noopener noreferrer"
+          >
+            ID {{ card.rdf }}
+          </a>
+        </div>
+      </header>
+
+      <p class="citation-card__text">{{ card.text }}</p>
+
+      <div class="citation-card__footer" *ngIf="card.doi">
+        <span class="citation-card__label">DOI</span>
+        <span class="citation-card__value">{{ card.doi }}</span>
+      </div>
+    </li>
+  </ul>
+</section>

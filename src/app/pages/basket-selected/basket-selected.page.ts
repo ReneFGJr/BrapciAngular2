@@ -12,22 +12,23 @@ import { TranslateModule } from '@ngx-translate/core';
   imports: [CommonModule, HttpClientModule, TranslateModule],
 })
 export class BasketSelectedPage implements OnInit {
-    public readonly abntCategories = ['Articles', 'Proceedings', 'Books', 'BooksChapter'];
+  public readonly abntCategories = ['Articles', 'Proceedings', 'Books', 'BooksChapter'];
 
-    public get abntLabels() {
-      return [
-        'Artigos',
-        'Trabalhos em Eventos',
-        'Livros',
-        'Capítulos de Livros'
-      ];
-    }
+  public get abntLabels() {
+    return [
+      'Artigos',
+      'Trabalhos em Eventos',
+      'Livros',
+      'Capítulos de Livros'
+    ];
+  }
 
-    public get abntCounts() {
-      const data = this.data?.ABNT;
-      if (!data) return [0, 0, 0, 0];
-      return this.abntCategories.map(cat => Array.isArray(data[cat]) ? data[cat].length : 0);
-    }
+  public get abntCounts() {
+    const data = this.data?.ABNT;
+    if (!data) return [0, 0, 0, 0];
+    return this.abntCategories.map((cat) => Array.isArray(data[cat]) ? data[cat].length : 0);
+  }
+
   activeTab = signal<string>('Articles');
   private readonly basket = inject(BasketService);
   private readonly http = inject(HttpClient);
@@ -42,6 +43,7 @@ export class BasketSelectedPage implements OnInit {
     const ids = this.basket.getMarked();
     this.markedIds.set(ids);
     if (ids.length === 0) return;
+
     this.loading.set(true);
     const url = 'https://cip.brapci.inf.br/api/brapci/basket';
     const formData = new FormData();
@@ -52,7 +54,7 @@ export class BasketSelectedPage implements OnInit {
         this.results.set(data);
         this.loading.set(false);
       },
-      error: (err) => {
+      error: () => {
         this.error.set('Erro ao buscar dados da API');
         this.loading.set(false);
       },
@@ -71,5 +73,15 @@ export class BasketSelectedPage implements OnInit {
     // Se vier string (ex: '20714,45382,...'), retorna array vazio para evitar erro no ngFor
     if (typeof data[category] === 'string') return [];
     return Array.isArray(data[category]) ? data[category] : [];
+  }
+
+  clearSelection() {
+    this.basket.clear();
+    this.markedIds.set([]);
+    this.results.set(null);
+    this.data = null;
+    this.error.set(null);
+    this.loading.set(false);
+    this.activeTab.set('Articles');
   }
 }

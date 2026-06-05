@@ -40,12 +40,23 @@
   },
     "basket": {
       "selected": {
+        "title": "Selected documents",
         "Articles": "Articles",
         "Books": "Books",
         "BooksChapter": "Book Chapters",
         "Proceedings": "Conference Proceedings"
       }
     },
+  "cited": {
+    "title": "Citation search",
+    "subtitle": "Search works and inspect citation formats.",
+    "inputLabel": "Search term",
+    "placeholder": "Type a term, author, or title",
+    "searchButton": "Search citations",
+    "loading": "Searching citations...",
+    "empty": "No citations found for this term.",
+    "error": "Unable to search citations."
+  },
   "search": {
     "bollean": {
       "linkBack": "Back to normal search"

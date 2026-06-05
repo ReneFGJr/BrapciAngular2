@@ -42,6 +42,12 @@ export class BasketService {
     this.changed.emit();
   }
 
+  clear(): void {
+    if (!this.isBrowser()) return;
+    window.localStorage.removeItem(this.storageKey);
+    this.changed.emit();
+  }
+
   count(): number {
     return this.getMarked().length;
   }

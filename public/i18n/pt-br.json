@@ -12,11 +12,26 @@
   "basket": {
     "selected":
     {
+      "title": "Documentos selecionados",
+      "none": "Nenhum documento selecionado.",
+      "loading": "Carregando selecao...",
+      "none_category": "Nenhum item nesta categoria.",
+      "clear": "Limpar selecao",
       "Articles": "Artigos",
       "Books": "Livros",
       "BooksChapter": "Capitulos",
       "Proceedings": "Trabalhos de eventos"
     }
+  },
+  "cited": {
+    "title": "Busca de citacoes",
+    "subtitle": "Pesquise trabalhos e visualize os formatos de citacao.",
+    "inputLabel": "Termo da busca",
+    "placeholder": "Digite um termo, autor ou titulo",
+    "searchButton": "Buscar citacoes",
+    "loading": "Buscando citacoes...",
+    "empty": "Nenhuma citacao encontrada para o termo informado.",
+    "error": "Erro ao buscar citacoes."
   },
   "auth": {
     "title": "Autenticacao",

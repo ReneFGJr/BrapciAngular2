@@ -1,5 +1,15 @@
 <section class="container py-4">
-  <h2>{{ 'basket.selected.title' | translate }}</h2>
+  <div class="d-flex flex-wrap align-items-center justify-content-between gap-2">
+    <h2 class="mb-0">{{ 'basket.selected.title' | translate }}</h2>
+    <button
+      type="button"
+      class="btn btn-outline-danger"
+      (click)="clearSelection()"
+      [disabled]="markedIds().length === 0 || loading()"
+    >
+      {{ 'basket.selected.clear' | translate }}
+    </button>
+  </div>
 
   <div *ngIf="markedIds().length === 0 && !loading()" class="alert alert-info mt-3">
     {{ 'basket.selected.none' | translate }}

@@ -23,7 +23,7 @@ export class BrapciApiService {
     const url = cleanEndpoint
       ? `${this.apiConfig.brapciApiBaseUrl}/${cleanEndpoint}`
       : this.apiConfig.brapciApiBaseUrl;
-
+    console.log("URL", url, "Params", httpParams.toString());
     return this.http.get<T>(url, { params: httpParams });
   }
 
@@ -39,6 +39,10 @@ export class BrapciApiService {
     }
     console.log('Search params:', params);
     return this.get<T>('brapci/search/v3', params);
+  }
+
+  citedSearch<T>(term: string): Observable<T> {
+    return this.get<T>('brapci/cited-search', { q: term });
   }
 
   authoritySearch<T>(term: string): Observable<T> {
