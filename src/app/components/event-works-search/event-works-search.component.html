@@ -1,0 +1,140 @@
+<article class="event-works-search" aria-labelledby="event-works-search-title">
+  <div class="cardx h-100x shadow-sm border-0">
+    <div class="card-body">
+      <h3 id="event-works-search-title" class="search-title">Buscar trabalhos deste evento</h3>
+
+      <form (ngSubmit)="searchWorks()" class="search-form mb-0" novalidate>
+        <label for="event-query" class="form-label mb-0">Termo de busca</label>
+        <div class="input-group mt-0">
+          <textarea
+            id="event-query"
+            name="eventQuery"
+            class="form-control border border-secondary"
+            [ngModel]="query()"
+            (ngModelChange)="query.set($event)"
+            rows="3"
+            placeholder="Digite titulo, autor, resumo ou palavra-chave"
+          ></textarea>
+          <button type="submit" class="btn btn-primary" [disabled]="loading() || !canSearch()">
+            Buscar
+          </button>
+        </div>
+      </form>
+
+      <div class="search-actions">
+        <span type="button" class="link search-action-link" (click)="showFilters = !showFilters">Filtros</span>
+      </div>
+
+      @if (searched()) {
+        <div class="search-results-grid mt-3">
+          <div class="search-results-main">
+            @if (loading()) {
+              <p class="hint mb-0">Carregando resultados...</p>
+            } @else if (error()) {
+              <p class="hint mb-0 text-danger">{{ error() }}</p>
+            } @else if (hasResults()) {
+              <p class="event-works-search__count mb-2">{{ results().length }} resultado(s) localizado(s)</p>
+
+              <div class="list-group">
+                @for (item of results(); track item.id + item.title) {
+                  <article class="list-group-item d-flex justify-content-between align-items-start gap-3">
+                    <div>
+                      <h4 class="event-works-search__title mb-1">{{ item.title }}</h4>
+                      <p class="event-works-search__meta mb-0">{{ item.subtitle }}</p>
+                    </div>
+
+                    @if (item.id) {
+                      <a
+                        class="btn btn-sm btn-outline-primary"
+                        [routerLink]="['/v', item.id]"
+                        target="_blank"
+                        rel="noopener noreferrer"
+                      >
+                        Ver
+                      </a>
+                    }
+                  </article>
+                }
+              </div>
+            } @else {
+              <p class="hint mb-0">Nenhum resultado encontrado.</p>
+            }
+          </div>
+
+          <aside class="search-json-sidebar" aria-label="Menu lateral da consulta">
+            <div class="search-json-toolbar">
+              <button
+                type="button"
+                class="search-json-tab"
+                [class.active]="!showJsonPanel()"
+                (click)="showResultsPanel()"
+              >
+                Resultados
+              </button>
+              <button
+                type="button"
+                class="search-json-tab"
+                [class.active]="showJsonPanel()"
+                (click)="showJsonResponsePanel()"
+              >
+                JSON
+              </button>
+            </div>
+
+            @if (showJsonPanel()) {
+              <div class="search-json-card">
+                <div class="search-json-header">
+                  <h4 class="search-json-title">Resposta da consulta</h4>
+                  <p class="search-json-subtitle">Visualizacao bruta do retorno da API.</p>
+                </div>
+
+                @if (searchResponseJson()) {
+                  <pre class="search-json-pre">{{ searchResponseJson() }}</pre>
+                } @else {
+                  <p class="search-json-empty">Nenhuma resposta disponivel.</p>
+                }
+              </div>
+            } @else {
+              <div class="search-json-card search-json-card-help">
+                <h4 class="search-json-title">Menu lateral</h4>
+                <p class="search-json-subtitle">Clique em JSON para ver a resposta completa da consulta.</p>
+              </div>
+            }
+          </aside>
+        </div>
+      }
+    </div>
+  </div>
+
+  <div *ngIf="showFilters" class="search-filters">
+    <form [formGroup]="filtersForm" class="search-filters-form">
+      <div class="search-filter-col-year">
+        <label for="year_start">Ano inicial</label>
+        <select id="year_start" formControlName="year_start" class="form-control">
+          <option *ngFor="let y of yearsStart" [value]="y">{{ y }}</option>
+        </select>
+      </div>
+
+      <div class="search-filter-col-year">
+        <label for="year_end">Ano final</label>
+        <select id="year_end" formControlName="year_end" class="form-control">
+          <option *ngFor="let y of yearsEnd" [value]="y">{{ y }}</option>
+        </select>
+      </div>
+
+      <div class="search-filter-col-wide">
+        <label class="search-filter-title">Campo de pesquisa</label>
+        <div *ngFor="let field of searchFields">
+          <input
+            type="radio"
+            name="event-fields"
+            [value]="field.value"
+            formControlName="fields"
+            id="event-field-{{ field.value }}"
+          />
+          <label for="event-field-{{ field.value }}" class="ms-1">{{ field.label }}</label>
+        </div>
+      </div>
+    </form>
+  </div>
+</article>

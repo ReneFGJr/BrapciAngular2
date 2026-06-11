@@ -3,7 +3,7 @@
 
   <div class="tab-nav mb-3" role="tablist" aria-label="Abas de conteudo do evento">
     <button type="button" class="tab-btn" [class.active]="activeTab() === 'editions'" (click)="setTab('editions')">
-      Lista das edicoes do evento
+      Buscas de trabalhos
     </button>
     <button type="button" class="tab-btn" [class.active]="activeTab() === 'issue'" (click)="setTab('issue')">
       Issues
@@ -20,19 +20,12 @@
   </div>
 
   <div class="tab-panel">
-    @switch (activeTab()) {
-      @case ('editions') {
-        @if (editions().length) {
-          <ul class="mb-0 ps-3">
-            @for (edition of editions(); track $index) {
-              <li class="mb-1">{{ edition }}</li>
-            }
-          </ul>
-        } @else {
-          <p class="mb-0">Sem lista de edicoes disponivel.</p>
-        }
-      }
+    <app-event-works-search
+      *ngIf="activeTab() === 'editions'"
+      [journalId]="eventJournalId()"
+    ></app-event-works-search>
 
+    @switch (activeTab()) {
       @case ('summary') {
         <p class="mb-1"><strong>Titulo:</strong> {{ title() }}</p>
         <p class="mb-1"><strong>Colecao:</strong> {{ field(['jnl_collection']) }}</p>

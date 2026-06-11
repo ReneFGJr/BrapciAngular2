@@ -1,13 +1,14 @@
 import { CommonModule } from '@angular/common';
 import { Component, Input, computed, signal } from '@angular/core';
 import { ViewType01Component } from '../issue/view-type-01/view-type-01.component';
+import { EventWorksSearchComponent } from '../event-works-search/event-works-search.component';
 
 type JsonRecord = Record<string, unknown>;
 type TabId = 'editions' | 'summary' | 'authors' | 'issue' | 'json';
 
 @Component({
   selector: 'app-view-event',
-  imports: [CommonModule],
+  imports: [CommonModule, EventWorksSearchComponent],
   templateUrl: './view-event.component.html',
   styleUrl: './view-event.component.scss',
 })
@@ -15,6 +16,7 @@ export class ViewEventComponent {
   @Input({ required: true }) data: unknown = null;
   readonly activeTab = signal<TabId>('summary');
   readonly issueViewComponent = ViewType01Component;
+  readonly eventJournalId = computed(() => this.field(['id_jnl', 'ID']));
 
   readonly title = computed(() => this.field(['jnl_name', 'title', 'name']));
   readonly editions = computed(() => {
