@@ -10,7 +10,7 @@
       data-bs-target="#mainNavbar"
       aria-controls="mainNavbar"
       aria-expanded="false"
-      aria-label="Alternar navegacao"
+      aria-label="{{ 'common.toggleNavigation' | translate }}"
     >
       <span class="navbar-toggler-icon"></span>
     </button>
@@ -18,19 +18,34 @@
     <div class="collapse navbar-collapse" id="mainNavbar">
       <ul class="navbar-nav me-auto mb-2 mb-lg-0">
         <li class="nav-item">
-          <a class="nav-link" routerLink="/autoridade" (click)="closeDocsMenu()">Autoridades</a>
+          <a class="nav-link" routerLink="/autoridade" (click)="closeDocsMenu()">{{ 'menu.navbar.authorities' | translate }}</a>
+        </li>
+        <li class="nav-item dropdown docs-dropdown" [class.show]="revistasMenuOpen()">
+          <button
+            type="button"
+            class="nav-link dropdown-toggle btn btn-link"
+            [attr.aria-expanded]="revistasMenuOpen()"
+            (click)="toggleRevistasMenu()"
+          >
+            {{ 'menu.navbar.magazines' | translate }}
+          </button>
+          <ul class="dropdown-menu" [class.show]="revistasMenuOpen()">
+            <li>
+              <a class="dropdown-item" routerLink="/revistas" (click)="closeRevistasMenu()">{{ 'journals.publicationsList' | translate }}</a>
+            </li>
+            <li>
+              <a class="dropdown-item" routerLink="/revistas/timeline" (click)="closeRevistasMenu()">{{ 'timeline.title' | translate }}</a>
+            </li>
+          </ul>
         </li>
         <li class="nav-item">
-          <a class="nav-link" routerLink="/revistas" (click)="closeDocsMenu()">Revistas</a>
+          <a class="nav-link" routerLink="/eventos" (click)="closeDocsMenu()">{{ 'menu.navbar.events' | translate }}</a>
         </li>
         <li class="nav-item">
-          <a class="nav-link" routerLink="/eventos" (click)="closeDocsMenu()">Eventos</a>
+          <a class="nav-link" routerLink="/v/101894" (click)="closeDocsMenu()">{{ 'menu.navbar.benancib' | translate }}</a>
         </li>
         <li class="nav-item">
-          <a class="nav-link" routerLink="/v/101894" (click)="closeDocsMenu()">Benancib</a>
-        </li>
-        <li class="nav-item">
-          <a class="nav-link" routerLink="/livros" (click)="closeDocsMenu()">Livros</a>
+          <a class="nav-link" routerLink="/livros" (click)="closeDocsMenu()">{{ 'menu.navbar.books' | translate }}</a>
         </li>
         @if (currentUser()) {
           <li class="nav-item dropdown docs-dropdown" [class.show]="toolsMenuOpen()">
@@ -52,6 +67,9 @@
               <li>
                 <a class="dropdown-item" routerLink="/tools_text" (click)="closeToolsMenu()">{{ 'menu.toolsText' | translate }}</a>
               </li>
+              <li>
+                <a class="dropdown-item" href="#" (click)="closeToolsMenu()">{{ 'menu.navbar.worldSmall' | translate }}</a>
+              </li>
             </ul>
           </li>
         }
@@ -62,44 +80,38 @@
             [attr.aria-expanded]="docsMenuOpen()"
             (click)="toggleDocsMenu()"
           >
-            Sobre
+            {{ 'menu.navbar.about' | translate }}
           </button>
           <ul class="dropdown-menu" [class.show]="docsMenuOpen()">
             <li>
-              <a class="dropdown-item" routerLink="/about/brapci" (click)="closeDocsMenu()">Sobre a Brapci</a>
+              <a class="dropdown-item" routerLink="/about/brapci" (click)="closeDocsMenu()">{{ 'menu.navbar.aboutBrapci' | translate }}</a>
             </li>
             <li>
-              <a class="dropdown-item" routerLink="/about/benancib" (click)="closeDocsMenu()">Sobre o Benancib</a>
+              <a class="dropdown-item" routerLink="/about/benancib" (click)="closeDocsMenu()">{{ 'menu.navbar.aboutBenancib' | translate }}</a>
             </li>
             <li>
-              <a class="dropdown-item" routerLink="/about/brapcilivros" (click)="closeDocsMenu()">Sobre a Brapci Livros</a>
+              <a class="dropdown-item" routerLink="/about/brapcilivros" (click)="closeDocsMenu()">{{ 'menu.navbar.aboutBrapciBooks' | translate }}</a>
             </li>
             <li>
-              <a class="dropdown-item" routerLink="/about/how_index" (click)="closeDocsMenu()">Como ser indexado na Brapci</a>
+              <a class="dropdown-item" routerLink="/about/how_index" (click)="closeDocsMenu()">{{ 'menu.navbar.howIndex' | translate }}</a>
             </li>
             <li>
-              <a class="dropdown-item" routerLink="/about/team" (click)="closeDocsMenu()">Equipe</a>
+              <a class="dropdown-item" routerLink="/about/team" (click)="closeDocsMenu()">{{ 'menu.navbar.team' | translate }}</a>
             </li>
             <li>
-              <a class="dropdown-item" href="#" (click)="closeDocsMenu()">Indices de Assuntos</a>
+              <a class="dropdown-item" href="#" (click)="closeDocsMenu()">{{ 'menu.navbar.subjectIndex' | translate }}</a>
             </li>
             <li>
-              <a class="dropdown-item" href="#" (click)="closeDocsMenu()">Indices de Autores</a>
+              <a class="dropdown-item" href="#" (click)="closeDocsMenu()">{{ 'menu.navbar.authorIndex' | translate }}</a>
             </li>
             <li>
-              <a class="dropdown-item" href="#" (click)="closeDocsMenu()">Timeline Revistas</a>
+              <a class="dropdown-item" href="#" (click)="closeDocsMenu()">{{ 'menu.navbar.productionIndicator' | translate }}</a>
             </li>
             <li>
-              <a class="dropdown-item" href="#" (click)="closeDocsMenu()">Indicador das Producoes</a>
+              <a class="dropdown-item" href="#" (click)="closeDocsMenu()">{{ 'menu.navbar.searchIndicator' | translate }}</a>
             </li>
             <li>
-              <a class="dropdown-item" href="#" (click)="closeDocsMenu()">Indicador de Buscas</a>
-            </li>
-            <li>
-              <a class="dropdown-item" href="#" (click)="closeDocsMenu()">Pequeno Mundo na CI</a>
-            </li>
-            <li>
-              <a class="dropdown-item" routerLink="/doc" (click)="closeDocsMenu()">Documentacao API</a>
+              <a class="dropdown-item" routerLink="/doc" (click)="closeDocsMenu()">{{ 'menu.navbar.apiDoc' | translate }}</a>
             </li>
           </ul>
         </li>
@@ -116,11 +128,11 @@
             (ngModelChange)="setDarkMode($event)"
             aria-label="Alternar modo escuro"
           />
-          <label class="form-check-label text-white small" for="themeSwitch">Dark</label>
+          <label class="form-check-label text-white small" for="themeSwitch">{{ 'common.dark' | translate }}</label>
         </div>
 
         <div class="basket-indicator me-2" *ngIf="markedCount() > 0">
-          <span id="basket" class="position-relative" title="Documentos marcados" style="cursor:pointer;" [routerLink]="'/basket/selected'">
+          <span id="basket" class="position-relative" title="{{ 'common.markedDocuments' | translate }}" style="cursor:pointer;" [routerLink]="'/basket/selected'">
             <svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" fill="currentColor" viewBox="0 0 24 24">
               <path d="M7 18c-1.104 0-2 .896-2 2s.896 2 2 2 2-.896 2-2-.896-2-2-2zm10 0c-1.104 0-2 .896-2 2s.896 2 2 2 2-.896 2-2-.896-2-2-2zm1.83-3.41A2.996 2.996 0 0 0 16 13H8.42l-.94-2H20a1 1 0 0 0 0-2H7.21l-.94-2H4V5h2.42l3.6 7.59-1.35 2.44A2.996 2.996 0 0 0 7 17h10a1 1 0 0 0 0-2h-1.17z"/>
             </svg>
@@ -134,8 +146,8 @@
             type="button"
             class="language-flag-btn"
             (click)="toggleLanguageMenu()"
-            aria-label="Abrir selecao de idioma"
-            title="Selecionar idioma"
+            aria-label="{{ 'common.openLanguageSelection' | translate }}"
+            title="{{ 'common.selectLanguage' | translate }}"
           >
             <img
               class="language-flag"
@@ -152,8 +164,8 @@
               class="form-select form-select-sm language-select"
               [ngModel]="selectedLanguage()"
               (ngModelChange)="setLanguage($event)"
-              aria-label="Selecao de idioma"
-              title="Selecionar idioma"
+              aria-label="{{ 'common.selectLanguage' | translate }}"
+              title="{{ 'common.selectLanguage' | translate }}"
             >
               @for (option of languageOptions; track option.code) {
                 <option [ngValue]="option.code">{{ option.label }}</option>
@@ -163,14 +175,14 @@
         </div>
 
         @if (!currentUser()) {
-          <a class="nav-login-link" routerLink="/signin" (click)="closeDocsMenu()" aria-label="Fazer login">
+          <a class="nav-login-link" routerLink="/signin" (click)="closeDocsMenu()" aria-label="{{ 'common.login' | translate }}">
             <svg viewBox="0 0 24 24" aria-hidden="true" focusable="false">
               <path d="M12 12c2.76 0 5-2.24 5-5s-2.24-5-5-5-5 2.24-5 5 2.24 5 5 5Zm0 2c-3.34 0-10 1.68-10 5v3h20v-3c0-3.32-6.66-5-10-5Z" />
             </svg>
             <span>{{ 'auth.submit' | translate }}</span>
           </a>
         } @else {
-          <a class="nav-user-chip" routerLink="/perfil" (click)="closeDocsMenu()" aria-label="Perfil do usuario">
+          <a class="nav-user-chip" routerLink="/perfil" (click)="closeDocsMenu()" aria-label="{{ 'common.userProfile' | translate }}">
             <svg viewBox="0 0 24 24" aria-hidden="true" focusable="false">
               <path d="M12 12c2.76 0 5-2.24 5-5s-2.24-5-5-5-5 2.24-5 5 2.24 5 5 5Zm0 2c-3.34 0-10 1.68-10 5v3h20v-3c0-3.32-6.66-5-10-5Z" />
             </svg>
@@ -187,18 +199,18 @@
 <footer class="footer mt-auto py-3 border-top">
   <div class="container d-flex flex-column flex-md-row justify-content-between align-items-center gap-2">
     <div class="footer-meta text-center text-md-start">
-      <small class="text-muted d-block">Brapci © 2026</small>
+      <small class="text-muted">{{ 'app.title' | translate }} © 2026</small>
       @if (currentUser()) {
-        <small class="text-muted footer-session">Sessao: {{ sessionUserLabel() }}</small>
+        <small class="text-muted footer-session">{{ 'footer.session' | translate }}: {{ sessionUserLabel() }}</small>
       }
     </div>
-    <div class="footer-social" aria-label="Midias sociais da Brapci">
+    <div class="footer-social" aria-label="{{ 'footer.socialMedia' | translate }}">
       <a
         class="footer-social-link"
         href="https://www.linkedin.com/groups/9831304/"
         target="_blank"
         rel="noreferrer"
-        aria-label="LinkedIn da Brapci"
+        aria-label="{{ 'footer.linkedIn' | translate }}"
         title="LinkedIn"
       >
         <svg viewBox="0 0 24 24" aria-hidden="true" focusable="false">
@@ -210,7 +222,7 @@
         href="https://www.instagram.com/brapci/"
         target="_blank"
         rel="noreferrer"
-        aria-label="Instagram da Brapci"
+        aria-label="{{ 'footer.instagram' | translate }}"
         title="Instagram"
       >
         <svg viewBox="0 0 24 24" aria-hidden="true" focusable="false">

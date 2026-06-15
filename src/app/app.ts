@@ -91,6 +91,7 @@ export class App {
   readonly isDarkMode = signal(false);
   readonly docsMenuOpen = signal(false);
   readonly toolsMenuOpen = signal(false);
+  readonly revistasMenuOpen = signal(false);
   readonly languageMenuOpen = signal(false);
   readonly currentUrl = toSignal(
     this.router.events.pipe(
@@ -145,21 +146,34 @@ export class App {
 
   toggleDocsMenu(): void {
     this.toolsMenuOpen.set(false);
+    this.revistasMenuOpen.set(false);
     this.docsMenuOpen.update((open) => !open);
   }
 
   closeDocsMenu(): void {
     this.docsMenuOpen.set(false);
     this.toolsMenuOpen.set(false);
+    this.revistasMenuOpen.set(false);
   }
 
   toggleToolsMenu(): void {
     this.docsMenuOpen.set(false);
+    this.revistasMenuOpen.set(false);
     this.toolsMenuOpen.update((open) => !open);
   }
 
   closeToolsMenu(): void {
     this.toolsMenuOpen.set(false);
+  }
+
+  toggleRevistasMenu(): void {
+    this.docsMenuOpen.set(false);
+    this.toolsMenuOpen.set(false);
+    this.revistasMenuOpen.update((open) => !open);
+  }
+
+  closeRevistasMenu(): void {
+    this.revistasMenuOpen.set(false);
   }
 
   private initializeTheme(): void {

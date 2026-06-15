@@ -17,7 +17,10 @@
         class="book-gadget__cover"
         [src]="str('hasCover') || cover"
         [alt]="str('hasTitle') || title"
+        width="200"
+        height="280"
         loading="lazy"
+        decoding="async"
       />
       <a class="book-gadget__link-full" [routerLink]="['/v', bookId]">
         Ver ficha completa →

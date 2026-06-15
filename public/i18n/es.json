@@ -1,4 +1,16 @@
 {
+  "common": {
+    "loading": "Cargando...",
+    "dark": "Oscuro",
+    "toggleDarkMode": "Alternar modo oscuro",
+    "toggleNavigation": "Alternar navegacion",
+    "selectLanguage": "Seleccionar idioma",
+    "openLanguageSelection": "Abrir seleccion de idioma",
+    "login": "Iniciar sesion",
+    "userProfile": "Perfil del usuario",
+    "markedDocuments": "Documentos marcados",
+    "sessionLabel": "Sesion"
+  },
   "app": {
     "title": "Brapci",
     "subtitle": "Portal con SEO semantico, autenticacion y busqueda en API"
@@ -163,7 +175,18 @@
     "filterJa": "JA - Revistas brasilenas",
     "filterJe": "JE - Revistas extranjeras",
     "searchPlaceholder": "Buscar por titulo",
-    "noResultsForFilters": "No hay resultados para los filtros seleccionados."
+    "noResultsForFilters": "No hay resultados para los filtros seleccionados.",
+    "noResults": "No se encontraron revistas."
+  },
+  "timeline": {
+    "title": "Linea de Tiempo de Revistas",
+    "loading": "Cargando linea de tiempo de revistas...",
+    "yearsRange": "Revistas de {{min}} a {{max}}",
+    "period": "Periodo",
+    "collection": "Coleccion",
+    "active": "Activa",
+    "inactive": "Inactiva",
+    "noData": "No hay datos de linea de tiempo disponibles para los filtros seleccionados."
   },
   "profile": {
     "title": "Perfil del Usuario",
@@ -182,7 +205,26 @@
     "tools": "Herramientas",
     "toolsBibliographics": "Herramientas bibliograficas",
     "toolsBibliometric": "Herramientas bibliometricas",
-    "toolsText": "Herramientas textuales"
+    "toolsText": "Herramientas textuales",
+    "navbar": {
+      "authorities": "Autoridades",
+      "magazines": "Revistas",
+      "events": "Eventos",
+      "benancib": "Benancib",
+      "books": "Libros",
+      "about": "Acerca de",
+      "worldSmall": "Pequeño Mundo en CI",
+      "aboutBrapci": "Acerca de Brapci",
+      "aboutBenancib": "Acerca de Benancib",
+      "aboutBrapciBooks": "Acerca de Brapci Libros",
+      "howIndex": "Como ser indexado en Brapci",
+      "team": "Equipo",
+      "subjectIndex": "Indices de Materias",
+      "authorIndex": "Indices de Autores",
+      "productionIndicator": "Indicador de Produccion",
+      "searchIndicator": "Indicador de Busquedas",
+      "apiDoc": "Documentacion API"
+    }
   },
   "tools": {
     "kicker": "Herramientas",
@@ -279,5 +321,12 @@
     "aria": {
       "tabs": "Estilos de citacion"
     }
+  },
+  "footer": {
+    "copyright": "Brapci © 2026",
+    "session": "Sesion",
+    "linkedIn": "LinkedIn de Brapci",
+    "instagram": "Instagram de Brapci",
+    "socialMedia": "Redes sociales de Brapci"
   }
 }

@@ -58,6 +58,10 @@
           class="article-cover"
           [src]="journalCoverUrl()"
           [alt]="'Capa da revista ' + journalName()"
+          width="250"
+          height="350"
+          loading="lazy"
+          decoding="async"
           (error)="hasImageError($event)"
         />
       } @else {

@@ -1,0 +1,81 @@
+<section class="revista-timeline-wrap py-4" aria-labelledby="timeline-title">
+  <div class="container">
+    <app-breadcrumbs></app-breadcrumbs>
+  </div>
+
+  @if (loading()) {
+    <div class="container">
+      <div class="timeline-loading" aria-live="polite">
+        <div class="spinner-border text-primary" role="status">
+          <span class="visually-hidden">{{ 'common.loading' | translate }}</span>
+        </div>
+        <p class="mt-3">{{ 'timeline.loading' | translate }}</p>
+      </div>
+    </div>
+  }
+
+  @if (!loading() && error()) {
+    <div class="container">
+      <div class="alert alert-danger" role="alert">
+        {{ error() }}
+      </div>
+    </div>
+  }
+
+  @if (!loading() && !error() && hasResults()) {
+    <div class="container mt-0 mb-4">
+      <div class="col-12">
+        <h2 id="timeline-title" class="eventos-title mb-0">{{ 'timeline.title' | translate }}</h2>
+      </div>
+    </div>
+
+    @if (hasResults()) {
+      <div class="container">
+        <div class="timeline-info mb-4">
+          <p class="text-muted">
+            {{ 'timeline.yearsRange' | translate: yearsRange() }}
+          </p>
+        </div>
+
+        <div class="timeline-container">
+          @for (item of filteredTimeline(); track item.year) {
+            <div class="timeline-year-group" [attr.data-year]="item.year">
+              <div class="timeline-year-header">
+                <div class="timeline-dot"></div>
+                <h3 class="timeline-year">{{ item.year }}</h3>
+                <span class="timeline-count">{{ item.journals.length }}</span>
+              </div>
+
+              <div class="timeline-journals">
+                @for (journal of item.journals; track journal.ID) {
+                  <div class="timeline-journal-card">
+                    <div class="journal-header">
+                      <h4 class="journal-title">
+                        <a [href]="'/v/' + journal.ID" target="_blank" rel="noopener noreferrer">
+                          {{ journal.name }}
+                        </a>
+                      </h4>
+                      <span class="journal-id">ID: {{ journal.ID }}</span>
+                    </div>
+                  </div>
+                }
+              </div>
+            </div>
+          }
+        </div>
+      </div>
+    } @else {
+      <div class="container">
+        <div class="alert alert-info">
+          {{ 'timeline.noData' | translate }}
+        </div>
+      </div>
+    }
+  } @else if (!loading()) {
+    <div class="container">
+      <div class="alert alert-info">
+        {{ 'journals.noResults' | translate }}
+      </div>
+    </div>
+  }
+</section>

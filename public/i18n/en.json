@@ -1,4 +1,16 @@
 {
+  "common": {
+    "loading": "Loading...",
+    "dark": "Dark",
+    "toggleDarkMode": "Toggle dark mode",
+    "toggleNavigation": "Toggle navigation",
+    "selectLanguage": "Select language",
+    "openLanguageSelection": "Open language selection",
+    "login": "Sign in",
+    "userProfile": "User profile",
+    "markedDocuments": "Marked documents",
+    "sessionLabel": "Session"
+  },
   "app": {
     "title": "Brapci",
     "subtitle": "Portal with semantic SEO, authentication and API search"
@@ -163,7 +175,18 @@
     "filterJa": "JA - Brazilian journals",
     "filterJe": "JE - Foreign journals",
     "searchPlaceholder": "Search by title",
-    "noResultsForFilters": "No results for the selected filters."
+    "noResultsForFilters": "No results for the selected filters.",
+    "noResults": "No journals found."
+  },
+  "timeline": {
+    "title": "Journals Timeline",
+    "loading": "Loading journals timeline...",
+    "yearsRange": "Journals from {{min}} to {{max}}",
+    "period": "Period",
+    "collection": "Collection",
+    "active": "Active",
+    "inactive": "Inactive",
+    "noData": "No timeline data available for the selected filters."
   },
   "profile": {
     "title": "User Profile",
@@ -182,7 +205,26 @@
     "tools": "Tools",
     "toolsBibliographics": "Bibliographic tools",
     "toolsBibliometric": "Bibliometric tools",
-    "toolsText": "Text tools"
+    "toolsText": "Text tools",
+    "navbar": {
+      "authorities": "Authorities",
+      "magazines": "Journals",
+      "events": "Events",
+      "benancib": "Benancib",
+      "books": "Books",
+      "about": "About",
+      "worldSmall": "Small World in CI",
+      "aboutBrapci": "About Brapci",
+      "aboutBenancib": "About Benancib",
+      "aboutBrapciBooks": "About Brapci Books",
+      "howIndex": "How to be indexed at Brapci",
+      "team": "Team",
+      "subjectIndex": "Subject Indexes",
+      "authorIndex": "Author Indexes",
+      "productionIndicator": "Production Indicator",
+      "searchIndicator": "Search Indicator",
+      "apiDoc": "API Documentation"
+    }
   },
   "tools": {
     "kicker": "Tools",
@@ -279,5 +321,12 @@
     "aria": {
       "tabs": "Citation Styles"
     }
+  },
+  "footer": {
+    "copyright": "Brapci © 2026",
+    "session": "Session",
+    "linkedIn": "Brapci LinkedIn",
+    "instagram": "Brapci Instagram",
+    "socialMedia": "Brapci social media"
   }
 }

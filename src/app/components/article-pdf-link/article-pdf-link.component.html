@@ -66,6 +66,10 @@
       <img
         class="icon linkedin-image"
         [src]="linkedInImageUrl"
+        width="24"
+        height="24"
+        loading="lazy"
+        decoding="async"
         (error)="onLinkedInImageError($event)"
         alt=""
         aria-hidden="true"

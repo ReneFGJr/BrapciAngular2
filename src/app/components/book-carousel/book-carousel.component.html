@@ -35,7 +35,7 @@
               [attr.aria-label]="book.title"
               (click)="openPanel(book, index)"
             >
-              <img class="book-carousel__cover" [src]="book.cover" [alt]="book.title" loading="lazy" />
+              <img class="book-carousel__cover" [src]="book.cover" [alt]="book.title" width="150" height="220" loading="lazy" decoding="async" />
               <span class="book-carousel__book-title">{{ book.title }}</span>
             </button>
           }

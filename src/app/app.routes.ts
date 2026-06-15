@@ -33,6 +33,10 @@ export const routes: Routes = [
     loadComponent: () => import('./pages/revistas/revistas.page').then((m) => m.RevistasPage),
   },
   {
+    path: 'revistas/timeline',
+    loadComponent: () => import('./pages/revista-timeline/revista-timeline.page').then((m) => m.RevistaTimelinePage),
+  },
+  {
     path: 'eventos',
     loadComponent: () => import('./pages/eventos/eventos.page').then((m) => m.EventosPage),
   },
