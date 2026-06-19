@@ -1,11 +1,97 @@
-.issue-list {
-  display: grid;
-  gap: 0.75rem;
+:host {
+  --issue-col-bg: #eef2f7;
+  --issue-col-border: #d9e1ec;
+  --issue-col-text: #2e3b4d;
+  --issue-card-bg: #f7f8fa;
+  --issue-card-border: #d6dbe3;
+  --issue-card-shadow: rgba(27, 44, 70, 0.18);
+  --issue-name-color: #6f7f91;
+  --issue-nr-color: #0f1f36;
+  --issue-place-color: #223247;
+  --issue-year-color: #3d4d62;
 }
 
-.issue-item {
-  border: 1px solid var(--theme-line);
-  border-radius: 0.5rem;
-  padding: 0.7rem;
-  background: rgb(255 255 255 / 24%);
+@media (prefers-color-scheme: dark) {
+  :host {
+    --issue-col-bg: #141a23;
+    --issue-col-border: #2c3a4d;
+    --issue-col-text: #c7d3e3;
+    --issue-card-bg: #1b212b;
+    --issue-card-border: #334155;
+    --issue-card-shadow: rgba(0, 0, 0, 0.45);
+    --issue-name-color: #9fb4cb;
+    --issue-nr-color: #e8eef8;
+    --issue-place-color: #c3d1e2;
+    --issue-year-color: #a8bbd3;
+  }
+}
+
+.issue-col {
+  border-radius: 12px;
+  border: 1px solid var(--issue-col-border);
+  background-color: var(--issue-col-bg);
+  color: var(--issue-col-text);
+  padding: 8px;
+}
+
+.issue-empty-message {
+  color: var(--issue-col-text);
+}
+
+.issue {
+  position: relative;
+  overflow: hidden;
+  height: 140px;
+  background-color: var(--issue-card-bg);
+  border: 1px solid var(--issue-card-border);
+  border-radius: 10px;
+  margin-bottom: 10px;
+  padding: 10px;
+  box-shadow: 0 8px 20px var(--issue-card-shadow);
+  opacity: 0.7;
+  transition: opacity 0.3s ease, transform 0.2s ease;
+}
+
+.issue:hover {
+  opacity: 1;
+  cursor: pointer;
+  transform: translateY(-5px);
+}
+
+.issue-nr {
+  font-size: 4rem;
+  font-weight: bold;
+  position: absolute;
+  top: 0;
+  left: 20px;
+  text-align: left;
+  color: var(--issue-nr-color);
+}
+
+.issue-place {
+  color: var(--issue-place-color);
+  font-size: 1rem;
+  font-weight: bold;
+  position: absolute;
+  top: 110px;
+  text-align: center;
+}
+
+.issue-year {
+  font-size: 1.2rem;
+  font-weight: bold;
+  position: absolute;
+  top: 0;
+  right: 10px;
+  text-align: left;
+  color: var(--issue-year-color);
+}
+
+.issue-name {
+  color: var(--issue-name-color);
+  font-size: 3rem;
+  font-weight: bold;
+  position: relative;
+  top: 20px;
+  text-align: center;
 }

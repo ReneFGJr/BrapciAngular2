@@ -17,6 +17,7 @@ export class ViewEventComponent {
   readonly activeTab = signal<TabId>('summary');
   readonly issueViewComponent = ViewType01Component;
   readonly eventJournalId = computed(() => this.field(['id_jnl', 'ID']));
+  readonly acronym = computed(() => this.field(['jnl_name_abrev', 'acronym', 'sigla']));
 
   readonly title = computed(() => this.field(['jnl_name', 'title', 'name']));
   readonly editions = computed(() => {

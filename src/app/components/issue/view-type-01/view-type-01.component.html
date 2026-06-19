@@ -1,18 +1,24 @@
 @if (viewItems().length) {
   <div class="container">
-  <div class="row">
-    @for (item of viewItems(); track $index) {
-      <div class="col-12 col-lg-4" (click)="onClickItem(item)" style="cursor: pointer;">
-        <article class="issue-item">
-          <div class="issue-name">{{ item.journal || '-' }}</div>
-          <div class="issue-nr"> {{ item.vol || '-' }}</div>
-          <div class="issue-place">{{ item.place || '-' }}</div>
-          <div class="issue-year">{{ item.year || '-' }}</div>
-        </article>
-      </div>
-    }
-  </div>
+    <div class="row">
+      @for (issue of viewItems(); track $index) {
+        <div class="col-12 col-lg-4 issue-col">
+          <div class="issue w-100" (click)="onClickItem(issue)" style="cursor: pointer">
+            <div class="issue-name">{{ acronym() }}</div>
+            <div class="issue-nr">{{ issue.vol }}</div>
+            <div class="issue-place">{{ issue.place }}</div>
+            <div class="issue-year">{{ issue.year }}</div>
+          </div>
+        </div>
+      }
+    </div>
   </div>
 } @else {
-  <p class="mb-0">Sem edicoes disponiveis na variavel issues.</p>
+  <div class="container">
+    <div class="col-12 col-lg-4 issue-col">
+      <div class="row">
+        <p class="mb-0 issue-empty-message">Sem edicoes disponiveis na variavel issues.</p>
+      </div>
+    </div>
+  </div>
 }

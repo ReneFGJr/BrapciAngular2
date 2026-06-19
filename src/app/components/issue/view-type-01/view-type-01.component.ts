@@ -17,10 +17,11 @@ type IssueViewItem = {
   selector: 'app-issue-view-type',
   imports: [CommonModule],
   templateUrl: './view-type-01.component.html',
-  styleUrl: './view-type-01.component.scss'
+  styleUrl: './view-type-01.component.scss',
 })
 export class ViewType01Component {
   private readonly issuesSignal = signal<unknown[]>([]);
+  readonly acronym = signal<string>('');
 
   constructor(private readonly router: Router) {}
 
@@ -36,6 +37,15 @@ export class ViewType01Component {
     }
 
     this.issuesSignal.set([]);
+  }
+
+  @Input('acronym') set acronymInput(value: unknown) {
+    if (typeof value === 'string') {
+      this.acronym.set(value.trim());
+      return;
+    }
+
+    this.acronym.set('');
   }
 
   readonly viewItems = computed(() =>
@@ -54,7 +64,7 @@ export class ViewType01Component {
         }
 
         return this.toSortableNumber(b.nr) - this.toSortableNumber(a.nr);
-      })
+      }),
   );
 
   onClickItem(item: IssueViewItem): void {
@@ -79,7 +89,7 @@ export class ViewType01Component {
       'jnl_name',
       'journal_name',
       'issue_journal',
-      'source'
+      'source',
     ]);
     const vol = this.pick(data, ['VOL', 'vol', 'volume', 'issue_vol', 'issue_volume']);
     const nr = this.pick(data, ['NR', 'nr', 'number', 'num', 'issue_nr', 'issue_number']);

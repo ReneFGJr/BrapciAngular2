@@ -3,7 +3,7 @@
 
   <div class="tab-nav mb-3" role="tablist" aria-label="Abas de conteudo do evento">
     <button type="button" class="tab-btn" [class.active]="activeTab() === 'editions'" (click)="setTab('editions')">
-      Buscas de trabalhos
+      Busca de trabalhos
     </button>
     <button type="button" class="tab-btn" [class.active]="activeTab() === 'issue'" (click)="setTab('issue')">
       Issues
@@ -53,7 +53,7 @@
     }
 
     @if (activeTab() === 'issue') {
-      <ng-container *ngComponentOutlet="issueViewComponent; inputs: { issues: issueItems() }"></ng-container>
+      <ng-container *ngComponentOutlet="issueViewComponent; inputs: { issues: issueItems(), acronym: acronym() }"></ng-container>
     }
   </div>
 </article>
