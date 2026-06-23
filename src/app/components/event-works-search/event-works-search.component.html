@@ -38,9 +38,22 @@
               <div class="list-group">
                 @for (item of results(); track item.id + item.title) {
                   <article class="list-group-item d-flex justify-content-between align-items-start gap-3">
-                    <div>
+                    <div class="d-flex align-items-start gap-2 flex-grow-1">
+                      <input
+                        #markCheckbox
+                        type="checkbox"
+                        class="form-check-input mt-1"
+                        [checked]="isMarked(item.id)"
+                        [disabled]="!item.id"
+                        (change)="toggleMarked(item.id, markCheckbox.checked)"
+                        title="Marcar trabalho no Basket"
+                        aria-label="Marcar trabalho no Basket"
+                      />
+
+                      <div>
                       <h4 class="event-works-search__title mb-1">{{ item.title }}</h4>
                       <p class="event-works-search__meta mb-0">{{ item.subtitle }}</p>
+                      </div>
                     </div>
 
                     @if (item.id) {

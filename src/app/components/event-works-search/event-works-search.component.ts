@@ -2,6 +2,7 @@ import { CommonModule } from '@angular/common';
 import { Component, Input, computed, inject, signal } from '@angular/core';
 import { FormControl, FormGroup, FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { RouterModule } from '@angular/router';
+import { BasketService } from '../../core/services/basket.service';
 import { BrapciApiService } from '../../core/services/brapci-api.service';
 
 type WorkResult = {
@@ -19,6 +20,7 @@ type WorkResult = {
 })
 export class EventWorksSearchComponent {
   private readonly brapciApiService = inject(BrapciApiService);
+  private readonly basketService = inject(BasketService);
 
   @Input({ required: true }) journalId = '';
 
@@ -68,6 +70,25 @@ export class EventWorksSearchComponent {
       year_start: this.yearsStart[0],
       year_end: this.yearsEnd[0],
     });
+  }
+
+  isMarked(id: string): boolean {
+    return this.basketService.isMarked(Number(id));
+  }
+
+  toggleMarked(id: string, checked: boolean): void {
+    const numericId = Number(id);
+
+    if (!Number.isFinite(numericId)) {
+      return;
+    }
+
+    if (checked) {
+      this.basketService.add(numericId);
+      return;
+    }
+
+    this.basketService.remove(numericId);
   }
 
   showResultsPanel(): void {
