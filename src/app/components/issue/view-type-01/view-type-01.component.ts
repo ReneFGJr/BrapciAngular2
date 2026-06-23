@@ -1,6 +1,7 @@
 import { CommonModule } from '@angular/common';
 import { Component, Input, computed, signal } from '@angular/core';
 import { Router } from '@angular/router';
+import { SourceBasketActionsComponent } from '../../source-basket-actions/source-basket-actions.component';
 
 type JsonRecord = Record<string, unknown>;
 
@@ -15,17 +16,19 @@ type IssueViewItem = {
 
 @Component({
   selector: 'app-issue-view-type',
-  imports: [CommonModule],
+  imports: [CommonModule, SourceBasketActionsComponent],
   templateUrl: './view-type-01.component.html',
   styleUrl: './view-type-01.component.scss',
 })
 export class ViewType01Component {
   private readonly issuesSignal = signal<unknown[]>([]);
   readonly acronym = signal<string>('');
+  readonly journalId = signal<string>('');
 
   constructor(private readonly router: Router) {}
 
   @Input() set issues(value: unknown) {
+    console.log('Received issues input:', value);
     if (Array.isArray(value)) {
       this.issuesSignal.set(value);
       return;
@@ -46,6 +49,20 @@ export class ViewType01Component {
     }
 
     this.acronym.set('');
+  }
+
+  @Input('journalId') set journalIdInput(value: unknown) {
+    if (typeof value === 'string' && value.trim()) {
+      this.journalId.set(value.trim());
+      return;
+    }
+
+    if (typeof value === 'number' && Number.isFinite(value)) {
+      this.journalId.set(String(value));
+      return;
+    }
+
+    this.journalId.set('');
   }
 
   readonly viewItems = computed(() =>

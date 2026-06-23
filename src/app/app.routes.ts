@@ -20,6 +20,10 @@ export const routes: Routes = [
       import('./pages/basket-selected/basket-selected.page').then((m) => m.BasketSelectedPage),
   },
   {
+    path: 'painel',
+    loadComponent: () => import('./pages/painel/painel.page').then((m) => m.PainelPage),
+  },
+  {
     path: 'about/:page',
     loadComponent: () =>
       import('./pages/sobre-brapci/sobre-brapci.page').then((m) => m.SobreBrapciPage),

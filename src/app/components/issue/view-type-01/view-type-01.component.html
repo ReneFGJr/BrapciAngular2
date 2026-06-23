@@ -1,6 +1,12 @@
 @if (viewItems().length) {
   <div class="container">
     <div class="row">
+      <div class="col-12 col-lg-12">
+        @if (journalId()) {
+          <app-source-basket-actions [idJnl]="journalId()"></app-source-basket-actions>
+        }
+
+      </div>
       @for (issue of viewItems(); track $index) {
         <div class="col-12 col-lg-4">
           <div class="issue w-100" (click)="onClickItem(issue)" style="cursor: pointer">

@@ -1,0 +1,16 @@
+<section class="container py-4">
+  <div class="d-flex flex-wrap justify-content-between align-items-center gap-2 mb-3">
+    <h2 class="mb-0">Painel de análise</h2>
+    <a class="btn btn-outline-secondary" routerLink="/basket/selected">Voltar para seleção</a>
+  </div>
+
+  <p class="text-muted mb-3">IDs enviados em worksID: {{ worksIds().length }}</p>
+
+  <div *ngIf="loading()" class="alert alert-secondary mb-0">Carregando análise...</div>
+
+  <div *ngIf="error()" class="alert alert-warning mb-0">{{ error() }}</div>
+
+  <ng-container *ngIf="!loading() && !error() && result()">
+    <app-painel-analysis [data]="result()"></app-painel-analysis>
+  </ng-container>
+</section>

@@ -1,0 +1,63 @@
+<div class="painel-analysis">
+  <div class="card border-0 shadow-sm mb-3">
+    <div class="card-body">
+      <div class="d-flex align-items-center justify-content-between gap-2 mb-3">
+        <h3 class="h6 mb-0">Produção por Ano</h3>
+        <button
+          type="button"
+          class="btn btn-sm btn-outline-secondary"
+          [disabled]="!yearsChartPoints().length"
+          (click)="exportYearsCsv()"
+        >
+          Exportar CSV
+        </button>
+      </div>
+      <app-bar-chart title="" [points]="yearsChartPoints()"></app-bar-chart>
+    </div>
+  </div>
+
+  <div class="row g-3">
+    @for (section of tableSections(); track section.key) {
+      <div class="col-12 col-lg-6">
+        <div class="card border-0 shadow-sm h-100">
+          <div class="card-body">
+            <div class="d-flex align-items-center justify-content-between gap-2 mb-3">
+              <h3 class="h6 mb-0">{{ section.title }}</h3>
+              <button
+                type="button"
+                class="btn btn-sm btn-outline-secondary"
+                [disabled]="!section.rows.length"
+                (click)="exportSectionCsv(section)"
+              >
+                Exportar CSV
+              </button>
+            </div>
+
+            @if (section.rows.length) {
+              <div class="table-responsive">
+                <table class="table table-sm align-middle mb-0">
+                  <thead>
+                    <tr>
+                      <th>Item</th>
+                      <th class="text-end">Valor</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    @for (row of section.rows; track row.label) {
+                      <tr>
+                        <td>{{ row.label }}</td>
+                        <td class="text-end fw-semibold">{{ row.value }}</td>
+                      </tr>
+                    }
+                  </tbody>
+                </table>
+              </div>
+            } @else {
+              <p class="text-muted mb-0">Sem dados nesta seção.</p>
+            }
+          </div>
+        </div>
+      </div>
+    }
+  </div>
+</div>

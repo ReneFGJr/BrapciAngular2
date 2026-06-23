@@ -1,0 +1,16 @@
+.painel-analysis {
+  .table {
+    font-size: 0.9rem;
+  }
+
+  .table thead th {
+    background-color: #f8f9fa;
+    position: sticky;
+    top: 0;
+    z-index: 1;
+  }
+
+  .table-responsive {
+    max-height: 360px;
+  }
+}

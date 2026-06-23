@@ -53,7 +53,7 @@
     }
 
     @if (activeTab() === 'issue') {
-      <ng-container *ngComponentOutlet="issueViewComponent; inputs: { issues: issueItems(), acronym: acronym() }"></ng-container>
+      <ng-container *ngComponentOutlet="issueViewComponent; inputs: { issues: issueItems(), acronym: acronym(), journalId: eventJournalId() }"></ng-container>
     }
   </div>
 </article>

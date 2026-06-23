@@ -6,6 +6,7 @@ import { TranslateModule } from '@ngx-translate/core';
 import { catchError, distinctUntilChanged, map, of, switchMap, tap } from 'rxjs';
 import { BrapciApiService } from '../../core/services/brapci-api.service';
 import { BreadcrumbsComponent } from '../../components/breadcrumbs/breadcrumbs.component';
+import { SourceBasketActionsComponent } from '../../components/source-basket-actions/source-basket-actions.component';
 
 type Journal = {
   id_jnl: string;
@@ -24,7 +25,7 @@ type Journal = {
 
 @Component({
   selector: 'app-revista-id-page',
-  imports: [CommonModule, RouterLink, TranslateModule, BreadcrumbsComponent],
+  imports: [CommonModule, RouterLink, TranslateModule, BreadcrumbsComponent, SourceBasketActionsComponent],
   templateUrl: './revista-id.page.html',
   styleUrl: './revista-id.page.scss'
 })

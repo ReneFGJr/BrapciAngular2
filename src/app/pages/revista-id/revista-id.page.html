@@ -59,6 +59,12 @@
                 </a>
               </p>
             }
+
+            @if (item.id_jnl) {
+              <div class="mt-3">
+                <app-source-basket-actions [idJnl]="item.id_jnl.toString()" />
+              </div>
+            }
           </div>
         </div>
       </div>

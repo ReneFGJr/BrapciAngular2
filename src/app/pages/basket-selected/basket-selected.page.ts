@@ -2,6 +2,7 @@
 import { Component, inject, signal, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { HttpClient, HttpClientModule } from '@angular/common/http';
+import { RouterLink } from '@angular/router';
 import { BasketService } from '../../core/services/basket.service';
 import { TranslateModule } from '@ngx-translate/core';
 
@@ -9,7 +10,7 @@ import { TranslateModule } from '@ngx-translate/core';
   selector: 'app-basket-selected',
   templateUrl: './basket-selected.page.html',
   standalone: true,
-  imports: [CommonModule, HttpClientModule, TranslateModule],
+  imports: [CommonModule, HttpClientModule, TranslateModule, RouterLink],
 })
 export class BasketSelectedPage implements OnInit {
   public readonly abntCategories = ['Articles', 'Proceedings', 'Books', 'BooksChapter'];

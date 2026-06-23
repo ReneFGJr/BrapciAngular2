@@ -1,0 +1,53 @@
+<div class="source-basket-actions">
+  @if (loading()) {
+    <div class="sba-loading">
+      <span class="spinner-border spinner-border-sm me-2" role="status" aria-hidden="true"></span>
+      Carregando trabalhos...
+    </div>
+  } @else if (error()) {
+    <div class="alert alert-warning sba-error py-2 px-3 mb-0">{{ error() }}</div>
+  } @else {
+    <div class="sba-toolbar d-flex flex-wrap align-items-center gap-2">
+      <span class="sba-info text-muted small">
+        {{ totalCount() }} trabalhos encontrados
+      </span>
+
+      <button
+        class="btn btn-sm btn-outline-primary"
+        [disabled]="!totalCount() || allSelected()"
+        (click)="selectAll()"
+        title="Adicionar todos ao carrinho"
+      >
+        <i class="bi bi-check2-all me-1"></i>
+        Selecionar todos
+        @if (totalCount()) {
+          <span class="badge text-bg-primary ms-1">{{ totalCount() }}</span>
+        }
+      </button>
+
+      @if (markedCount()) {
+        <button
+          class="btn btn-sm btn-outline-danger"
+          (click)="clearSelection()"
+          title="Remover todos do carrinho"
+        >
+          <i class="bi bi-x-circle me-1"></i>
+          Limpar seleção
+        </button>
+      }
+
+      <button
+        class="btn btn-sm btn-success"
+        [disabled]="!markedCount()"
+        (click)="viewSelection()"
+        title="Ver itens selecionados"
+      >
+        <i class="bi bi-basket me-1"></i>
+        Ver seleção
+        @if (markedCount()) {
+          <span class="badge text-bg-light text-success ms-1">{{ markedCount() }}</span>
+        }
+      </button>
+    </div>
+  }
+</div>
