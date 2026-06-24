@@ -1,6 +1,8 @@
 import { CommonModule } from '@angular/common';
 import { Component, Input, computed, inject, signal } from '@angular/core';
+import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { FormControl, FormGroup, FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { Router } from '@angular/router';
 import { RouterModule } from '@angular/router';
 import { BasketService } from '../../core/services/basket.service';
 import { BrapciApiService } from '../../core/services/brapci-api.service';
@@ -21,6 +23,7 @@ type WorkResult = {
 export class EventWorksSearchComponent {
   private readonly brapciApiService = inject(BrapciApiService);
   private readonly basketService = inject(BasketService);
+  private readonly router = inject(Router);
 
   @Input({ required: true }) journalId = '';
 
@@ -31,6 +34,7 @@ export class EventWorksSearchComponent {
   readonly results = signal<WorkResult[]>([]);
   readonly rawSearchResponse = signal<unknown>(null);
   readonly showJsonPanel = signal(false);
+  readonly basketRefresh = signal(0);
   showFilters = false;
 
   readonly yearsStart: number[] = [];
@@ -51,6 +55,25 @@ export class EventWorksSearchComponent {
 
   readonly hasResults = computed(() => this.results().length > 0);
   readonly canSearch = computed(() => this.query().trim().length > 0 && this.normalizedJournalId().length > 0);
+  readonly markedResultsCount = computed(() => {
+    this.basketRefresh();
+    return this.results().filter((item) => this.isMarked(item.id)).length;
+  });
+  readonly allResultsMarked = computed(() => {
+    const total = this.results().length;
+
+    this.basketRefresh();
+
+    return total > 0 && this.markedResultsCount() === total;
+  });
+  readonly basketCount = computed(() => {
+    this.basketRefresh();
+    return this.basketService.count();
+  });
+  readonly canClearAll = computed(() => {
+    this.basketRefresh();
+    return this.basketService.count() > 0;
+  });
   readonly searchResponseJson = computed(() => {
     const response = this.rawSearchResponse();
     if (response === null || response === undefined) {
@@ -69,6 +92,10 @@ export class EventWorksSearchComponent {
     this.filtersForm.patchValue({
       year_start: this.yearsStart[0],
       year_end: this.yearsEnd[0],
+    });
+
+    this.basketService.changed.pipe(takeUntilDestroyed()).subscribe(() => {
+      this.basketRefresh.update((version) => version + 1);
     });
   }
 
@@ -89,6 +116,24 @@ export class EventWorksSearchComponent {
     }
 
     this.basketService.remove(numericId);
+  }
+
+  selectAllResults(): void {
+    this.results().forEach((item) => {
+      const numericId = Number(item.id);
+
+      if (Number.isFinite(numericId)) {
+        this.basketService.add(numericId);
+      }
+    });
+  }
+
+  clearAllResults(): void {
+    this.basketService.clear();
+  }
+
+  showSelection(): void {
+    this.router.navigateByUrl('/basket/selected');
   }
 
   showResultsPanel(): void {

@@ -3,11 +3,33 @@
     <h2 class="mb-0">{{ 'basket.selected.title' | translate }}</h2>
     <button
       type="button"
-      class="btn btn-outline-danger"
+      class="btn btn-outline-danger basket-clear-btn"
       (click)="clearSelection()"
       [disabled]="markedIds().length === 0 || loading()"
+      aria-label="Limpar selecao"
+      title="Limpar selecao"
     >
-      {{ 'basket.selected.clear' | translate }}
+      <svg viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+        <path
+          fill="currentColor"
+          d="M9 3h6l1 2h4v2h-2v12a2 2 0 0 1-2 2H8a2 2 0 0 1-2-2V7H4V5h4l1-2Zm-1 4v12h8V7H8Zm2 2h2v8h-2V9Zm4 0h2v8h-2V9Z"
+        />
+      </svg>
+    </button>
+  </div>
+
+  <div class="mt-2 mb-2 export-actions" *ngIf="markedIds().length > 0">
+    <span class="export-label">Exportar:</span>
+
+    <button
+      *ngFor="let option of exportOptions"
+      type="button"
+      (click)="export(option.type)"
+      class="btn btn-outline-primary btn-sm me-2 small"
+      [disabled]="loading()"
+      [attr.aria-label]="'Exportar em ' + option.label"
+    >
+      {{ option.label }}
     </button>
   </div>
 

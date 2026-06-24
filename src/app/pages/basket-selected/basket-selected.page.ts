@@ -14,6 +14,15 @@ import { TranslateModule } from '@ngx-translate/core';
 })
 export class BasketSelectedPage implements OnInit {
   public readonly abntCategories = ['Articles', 'Proceedings', 'Books', 'BooksChapter'];
+  readonly exportOptions = [
+    { type: 'csv', label: 'CSV' },
+    { type: 'xls', label: 'XLS' },
+    { type: 'doc', label: 'DOC' },
+    { type: 'ris', label: 'RIS' },
+    { type: 'bibtex', label: 'BibTex' },
+    { type: 'cited', label: 'Citacoes' },
+    { type: 'ID', label: 'TT' },
+  ] as const;
 
   public get abntLabels() {
     return [
@@ -33,6 +42,7 @@ export class BasketSelectedPage implements OnInit {
   activeTab = signal<string>('Articles');
   private readonly basket = inject(BasketService);
   private readonly http = inject(HttpClient);
+  private readonly exportBaseUrl = 'https://cip.brapci.inf.br/api/brapci/export/';
 
   markedIds = signal<number[]>([]);
   loading = signal(false);
@@ -84,5 +94,39 @@ export class BasketSelectedPage implements OnInit {
     this.error.set(null);
     this.loading.set(false);
     this.activeTab.set('Articles');
+  }
+
+  export(typeE: string): void {
+    const ids = this.basket.getMarked();
+
+    if (!ids.length) {
+      return;
+    }
+
+    const formData = new FormData();
+    const row = ids.join(',');
+    formData.append('row', row);
+    formData.append('typeE', typeE);
+    formData.append('type', typeE);
+    formData.append('export', typeE);
+
+    this.http
+      .post<unknown>(`${this.exportBaseUrl}${encodeURIComponent(typeE)}`, formData)
+      .subscribe({
+        next: (response) => {
+          const payload = response as Record<string, unknown>;
+          const downloadLink = typeof payload['download'] === 'string' ? payload['download'].trim() : '';
+
+          if (!downloadLink) {
+            this.error.set('Nao foi possivel obter o link de download.');
+            return;
+          }
+
+          window.open(downloadLink, '_blank', 'noopener,noreferrer');
+        },
+        error: () => {
+          this.error.set('Erro ao exportar os dados do Basket.');
+        },
+      });
   }
 }

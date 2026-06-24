@@ -2,10 +2,58 @@
   // Estilo padrão
 }
 
+.basket-clear-btn {
+  width: 2.25rem;
+  height: 2.25rem;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0;
+}
+
+.basket-clear-btn svg {
+  width: 1.1rem;
+  height: 1.1rem;
+}
+
+.export-actions {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.4rem;
+}
+
+.export-btn {
+  display: inline-flex;
+  align-items: center;
+}
+
+.export-btn-label {
+  font-family: 'Courier New', Courier, monospace;
+  letter-spacing: 0.02em;
+}
+
+.export-label {
+  font-size: 0.9rem;
+  color: #495057;
+  margin-right: 0.25rem;
+}
+
+.export-icon {
+  width: 0.95rem;
+  height: 0.95rem;
+  margin-right: 0.3rem;
+  flex: 0 0 auto;
+}
+
 body.dark-mode .nav-item, .dark-mode .nav-item {
   background-color: #222 !important;
   color: #f1f1f1 !important;
   border-color: #444 !important;
+}
+
+body.dark-mode .export-label, .dark-mode .export-label {
+  color: #f1f1f1;
 }
 
 body.dark-mode .nav-link, .dark-mode .nav-link {
