@@ -7,6 +7,8 @@ import { BrapciApiService } from '../../core/services/brapci-api.service';
 import { AuthorGadgetComponent } from '../../components/author-gadget/author-gadget.component';
 import { ArticleGadgetComponent } from '../../components/article-gadget/article-gadget.component';
 import { ProceedingGadgetComponent } from '../../components/proceeding-gadget/proceeding-gadget.component';
+import { BookChapterViewComponent } from '../../components/book-chapter-view/book-chapter-view.component';
+import { SeoMetadataComponent } from '../../components/seo-metadata/seo-metadata.component';
 import { BreadcrumbsComponent } from '../../components/breadcrumbs/breadcrumbs.component';
 import { ViewJournalComponent } from '../../components/view-journal/view-journal.component';
 import { ViewEventComponent } from '../../components/view-event/view-event.component';
@@ -46,6 +48,8 @@ export class VIdPage {
   private readonly brapciApiService = inject(BrapciApiService);
   private readonly worksKeys = ['Article', 'Proceeding', 'BookChapter', 'Book'] as const;
   readonly issueViewComponent = ViewIssueComponent;
+  readonly bookChapterViewComponent = BookChapterViewComponent;
+  readonly seoMetadataComponent = SeoMetadataComponent;
 
   readonly id = signal('');
   readonly loading = signal(true);

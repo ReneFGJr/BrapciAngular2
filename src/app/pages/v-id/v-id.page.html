@@ -1,3 +1,7 @@
+<ng-container
+  *ngComponentOutlet="seoMetadataComponent; inputs: { data: response(), recordId: id(), recordClass: classe() }"
+></ng-container>
+
 <section class="v-wrap py-0" aria-labelledby="v-title">
   <div class="container">
 
@@ -24,6 +28,10 @@
             [metrics]="articleMetrics()"
             [dataTag]="dataTag()"
           ></app-proceeding-gadget>
+        } @else if (isBookChapter()) {
+          <ng-container
+            *ngComponentOutlet="bookChapterViewComponent; inputs: { data: response(), metrics: articleMetrics(), dataTag: dataTag() }"
+          ></ng-container>
         } @else if (isPerson()) {
           <app-author-gadget
             class="mb-4 d-block"
