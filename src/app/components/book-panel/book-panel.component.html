@@ -12,12 +12,6 @@
   aria-modal="true"
   [attr.aria-label]="title || 'Detalhes do livro'"
 >
-  ---------------
-  <pre>
-  {{ data | json}}
-  </pre>
-  --------------
-
   @if (open && bookId) {
     <div class="book-panel__content">
       <button
@@ -34,6 +28,118 @@
         [title]="title"
         [data]="data"
       ></app-book-gadget>
+
+      <section class="book-panel__details" aria-label="Detalhes editoriais">
+        @if (hasMetadataGrid) {
+          <div class="book-panel__meta-grid">
+            @if (publisher) {
+              <article class="book-panel__meta-card">
+                <h3>Editora</h3>
+                <p>{{ publisher }}</p>
+              </article>
+            }
+
+            @if (year) {
+              <article class="book-panel__meta-card">
+                <h3>Ano</h3>
+                <p>{{ year }}</p>
+              </article>
+            }
+
+            @if (isbn) {
+              <article class="book-panel__meta-card">
+                <h3>ISBN</h3>
+                <p>{{ isbn }}</p>
+              </article>
+            }
+
+            @if (pages) {
+              <article class="book-panel__meta-card">
+                <h3>Páginas</h3>
+                <p>{{ pages }}</p>
+              </article>
+            }
+          </div>
+        }
+
+        @if (hasEngagementStats) {
+          <div class="book-panel__stats" aria-label="Métricas de uso">
+            @if (views) {
+              <span><strong>{{ views }}</strong> visualizações</span>
+            }
+            @if (downloads) {
+              <span><strong>{{ downloads }}</strong> downloads</span>
+            }
+            @if (likes) {
+              <span><strong>{{ likes }}</strong> curtidas</span>
+            }
+          </div>
+        }
+
+        @if (resourcePdf) {
+          <a
+            class="book-panel__pdf-link"
+            [href]="resourcePdf"
+            target="_blank"
+            rel="noopener noreferrer"
+          >
+            Baixar livro (PDF)
+          </a>
+        }
+
+        @if (description) {
+          <article class="book-panel__section-block">
+            <h3>Sobre a obra</h3>
+            <p>{{ description }}</p>
+          </article>
+        }
+
+        @if (creators.length) {
+          <article class="book-panel__section-block">
+            <h3>Organização</h3>
+            <ul class="book-panel__person-list">
+              @for (person of creators; track trackByName($index, person)) {
+                <li>
+                  <span class="book-panel__person-name">{{ person.name }}</span>
+                  @if (person.complement) {
+                    <span class="book-panel__person-complement">{{ person.complement }}</span>
+                  }
+                </li>
+              }
+            </ul>
+          </article>
+        }
+
+        @if (subjectsPt.length) {
+          <article class="book-panel__section-block">
+            <h3>Assuntos</h3>
+            <div class="book-panel__chips">
+              @for (subject of subjectsPt; track trackByName($index, subject)) {
+                <span class="book-panel__chip">{{ subject.name }}</span>
+              }
+            </div>
+          </article>
+        }
+
+        @if (chapters.length) {
+          <article class="book-panel__section-block">
+            <h3>Capítulos do livro</h3>
+            <ol class="book-panel__chapter-list">
+              @for (chapter of chapters; track trackByChapter($index, chapter)) {
+                <li class="book-panel__chapter-item">
+                  <h4>{{ chapter.title }}</h4>
+                  @if (chapter.pages) {
+                    <p class="book-panel__chapter-pages">{{ chapter.pages }}</p>
+                  }
+                  @if (chapter.authors) {
+                    <p class="book-panel__chapter-authors">{{ chapter.authors }}</p>
+                  }
+                </li>
+              }
+            </ol>
+          </article>
+        }
+      </section>
     </div>
   }
 </aside>

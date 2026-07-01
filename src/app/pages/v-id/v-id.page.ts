@@ -10,7 +10,6 @@ import { ProceedingGadgetComponent } from '../../components/proceeding-gadget/pr
 import { BreadcrumbsComponent } from '../../components/breadcrumbs/breadcrumbs.component';
 import { ViewJournalComponent } from '../../components/view-journal/view-journal.component';
 import { ViewEventComponent } from '../../components/view-event/view-event.component';
-import { ViewEnancibComponent } from '../../components/view-enancib/view-enancib.component';
 import { ViewIssueComponent } from '../../components/view-issue/view-issue.component';
 import type { AuthorWorksGroup } from '../../components/author-works/author-works.component';
 import { BarChartPoint } from '../../components/bar-chart/bar-chart.component';
@@ -35,7 +34,6 @@ type AuthorLink = {
     BreadcrumbsComponent,
     ViewJournalComponent,
     ViewEventComponent,
-    ViewEnancibComponent,
   ],
   templateUrl: './v-id.page.html',
   styleUrl: './v-id.page.scss',
