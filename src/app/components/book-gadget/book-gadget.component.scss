@@ -66,6 +66,57 @@
   margin-bottom: 0.3rem;
 }
 
+.book-gadget__authors-inline {
+  margin: 0 0 0.6rem;
+  color: #65472a;
+  line-height: 1.5;
+}
+
+.book-gadget__author-link {
+  color: inherit;
+  text-decoration: none;
+
+  &:hover {
+    text-decoration: underline;
+  }
+}
+
+.book-gadget__author-sep {
+  color: #8a6237;
+}
+
+.book-gadget__basket-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  border: 1px solid rgba(124, 86, 46, 0.4);
+  border-radius: 999px;
+  background: #f9efe3;
+  color: #6c4a25;
+  font-size: 0.82rem;
+  font-weight: 600;
+  padding: 0.35rem 0.85rem;
+  margin-bottom: 0.65rem;
+  transition: background 0.2s ease, color 0.2s ease, border-color 0.2s ease;
+
+  &:hover {
+    background: #f1dfcb;
+  }
+}
+
+.book-gadget__basket-btn--active {
+  background: #7c562e;
+  border-color: #7c562e;
+  color: #f7eee2;
+}
+
+.book-gadget__publisher-inline {
+  margin: 0 0 0.75rem;
+  color: #5f4022;
+  font-size: 0.9rem;
+  line-height: 1.45;
+}
+
 .book-gadget__subtitle {
   font-size: 1rem;
   color: #6b4f30;
@@ -168,6 +219,9 @@
 /* ── dark theme ── */
 :host-context(body.theme-master.theme-dark) {
   .book-gadget__title     { color: #f0e0c8; }
+  .book-gadget__authors-inline { color: #d2b38b; }
+  .book-gadget__author-sep { color: #b58b58; }
+  .book-gadget__publisher-inline { color: #cca977; }
   .book-gadget__subtitle  { color: #c9a97a; }
   .book-gadget__section   { color: #d4b896; }
   .book-gadget__label     { color: #c09050; }
@@ -175,6 +229,21 @@
   .book-gadget__badge     { background: linear-gradient(135deg, #5a3e20, #a07838); }
   .book-gadget__tag       { background: rgba(192, 144, 80, 0.15); color: #c09050; border-color: rgba(192, 144, 80, 0.3); }
   .book-gadget__link-full { color: #c09050; }
+  .book-gadget__basket-btn {
+    background: #2d2218;
+    color: #d7bc95;
+    border-color: rgba(192, 144, 80, 0.42);
+
+    &:hover {
+      background: #3a2b1d;
+    }
+  }
+
+  .book-gadget__basket-btn--active {
+    background: #c09050;
+    border-color: #c09050;
+    color: #1e140a;
+  }
 
   .book-gadget__skeleton-cover,
   .book-gadget__skeleton-line {

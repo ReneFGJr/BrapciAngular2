@@ -32,6 +32,42 @@
 
       <h2 class="book-gadget__title">{{ str('hasTitle') || title }}</h2>
 
+      @if (authorsWithLink().length) {
+        <p class="book-gadget__authors-inline">
+          @for (author of authorsWithLink(); track trackAuthor($index, author)) {
+            @if (author.id) {
+              <a
+                class="book-gadget__author-link"
+                [href]="'/v/' + author.id"
+                target="_blank"
+                rel="noopener noreferrer"
+              >
+                <i>{{ author.name }}</i>
+              </a>
+            } @else {
+              <i>{{ author.name }}</i>
+            }
+            @if (!$last) {
+              <span class="book-gadget__author-sep">; </span>
+            }
+          }
+        </p>
+      }
+
+      <button
+        type="button"
+        class="book-gadget__basket-btn"
+        [class.book-gadget__basket-btn--active]="isMarked()"
+        (click)="toggleBasket()"
+        [attr.aria-label]="isMarked() ? 'remover seleção' : 'Selecionar'"
+      >
+        {{ isMarked() ? 'remover seleção' : 'Selecionar' }}
+      </button>
+
+      @if (publisherName()) {
+        <p class="book-gadget__publisher-inline">{{ publisherName() }}</p>
+      }
+
       @if (str('hasSubtitle')) {
         <p class="book-gadget__subtitle">{{ str('hasSubtitle') }}</p>
       }
@@ -44,13 +80,6 @@
               <li>{{ author }}</li>
             }
           </ul>
-        </div>
-      }
-
-      @if (str('hasPublisher')) {
-        <div class="book-gadget__section">
-          <span class="book-gadget__label">Editora</span>
-          <span>{{ str('hasPublisher') }}</span>
         </div>
       }
 

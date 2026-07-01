@@ -52,6 +52,9 @@
             @case ('event') {
               <app-view-event class="mb-4 d-block" [data]="response()"></app-view-event>
             }
+            @case ('book') {
+              <app-book-panel class="mb-4 d-block" [data]="response()"></app-book-panel>
+            }
             @default {
               <app-view-journal class="mb-4 d-block" [data]="response()"></app-view-journal>
             }

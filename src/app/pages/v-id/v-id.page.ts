@@ -16,6 +16,7 @@ import { BarChartPoint } from '../../components/bar-chart/bar-chart.component';
 
 import type { Coauthor } from '../../core/models/coauthor.model';
 import type { NetworkGraph } from '../../core/models/network.model';
+import { BookPanelComponent } from '../../components/book-panel/book-panel.component';
 
 type AuthorLink = {
   type: 'lattes' | 'orcid' | 'openalex' | 'googlescholar';
@@ -34,6 +35,7 @@ type AuthorLink = {
     BreadcrumbsComponent,
     ViewJournalComponent,
     ViewEventComponent,
+    BookPanelComponent,
   ],
   templateUrl: './v-id.page.html',
   styleUrl: './v-id.page.scss',

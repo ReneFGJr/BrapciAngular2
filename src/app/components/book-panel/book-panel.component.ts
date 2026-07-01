@@ -128,7 +128,7 @@ export class BookPanelComponent {
   }
 
   get hasMetadataGrid(): boolean {
-    return !!(this.publisher || this.year || this.isbn || this.pages);
+    return !!(this.year || this.isbn || this.pages);
   }
 
   get hasEngagementStats(): boolean {
