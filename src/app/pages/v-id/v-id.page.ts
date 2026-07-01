@@ -52,6 +52,15 @@ export class VIdPage {
   readonly error = signal('');
   readonly response = signal<unknown>(null);
 
+  readonly responseRecord = computed<Record<string, unknown> | null>(() => {
+    const value = this.response();
+    if (!value || typeof value !== 'object' || Array.isArray(value)) {
+      return null;
+    }
+
+    return value as Record<string, unknown>;
+  });
+
   readonly classe = computed(() => {
     const value = this.response();
     if (!value || typeof value !== 'object') {
@@ -79,7 +88,11 @@ export class VIdPage {
     return { v: classe };
   });
 
-  readonly publicationView = computed<'journal' | 'event' | 'enancib'>(() => {
+  readonly publicationView = computed<'journal' | 'event' | 'enancib' | 'book'>(() => {
+    if (this.isBook()) {
+      return 'book';
+    }
+
     const value = this.response();
     if (!value || typeof value !== 'object') {
       return 'journal';

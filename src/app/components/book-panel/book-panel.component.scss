@@ -34,6 +34,15 @@
   transform: translateX(0);
 }
 
+.book-panel__drawer--embedded {
+  position: static;
+  width: 100%;
+  height: auto;
+  transform: none;
+  box-shadow: none;
+  background: transparent;
+}
+
 /* ── close button ── */
 .book-panel__close {
   position: absolute;
@@ -64,6 +73,11 @@
   flex: 1 1 auto;
   overflow-y: auto;
   padding: 2rem 2rem 3rem;
+}
+
+.book-panel__drawer--embedded .book-panel__content {
+  overflow: visible;
+  padding: 0;
 }
 
 .book-panel__details {
@@ -251,6 +265,11 @@
   .book-panel__drawer {
     background: #1e1610;
     box-shadow: -8px 0 40px rgba(0, 0, 0, 0.4);
+  }
+
+  .book-panel__drawer--embedded {
+    background: transparent;
+    box-shadow: none;
   }
 
   .book-panel__close {

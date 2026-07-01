@@ -36,7 +36,16 @@ export class BookPanelComponent {
   @Input() title = '';
   @Input() data: Record<string, unknown> | null = null;
   @Input() open = false;
+  @Input() embedded = false;
   @Output() closed = new EventEmitter<void>();
+
+  get shouldRenderContent(): boolean {
+    if (this.embedded) {
+      return !!this.data;
+    }
+
+    return this.open && !!this.bookId;
+  }
 
   get displayTitle(): string {
     return this.stringAt('title') || this.title;
