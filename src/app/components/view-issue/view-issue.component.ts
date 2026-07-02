@@ -61,6 +61,7 @@ export class ViewIssueComponent {
   readonly issueId = computed(() => this.field(['ID', 'id', 'issue_id']));
   readonly year = computed(() => this.field(['year', 'YEAR', 'ano']));
   readonly sourceName = computed(() => this.pickText(this.asRecord(this.data), ['source', 'name']) ?? '-');
+  readonly sourceRdf = computed(() => this.pickText(this.pickRecord(this.asRecord(this.data), ['source']), ['rdf']) ?? '');
   readonly journalId = computed(() => this.pickText(this.pickRecord(this.asRecord(this.data), ['source']), ['id_jnl', 'ID', 'id']) ?? '-');
   readonly acronym = computed(() => this.field(['acron', 'acronym', 'sigla']));
   readonly place = computed(() => this.field(['place', 'city', 'cidade', 'location', 'local']));

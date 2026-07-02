@@ -28,10 +28,17 @@ type TagDataPoint = {
   `,
   styles: [
     `
+      :host {
+        display: block;
+        width: 100%;
+      }
+
       .tag-cloud {
         background: var(--theme-card-bg);
         border: 1px solid var(--theme-line);
         border-radius: 0.7rem;
+        box-sizing: border-box;
+        width: 100%;
         padding: 0.75rem;
       }
 

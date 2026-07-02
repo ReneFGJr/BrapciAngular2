@@ -17,7 +17,13 @@
     <div class="issue-metrics" [attr.aria-label]="'issue.hero.metricsLabel' | translate">
       <div class="issue-metric">
         <span class="issue-metric-label">{{ 'issue.summary.main.acronym' | translate }}</span>
-        <strong class="issue-metric-value">{{ acronym() }}</strong>
+        @if (sourceRdf()) {
+          <a class="issue-metric-value issue-metric-link" [href]="'/v/' + sourceRdf()" target="_blank" rel="noopener noreferrer">
+            {{ acronym() }}
+          </a>
+        } @else {
+          <strong class="issue-metric-value">{{ acronym() }}</strong>
+        }
       </div>
       <div class="issue-metric">
         <span class="issue-metric-label">{{ 'issue.summary.main.location' | translate }}</span>
@@ -241,7 +247,7 @@
 
       @case ('keywords') {
         @if (keywords().length) {
-          <div class="keywords-panel">
+          <div class="keywords-panel-full">
             <section class="summary-card keywords-card">
               <div class="keywords-card-head">
                 <div>
@@ -259,7 +265,7 @@
 
               <app-tag-cloud
                 [dataTag]="keywordsForCloud()"
-                titleKey="issue.tags.title"
+                titleKey=""
                 noDataKey="issue.tags.noData"
               ></app-tag-cloud>
             </section>

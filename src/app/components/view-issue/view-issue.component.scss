@@ -96,6 +96,17 @@
   font-weight: 700;
 }
 
+.issue-metric-link {
+  color: var(--theme-link);
+  text-decoration: none;
+}
+
+.issue-metric-link:hover,
+.issue-metric-link:focus-visible {
+  color: var(--theme-hint);
+  text-decoration: underline;
+}
+
 @media (max-width: 992px) {
   .issue-metrics {
     grid-template-columns: repeat(2, minmax(0, 1fr));
@@ -381,11 +392,22 @@
 .keywords-panel {
   display: grid;
   gap: 1rem;
+  width: 100%;
+}
+
+.keywords-panel > .summary-card {
+  width: 100%;
 }
 
 .keywords-card {
   display: grid;
   gap: 0.95rem;
+  width: 100%;
+}
+
+.keywords-card app-tag-cloud {
+  display: block;
+  width: 100%;
 }
 
 .keywords-card-head {
