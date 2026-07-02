@@ -14,3 +14,58 @@
     max-height: 360px;
   }
 }
+
+:host-context(body.theme-master.theme-dark) {
+  .painel-analysis {
+    color: var(--theme-ink);
+  }
+
+  .painel-analysis .card {
+    background: rgb(18 32 51 / 94%);
+    border-color: rgb(48 68 95 / 88%);
+    color: var(--theme-ink);
+  }
+
+  .painel-analysis .card-body {
+    color: var(--theme-ink);
+  }
+
+  .painel-analysis .table {
+    color: var(--theme-ink);
+  }
+
+  .painel-analysis .table thead th {
+    background-color: rgb(24 35 52 / 98%);
+    color: var(--theme-ink);
+    border-bottom-color: rgb(100 132 173 / 28%);
+  }
+
+  .painel-analysis .table tbody td,
+  .painel-analysis .table tbody th,
+  .painel-analysis .table td,
+  .painel-analysis .table th {
+    color: var(--theme-ink);
+  }
+
+  .painel-analysis .table td,
+  .painel-analysis .table th {
+    border-color: rgb(100 132 173 / 18%);
+  }
+
+  .painel-analysis .btn-outline-secondary {
+    background: rgb(18 32 51 / 92%);
+    border-color: rgb(48 68 95 / 88%);
+    color: var(--theme-ink);
+  }
+
+  .painel-analysis .btn-outline-secondary:hover,
+  .painel-analysis .btn-outline-secondary:focus-visible {
+    background: rgb(28 44 68 / 96%);
+    border-color: rgb(100 132 173 / 60%);
+    color: var(--theme-ink);
+  }
+
+  .painel-analysis .text-muted {
+    color: var(--theme-muted) !important;
+  }
+}

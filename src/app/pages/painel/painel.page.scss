@@ -1,7 +1,45 @@
+.page-shell {
+  color: var(--theme-ink);
+}
+
 .result-json {
   white-space: pre-wrap;
   word-break: break-word;
   max-height: 70vh;
   overflow: auto;
   font-size: 0.85rem;
+}
+
+:host-context(body.theme-master.theme-dark) {
+  .page-shell,
+  .page-shell h2,
+  .page-shell p,
+  .page-shell .alert,
+  .page-shell .btn,
+  .page-shell a {
+    color: var(--theme-ink);
+  }
+
+  .page-shell .btn-outline-secondary {
+    background: rgb(18 32 51 / 92%);
+    border-color: rgb(48 68 95 / 88%);
+    color: var(--theme-ink);
+  }
+
+  .page-shell .btn-outline-secondary:hover,
+  .page-shell .btn-outline-secondary:focus-visible {
+    background: rgb(28 44 68 / 96%);
+    border-color: rgb(100 132 173 / 60%);
+    color: var(--theme-ink);
+  }
+
+  .page-shell .alert-secondary,
+  .page-shell .alert-warning {
+    background: rgb(18 32 51 / 92%);
+    border-color: rgb(48 68 95 / 88%);
+  }
+
+  .page-shell .text-muted {
+    color: var(--theme-muted) !important;
+  }
 }
