@@ -613,6 +613,108 @@
   padding: 0.9rem;
 }
 
+:host-context(body.theme-master.theme-dark) {
+  .view-card {
+    background:
+      radial-gradient(circle at top left, rgb(255 255 255 / 6%), transparent 36%),
+      linear-gradient(180deg, rgb(16 23 39 / 92%), rgb(13 19 31 / 88%));
+    border-color: rgb(48 68 95 / 88%);
+    box-shadow: 0 18px 38px rgb(0 0 0 / 28%);
+  }
+
+  .issue-hero,
+  .tab-nav,
+  .tab-panel,
+  .summary-card,
+  .work-group-card,
+  .work-item,
+  .issue-metric,
+  .issue-badge,
+  .work-group-count,
+  .chip,
+  .stats-item,
+  .csv-btn,
+  .json-block {
+    background: rgb(18 32 51 / 94%);
+    border-color: rgb(48 68 95 / 88%);
+    box-shadow: 0 10px 22px rgb(0 0 0 / 18%);
+  }
+
+  .tab-nav {
+    background: rgb(18 32 51 / 80%);
+  }
+
+  .tab-btn.active {
+    background: linear-gradient(180deg, rgb(33 47 70 / 96%), rgb(24 35 52 / 94%));
+    border-color: rgb(100 132 173 / 60%);
+  }
+
+  .stats-highlight {
+    background: linear-gradient(135deg, rgb(58 72 94 / 58%), rgb(18 32 51 / 94%));
+    border-color: rgb(82 105 135 / 34%);
+  }
+
+  .work-number {
+    background: linear-gradient(180deg, rgb(33 47 70 / 96%), rgb(24 35 52 / 92%));
+    border-color: rgb(100 132 173 / 45%);
+  }
+
+  .work-item,
+  .keywords-table th,
+  .keywords-table td {
+    border-color: rgb(100 132 173 / 18%);
+  }
+
+  .work-flag,
+  .keywords-card-subtitle,
+  .authors-card-subtitle,
+  .issue-subtitle,
+  .issue-kicker,
+  .issue-metric-label,
+  .stats-highlight span,
+  .summary-grid dt,
+  .keywords-table thead th,
+  .distribution-label span,
+  .work-flag-muted,
+  .author-work-total,
+  .work-group-count {
+    color: var(--theme-muted);
+  }
+
+  .work-title,
+  .author-work-name,
+  .keywords-name,
+  .distribution-label strong,
+  .distribution-value,
+  .issue-metric-value,
+  .stats-highlight strong,
+  .work-authors strong,
+  .summary-grid dd,
+  .work-group-head h3,
+  .authors-card-head h3,
+  .keywords-card-head h3 {
+    color: var(--theme-ink);
+  }
+
+  .issue-metric-link,
+  .author-work-link {
+    color: var(--theme-link);
+  }
+
+  .author-work-bar,
+  .distribution-bar-track {
+    background: rgb(230 238 247 / 10%);
+  }
+
+  .author-work-bar-fill {
+    background: linear-gradient(90deg, rgb(118 157 200 / 94%), rgb(87 122 168 / 94%));
+  }
+
+  .distribution-bar-fill {
+    background: linear-gradient(90deg, rgb(96 162 129 / 94%), rgb(76 131 104 / 94%));
+  }
+}
+
 @media (min-width: 768px) {
   .issue-summary {
     grid-template-columns: repeat(2, minmax(0, 1fr));
