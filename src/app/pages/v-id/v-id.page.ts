@@ -81,6 +81,7 @@ export class VIdPage {
   readonly isArticle = computed(() => this.classe().toLowerCase() === 'article');
   readonly isBook = computed(() => this.classe().toLowerCase() === 'book');
   readonly isProceeding = computed(() => this.classe().toLowerCase() === 'proceeding');
+  readonly isJournal = computed(() => this.classe().toLowerCase() === 'journal');
   readonly isBookChapter = computed(() => this.classe().toLowerCase() === 'bookchapter');
 
   readonly breadcrumbLabels = computed<Record<string, string>>(() => {

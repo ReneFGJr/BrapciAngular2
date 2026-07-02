@@ -166,6 +166,79 @@
       "noData": "No hay datos de dataTAG para mostrar."
     }
   },
+  "issue": {
+    "hero": {
+      "kicker": "Fascículo",
+      "badgesLabel": "Resumen rápido del fascículo",
+      "metricsLabel": "Indicadores del fascículo"
+    },
+    "badges": {
+      "id": "ID",
+      "volume": "Vol.",
+      "articles": "Artículos"
+    },
+    "tabs": {
+      "ariaLabel": "Pestañas del contenido del fascículo",
+      "summary": "Resumen",
+      "works": "Trabajos",
+      "authors": "Autores",
+      "keywords": "Palabras clave",
+      "json": "JSON"
+    },
+    "common": {
+      "csv": "CSV"
+    },
+    "summary": {
+      "main": {
+        "title": "Datos principales",
+        "acronym": "Acrónimo",
+        "source": "Fuente",
+        "journalId": "Identificador de la revista",
+        "year": "Año",
+        "issue": "Fascículo",
+        "location": "Local"
+      },
+      "production": {
+        "title": "Producción",
+        "works": "Trabajos",
+        "authors": "Autores",
+        "coauthorAverage": "Media de coautoría"
+      }
+    },
+    "works": {
+      "empty": "No hay trabajos disponibles.",
+      "authorsLabel": "Autores",
+      "flagsLabel": "Indicadores del trabajo"
+    },
+    "authors": {
+      "title": "Autores",
+      "subtitle": "Total de trabajos por autor",
+      "exportCsv": "Exportar autores en CSV",
+      "empty": "No hay autores disponibles.",
+      "distribution": {
+        "title": "Distribución",
+        "subtitle": "Número de autores por trabajo",
+        "unit": "autor(es)",
+        "empty": "No hay distribución disponible."
+      }
+    },
+    "keywords": {
+      "title": "Nube de palabras clave",
+      "subtitle": "Palabras clave ordenadas por frecuencia",
+      "exportCsv": "Exportar palabras clave en CSV",
+      "frequencyTitle": "Frecuencia",
+      "frequencySubtitle": "Tabla con las ocurrencias por término",
+      "table": {
+        "keyword": "Palabra clave",
+        "freq": "Freq."
+      },
+      "empty": "No hay palabras clave disponibles."
+    },
+    "tags": {
+      "title": "Nube de palabras clave",
+      "noData": "No hay palabras clave disponibles."
+    }
+  },
   "journals": {
     "accessLink": "Acceder a la revista",
     "publicationsList": "Lista de publicaciones",

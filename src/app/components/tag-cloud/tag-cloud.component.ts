@@ -11,17 +11,18 @@ type TagDataPoint = {
 
 @Component({
   selector: 'app-tag-cloud',
+  standalone: true,
   imports: [CommonModule, TranslateModule],
   template: `
-    <section class="tag-cloud mt-3" aria-label="Nuvem de tags do autor">
-      <h3 class="h6 mb-2">{{ 'author.tags.title' | translate }}</h3>
+    <section class="tag-cloud mt-3" [attr.aria-label]="titleKey | translate">
+      <h3 class="h6 mb-2">{{ titleKey | translate }}</h3>
 
       @if (hasData()) {
         <div class="tag-cloud__chart-wrap">
-          <div #chartHost class="tag-cloud__chart" role="img" [attr.aria-label]="'author.tags.title' | translate"></div>
+          <div #chartHost class="tag-cloud__chart" role="img" [attr.aria-label]="titleKey | translate"></div>
         </div>
       } @else {
-        <p class="mb-0 text-muted">{{ 'author.tags.noData' | translate }}</p>
+        <p class="mb-0 text-muted">{{ noDataKey | translate }}</p>
       }
     </section>
   `,
@@ -53,6 +54,8 @@ type TagDataPoint = {
 })
 export class TagCloudComponent implements AfterViewInit, OnDestroy {
   @ViewChild('chartHost') private chartHost?: ElementRef<HTMLDivElement>;
+  @Input() titleKey = 'author.tags.title';
+  @Input() noDataKey = 'author.tags.noData';
 
   @Input() set dataTag(value: unknown) {
     this._dataTag.set(value);

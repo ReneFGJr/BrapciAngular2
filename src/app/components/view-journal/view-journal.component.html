@@ -1,7 +1,58 @@
 <article class="view-card p-3 p-md-4">
-  <h2 class="h5 mb-3">Publicacao</h2>
-  <p class="mb-1"><strong>Titulo:</strong> {{ field(['jnl_name', 'title', 'name']) }}</p>
-  <p class="mb-1"><strong>Abreviacao:</strong> {{ field(['jnl_name_abrev']) }}</p>
-  <p class="mb-1"><strong>Colecao:</strong> {{ field(['jnl_collection']) }}</p>
-  <p class="mb-0"><strong>ISSN:</strong> {{ field(['jnl_issn']) }}</p>
+  <h2 class="h5 mb-3">Revista</h2>
+
+  <div class="tab-nav mb-3" role="tablist" aria-label="Abas de conteudo da revista">
+    <button type="button" class="tab-btn" [class.active]="activeTab() === 'summary'" (click)="setTab('summary')">
+      Resumo
+    </button>
+    <button type="button" class="tab-btn" [class.active]="activeTab() === 'issues'" (click)="setTab('issues')">
+      Fasciculos
+    </button>
+    <button type="button" class="tab-btn" [class.active]="activeTab() === 'json'" (click)="setTab('json')">
+      JSON
+    </button>
+  </div>
+
+  <div class="tab-panel">
+    @switch (activeTab()) {
+      @case ('summary') {
+        <div class="journal-summary">
+          @if (coverUrl() !== '-') {
+            <div class="journal-cover">
+              <img [src]="coverUrl()" [alt]="title()" loading="lazy" />
+            </div>
+          }
+
+          <div class="journal-meta">
+            <p class="mb-1"><strong>Titulo:</strong> {{ title() }}</p>
+            <p class="mb-1"><strong>Abreviacao:</strong> {{ acronym() }}</p>
+            <p class="mb-1"><strong>Editor:</strong> {{ publisher() }}</p>
+            <p class="mb-1"><strong>Colecao:</strong> {{ collection() }}</p>
+            <p class="mb-1"><strong>ISSN:</strong> {{ issn() }}</p>
+            <p class="mb-1"><strong>E-ISSN:</strong> {{ eissn() }}</p>
+            <p class="mb-1"><strong>Periodo:</strong> {{ period() }}</p>
+            <p class="mb-1"><strong>Identificador:</strong> {{ journalId() }}</p>
+            <p class="mb-1"><strong>Site:</strong> {{ url() }}</p>
+            <p class="mb-0"><strong>OAI:</strong> {{ oaiUrl() }}</p>
+          </div>
+        </div>
+      }
+
+      @case ('issues') {
+        @if (issueItems().length) {
+          <app-issue-view-type
+            [issues]="issueItems()"
+            [acronym]="acronym()"
+            [journalId]="journalId()"
+          ></app-issue-view-type>
+        } @else {
+          <p class="mb-0">Sem fasciculos disponiveis.</p>
+        }
+      }
+
+      @case ('json') {
+        <pre class="json-block mb-0">{{ jsonContent() }}</pre>
+      }
+    }
+  </div>
 </article>

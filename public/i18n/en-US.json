@@ -124,6 +124,79 @@
         "noData": "No dataTAG data available to display."
       }
   },
+    "issue": {
+      "hero": {
+        "kicker": "Issue",
+        "badgesLabel": "Quick issue summary",
+        "metricsLabel": "Issue indicators"
+      },
+      "badges": {
+        "id": "ID",
+        "volume": "Vol.",
+        "articles": "Articles"
+      },
+      "tabs": {
+        "ariaLabel": "Issue content tabs",
+        "summary": "Summary",
+        "works": "Works",
+        "authors": "Authors",
+        "keywords": "Keywords",
+        "json": "JSON"
+      },
+      "common": {
+        "csv": "CSV"
+      },
+      "summary": {
+        "main": {
+          "title": "Main data",
+          "acronym": "Acronym",
+          "source": "Source",
+          "journalId": "Journal identifier",
+          "year": "Year",
+          "issue": "Issue",
+          "location": "Location"
+        },
+        "production": {
+          "title": "Production",
+          "works": "Works",
+          "authors": "Authors",
+          "coauthorAverage": "Average co-authorship"
+        }
+      },
+      "works": {
+        "empty": "No works available.",
+        "authorsLabel": "Authors",
+        "flagsLabel": "Work indicators"
+      },
+      "authors": {
+        "title": "Authors",
+        "subtitle": "Total works by author",
+        "exportCsv": "Export authors as CSV",
+        "empty": "No authors available.",
+        "distribution": {
+          "title": "Distribution",
+          "subtitle": "Number of authors per work",
+          "unit": "author(s)",
+          "empty": "No distribution available."
+        }
+      },
+      "keywords": {
+        "title": "Tag cloud",
+        "subtitle": "Keywords ordered by frequency",
+        "exportCsv": "Export keywords as CSV",
+        "frequencyTitle": "Frequency",
+        "frequencySubtitle": "Occurrences by term",
+        "table": {
+          "keyword": "Keyword",
+          "freq": "Freq."
+        },
+        "empty": "No keywords available."
+      },
+      "tags": {
+        "title": "Tag cloud",
+        "noData": "No keywords available."
+      }
+    },
   "journals": {
     "accessLink": "Access journal",
     "publicationsList": "Publications list",

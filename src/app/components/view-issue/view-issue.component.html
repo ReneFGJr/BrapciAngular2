@@ -1,48 +1,304 @@
 <article class="view-card p-3 p-md-4">
-  <h2 class="h5 mb-1">Issue</h2>
-  <p class="mb-3"><strong>Titulo:</strong> {{ title() }}</p>
+  <header class="issue-hero mb-3">
+    <div class="issue-hero-copy">
+      <p class="issue-kicker mb-2">{{ 'issue.hero.kicker' | translate }}</p>
+      <h2 class="issue-title mb-2">{{ title() }}</h2>
+      <p class="issue-subtitle mb-0">
+        {{ sourceName() }} · {{ year() }}
+      </p>
+    </div>
 
-  <div class="tab-nav mb-3" role="tablist" aria-label="Abas de conteudo da issue">
+    <div class="issue-badges" [attr.aria-label]="'issue.hero.badgesLabel' | translate">
+      <span class="issue-badge">{{ 'issue.badges.id' | translate }} {{ issueId() }}</span>
+      <span class="issue-badge">{{ 'issue.badges.volume' | translate }} {{ year() }}</span>
+      <span class="issue-badge">{{ 'issue.badges.articles' | translate }} {{ worksTotal() }}</span>
+    </div>
+
+    <div class="issue-metrics" [attr.aria-label]="'issue.hero.metricsLabel' | translate">
+      <div class="issue-metric">
+        <span class="issue-metric-label">{{ 'issue.summary.main.acronym' | translate }}</span>
+        <strong class="issue-metric-value">{{ acronym() }}</strong>
+      </div>
+      <div class="issue-metric">
+        <span class="issue-metric-label">{{ 'issue.summary.main.location' | translate }}</span>
+        <strong class="issue-metric-value">{{ place() }}</strong>
+      </div>
+      <div class="issue-metric">
+        <span class="issue-metric-label">{{ 'issue.summary.main.issue' | translate }}</span>
+        <strong class="issue-metric-value">{{ issueNumber() }}</strong>
+      </div>
+      <div class="issue-metric">
+        <span class="issue-metric-label">{{ 'issue.summary.main.year' | translate }}</span>
+        <strong class="issue-metric-value">{{ year() }}</strong>
+      </div>
+    </div>
+  </header>
+
+  <div class="tab-nav mb-3" role="tablist" [attr.aria-label]="'issue.tabs.ariaLabel' | translate">
+    <button type="button" class="tab-btn" [class.active]="activeTab() === 'summary'" (click)="setTab('summary')">
+      {{ 'issue.tabs.summary' | translate }}
+    </button>
     <button type="button" class="tab-btn" [class.active]="activeTab() === 'works'" (click)="setTab('works')">
-      Trabalhos
+      {{ 'issue.tabs.works' | translate }}
     </button>
     <button type="button" class="tab-btn" [class.active]="activeTab() === 'authors'" (click)="setTab('authors')">
-      Autores
+      {{ 'issue.tabs.authors' | translate }}
+    </button>
+    <button type="button" class="tab-btn" [class.active]="activeTab() === 'keywords'" (click)="setTab('keywords')">
+      {{ 'issue.tabs.keywords' | translate }}
     </button>
     <button type="button" class="tab-btn" [class.active]="activeTab() === 'json'" (click)="setTab('json')">
-      JSON
+      {{ 'issue.tabs.json' | translate }}
     </button>
   </div>
 
   <div class="tab-panel">
     @switch (activeTab()) {
+      @case ('summary') {
+        <div class="issue-summary">
+          <section class="summary-card">
+            <h3 class="h6 mb-3">{{ 'issue.summary.main.title' | translate }}</h3>
+            <dl class="summary-grid mb-0">
+              <div>
+                <dt>{{ 'issue.summary.main.acronym' | translate }}</dt>
+                <dd>{{ acronym() }}</dd>
+              </div>
+              <div>
+                <dt>{{ 'issue.summary.main.source' | translate }}</dt>
+                <dd>{{ sourceName() }}</dd>
+              </div>
+              <div>
+                <dt>{{ 'issue.summary.main.journalId' | translate }}</dt>
+                <dd>{{ journalId() }}</dd>
+              </div>
+              <div>
+                <dt>{{ 'issue.summary.main.year' | translate }}</dt>
+                <dd>{{ year() }}</dd>
+              </div>
+              <div>
+                <dt>{{ 'issue.summary.main.issue' | translate }}</dt>
+                <dd>{{ issueNumber() }}</dd>
+              </div>
+              <div>
+                <dt>{{ 'issue.summary.main.location' | translate }}</dt>
+                <dd>{{ place() }}</dd>
+              </div>
+            </dl>
+          </section>
+
+          <section class="summary-card">
+            <h3 class="h6 mb-3">{{ 'issue.summary.production.title' | translate }}</h3>
+            <div class="stats-stack">
+              <div class="stats-highlight">
+                <span>{{ 'issue.summary.production.works' | translate }}</span>
+                <strong>{{ worksTotal() }}</strong>
+              </div>
+              <ul class="summary-list mb-0">
+                <li><strong>{{ 'issue.summary.production.authors' | translate }}:</strong> {{ totalAuthors() }}</li>
+                <li><strong>{{ 'issue.summary.production.coauthorAverage' | translate }}:</strong> {{ coAuthorsMedia() }}</li>
+              </ul>
+            </div>
+          </section>
+        </div>
+      }
+
       @case ('works') {
-        @if (works().length) {
-          <ul class="mb-0 ps-3">
-            @for (work of works(); track $index) {
-              <li class="mb-1">
-                @if (work.link) {
-                  <a [href]="work.link">{{ work.text }}</a>
-                } @else {
-                  {{ work.text }}
-                }
-              </li>
+        @if (workGroups().length) {
+          <div class="work-groups">
+            @for (group of workGroups(); track group.name) {
+              <section class="work-group-card">
+                <div class="work-group-head">
+                  <h3 class="h6 mb-0">{{ group.name }}</h3>
+                  <span class="work-group-count">{{ group.items.length }}</span>
+                </div>
+
+                <ol class="work-list work-sumary-list">
+                  @for (work of group.items; track work.id; let index = $index) {
+                    <li class="work-item">
+                      <div class="work-number">{{ index + 1 }}</div>
+
+                      <div class="work-entry">
+                        <div class="work-item-head">
+                          @if (work.link) {
+                            <a [href]="work.link" class="work-title">{{ work.text }}</a>
+                          } @else {
+                            <h4 class="work-title mb-0">{{ work.text }}</h4>
+                          }
+
+                          @if (work.session || work.pdf === '1') {
+                            <div class="work-flags" [attr.aria-label]="'issue.works.flagsLabel' | translate">
+                              @if (work.pdf === '1') {
+                                <span class="work-flag">PDF</span>
+                              }
+                              @if (work.session) {
+                                <span class="work-flag work-flag-muted">{{ work.session }}</span>
+                              }
+                            </div>
+                          }
+                        </div>
+
+                        @if (work.authors.length) {
+                          <p class="work-authors mb-0">
+                            <strong>{{ 'issue.works.authorsLabel' | translate }}:</strong> {{ work.authors.join('; ') }}
+                          </p>
+                        }
+                      </div>
+                    </li>
+                  }
+                </ol>
+              </section>
             }
-          </ul>
+          </div>
         } @else {
-          <p class="mb-0">Sem trabalhos disponiveis.</p>
+          <p class="mb-0">{{ 'issue.works.empty' | translate }}</p>
         }
       }
 
       @case ('authors') {
-        @if (authors().length) {
-          <ul class="mb-0 ps-3">
-            @for (author of authors(); track author) {
-              <li class="mb-1">{{ author }}</li>
-            }
-          </ul>
+        @if (authorWorkStats().length || authorDistribution().length) {
+          <div class="authors-grid">
+            <section class="summary-card authors-card">
+              <div class="authors-card-head">
+                <div>
+                  <h3 class="h6 mb-1">{{ 'issue.authors.title' | translate }}</h3>
+                  <p class="authors-card-subtitle mb-0">{{ 'issue.authors.subtitle' | translate }}</p>
+                </div>
+                <button type="button" class="csv-btn" (click)="exportAuthorsCsv()" [attr.aria-label]="'issue.authors.exportCsv' | translate">
+                  <svg viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+                    <path d="M12 3a1 1 0 0 1 1 1v8.59l2.3-2.3a1 1 0 1 1 1.4 1.42l-4.01 4a1 1 0 0 1-1.39 0l-4-4a1 1 0 1 1 1.4-1.42L11 12.59V4a1 1 0 0 1 1-1Zm-7 14a1 1 0 0 1 1 1v1h12v-1a1 1 0 1 1 2 0v2a1 1 0 0 1-1 1H5a1 1 0 0 1-1-1v-2a1 1 0 0 1 1-1Z"/>
+                  </svg>
+                  {{ 'issue.common.csv' | translate }}
+                </button>
+                <span class="work-group-count">{{ authorWorkStats().length }}</span>
+              </div>
+
+              @if (authorWorkStats().length) {
+                <ul class="author-work-list mb-0">
+                  @for (author of authorWorkStats(); track author.name) {
+                    <li class="author-work-item">
+                      <div class="author-work-meta">
+                        @if (author.id) {
+                          <a class="author-work-name author-work-link" [href]="'/v/' + author.id" target="_blank" rel="noopener noreferrer">
+                            {{ author.name }}
+                          </a>
+                        } @else {
+                          <span class="author-work-name">{{ author.name }}</span>
+                        }
+                        <strong class="author-work-total">{{ author.totalWorks }}</strong>
+                      </div>
+                      <div class="author-work-bar" aria-hidden="true">
+                        <span
+                          class="author-work-bar-fill"
+                          [style.width.%]="(author.totalWorks / (authorWorkStats()[0]?.totalWorks || 1)) * 100"
+                        ></span>
+                      </div>
+                    </li>
+                  }
+                </ul>
+              } @else {
+                <p class="mb-0">{{ 'issue.authors.empty' | translate }}</p>
+              }
+            </section>
+
+            <section class="summary-card authors-card">
+              <div class="authors-card-head">
+                <div>
+                  <h3 class="h6 mb-1">{{ 'issue.authors.distribution.title' | translate }}</h3>
+                  <p class="authors-card-subtitle mb-0">{{ 'issue.authors.distribution.subtitle' | translate }}</p>
+                </div>
+                <span class="work-group-count">{{ authorDistribution().length }}</span>
+              </div>
+
+              @if (authorDistribution().length) {
+                <div class="distribution-chart" role="list" [attr.aria-label]="'issue.authors.distribution.title' | translate">
+                  @for (bucket of authorDistribution(); track bucket.authorsCount) {
+                    <div class="distribution-row" role="listitem">
+                      <div class="distribution-label">
+                        <strong>{{ bucket.authorsCount }}</strong>
+                        <span>{{ 'issue.authors.distribution.unit' | translate }}</span>
+                      </div>
+                      <div class="distribution-bar-wrap">
+                        <div class="distribution-bar-track">
+                          <span
+                            class="distribution-bar-fill"
+                            [style.width.%]="(bucket.totalWorks / (worksTotal() || 1)) * 100"
+                          ></span>
+                        </div>
+                        <div class="distribution-value">{{ bucket.totalWorks }}</div>
+                      </div>
+                    </div>
+                  }
+                </div>
+              } @else {
+                <p class="mb-0">{{ 'issue.authors.distribution.empty' | translate }}</p>
+              }
+            </section>
+          </div>
         } @else {
-          <p class="mb-0">Sem autores disponiveis.</p>
+          <p class="mb-0">{{ 'issue.authors.empty' | translate }}</p>
+        }
+      }
+
+      @case ('keywords') {
+        @if (keywords().length) {
+          <div class="keywords-panel">
+            <section class="summary-card keywords-card">
+              <div class="keywords-card-head">
+                <div>
+                  <h3 class="h6 mb-1">{{ 'issue.keywords.title' | translate }}</h3>
+                  <p class="keywords-card-subtitle mb-0">{{ 'issue.keywords.subtitle' | translate }}</p>
+                </div>
+
+                <button type="button" class="csv-btn" (click)="exportKeywordsCsv()" [attr.aria-label]="'issue.keywords.exportCsv' | translate">
+                  <svg viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+                    <path d="M12 3a1 1 0 0 1 1 1v8.59l2.3-2.3a1 1 0 1 1 1.4 1.42l-4.01 4a1 1 0 0 1-1.39 0l-4-4a1 1 0 0 1 1.4-1.42L11 12.59V4a1 1 0 0 1 1-1Zm-7 14a1 1 0 0 1 1 1v1h12v-1a1 1 0 1 1 2 0v2a1 1 0 0 1-1 1H5a1 1 0 0 1-1-1v-2a1 1 0 0 1 1-1Z"/>
+                  </svg>
+                  {{ 'issue.common.csv' | translate }}
+                </button>
+              </div>
+
+              <app-tag-cloud
+                [dataTag]="keywordsForCloud()"
+                titleKey="issue.tags.title"
+                noDataKey="issue.tags.noData"
+              ></app-tag-cloud>
+            </section>
+
+            <section class="summary-card keywords-card">
+              <div class="keywords-card-head">
+                <div>
+                  <h3 class="h6 mb-1">{{ 'issue.keywords.frequencyTitle' | translate }}</h3>
+                  <p class="keywords-card-subtitle mb-0">{{ 'issue.keywords.frequencySubtitle' | translate }}</p>
+                </div>
+                <span class="work-group-count">{{ keywords().length }}</span>
+              </div>
+
+              <div class="keywords-table-wrap">
+                <table class="keywords-table">
+                  <thead>
+                    <tr>
+                      <th scope="col">{{ 'issue.keywords.table.keyword' | translate }}</th>
+                      <th scope="col" class="text-end">{{ 'issue.keywords.table.freq' | translate }}</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    @for (keyword of keywords(); track keyword.name) {
+                      <tr>
+                        <td>
+                          <span class="keywords-name">{{ keyword.name }}</span>
+                        </td>
+                        <td class="text-end">
+                          <strong>{{ keyword.total }}</strong>
+                        </td>
+                      </tr>
+                    }
+                  </tbody>
+                </table>
+              </div>
+            </section>
+          </div>
+        } @else {
+          <p class="mb-0">{{ 'issue.keywords.empty' | translate }}</p>
         }
       }
 
