@@ -7,13 +7,15 @@
         }
 
       </div>
+
       @for (issue of viewItems(); track $index) {
-        <div class="col-12 col-lg-4">
+        <div class="col-12 col-lg-4 mt-3 mb-2">
           <div class="issue w-100" (click)="onClickItem(issue)" style="cursor: pointer">
             <div class="issue-name">{{ acronym() }}</div>
-            <div class="issue-nr">{{ issue.vol }}</div>
+            <div class="issue-nr">{{ issue.vol }} {{ issue.nr }} </div>
             <div class="issue-place">{{ issue.place }}</div>
             <div class="issue-year">{{ issue.year }}</div>
+            <div class="issue-works">{{ issue.totalWorks }} W</div>
           </div>
         </div>
       }

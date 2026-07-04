@@ -12,6 +12,7 @@ type IssueViewItem = {
   vol: string;
   nr: string;
   place: string;
+  totalWorks: string;
 };
 
 @Component({
@@ -111,12 +112,22 @@ export class ViewType01Component {
     const vol = this.pick(data, ['VOL', 'vol', 'volume', 'issue_vol', 'issue_volume']);
     const nr = this.pick(data, ['NR', 'nr', 'number', 'num', 'issue_nr', 'issue_number']);
     const place = this.pick(data, ['place', 'city', 'cidade', 'location', 'local']);
+    const totalWorks = this.pick(data, [
+      'totalWorks',
+      'total_works',
+      'totalworks',
+      'TOTAL_WORKS',
+      'works_total',
+      'qt_works',
+      'QTD',
+      'qtd',
+    ]);
 
-    if (!id && !year && !journal && !vol && !nr && !place) {
+    if (!id && !year && !journal && !vol && !nr && !place && !totalWorks) {
       return null;
     }
 
-    return { id, year, journal, vol, nr, place };
+    return { id, year, journal, vol, nr, place, totalWorks };
   }
 
   private pick(data: JsonRecord, keys: string[]): string {

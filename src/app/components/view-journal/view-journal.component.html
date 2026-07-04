@@ -32,7 +32,7 @@
             <p class="mb-1"><strong>E-ISSN:</strong> {{ eissn() }}</p>
             <p class="mb-1"><strong>Periodo:</strong> {{ period() }}</p>
             <p class="mb-1"><strong>Identificador:</strong> {{ journalId() }}</p>
-            <p class="mb-1"><strong>Site:</strong> {{ url() }}</p>
+            <p class="mb-1"><strong>Site:</strong> <a class="journal-site-link ms-1" href="{{ url() }}" target="_blank" rel="noopener noreferrer">{{ url() }}</a></p>
             <p class="mb-0"><strong>OAI:</strong> {{ oaiUrl() }}</p>
           </div>
         </div>

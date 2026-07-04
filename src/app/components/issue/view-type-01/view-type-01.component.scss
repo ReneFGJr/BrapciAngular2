@@ -48,7 +48,7 @@
 }
 
 .issue-nr {
-  font-size: 4rem;
+  font-size: 2rem;
   font-weight: bold;
   position: absolute;
   top: 0;
@@ -78,9 +78,19 @@
 
 .issue-name {
   color: var(--issue-name-color);
-  font-size: 2rem;
+  font-size: 1.5rem;
   font-weight: bold;
   position: relative;
   top: 50px;
   text-align: center;
+}
+
+.issue-works {
+  position: absolute;
+  right: 10px;
+  bottom: 8px;
+  font-size: 0.95rem;
+  font-weight: 700;
+  color: var(--issue-year-color);
+  text-align: right;
 }
