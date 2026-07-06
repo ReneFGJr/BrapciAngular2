@@ -75,6 +75,37 @@ export class BookGadgetComponent implements OnChanges {
     return typeof v === 'string' && v.trim() ? v : '';
   }
 
+  coverUrl(): string {
+    const d = this.bookData();
+    const nested = this.asRecord(d?.['data']);
+
+    return (
+      this.readText(d?.['hasCover']) ||
+      this.readText(d?.['cover']) ||
+      this.readText(d?.['Cover']) ||
+      this.readText(d?.['image']) ||
+      this.readText(nested?.['hasCover']) ||
+      this.readText(nested?.['cover']) ||
+      this.readText(nested?.['Cover']) ||
+      this.readText(this.cover)
+    );
+  }
+
+  displayTitle(): string {
+    const d = this.bookData();
+    const nested = this.asRecord(d?.['data']);
+
+    return (
+      this.readText(d?.['hasTitle']) ||
+      this.readText(d?.['title']) ||
+      this.readText(d?.['TITLE']) ||
+      this.readText(nested?.['hasTitle']) ||
+      this.readText(nested?.['title']) ||
+      this.readText(nested?.['TITLE']) ||
+      this.readText(this.title)
+    );
+  }
+
   arr(key: string): string[] {
     const d = this.bookData();
     if (!d) return [];
@@ -137,5 +168,17 @@ export class BookGadgetComponent implements OnChanges {
     }
 
     this.basketService.add(numericId);
+  }
+
+  private readText(value: unknown): string {
+    return typeof value === 'string' && value.trim() ? value.trim() : '';
+  }
+
+  private asRecord(value: unknown): Record<string, unknown> | null {
+    if (!value || typeof value !== 'object' || Array.isArray(value)) {
+      return null;
+    }
+
+    return value as Record<string, unknown>;
   }
 }

@@ -74,6 +74,7 @@ export class SearchBookComponent {
       ])
       .subscribe({
         next: (response) => {
+          console.log('Search response:', response);
           const normalized = this.normalizeWorks(response)
             .map((item) => this.mapResult(item))
             .filter((item): item is BookResult => item !== null);
@@ -128,9 +129,12 @@ export class SearchBookComponent {
   }
 
   private mapResult(item: any): BookResult | null {
-    const id = String(item?.id ?? item?.ID ?? '').trim();
-    const title = String(item?.title ?? item?.TI ?? item?.name ?? '').trim();
-    const year = String(item?.year ?? item?.PY ?? item?.publish_year ?? '').trim();
+    const payload = this.extractWorkData(item);
+    const id = String(item?.id ?? payload['id'] ?? item?.ID ?? payload['ID'] ?? '').trim();
+    const title = String(
+      item?.title ?? item?.TI ?? item?.name ?? payload['title'] ?? payload['TITLE'] ?? payload['TI'] ?? '',
+    ).trim();
+    const year = String(item?.year ?? item?.PY ?? item?.publish_year ?? payload['year'] ?? payload['PY'] ?? '').trim();
     const authors = this.parseAuthors(item);
 
     if (!title) {
@@ -147,7 +151,16 @@ export class SearchBookComponent {
   }
 
   private parseAuthors(item: any): string {
-    const raw = item?.authors ?? item?.AU ?? item?.author ?? item?.creator;
+    const payload = this.extractWorkData(item);
+    const raw =
+      item?.authors ??
+      item?.AU ??
+      item?.author ??
+      item?.creator ??
+      payload['authors'] ??
+      payload['AUTHORS'] ??
+      payload['AU'] ??
+      payload['author'];
 
     if (Array.isArray(raw)) {
       return raw
@@ -158,5 +171,13 @@ export class SearchBookComponent {
     }
 
     return String(raw ?? '').trim();
+  }
+
+  private extractWorkData(item: any): Record<string, unknown> {
+    if (item?.data && typeof item.data === 'object' && !Array.isArray(item.data)) {
+      return item.data as Record<string, unknown>;
+    }
+
+    return {};
   }
 }

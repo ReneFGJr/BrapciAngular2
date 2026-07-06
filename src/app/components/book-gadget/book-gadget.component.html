@@ -15,8 +15,8 @@
     <div class="book-gadget__cover-col">
       <img
         class="book-gadget__cover"
-        [src]="str('hasCover') || cover"
-        [alt]="str('hasTitle') || title"
+        [src]="coverUrl()"
+        [alt]="displayTitle()"
         width="200"
         height="280"
         loading="lazy"
@@ -30,7 +30,7 @@
     <div class="book-gadget__info-col">
       <p class="book-gadget__badge">Livro</p>
 
-      <h2 class="book-gadget__title">{{ str('hasTitle') || title }}</h2>
+      <h2 class="book-gadget__title">{{ displayTitle() }}</h2>
 
       @if (authorsWithLink().length) {
         <p class="book-gadget__authors-inline">
