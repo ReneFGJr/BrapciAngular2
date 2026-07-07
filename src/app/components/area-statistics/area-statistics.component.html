@@ -1,6 +1,9 @@
 <section class="area-statistics" aria-labelledby="area-statistics-title">
   <header class="area-statistics-header">
-    <h3 id="area-statistics-title" class="area-statistics-title">Estatisticas da base</h3>
+    <div class="area-statistics-header__text">
+      <p class="area-statistics-kicker">Indicadores</p>
+      <h3 id="area-statistics-title" class="area-statistics-title">Estatísticas da base</h3>
+    </div>
   </header>
 
   <p *ngIf="loading()" class="area-statistics-state">Carregando estatisticas...</p>
@@ -18,6 +21,6 @@
   </p>
 
   <small *ngIf="!loading() && !error() && updateDate()" class="area-statistics-update">
-    Atualizado em: {{ updateDate() }}
+    Atualizado em {{ updateDate() }}
   </small>
 </section>

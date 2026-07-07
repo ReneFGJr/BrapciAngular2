@@ -4,10 +4,16 @@ import { BrapciApiService } from '../../core/services/brapci-api.service';
 
 type JsonRecord = Record<string, unknown>;
 
+interface NewsItem {
+  title: string;
+  description: string;
+  link: string | null;
+  nwLink: string | null;
+}
+
 interface NewsBlock {
   version: string;
-  releaseDate: string | null;
-  items: string[];
+  items: NewsItem[];
 }
 
 @Component({
@@ -28,7 +34,7 @@ export class AreaNewsComponent {
   }
 
   formatBlockLabel(block: NewsBlock): string {
-    return block.releaseDate ? `${block.version} · ${block.releaseDate}` : block.version;
+    return block.version;
   }
 
   private loadNews(): void {
@@ -54,6 +60,11 @@ export class AreaNewsComponent {
     }
 
     const root = response as JsonRecord;
+    const structuredNews = this.extractStructuredNews(root['news']);
+    if (structuredNews.length) {
+      return structuredNews.slice(0, 6);
+    }
+
     const html = this.pickText(root, ['text', 'html', 'content']);
     if (!html) {
       return [];
@@ -77,17 +88,16 @@ export class AreaNewsComponent {
 
         current = {
           version: versionMeta.version,
-          releaseDate: versionMeta.releaseDate,
           items: []
         };
         continue;
       }
 
       if (!current) {
-        current = { version: 'Atualizacoes', releaseDate: null, items: [] };
+        current = { version: 'Atualizacoes', items: [] };
       }
 
-      current.items.push(line);
+      current.items.push({ title: line, description: '', link: null, nwLink: null });
     }
 
     if (current) {
@@ -95,6 +105,53 @@ export class AreaNewsComponent {
     }
 
     return result.slice(0, 6);
+  }
+
+  private extractStructuredNews(newsValue: unknown): NewsBlock[] {
+    if (!newsValue || typeof newsValue !== 'object' || Array.isArray(newsValue)) {
+      return [];
+    }
+
+    const entries = Object.entries(newsValue as JsonRecord);
+
+    return entries
+      .map(([version, items]) => {
+        if (!Array.isArray(items)) {
+          return null;
+        }
+
+        const normalizedItems = items
+          .map((item) => this.toNewsItem(item))
+          .filter((item): item is NewsItem => item !== null);
+
+        return normalizedItems.length
+          ? { version, items: normalizedItems }
+          : null;
+      })
+      .filter((block): block is NewsBlock => block !== null);
+  }
+
+  private toNewsItem(value: unknown): NewsItem | null {
+    if (!value || typeof value !== 'object') {
+      return null;
+    }
+
+    const record = value as JsonRecord;
+    const title = this.pickText(record, ['title', 'name', 'label']);
+    const description = this.pickText(record, ['description', 'content', 'text']);
+    const link = this.pickText(record, ['link']) || null;
+    const nwLink = this.pickText(record, ['nw_link', 'nwLink', 'link', 'url']) || null;
+
+    if (!title) {
+      return null;
+    }
+
+    return {
+      title,
+      description,
+      link,
+      nwLink
+    };
   }
 
   private parseVersionLine(value: string): { version: string; releaseDate: string | null } | null {
@@ -139,7 +196,7 @@ export class AreaNewsComponent {
     return `${block.version}-${index}`;
   }
 
-  trackByItem(index: number, item: string): string {
-    return `${item}-${index}`;
+  trackByItem(index: number, item: NewsItem): string {
+    return `${item.title}-${index}`;
   }
 }

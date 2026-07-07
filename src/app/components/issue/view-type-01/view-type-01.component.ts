@@ -17,6 +17,7 @@ type IssueViewItem = {
 
 @Component({
   selector: 'app-issue-view-type',
+  standalone: true,
   imports: [CommonModule, SourceBasketActionsComponent],
   templateUrl: './view-type-01.component.html',
   styleUrl: './view-type-01.component.scss',

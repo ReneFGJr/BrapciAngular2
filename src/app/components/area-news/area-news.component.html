@@ -12,17 +12,36 @@
   <div *ngIf="!loading() && !error() && updates().length" class="area-news-list">
     <article *ngFor="let block of updates(); trackBy: trackByVersion" class="area-news-block">
       <header class="area-news-block__header">
-        <div class="area-news-version-wrap">
-          <span class="area-news-version">{{ block.version }}</span>
-          <span *ngIf="block.releaseDate" class="area-news-date">{{ block.releaseDate }}</span>
-        </div>
-        <p class="area-news-count">{{ block.items.length }} atualização(ões)</p>
+        <span class="area-news-version">{{ block.version }}</span>
       </header>
 
       <div class="area-news-content">
         <ul class="area-news-items">
           <li *ngFor="let item of block.items; trackBy: trackByItem" class="area-news-item">
-            {{ item }}
+            <ng-container *ngIf="item.link; else legacyLinkItem">
+              <strong class="area-news-item__title">{{ item.title }}</strong>
+              <span *ngIf="item.description" class="area-news-item__description">{{ item.description }}</span>
+              <a class="area-news-item__action" [href]="item.link" target="_blank" rel="noopener noreferrer">ver</a>
+            </ng-container>
+
+            <ng-template #legacyLinkItem>
+              <ng-container *ngIf="item.nwLink; else plainItem">
+              <a
+                class="area-news-item__link"
+                [href]="item.nwLink"
+                target="_blank"
+                rel="noopener noreferrer"
+              >
+                <strong class="area-news-item__title">{{ item.title }}</strong>
+                <span *ngIf="item.description" class="area-news-item__description">{{ item.description }}</span>
+              </a>
+            </ng-container>
+
+            <ng-template #plainItem>
+              <strong class="area-news-item__title">{{ item.title }}</strong>
+              <span *ngIf="item.description" class="area-news-item__description">{{ item.description }}</span>
+            </ng-template>
+            </ng-template>
           </li>
         </ul>
       </div>
