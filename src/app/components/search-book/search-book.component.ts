@@ -2,6 +2,7 @@ import { CommonModule } from '@angular/common';
 import { Component, computed, inject, signal } from '@angular/core';
 import { FormControl, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { RouterLink } from '@angular/router';
+import { TranslateModule } from '@ngx-translate/core';
 import { BrapciApiService } from '../../core/services/brapci-api.service';
 
 type BookResult = {
@@ -13,7 +14,7 @@ type BookResult = {
 @Component({
   selector: 'app-search-book',
   standalone: true,
-  imports: [CommonModule, ReactiveFormsModule, RouterLink],
+  imports: [CommonModule, ReactiveFormsModule, RouterLink, TranslateModule],
   templateUrl: './search-book.component.html',
   styleUrl: './search-book.component.scss',
 })
@@ -83,13 +84,13 @@ export class SearchBookComponent {
           this.loading.set(false);
 
           if (!normalized.length) {
-            this.error.set('Nenhum livro encontrado para os filtros informados.');
+            this.error.set('searchBook.errors.noneFound');
           }
         },
         error: () => {
           this.results.set([]);
           this.loading.set(false);
-          this.error.set('Nao foi possivel buscar livros neste momento.');
+          this.error.set('searchBook.errors.requestFailed');
         },
       });
   }
@@ -146,7 +147,7 @@ export class SearchBookComponent {
     return {
       id,
       title,
-      subtitle: subtitleParts.length ? subtitleParts.join(' - ') : 'Sem metadados adicionais',
+      subtitle: subtitleParts.join(' - '),
     };
   }
 

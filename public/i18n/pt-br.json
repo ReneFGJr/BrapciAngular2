@@ -107,6 +107,34 @@
       }
     }
   },
+  "searchBook": {
+    "title": "Busca de Trabalhos - Livros",
+    "labels": {
+      "keywords": "Palavras-chave:",
+      "workType": "Tipo de Trabalho:"
+    },
+    "placeholders": {
+      "keywords": "Digite os termos de busca"
+    },
+    "options": {
+      "selectType": "Selecione o Tipo",
+      "book": "Livro",
+      "chapter": "Capitulo"
+    },
+    "states": {
+      "loadingResults": "Carregando resultados..."
+    },
+    "errors": {
+      "noneFound": "Nenhum livro encontrado para os filtros informados.",
+      "requestFailed": "Nao foi possivel buscar livros neste momento."
+    },
+    "results": {
+      "noMetadata": "Sem metadados adicionais"
+    },
+    "actions": {
+      "view": "Ver"
+    }
+  },
   "authority": {
     "bannerAlt": "Controle de autoridade",
     "title": "Controle de Autoridade",
@@ -378,6 +406,33 @@
       "shareWhatsApp": "Compartilhar WhatsApp",
       "shareInstagram": "Compartilhar no Instagram",
       "shareLinkedIn": "Compartilhar no LinkedIn"
+    }
+  },
+  "bookChapter": {
+    "aria": {
+      "page": "Pagina de capitulo de livro"
+    },
+    "kicker": "Capitulo de Livro",
+    "cover": {
+      "alt": "Capa do livro",
+      "unavailable": "Sem capa"
+    },
+    "actions": {
+      "openBook": "Acessar livro completo",
+      "openPdf": "Abrir PDF do capitulo"
+    },
+    "meta": {
+      "authors": "Autores",
+      "book": "Livro",
+      "year": "Ano",
+      "pages": "Paginas",
+      "language": "Idioma"
+    },
+    "sections": {
+      "abstract": "Resumo",
+      "citation": "Como citar",
+      "indicators": "Indicadores",
+      "data": "Dados"
     }
   },
   "citation": {

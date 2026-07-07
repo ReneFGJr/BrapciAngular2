@@ -1,5 +1,95 @@
-<app-article-gadget
-  [data]="data"
-  [metrics]="metrics"
-  [dataTag]="dataTag"
-></app-article-gadget>
+<article class="chapter-view" [attr.aria-label]="'bookChapter.aria.page' | translate" itemscope itemtype="https://schema.org/Chapter">
+  <header class="chapter-view__hero">
+    <div class="chapter-view__hero-layout">
+      <aside class="chapter-view__cover-col">
+        @if (bookCoverUrl()) {
+          <img
+            class="chapter-view__cover"
+            [src]="bookCoverUrl()"
+            [alt]="('bookChapter.cover.alt' | translate) + ' ' + chapterBookTitle()"
+            width="220"
+            height="310"
+            loading="lazy"
+            decoding="async"
+            (error)="hasImageError($event)"
+          />
+        } @else {
+          <div class="chapter-view__cover chapter-view__cover--placeholder" aria-hidden="true">
+            {{ 'bookChapter.cover.unavailable' | translate }}
+          </div>
+        }
+
+        @if (chapterBookId()) {
+          <a class="chapter-view__book-link" [href]="'/v/' + chapterBookId()">{{ 'bookChapter.actions.openBook' | translate }}</a>
+        }
+      </aside>
+
+      <div class="chapter-view__content-col">
+        @if (legend() !== '-') {
+          <p class="chapter-view__legend">{{ legend() }}</p>
+        }
+
+        <p class="chapter-view__kicker">{{ 'bookChapter.kicker' | translate }}</p>
+        <h2 class="chapter-view__title">{{ primaryTitle() }}</h2>
+
+        @if (creatorAuthors().length > 0) {
+          <div class="chapter-view__authors">
+            <span class="chapter-view__authors-label">{{ 'bookChapter.meta.authors' | translate }}:</span>
+            <app-article-authors [authors]="creatorAuthors()"></app-article-authors>
+          </div>
+        }
+
+        <div class="chapter-view__meta-grid">
+          <div><strong>{{ 'bookChapter.meta.book' | translate }}:</strong> {{ chapterBookTitle() }}</div>
+          <div><strong>{{ 'bookChapter.meta.year' | translate }}:</strong> {{ year() }}</div>
+          <div><strong>{{ 'bookChapter.meta.pages' | translate }}:</strong> {{ pages() }}</div>
+          <div><strong>{{ 'bookChapter.meta.language' | translate }}:</strong> {{ language() }}</div>
+          <div><strong>DOI:</strong> {{ doi() }}</div>
+          <div><strong>ISBN:</strong> {{ isbn() }}</div>
+        </div>
+
+        @if (pdfUrl()) {
+          <a
+            class="chapter-view__pdf-link"
+            [href]="pdfUrl()"
+            target="_blank"
+            rel="noopener noreferrer"
+          >
+            {{ 'bookChapter.actions.openPdf' | translate }}
+          </a>
+        }
+      </div>
+    </div>
+  </header>
+
+  @if (abstractText() !== '-') {
+    <section class="chapter-view__section">
+      <h3 class="chapter-view__section-title">{{ 'bookChapter.sections.abstract' | translate }}</h3>
+      <p class="chapter-view__abstract">{{ abstractText() }}</p>
+    </section>
+  }
+
+  @if (hasCitationData()) {
+    <section class="chapter-view__section">
+      <h3 class="chapter-view__section-title">{{ 'bookChapter.sections.citation' | translate }}</h3>
+      <app-citation-tabs [citations]="getCitations()"></app-citation-tabs>
+    </section>
+  }
+
+  <section class="chapter-view__section">
+    <h3 class="chapter-view__section-title">{{ 'bookChapter.sections.indicators' | translate }}</h3>
+    <div class="chapter-view__metrics">
+      @for (metric of metrics; track metric.label) {
+        <div class="chapter-view__metric-item">
+          <small>{{ metric.label }}</small>
+          <strong>{{ metric.value }}</strong>
+        </div>
+      }
+    </div>
+  </section>
+
+  <section class="chapter-view__section">
+    <h3 class="chapter-view__section-title">{{ 'bookChapter.sections.data' | translate }}</h3>
+    <app-article-data [data]="data"></app-article-data>
+  </section>
+</article>

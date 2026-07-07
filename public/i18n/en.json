@@ -109,6 +109,34 @@
       }
     }
   },
+  "searchBook": {
+    "title": "Work Search - Books",
+    "labels": {
+      "keywords": "Keywords:",
+      "workType": "Work Type:"
+    },
+    "placeholders": {
+      "keywords": "Enter search terms"
+    },
+    "options": {
+      "selectType": "Select Type",
+      "book": "Book",
+      "chapter": "Chapter"
+    },
+    "states": {
+      "loadingResults": "Loading results..."
+    },
+    "errors": {
+      "noneFound": "No books found for the selected filters.",
+      "requestFailed": "Unable to search books at this moment."
+    },
+    "results": {
+      "noMetadata": "No additional metadata"
+    },
+    "actions": {
+      "view": "View"
+    }
+  },
   "authority": {
     "bannerAlt": "Authority control",
     "title": "Authority Control",
@@ -380,6 +408,33 @@
       "shareWhatsApp": "Share on WhatsApp",
       "shareInstagram": "Share on Instagram",
       "shareLinkedIn": "Share on LinkedIn"
+    }
+  },
+  "bookChapter": {
+    "aria": {
+      "page": "Book chapter page"
+    },
+    "kicker": "Book Chapter",
+    "cover": {
+      "alt": "Book cover",
+      "unavailable": "No cover"
+    },
+    "actions": {
+      "openBook": "Open full book",
+      "openPdf": "Open chapter PDF"
+    },
+    "meta": {
+      "authors": "Authors",
+      "book": "Book",
+      "year": "Year",
+      "pages": "Pages",
+      "language": "Language"
+    },
+    "sections": {
+      "abstract": "Abstract",
+      "citation": "How to cite",
+      "indicators": "Indicators",
+      "data": "Data"
     }
   },
   "citation": {

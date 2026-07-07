@@ -1,3 +1,170 @@
 :host {
   display: block;
 }
+
+.chapter-view {
+  border: 1px solid var(--theme-line);
+  border-radius: 16px;
+  background: var(--theme-bg);
+  padding: 1.5rem;
+  color: var(--theme-ink);
+}
+
+.chapter-view__hero {
+  display: grid;
+  gap: 0.9rem;
+}
+
+.chapter-view__hero-layout {
+  display: grid;
+  grid-template-columns: 220px 1fr;
+  gap: 1rem;
+  align-items: start;
+}
+
+.chapter-view__cover-col {
+  display: grid;
+  gap: 0.75rem;
+}
+
+.chapter-view__content-col {
+  display: grid;
+  gap: 0.9rem;
+}
+
+.chapter-view__cover {
+  width: 100%;
+  max-width: 220px;
+  aspect-ratio: 220 / 310;
+  object-fit: cover;
+  border-radius: 12px;
+  border: 1px solid var(--theme-line);
+  background: var(--theme-card-bg);
+}
+
+.chapter-view__cover--placeholder {
+  display: grid;
+  place-items: center;
+  color: var(--theme-muted);
+  font-weight: 600;
+  background: repeating-linear-gradient(
+    45deg,
+    color-mix(in srgb, var(--theme-sand) 88%, transparent),
+    color-mix(in srgb, var(--theme-sand) 88%, transparent) 10px,
+    color-mix(in srgb, var(--theme-line) 82%, transparent) 10px,
+    color-mix(in srgb, var(--theme-line) 82%, transparent) 20px
+  );
+}
+
+.chapter-view__legend {
+  margin: 0;
+  color: var(--theme-muted);
+  font-size: 0.9rem;
+}
+
+.chapter-view__kicker {
+  margin: 0;
+  width: fit-content;
+  border-radius: 999px;
+  background: var(--theme-hint);
+  color: var(--theme-paper);
+  padding: 0.3rem 0.75rem;
+  font-size: 0.8rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+}
+
+.chapter-view__title {
+  margin: 0;
+  font-size: clamp(1.4rem, 2.3vw, 2rem);
+  line-height: 1.2;
+}
+
+.chapter-view__authors {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+  align-items: baseline;
+}
+
+.chapter-view__authors-label {
+  font-weight: 700;
+  color: var(--theme-ink);
+}
+
+.chapter-view__meta-grid {
+  display: grid;
+  gap: 0.6rem;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  padding: 0.9rem;
+  border: 1px solid var(--theme-line);
+  border-radius: 12px;
+  background: var(--theme-card-bg);
+}
+
+.chapter-view__book-link,
+.chapter-view__pdf-link {
+  width: fit-content;
+  text-decoration: none;
+  font-weight: 700;
+  color: var(--theme-link);
+}
+
+.chapter-view__book-link:hover,
+.chapter-view__pdf-link:hover {
+  text-decoration: underline;
+}
+
+.chapter-view__section {
+  margin-top: 1.4rem;
+}
+
+.chapter-view__section-title {
+  margin: 0 0 0.75rem;
+  font-size: 1.05rem;
+  color: var(--theme-ink);
+}
+
+.chapter-view__abstract {
+  margin: 0;
+  line-height: 1.65;
+}
+
+.chapter-view__metrics {
+  display: grid;
+  gap: 0.75rem;
+  grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+}
+
+.chapter-view__metric-item {
+  border: 1px solid var(--theme-line);
+  border-radius: 10px;
+  background: var(--theme-card-bg);
+  padding: 0.7rem;
+  display: grid;
+  gap: 0.25rem;
+}
+
+.chapter-view__metric-item small {
+  color: var(--theme-muted);
+}
+
+.chapter-view__metric-item strong {
+  font-size: 1.1rem;
+}
+
+@media (max-width: 768px) {
+  .chapter-view {
+    padding: 1rem;
+    border-radius: 12px;
+  }
+
+  .chapter-view__hero-layout {
+    grid-template-columns: 1fr;
+  }
+
+  .chapter-view__cover-col {
+    justify-items: center;
+  }
+}
