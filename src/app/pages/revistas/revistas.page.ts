@@ -87,12 +87,86 @@ export class RevistasPage {
     this.titleQuery.set(value);
   }
 
+  exportCsv(): void {
+    const journals = this.filteredJournals();
+    if (!journals.length || typeof window === 'undefined' || typeof document === 'undefined') {
+      return;
+    }
+
+    const preferredKeys = [
+      'id_jnl',
+      'jnl_name',
+      'jnl_name_abrev',
+      'jnl_collection',
+      'jnl_issn',
+      'jnl_eissn',
+      'jnl_ano_inicio',
+      'jnl_ano_final',
+      'jnl_active',
+      'jnl_frbr',
+      'jnl_url',
+      'cover',
+    ];
+
+    const allKeys = new Set<string>();
+    for (const journal of journals) {
+      for (const key of Object.keys(journal)) {
+        allKeys.add(key);
+      }
+    }
+
+    const columns = [
+      ...preferredKeys.filter((key) => allKeys.has(key)),
+      ...[...allKeys].filter((key) => !preferredKeys.includes(key)).sort((a, b) => a.localeCompare(b)),
+    ];
+
+    const rows = [
+      columns,
+      ...journals.map((journal) => columns.map((column) => this.toCsvValue(journal[column]))),
+    ];
+
+    const csvContent = rows.map((row) => row.map((cell) => this.escapeCsv(cell)).join(',')).join('\r\n');
+    const blob = new Blob([csvContent], { type: 'text/csv;charset=utf-8;' });
+    const url = window.URL.createObjectURL(blob);
+    const link = document.createElement('a');
+
+    link.href = url;
+    link.download = 'revistas.csv';
+    document.body.appendChild(link);
+    link.click();
+    document.body.removeChild(link);
+    window.URL.revokeObjectURL(url);
+  }
+
   openV(journal: Journal): void {
     const id = String(journal?.jnl_frbr ?? '').trim();
     if (!id) {
       return;
     }
-
     this.router.navigate(['/v/', id]);
+  }
+
+  private escapeCsv(value: string): string {
+    return `"${value.replaceAll('"', '""')}"`;
+  }
+
+  private toCsvValue(value: unknown): string {
+    if (value === null || value === undefined) {
+      return '';
+    }
+
+    if (typeof value === 'string') {
+      return value;
+    }
+
+    if (typeof value === 'number' || typeof value === 'boolean') {
+      return String(value);
+    }
+
+    try {
+      return JSON.stringify(value);
+    } catch {
+      return String(value);
+    }
   }
 }

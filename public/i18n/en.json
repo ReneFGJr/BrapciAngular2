@@ -271,6 +271,7 @@
     "accessLink": "Access journal",
     "publicationsList": "Publications list",
     "eventsList": "Events list",
+    "exportCsv": "Export CSV",
     "filterAriaLabel": "Filter by publication type",
     "filterAll": "All",
     "filterJa": "JA - Brazilian journals",

@@ -1,3 +1,7 @@
+.perfil-wrap {
+  color: var(--theme-ink);
+}
+
 .perfil-card {
   background: var(--theme-card-bg);
   border: 1px solid var(--theme-line);
@@ -79,4 +83,78 @@
   display: flex;
   flex-wrap: wrap;
   gap: 0.6rem;
+}
+
+:host-context(body.theme-master.theme-dark) {
+  .perfil-wrap,
+  .perfil-wrap h1,
+  .perfil-wrap h2,
+  .perfil-wrap p,
+  .perfil-wrap dt,
+  .perfil-wrap dd,
+  .perfil-wrap a,
+  .perfil-wrap button {
+    color: var(--theme-ink);
+  }
+
+  .perfil-card,
+  .perfil-empty-state,
+  .perfil-section,
+  .perfil-item {
+    background: rgb(18 32 51 / 94%);
+    border-color: rgb(48 68 95 / 88%);
+    box-shadow: 0 10px 22px rgb(0 0 0 / 18%);
+  }
+
+  .perfil-empty-state {
+    background: rgb(24 35 52 / 94%);
+  }
+
+  .perfil-avatar {
+    background: linear-gradient(180deg, rgb(33 47 70 / 96%), rgb(24 35 52 / 92%));
+    color: var(--theme-ink);
+    border: 1px solid rgb(100 132 173 / 45%);
+  }
+
+  .perfil-overline {
+    color: var(--theme-muted);
+  }
+
+  .perfil-name {
+    color: var(--theme-ink);
+  }
+
+  .perfil-grid dt {
+    color: var(--theme-muted);
+  }
+
+  .perfil-grid dd {
+    color: var(--theme-ink);
+  }
+
+  .perfil-wrap .btn-primary {
+    background: linear-gradient(180deg, rgb(33 47 70 / 96%), rgb(24 35 52 / 92%));
+    border-color: rgb(100 132 173 / 60%);
+    color: var(--theme-ink);
+  }
+
+  .perfil-wrap .btn-primary:hover,
+  .perfil-wrap .btn-primary:focus-visible {
+    background: linear-gradient(180deg, rgb(45 62 90 / 96%), rgb(28 44 68 / 96%));
+    border-color: rgb(128 160 196 / 70%);
+    color: var(--theme-ink);
+  }
+
+  .perfil-wrap .btn-outline-primary {
+    background: rgb(18 32 51 / 92%);
+    border-color: rgb(100 132 173 / 60%);
+    color: var(--theme-ink);
+  }
+
+  .perfil-wrap .btn-outline-primary:hover,
+  .perfil-wrap .btn-outline-primary:focus-visible {
+    background: rgb(28 44 68 / 96%);
+    border-color: rgb(128 160 196 / 70%);
+    color: var(--theme-ink);
+  }
 }

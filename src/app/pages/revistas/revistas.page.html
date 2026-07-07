@@ -42,6 +42,15 @@
         </button>
       </div>
 
+      <button
+        type="button"
+        class="btn btn-sm btn-outline-primary"
+        (click)="exportCsv()"
+        [disabled]="!filteredJournals().length"
+      >
+        {{ 'journals.exportCsv' | translate }}
+      </button>
+
       <input
         class="form-control form-control-sm ms-lg-auto"
         style="max-width: 320px"
