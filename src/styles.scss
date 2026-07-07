@@ -27,9 +27,13 @@ body.theme-master {
 	--bs-border-color: var(--theme-line);
 	--bs-secondary-color: var(--theme-muted);
 	--bs-tertiary-bg: var(--theme-sand);
+	--a11y-font-scale: 1;
+	--a11y-letter-spacing: 0em;
 	color-scheme: light;
 	color: var(--theme-ink);
 	background-color: var(--theme-paper);
+	font-size: calc(1rem * var(--a11y-font-scale));
+	letter-spacing: var(--a11y-letter-spacing);
 }
 
 body.theme-master.theme-dark {
@@ -54,6 +58,39 @@ body.theme-master.theme-dark {
 	--bs-secondary-color: var(--theme-muted);
 	--bs-tertiary-bg: var(--theme-sand);
 	color-scheme: dark;
+}
+
+body.theme-master.a11y-letter-spacing {
+	--a11y-letter-spacing: 0.04em;
+}
+
+body.theme-master.a11y-cursor-large,
+body.theme-master.a11y-cursor-large button,
+body.theme-master.a11y-cursor-large a,
+body.theme-master.a11y-cursor-large [role='button'],
+body.theme-master.a11y-cursor-large input,
+body.theme-master.a11y-cursor-large select,
+body.theme-master.a11y-cursor-large textarea {
+	cursor: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='32' height='32' viewBox='0 0 32 32'%3E%3Cpath d='M4 3l18 14-8 1-3 8-3-1 3-8-7-1Z' fill='%23102542' stroke='%23ffffff' stroke-width='1.2' stroke-linejoin='round'/%3E%3C/svg%3E") 4 4, auto;
+}
+
+body.theme-master.a11y-cursor-large input,
+body.theme-master.a11y-cursor-large textarea {
+	cursor: text;
+}
+
+body.theme-master.a11y-highlights h1,
+body.theme-master.a11y-highlights h2,
+body.theme-master.a11y-highlights h3,
+body.theme-master.a11y-highlights h4,
+body.theme-master.a11y-highlights h5,
+body.theme-master.a11y-highlights h6 {
+	background: linear-gradient(180deg, transparent 58%, rgb(255 214 102 / 42%) 58%);
+	box-decoration-break: clone;
+	border-radius: 0.2rem;
+	padding-inline: 0.15rem;
+	outline: 1px solid rgb(255 184 0 / 45%);
+	outline-offset: 0.08rem;
 }
 
 body.theme-master .layout a {

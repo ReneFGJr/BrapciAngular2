@@ -118,17 +118,33 @@
       </ul>
 
       <div class="d-flex align-items-center gap-2">
-        <div class="form-check form-switch theme-switch mb-0">
-          <input
-            id="themeSwitch"
-            class="form-check-input"
-            type="checkbox"
-            [ngModel]="isDarkMode()"
-            [ngModelOptions]="{ standalone: true }"
-            (ngModelChange)="setDarkMode($event)"
-            aria-label="Alternar modo escuro"
-          />
-          <label class="form-check-label text-white small" for="themeSwitch">{{ 'common.dark' | translate }}</label>
+        <div class="accessibility-launcher">
+          <button
+            type="button"
+            class="accessibility-toggle"
+            [attr.aria-expanded]="accessibilityPanelOpen()"
+            [attr.aria-label]="'Acessibilidade'"
+            title="Acessibilidade"
+            (click)="toggleAccessibilityPanel()"
+          >
+            <i class="bi bi-universal-access" aria-hidden="true"></i>
+          </button>
+
+          @if (accessibilityPanelOpen()) {
+            <app-accessibility-panel
+              [fontScale]="accessibilityFontScale()"
+              [letterSpacing]="accessibilityLetterSpacing()"
+              [cursorLarge]="accessibilityCursorLarge()"
+              [highlights]="accessibilityHighlights()"
+              [darkMode]="isDarkMode()"
+              (close)="closeAccessibilityPanel()"
+              (fontScaleChange)="setAccessibilityFontScale($event)"
+              (letterSpacingChange)="setAccessibilityLetterSpacing($event)"
+              (cursorLargeChange)="setAccessibilityCursorLarge($event)"
+              (highlightsChange)="setAccessibilityHighlights($event)"
+              (darkModeChange)="setDarkMode($event)"
+            />
+          }
         </div>
 
         <div class="basket-indicator me-2" *ngIf="markedCount() > 0">

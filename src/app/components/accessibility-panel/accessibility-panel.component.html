@@ -1,0 +1,58 @@
+<section class="accessibility-panel shadow-lg" role="dialog" aria-label="Painel de acessibilidade">
+  <header class="accessibility-panel__header">
+    <div>
+      <p class="accessibility-panel__eyebrow">Acessibilidade</p>
+      <h2 class="accessibility-panel__title">Ajustes rápidos</h2>
+    </div>
+    <button type="button" class="accessibility-panel__close" (click)="close.emit()" aria-label="Fechar painel">
+      <span aria-hidden="true">×</span>
+    </button>
+  </header>
+
+  <div class="accessibility-panel__section">
+    <div class="accessibility-panel__section-head">
+      <strong>Tamanho da fonte</strong>
+      <span>{{ (fontScale * 100) | number:'1.0-0' }}%</span>
+    </div>
+    <div class="accessibility-panel__button-row">
+      @for (option of fontOptions; track option.value) {
+        <button
+          type="button"
+          class="accessibility-panel__chip"
+          [class.is-active]="fontScale === option.value"
+          (click)="setFontScale(option.value)"
+        >
+          {{ option.label }}
+        </button>
+      }
+    </div>
+  </div>
+
+  <div class="accessibility-panel__section">
+    <div class="accessibility-panel__section-head">
+      <strong>Tema escuro</strong>
+      <span>{{ darkMode ? 'Ativo' : 'Inativo' }}</span>
+    </div>
+    <button type="button" class="accessibility-panel__toggle" [class.is-active]="darkMode" (click)="toggleDarkMode()">
+      {{ darkMode ? 'Desativar modo dark' : 'Entrar no modo dark' }}
+    </button>
+  </div>
+
+  <div class="accessibility-panel__section">
+    <button type="button" class="accessibility-panel__toggle" [class.is-active]="letterSpacing" (click)="toggleLetterSpacing()">
+      Aumentar espaçamento das letras
+    </button>
+  </div>
+
+  <div class="accessibility-panel__section">
+    <button type="button" class="accessibility-panel__toggle" [class.is-active]="cursorLarge" (click)="toggleCursorLarge()">
+      Aumentar tamanho do cursor
+    </button>
+  </div>
+
+  <div class="accessibility-panel__section">
+    <button type="button" class="accessibility-panel__toggle" [class.is-active]="highlights" (click)="toggleHighlights()">
+      Destacar headings H1-H6
+    </button>
+  </div>
+</section>

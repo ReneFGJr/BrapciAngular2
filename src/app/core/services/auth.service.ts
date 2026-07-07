@@ -276,7 +276,12 @@ export class AuthService {
   }
 
   resendPassword(payload: ForgotPasswordPayload): Observable<boolean> {
-    return this.http.post<{ success?: boolean }>(this.buildAuthUrl('/auth/forgot-password'), payload).pipe(
+    return this.http.get<{ success?: boolean }>('https://cip.brapci.inf.br/auth/forgot-password', {
+      params: { email: payload.email }
+    }).pipe(
+      tap((response) => {
+        console.log('resendPassword response:', response);
+      }),
       map((response) => response.success ?? true),
       catchError(() => of(false))
     );

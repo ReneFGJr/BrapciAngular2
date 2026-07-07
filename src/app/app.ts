@@ -8,17 +8,20 @@ import { toSignal } from '@angular/core/rxjs-interop';
 import { TranslateModule } from '@ngx-translate/core';
 import { filter, map, startWith } from 'rxjs';
 import { AuthService } from './core/services/auth.service';
+import { AccessibilityPanelComponent } from './components/accessibility-panel/accessibility-panel.component';
 import { LanguageService } from './core/services/language.service';
 import { SeoService } from './core/services/seo.service';
 import { SessionService } from './core/services/session.service';
 
 @Component({
   selector: 'app-root',
+  standalone: true,
   imports: [
     CommonModule,
     FormsModule,
     RouterOutlet,
     RouterLink,
+    AccessibilityPanelComponent,
     TranslateModule
   ],
   templateUrl: './app.html',
@@ -29,6 +32,12 @@ export class App {
   private readonly markedCountSignal = signal(0);
   readonly markedCount = computed(() => this.markedCountSignal());
   private readonly authService = inject(AuthService);
+  readonly accessibilityPanelOpen = signal(false);
+  readonly accessibilityFontScale = signal(1);
+  readonly accessibilityLetterSpacing = signal(false);
+  readonly accessibilityCursorLarge = signal(false);
+  readonly accessibilityHighlights = signal(false);
+  private readonly accessibilityStorageKey = 'brapci_accessibility';
 
   constructor() {
     this.languageService.init();
@@ -38,6 +47,7 @@ export class App {
     this.seoService.updateHomeMetadata(currentLanguage);
     this.authService.loadUserFromSession();
     this.initializeTheme();
+    this.initializeAccessibilityPreferences();
     this.authService.checkSession().subscribe();
     this.markedCountSignal.set(this.basket.count());
     this.basket.changed.subscribe(() => {
@@ -144,6 +154,38 @@ export class App {
     this.authService.updateThemePreference(enabled ? 'dark' : 'light');
   }
 
+  toggleAccessibilityPanel(): void {
+    this.accessibilityPanelOpen.update((open) => !open);
+  }
+
+  closeAccessibilityPanel(): void {
+    this.accessibilityPanelOpen.set(false);
+  }
+
+  setAccessibilityFontScale(scale: number): void {
+    this.accessibilityFontScale.set(scale);
+    this.applyAccessibilityPreferences();
+    this.persistAccessibilityPreferences();
+  }
+
+  setAccessibilityLetterSpacing(enabled: boolean): void {
+    this.accessibilityLetterSpacing.set(enabled);
+    this.applyAccessibilityPreferences();
+    this.persistAccessibilityPreferences();
+  }
+
+  setAccessibilityCursorLarge(enabled: boolean): void {
+    this.accessibilityCursorLarge.set(enabled);
+    this.applyAccessibilityPreferences();
+    this.persistAccessibilityPreferences();
+  }
+
+  setAccessibilityHighlights(enabled: boolean): void {
+    this.accessibilityHighlights.set(enabled);
+    this.applyAccessibilityPreferences();
+    this.persistAccessibilityPreferences();
+  }
+
   toggleDocsMenu(): void {
     this.toolsMenuOpen.set(false);
     this.revistasMenuOpen.set(false);
@@ -200,9 +242,66 @@ export class App {
     this.authService.updateThemePreference(mode);
   }
 
+  private initializeAccessibilityPreferences(): void {
+    if (!isPlatformBrowser(this.platformId)) {
+      this.applyAccessibilityPreferences();
+      return;
+    }
+
+    const raw = localStorage.getItem(this.accessibilityStorageKey);
+    if (raw) {
+      try {
+        const parsed = JSON.parse(raw) as {
+          fontScale?: number;
+          letterSpacing?: boolean;
+          cursorLarge?: boolean;
+          highlights?: boolean;
+        };
+
+        if (typeof parsed.fontScale === 'number') {
+          this.accessibilityFontScale.set(parsed.fontScale);
+        }
+        this.accessibilityLetterSpacing.set(!!parsed.letterSpacing);
+        this.accessibilityCursorLarge.set(!!parsed.cursorLarge);
+        this.accessibilityHighlights.set(!!parsed.highlights);
+      } catch {
+        localStorage.removeItem(this.accessibilityStorageKey);
+      }
+    }
+
+    this.applyAccessibilityPreferences();
+  }
+
+  private persistAccessibilityPreferences(): void {
+    if (!isPlatformBrowser(this.platformId)) {
+      return;
+    }
+
+    localStorage.setItem(
+      this.accessibilityStorageKey,
+      JSON.stringify({
+        fontScale: this.accessibilityFontScale(),
+        letterSpacing: this.accessibilityLetterSpacing(),
+        cursorLarge: this.accessibilityCursorLarge(),
+        highlights: this.accessibilityHighlights()
+      })
+    );
+  }
+
+  private applyAccessibilityPreferences(): void {
+    const body = this.document.body;
+    body.classList.add('theme-master');
+    body.classList.toggle('theme-dark', this.isDarkMode());
+    body.classList.toggle('a11y-letter-spacing', this.accessibilityLetterSpacing());
+    body.classList.toggle('a11y-cursor-large', this.accessibilityCursorLarge());
+    body.classList.toggle('a11y-highlights', this.accessibilityHighlights());
+    body.style.setProperty('--a11y-font-scale', String(this.accessibilityFontScale()));
+  }
+
   private applyThemeClass(): void {
     const body = this.document.body;
     body.classList.add('theme-master');
     body.classList.toggle('theme-dark', this.isDarkMode());
+    body.style.setProperty('--a11y-font-scale', String(this.accessibilityFontScale()));
   }
 }
