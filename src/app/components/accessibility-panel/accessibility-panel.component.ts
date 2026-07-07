@@ -1,25 +1,31 @@
 import { CommonModule } from '@angular/common';
 import { ChangeDetectionStrategy, Component, EventEmitter, Input, Output } from '@angular/core';
+import { TranslateModule } from '@ngx-translate/core';
 
 @Component({
   selector: 'app-accessibility-panel',
   standalone: true,
-  imports: [CommonModule],
+  imports: [CommonModule, TranslateModule],
   template: `
-    <section class="accessibility-panel shadow-lg" role="dialog" aria-label="Painel de acessibilidade">
+    <section
+      class="accessibility-panel shadow-lg"
+      [class.accessibility-panel--expanded]="fontScale > 1"
+      role="dialog"
+      [attr.aria-label]="'accessibility.dialogLabel' | translate"
+    >
       <header class="accessibility-panel__header">
         <div>
-          <p class="accessibility-panel__eyebrow">Acessibilidade</p>
-          <h2 class="accessibility-panel__title">Ajustes rápidos</h2>
+          <p class="accessibility-panel__eyebrow">{{ 'accessibility.eyebrow' | translate }}</p>
+          <h2 class="accessibility-panel__title">{{ 'accessibility.title' | translate }}</h2>
         </div>
-        <button type="button" class="accessibility-panel__close" (click)="close.emit()" aria-label="Fechar painel">
+        <button type="button" class="accessibility-panel__close" (click)="close.emit()" [attr.aria-label]="'accessibility.close' | translate">
           <span aria-hidden="true">×</span>
         </button>
       </header>
 
       <div class="accessibility-panel__section">
         <div class="accessibility-panel__section-head">
-          <strong>Tamanho da fonte</strong>
+          <strong>{{ 'accessibility.fontSize' | translate }}</strong>
           <span>{{ (fontScale * 100) | number:'1.0-0' }}%</span>
         </div>
         <div class="accessibility-panel__button-row">
@@ -30,7 +36,7 @@ import { ChangeDetectionStrategy, Component, EventEmitter, Input, Output } from 
               [class.is-active]="fontScale === option.value"
               (click)="setFontScale(option.value)"
             >
-              {{ option.label }}
+              {{ option.labelKey | translate }}
             </button>
           }
         </div>
@@ -38,29 +44,29 @@ import { ChangeDetectionStrategy, Component, EventEmitter, Input, Output } from 
 
       <div class="accessibility-panel__section">
         <div class="accessibility-panel__section-head">
-          <strong>Tema escuro</strong>
-          <span>{{ darkMode ? 'Ativo' : 'Inativo' }}</span>
+          <strong>{{ 'accessibility.darkMode' | translate }}</strong>
+          <span>{{ darkMode ? ('accessibility.on' | translate) : ('accessibility.off' | translate) }}</span>
         </div>
         <button type="button" class="accessibility-panel__toggle" [class.is-active]="darkMode" (click)="toggleDarkMode()">
-          {{ darkMode ? 'Desativar modo dark' : 'Entrar no modo dark' }}
+          {{ darkMode ? ('accessibility.disableDarkMode' | translate) : ('accessibility.enableDarkMode' | translate) }}
         </button>
       </div>
 
       <div class="accessibility-panel__section">
         <button type="button" class="accessibility-panel__toggle" [class.is-active]="letterSpacing" (click)="toggleLetterSpacing()">
-          Aumentar espaçamento das letras
+          {{ 'accessibility.letterSpacing' | translate }}
         </button>
       </div>
 
       <div class="accessibility-panel__section">
         <button type="button" class="accessibility-panel__toggle" [class.is-active]="cursorLarge" (click)="toggleCursorLarge()">
-          Aumentar tamanho do cursor
+          {{ 'accessibility.cursorLarge' | translate }}
         </button>
       </div>
 
       <div class="accessibility-panel__section">
         <button type="button" class="accessibility-panel__toggle" [class.is-active]="highlights" (click)="toggleHighlights()">
-          Destacar headings H1-H6
+          {{ 'accessibility.highlights' | translate }}
         </button>
       </div>
     </section>
@@ -82,6 +88,10 @@ import { ChangeDetectionStrategy, Component, EventEmitter, Input, Output } from 
         top: calc(100% + 0.75rem);
         width: min(320px, 92vw);
         z-index: 1060;
+      }
+
+      .accessibility-panel--expanded {
+        width: min(80vw, 960px);
       }
 
       .accessibility-panel__header {
@@ -183,6 +193,11 @@ import { ChangeDetectionStrategy, Component, EventEmitter, Input, Output } from 
         .accessibility-panel {
           right: auto;
           left: 0;
+          width: min(92vw, 560px);
+        }
+
+        .accessibility-panel--expanded {
+          width: 80vw;
         }
       }
     `
@@ -204,9 +219,9 @@ export class AccessibilityPanelComponent {
   @Output() darkModeChange = new EventEmitter<boolean>();
 
   readonly fontOptions = [
-    { label: 'Normal', value: 1 },
-    { label: 'Grande', value: 2 },
-    { label: 'Gigante', value: 4 }
+    { labelKey: 'accessibility.fontOptions.normal', value: 1 },
+    { labelKey: 'accessibility.fontOptions.large', value: 1.75 },
+    { labelKey: 'accessibility.fontOptions.giant', value: 2.5 }
   ];
 
   setFontScale(scale: number): void {

@@ -1,4 +1,26 @@
 {
+  "accessibility": {
+    "eyebrow": "Accessibility",
+    "title": "Quick settings",
+    "dialogLabel": "Accessibility panel",
+    "close": "Close panel",
+    "launcherAria": "Open accessibility panel",
+    "launcherTitle": "Accessibility",
+    "fontSize": "Font size",
+    "fontOptions": {
+      "normal": "Normal",
+      "large": "Large",
+      "giant": "Giant"
+    },
+    "darkMode": "Dark mode",
+    "enableDarkMode": "Enter dark mode",
+    "disableDarkMode": "Disable dark mode",
+    "letterSpacing": "Increase letter spacing",
+    "cursorLarge": "Increase cursor size",
+    "highlights": "Highlight H1-H6 headings",
+    "on": "On",
+    "off": "Off"
+  },
   "app": {
     "title": "Brapci",
     "subtitle": "Portal with semantic SEO, authentication and API search"

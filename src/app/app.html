@@ -123,8 +123,8 @@
             type="button"
             class="accessibility-toggle"
             [attr.aria-expanded]="accessibilityPanelOpen()"
-            [attr.aria-label]="'Acessibilidade'"
-            title="Acessibilidade"
+            [attr.aria-label]="'accessibility.launcherAria' | translate"
+            [attr.title]="'accessibility.launcherTitle' | translate"
             (click)="toggleAccessibilityPanel()"
           >
             <i class="bi bi-universal-access" aria-hidden="true"></i>

@@ -6,6 +6,7 @@ type JsonRecord = Record<string, unknown>;
 
 interface NewsBlock {
   version: string;
+  releaseDate: string | null;
   items: string[];
 }
 
@@ -24,6 +25,10 @@ export class AreaNewsComponent {
 
   constructor() {
     this.loadNews();
+  }
+
+  formatBlockLabel(block: NewsBlock): string {
+    return block.releaseDate ? `${block.version} · ${block.releaseDate}` : block.version;
   }
 
   private loadNews(): void {
@@ -64,17 +69,22 @@ export class AreaNewsComponent {
     let current: NewsBlock | null = null;
 
     for (const line of lines) {
-      if (this.isVersionLine(line)) {
+      const versionMeta = this.parseVersionLine(line);
+      if (versionMeta) {
         if (current) {
           result.push(current);
         }
 
-        current = { version: line, items: [] };
+        current = {
+          version: versionMeta.version,
+          releaseDate: versionMeta.releaseDate,
+          items: []
+        };
         continue;
       }
 
       if (!current) {
-        current = { version: 'Atualizacoes', items: [] };
+        current = { version: 'Atualizacoes', releaseDate: null, items: [] };
       }
 
       current.items.push(line);
@@ -87,8 +97,17 @@ export class AreaNewsComponent {
     return result.slice(0, 6);
   }
 
-  private isVersionLine(value: string): boolean {
-    return /^v\d{2}\.\d{2}\.\d{2}$/i.test(value);
+  private parseVersionLine(value: string): { version: string; releaseDate: string | null } | null {
+    const normalized = value.trim();
+    const match = normalized.match(/^((?:v\d{2}\.\d{2}\.\d{2})|(?:\d{4}[-/]\d{2}[-/]\d{2}))(?:(?:\s*[-|]\s*|\s+)(\d{2}[/-]\d{2}[/-]\d{2,4}|\d{4}[-/]\d{2}[-/]\d{2}))?$/i);
+    if (!match) {
+      return null;
+    }
+
+    return {
+      version: match[1],
+      releaseDate: match[2] ?? null
+    };
   }
 
   private stripHtml(value: string): string {

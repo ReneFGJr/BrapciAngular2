@@ -6,6 +6,10 @@
 	box-sizing: border-box;
 }
 
+html {
+	font-size: calc(100% * var(--a11y-font-scale, 1));
+}
+
 body.theme-master {
 	--theme-ink: #102542;
 	--theme-paper: #fffdf7;
@@ -32,7 +36,6 @@ body.theme-master {
 	color-scheme: light;
 	color: var(--theme-ink);
 	background-color: var(--theme-paper);
-	font-size: calc(1rem * var(--a11y-font-scale));
 	letter-spacing: var(--a11y-letter-spacing);
 }
 
@@ -93,6 +96,38 @@ body.theme-master.a11y-highlights h6 {
 	outline-offset: 0.08rem;
 }
 
+body.theme-master.a11y-text-scale :where(
+	h1,
+	h2,
+	h3,
+	h4,
+	h5,
+	h6,
+	p,
+	li,
+	a,
+	button,
+	label,
+	td,
+	th,
+	input,
+	select,
+	textarea,
+	small,
+	strong,
+	em,
+	b,
+	blockquote,
+	dt,
+	dd,
+	figcaption,
+	caption,
+	span
+) {
+	font-size: inherit !important;
+	line-height: inherit;
+}
+
 body.theme-master .layout a {
 	color: var(--theme-link);
 }
@@ -130,6 +165,10 @@ body.theme-master .form-select:focus {
 
 body.theme-master .text-muted {
 	color: var(--theme-muted) !important;
+}
+
+body.theme-master h3 {
+	font-weight: 700;
 }
 
 html,

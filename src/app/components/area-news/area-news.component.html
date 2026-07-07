@@ -1,6 +1,9 @@
 <section class="area-news" aria-labelledby="area-news-title">
   <header class="area-news-header">
-    <h3 id="area-news-title" class="area-news-title">Principais atualizacoes</h3>
+    <div class="area-news-header__text">
+      <p class="area-news-kicker">Novidades</p>
+      <h3 id="area-news-title" class="area-news-title">Principais atualizações</h3>
+    </div>
   </header>
 
   <p *ngIf="loading()" class="area-news-state">Carregando atualizacoes...</p>
@@ -8,16 +11,25 @@
 
   <div *ngIf="!loading() && !error() && updates().length" class="area-news-list">
     <article *ngFor="let block of updates(); trackBy: trackByVersion" class="area-news-block">
-      <h4 class="area-news-version">{{ block.version }}</h4>
-      <ul class="area-news-items">
-        <li *ngFor="let item of block.items; trackBy: trackByItem" class="area-news-item">
-          {{ item }}
-        </li>
-      </ul>
+      <header class="area-news-block__header">
+        <div class="area-news-version-wrap">
+          <span class="area-news-version">{{ block.version }}</span>
+          <span *ngIf="block.releaseDate" class="area-news-date">{{ block.releaseDate }}</span>
+        </div>
+        <p class="area-news-count">{{ block.items.length }} atualização(ões)</p>
+      </header>
+
+      <div class="area-news-content">
+        <ul class="area-news-items">
+          <li *ngFor="let item of block.items; trackBy: trackByItem" class="area-news-item">
+            {{ item }}
+          </li>
+        </ul>
+      </div>
     </article>
   </div>
 
   <p *ngIf="!loading() && !error() && !updates().length" class="area-news-state">
-    Nenhuma atualizacao encontrada.
+    Nenhuma atualização encontrada.
   </p>
 </section>

@@ -290,18 +290,21 @@ export class App {
 
   private applyAccessibilityPreferences(): void {
     const body = this.document.body;
+    const root = this.document.documentElement;
     body.classList.add('theme-master');
     body.classList.toggle('theme-dark', this.isDarkMode());
     body.classList.toggle('a11y-letter-spacing', this.accessibilityLetterSpacing());
     body.classList.toggle('a11y-cursor-large', this.accessibilityCursorLarge());
     body.classList.toggle('a11y-highlights', this.accessibilityHighlights());
-    body.style.setProperty('--a11y-font-scale', String(this.accessibilityFontScale()));
+    body.classList.toggle('a11y-text-scale', this.accessibilityFontScale() !== 1);
+    root.style.setProperty('--a11y-font-scale', String(this.accessibilityFontScale()));
   }
 
   private applyThemeClass(): void {
     const body = this.document.body;
+    const root = this.document.documentElement;
     body.classList.add('theme-master');
     body.classList.toggle('theme-dark', this.isDarkMode());
-    body.style.setProperty('--a11y-font-scale', String(this.accessibilityFontScale()));
+    root.style.setProperty('--a11y-font-scale', String(this.accessibilityFontScale()));
   }
 }

@@ -11,6 +11,28 @@
     "markedDocuments": "Documentos marcados",
     "sessionLabel": "Sessao"
   },
+  "accessibility": {
+    "eyebrow": "Acessibilidade",
+    "title": "Ajustes rápidos",
+    "dialogLabel": "Painel de acessibilidade",
+    "close": "Fechar painel",
+    "launcherAria": "Abrir painel de acessibilidade",
+    "launcherTitle": "Acessibilidade",
+    "fontSize": "Tamanho da fonte",
+    "fontOptions": {
+      "normal": "Normal",
+      "large": "Grande",
+      "giant": "Gigante"
+    },
+    "darkMode": "Modo escuro",
+    "enableDarkMode": "Entrar no modo dark",
+    "disableDarkMode": "Desativar modo dark",
+    "letterSpacing": "Aumentar espaçamento das letras",
+    "cursorLarge": "Aumentar tamanho do cursor",
+    "highlights": "Destacar headings H1-H6",
+    "on": "Ativo",
+    "off": "Inativo"
+  },
   "app": {
     "title": "Brapci",
     "subtitle": "Portal com SEO semantico, autenticacao e busca na API"

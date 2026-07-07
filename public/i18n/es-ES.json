@@ -3,6 +3,28 @@
     "title": "Brapci",
     "subtitle": "Portal con SEO semantico, autenticacion y busqueda en API"
   },
+  "accessibility": {
+    "eyebrow": "Accesibilidad",
+    "title": "Ajustes rápidos",
+    "dialogLabel": "Panel de accesibilidad",
+    "close": "Cerrar panel",
+    "launcherAria": "Abrir panel de accesibilidad",
+    "launcherTitle": "Accesibilidad",
+    "fontSize": "Tamaño de fuente",
+    "fontOptions": {
+      "normal": "Normal",
+      "large": "Grande",
+      "giant": "Gigante"
+    },
+    "darkMode": "Modo oscuro",
+    "enableDarkMode": "Entrar en modo oscuro",
+    "disableDarkMode": "Desactivar modo oscuro",
+    "letterSpacing": "Aumentar el espaciado de letras",
+    "cursorLarge": "Aumentar el tamaño del cursor",
+    "highlights": "Destacar encabezados H1-H6",
+    "on": "Activo",
+    "off": "Inactivo"
+  },
   "language": {
     "label": "Idioma",
     "pt": "Portugues",
