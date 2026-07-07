@@ -1,13 +1,15 @@
 import { CommonModule } from '@angular/common';
 import { Component, Input, computed, signal } from '@angular/core';
 import { ViewType01Component } from '../issue/view-type-01/view-type-01.component';
+import { JournalMetaGridComponent } from './journal-hero-info/journal-meta-grid/journal-meta-grid.component';
 
 type JsonRecord = Record<string, unknown>;
 type TabId = 'summary' | 'issues' | 'json';
 
 @Component({
   selector: 'app-view-journal',
-  imports: [CommonModule, ViewType01Component],
+  standalone: true,
+  imports: [CommonModule, ViewType01Component, JournalMetaGridComponent],
   templateUrl: './view-journal.component.html',
   styleUrl: './view-journal.component.scss'
 })
@@ -40,6 +42,14 @@ export class ViewJournalComponent {
   readonly url = computed(() => this.field(['jnl_url', 'url']));
   readonly oaiUrl = computed(() => this.field(['jnl_url_oai', 'oai_url']));
   readonly coverUrl = computed(() => this.field(['cover', 'image', 'cover_url']));
+  readonly issnPortalUrl = computed(() => {
+    const value = this.issn();
+    if (value === '-') {
+      return '-';
+    }
+
+    return `https://portal.issn.org/resource/ISSN/${value}`;
+  });
 
   readonly issueItems = computed(() => {
     const record = this.asRecord(this.data);

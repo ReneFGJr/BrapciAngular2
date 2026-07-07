@@ -16,26 +16,20 @@
   <div class="tab-panel">
     @switch (activeTab()) {
       @case ('summary') {
-        <div class="journal-summary">
-          @if (coverUrl() !== '-') {
-            <div class="journal-cover">
-              <img [src]="coverUrl()" [alt]="title()" loading="lazy" />
-            </div>
-          }
-
-          <div class="journal-meta">
-            <p class="mb-1"><strong>Titulo:</strong> {{ title() }}</p>
-            <p class="mb-1"><strong>Abreviacao:</strong> {{ acronym() }}</p>
-            <p class="mb-1"><strong>Editor:</strong> {{ publisher() }}</p>
-            <p class="mb-1"><strong>Colecao:</strong> {{ collection() }}</p>
-            <p class="mb-1"><strong>ISSN:</strong> {{ issn() }}</p>
-            <p class="mb-1"><strong>E-ISSN:</strong> {{ eissn() }}</p>
-            <p class="mb-1"><strong>Periodo:</strong> {{ period() }}</p>
-            <p class="mb-1"><strong>Identificador:</strong> {{ journalId() }}</p>
-            <p class="mb-1"><strong>Site:</strong> <a class="journal-site-link ms-1" href="{{ url() }}" target="_blank" rel="noopener noreferrer">{{ url() }}</a></p>
-            <p class="mb-0"><strong>OAI:</strong> {{ oaiUrl() }}</p>
-          </div>
-        </div>
+        <app-journal-meta-grid
+          [coverUrl]="coverUrl()"
+          [issnPortalUrl]="issnPortalUrl()"
+          [title]="title()"
+          [acronym]="acronym()"
+          [issn]="issn()"
+          [eissn]="eissn()"
+          [period]="period()"
+          [publisher]="publisher()"
+          [collection]="collection()"
+          [journalId]="journalId()"
+          [url]="url()"
+          [oaiUrl]="oaiUrl()"
+        ></app-journal-meta-grid>
       }
 
       @case ('issues') {

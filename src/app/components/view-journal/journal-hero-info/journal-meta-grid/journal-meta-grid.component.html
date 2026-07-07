@@ -1,0 +1,89 @@
+<div class="row mt-5 journal-meta-grid">
+  <div class="col-12 col-lg-3 journal-meta-grid__side">
+    @if (coverUrl !== '-') {
+      <img class="img-fluid mb-2 journal-meta-grid__cover" [src]="coverUrl" [alt]="title" loading="lazy" />
+    }
+
+    @if (issnPortalUrl !== '-') {
+      <div id="jnl_issn" class="mb-3 portal">
+        <a [href]="issnPortalUrl" target="_blank" rel="noopener noreferrer">ISSN Portal</a>
+      </div>
+    }
+  </div>
+
+  <div class="col-12 col-lg-9">
+    <div class="container px-0">
+      <div class="row g-3">
+        <div class="col-12">
+          <div class="journal-field">
+            <input type="text" placeholder=" " readonly [value]="title" id="journal-title" name="journal-title" />
+            <label for="journal-title">Nome da publicação:</label>
+          </div>
+        </div>
+
+        <div class="col-12 col-lg-6">
+          <div class="journal-field">
+            <input type="text" placeholder=" " readonly [value]="acronym" id="journal-acronym" name="journal-acronym" />
+            <label for="journal-acronym">Abreviatura:</label>
+          </div>
+        </div>
+
+        <div class="col-6 col-lg-3">
+          <div class="journal-field">
+            <input type="text" placeholder=" " readonly [value]="issn" id="journal-issn" name="journal-issn" />
+            <label for="journal-issn">ISSN:</label>
+          </div>
+        </div>
+
+        <div class="col-6 col-lg-3">
+          <div class="journal-field">
+            <input type="text" placeholder=" " readonly [value]="eissn" id="journal-eissn" name="journal-eissn" />
+            <label for="journal-eissn">eISSN:</label>
+          </div>
+        </div>
+
+        <div class="col-12 col-lg-3">
+          <div class="journal-field">
+            <input type="text" placeholder=" " readonly [value]="period" id="journal-period" name="journal-period" />
+            <label for="journal-period">Vigências:</label>
+          </div>
+        </div>
+
+        <div class="col-12 col-lg-3">
+          <div class="journal-field">
+            <input type="text" placeholder=" " readonly [value]="publisher" id="journal-publisher" name="journal-publisher" />
+            <label for="journal-publisher">Editor:</label>
+          </div>
+        </div>
+
+        <div class="col-12 col-lg-3">
+          <div class="journal-field">
+            <input type="text" placeholder=" " readonly [value]="collection" id="journal-collection" name="journal-collection" />
+            <label for="journal-collection">Coleção:</label>
+          </div>
+        </div>
+
+        <div class="col-12 col-lg-3">
+          <div class="journal-field">
+            <input type="text" placeholder=" " readonly [value]="journalId" id="journal-id" name="journal-id" />
+            <label for="journal-id">Identificador:</label>
+          </div>
+        </div>
+
+        <div class="col-12">
+          <div class="journal-field">
+            <input type="text" placeholder=" " readonly [value]="url" id="journal-url" name="journal-url" />
+            <label for="journal-url">Link da Revista:</label>
+          </div>
+        </div>
+
+        <div class="col-12 col-lg-3">
+          <div class="journal-field">
+            <input type="text" placeholder=" " readonly [value]="oaiUrl" id="journal-oai" name="journal-oai" />
+            <label for="journal-oai">OAI:</label>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
