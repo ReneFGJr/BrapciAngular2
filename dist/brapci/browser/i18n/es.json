@@ -1,0 +1,483 @@
+{
+  "common": {
+    "loading": "Cargando...",
+    "dark": "Oscuro",
+    "toggleDarkMode": "Alternar modo oscuro",
+    "toggleNavigation": "Alternar navegacion",
+    "selectLanguage": "Seleccionar idioma",
+    "openLanguageSelection": "Abrir seleccion de idioma",
+    "login": "Iniciar sesion",
+    "userProfile": "Perfil del usuario",
+    "markedDocuments": "Documentos marcados",
+    "sessionLabel": "Sesion"
+  },
+  "accessibility": {
+    "eyebrow": "Accesibilidad",
+    "title": "Ajustes rápidos",
+    "dialogLabel": "Panel de accesibilidad",
+    "close": "Cerrar panel",
+    "launcherAria": "Abrir panel de accesibilidad",
+    "launcherTitle": "Accesibilidad",
+    "fontSize": "Tamaño de fuente",
+    "fontOptions": {
+      "normal": "Normal",
+      "large": "Grande",
+      "giant": "Gigante"
+    },
+    "darkMode": "Modo oscuro",
+    "enableDarkMode": "Entrar en modo oscuro",
+    "disableDarkMode": "Desactivar modo oscuro",
+    "letterSpacing": "Aumentar el espaciado de letras",
+    "cursorLarge": "Aumentar el tamaño del cursor",
+    "highlights": "Destacar encabezados H1-H6",
+    "on": "Activo",
+    "off": "Inactivo"
+  },
+  "app": {
+    "title": "Brapci",
+    "subtitle": "Portal con SEO semantico, autenticacion y busqueda en API"
+  },
+  "language": {
+    "label": "Idioma",
+    "pt": "Portugues",
+    "en": "Ingles",
+    "es": "Espanol"
+  },
+  "bollean": {
+    "title": "Búsqueda booleana"
+  },
+  "auth": {
+    "title": "Autenticacion",
+    "fullName": "Nombre completo",
+    "username": "Usuario",
+    "email": "Correo electronico",
+    "accountEmail": "Correo de la cuenta",
+    "password": "Contrasena",
+    "submit": "Entrar",
+    "register": "Crear cuenta",
+    "createAccount": "Crear cuenta",
+    "backToLogin": "Volver al inicio de sesion",
+    "resendPassword": "Reenviar contrasena",
+    "logout": "Salir",
+    "welcome": "Bienvenido",
+    "invalid": "Credenciales invalidas. Use admin/admin123 o user/user123.",
+    "messages": {
+      "invalidCredentials": "Usuario o contrasena invalidos.",
+      "registerFailed": "No fue posible crear la cuenta. Revise los datos e intente nuevamente.",
+      "registerSuccess": "Cuenta creada con exito.",
+      "resendFailed": "No fue posible reenviar la contrasena en este momento.",
+      "resendSuccess": "Si el correo existe, enviaremos instrucciones de recuperacion."
+    }
+  },
+  "basket": {
+    "selected": {
+      "title": "Documentos seleccionados",
+      "none": "No hay documentos seleccionados.",
+      "loading": "Cargando seleccion...",
+      "none_category": "No hay elementos en esta categoria.",
+      "clear": "Limpiar seleccion",
+      "Articles": "Artigos",
+      "Books": "Livros",
+      "BooksChapter": "Capitulos",
+      "Proceedings": "Trabalhos de eventos"
+    }
+  },
+  "cited": {
+    "title": "Busqueda de citas",
+    "subtitle": "Busque trabajos y visualice los formatos de cita.",
+    "inputLabel": "Termino de busqueda",
+    "placeholder": "Escriba un termino, autor o titulo",
+    "searchButton": "Buscar citas",
+    "loading": "Buscando citas...",
+    "empty": "No se encontraron citas para el termino informado.",
+    "error": "Error al buscar citas."
+  },
+  "signin": {
+    "kicker": "Acceso Brapci",
+    "title": "Portal institucional de autenticacion",
+    "subtitle": "Inicie sesion para acceder a recursos personalizados de la plataforma.",
+    "cardSubtitle": "Use su usuario y contrasena para ingresar a la plataforma."
+  },
+  "search": {
+    "bollean": {
+      "title": "Búsqueda booleana",
+      "strategy": "Estrategia de búsqueda booleana",
+      "button": "Buscar",
+      "linkBack": "Volver a la búsqueda normal"
+    },
+    "title": "¿Qué estás buscando?",
+    "input": "Escriba un termino",
+    "button": "Buscar",
+    "empty": "No se encontraron resultados para la consulta.",
+    "idle": "Escriba un termino para consultar la API Brapci.",
+    "filters": {
+      "title": "Filtros de búsqueda",
+      "year_start": "Año inicial",
+      "year_end": "Año final",
+      "publication_type": "Tipo de publicación",
+      "search_field": "Campo de búsqueda",
+      "types": {
+        "JA": "Revistas brasileñas",
+        "JE": "Revistas extranjeras",
+        "BK": "Libros y capítulos",
+        "EV": "Anales de eventos"
+      },
+      "fields": {
+        "TI": "Título",
+        "AB": "Resumen",
+        "KW": "Palabras clave",
+        "AU": "Autor",
+        "FL": "Todos los campos"
+      }
+    }
+  },
+  "searchBook": {
+    "title": "Busqueda de Trabajos - Libros",
+    "labels": {
+      "keywords": "Palabras clave:",
+      "workType": "Tipo de Trabajo:"
+    },
+    "placeholders": {
+      "keywords": "Ingrese los terminos de busqueda"
+    },
+    "options": {
+      "selectType": "Seleccione el Tipo",
+      "book": "Libro",
+      "chapter": "Capitulo"
+    },
+    "states": {
+      "loadingResults": "Cargando resultados..."
+    },
+    "errors": {
+      "noneFound": "No se encontraron libros para los filtros informados.",
+      "requestFailed": "No fue posible buscar libros en este momento."
+    },
+    "results": {
+      "noMetadata": "Sin metadatos adicionales"
+    },
+    "actions": {
+      "view": "Ver"
+    }
+  },
+  "authority": {
+    "bannerAlt": "Control de autoridad",
+    "title": "Control de Autoridad",
+    "searchLabel": "Buscar termino",
+    "placeholder": "Ingrese el nombre del autor",
+    "loading": "Cargando...",
+    "resultsTitle": "",
+    "empty": "No se encontraron resultados con use = ID para el termino informado.",
+    "apiError": "No fue posible consultar la API de autoridad."
+  },
+  "author": {
+    "gadget": "Widget de Autor",
+    "name": "Nombre",
+    "nameAbnt": "Nombre ABNT",
+    "id": "ID",
+    "allProduction": "Toda produccion",
+    "yearsProduction": "anos",
+    "bibliographic": "Producciones bibliograficas",
+    "total": "Total",
+    "noRecords": "Sin registros para este tipo.",
+    "coauthors": {
+      "label": "Coautores",
+      "name": "Nombre",
+      "publications": "Publicaciones"
+    },
+    "network": {
+      "label": "Red de Colaboracion"
+    },
+    "citationsGranted": {
+      "label": "Citaciones concedidas"
+    },
+    "workTypes": {
+      "Article": "Articulos",
+      "Book": "Libros",
+      "BookChapter": "Capitulos",
+      "Proceeding": "Trabajos de eventos"
+    },
+    "summary": {
+      "label": "Resumen",
+      "journals": "Revistas",
+      "points": "Puntos",
+      "volume": "Volumen",
+      "dispersionTitle": "Grafico de dispersion por revista",
+      "yearAxis": "Eje X",
+      "volumeAxis": "Eje Y",
+      "frequency": "Frecuencia",
+      "journal": "Revista",
+      "tableTitle": "Tabla de datos",
+      "pieTitle": "Distribucion por revista",
+      "others": "Otros",
+      "noData": "No hay datos de dataJOUR para mostrar."
+    },
+    "tags": {
+      "title": "Nube de etiquetas",
+      "noData": "No hay datos de dataTAG para mostrar."
+    }
+  },
+  "issue": {
+    "hero": {
+      "kicker": "Fascículo",
+      "badgesLabel": "Resumen rápido del fascículo",
+      "metricsLabel": "Indicadores del fascículo"
+    },
+    "badges": {
+      "id": "ID",
+      "volume": "Vol.",
+      "articles": "Artículos"
+    },
+    "tabs": {
+      "ariaLabel": "Pestañas del contenido del fascículo",
+      "summary": "Resumen",
+      "works": "Trabajos",
+      "authors": "Autores",
+      "keywords": "Palabras clave",
+      "json": "JSON"
+    },
+    "common": {
+      "csv": "CSV"
+    },
+    "summary": {
+      "main": {
+        "title": "Datos principales",
+        "acronym": "Acrónimo",
+        "source": "Fuente",
+        "journalId": "Identificador de la revista",
+        "year": "Año",
+        "issue": "Fascículo",
+        "location": "Local"
+      },
+      "production": {
+        "title": "Producción",
+        "works": "Trabajos",
+        "authors": "Autores",
+        "coauthorAverage": "Media de coautoría"
+      }
+    },
+    "works": {
+      "empty": "No hay trabajos disponibles.",
+      "authorsLabel": "Autores",
+      "flagsLabel": "Indicadores del trabajo"
+    },
+    "authors": {
+      "title": "Autores",
+      "subtitle": "Total de trabajos por autor",
+      "exportCsv": "Exportar autores en CSV",
+      "empty": "No hay autores disponibles.",
+      "distribution": {
+        "title": "Distribución",
+        "subtitle": "Número de autores por trabajo",
+        "unit": "autor(es)",
+        "empty": "No hay distribución disponible."
+      }
+    },
+    "keywords": {
+      "title": "Nube de palabras clave",
+      "subtitle": "Palabras clave ordenadas por frecuencia",
+      "exportCsv": "Exportar palabras clave en CSV",
+      "frequencyTitle": "Frecuencia",
+      "frequencySubtitle": "Tabla con las ocurrencias por término",
+      "table": {
+        "keyword": "Palabra clave",
+        "freq": "Freq."
+      },
+      "empty": "No hay palabras clave disponibles."
+    },
+    "tags": {
+      "title": "Nube de palabras clave",
+      "noData": "No hay palabras clave disponibles."
+    }
+  },
+  "journals": {
+    "accessLink": "Acceder a la revista",
+    "publicationsList": "Lista de publicaciones",
+    "eventsList": "Lista de eventos",
+    "exportCsv": "Exportar CSV",
+    "filterAriaLabel": "Filtro por tipo de publicacion",
+    "filterAll": "Todas",
+    "filterJa": "JA - Revistas brasilenas",
+    "filterJe": "JE - Revistas extranjeras",
+    "searchPlaceholder": "Buscar por titulo",
+    "noResultsForFilters": "No hay resultados para los filtros seleccionados.",
+    "noResults": "No se encontraron revistas."
+  },
+  "timeline": {
+    "title": "Linea de Tiempo de Revistas",
+    "loading": "Cargando linea de tiempo de revistas...",
+    "yearsRange": "Revistas de {{min}} a {{max}}",
+    "period": "Periodo",
+    "collection": "Coleccion",
+    "active": "Activa",
+    "inactive": "Inactiva",
+    "noData": "No hay datos de linea de tiempo disponibles para los filtros seleccionados."
+  },
+  "profile": {
+    "title": "Perfil del Usuario",
+    "notLogged": "Necesita iniciar sesion para ver su perfil.",
+    "goToLogin": "Ir al inicio de sesion",
+    "name": "Nombre",
+    "username": "Usuario",
+    "id": "ID",
+    "role": "Perfil",
+    "localUserTitle": "Datos de sesion local",
+    "sessionExpiresAt": "Expira en",
+    "noLocalUser": "No se encontraron datos de sesion local.",
+    "openExternal": "Abrir perfil externo"
+  },
+  "menu": {
+    "tools": "Herramientas",
+    "toolsBibliographics": "Herramientas bibliograficas",
+    "toolsBibliometric": "Herramientas bibliometricas",
+    "toolsText": "Herramientas textuales",
+    "navbar": {
+      "authorities": "Autoridades",
+      "magazines": "Revistas",
+      "events": "Eventos",
+      "benancib": "Benancib",
+      "books": "Libros",
+      "about": "Acerca de",
+      "worldSmall": "Pequeño Mundo en CI",
+      "aboutBrapci": "Acerca de Brapci",
+      "aboutBenancib": "Acerca de Benancib",
+      "aboutBrapciBooks": "Acerca de Brapci Libros",
+      "howIndex": "Como ser indexado en Brapci",
+      "team": "Equipo",
+      "subjectIndex": "Indices de Materias",
+      "authorIndex": "Indices de Autores",
+      "productionIndicator": "Indicador de Produccion",
+      "searchIndicator": "Indicador de Busquedas",
+      "apiDoc": "Documentacion API"
+    }
+  },
+  "tools": {
+    "kicker": "Herramientas",
+    "bibliographics": {
+      "title": "Herramientas bibliograficas",
+      "subtitle": "Area dedicada a utilidades para apoyo en citacion, referencias y organizacion bibliografica.",
+      "card1Title": "Normalizacion de referencias",
+      "card1Text": "Estandarice referencias segun normas academicas y exporte en formatos comunes.",
+      "card2Title": "Generador de citas",
+      "card2Text": "Construya citas directas e indirectas a partir de metadatos de articulos."
+    },
+    "bibliometric": {
+      "title": "Herramientas bibliometricas",
+      "subtitle": "Area para analisis bibliometricos, indicadores de produccion y exploracion de redes de citacion.",
+      "card1Title": "Indicadores de impacto",
+      "card1Text": "Visualice metricas de citacion, produccion por periodo y distribucion por revistas.",
+      "card2Title": "Analisis de coautoria",
+      "card2Text": "Mapee colaboraciones entre autores y descubra comunidades de investigacion."
+    },
+    "text": {
+      "title": "Herramientas textuales",
+      "subtitle": "Recursos para analisis, revision y preparacion textual de contenidos cientificos.",
+      "card1Title": "Revisor de lenguaje",
+      "card1Text": "Apoye la revision ortografica y la claridad de textos academicos.",
+      "card2Title": "Extraccion de palabras clave",
+      "card2Text": "Identifique terminos centrales para indexacion y recuperacion de informacion."
+    }
+  },
+  "article": {
+    "kicker": "Articulo Cientifico",
+    "noCover": "Imagen no disponible",
+    "sections": {
+      "label": "Seccion",
+      "title": "Secciones"
+    },
+    "authors": {
+      "label": "Autores",
+      "title": "Autores del articulo",
+      "profile": "Ver Perfil"
+    },
+    "meta": {
+      "journal": "Revista",
+      "year": "Ano",
+      "doi": "DOI",
+      "language": "Idioma"
+    },
+    "abstract": {
+      "title": "Resumen"
+    },
+    "citation": {
+      "title": "Como citar"
+    },
+    "indicators": {
+      "title": "Indicadores",
+      "views": "Vistas",
+      "downloads": "Descargas",
+      "likes": "Likes",
+      "citations": "Citaciones"
+    },
+    "data": {
+      "title": "Datos",
+      "copy": "Copiar",
+      "tabs": {
+        "fulltext": "Texto Completo",
+        "json": "JSON",
+        "rdf": "RDF (Turtle)",
+        "ris": "RIS",
+        "marc21": "MARC21",
+        "references": "Referencias",
+        "citations": "Citaciones"
+      },
+      "aria": {
+        "viewData": "Ver datos en {{format}}",
+        "copyData": "Copiar {{format}} al portapapeles"
+      }
+    },
+    "actions": {
+      "downloadPdf": "Descargar PDF",
+      "copyLink": "Copiar enlace",
+      "shareWhatsApp": "Compartir en WhatsApp",
+      "shareInstagram": "Compartir en Instagram",
+      "shareLinkedIn": "Compartir en LinkedIn"
+    }
+  },
+  "bookChapter": {
+    "aria": {
+      "page": "Pagina de capitulo de libro"
+    },
+    "kicker": "Capitulo de Libro",
+    "cover": {
+      "alt": "Portada del libro",
+      "unavailable": "Sin portada"
+    },
+    "actions": {
+      "openBook": "Acceder al libro completo",
+      "openPdf": "Abrir PDF del capitulo"
+    },
+    "meta": {
+      "authors": "Autores",
+      "book": "Libro",
+      "year": "Ano",
+      "pages": "Paginas",
+      "language": "Idioma"
+    },
+    "sections": {
+      "abstract": "Resumen",
+      "citation": "Como citar",
+      "indicators": "Indicadores",
+      "data": "Datos"
+    }
+  },
+  "citation": {
+    "styles": {
+      "abnt": "ABNT",
+      "apa": "APA",
+      "vancouver": "Vancouver"
+    },
+    "actions": {
+      "copy": "Copiar Citacion"
+    },
+    "aria": {
+      "tabs": "Estilos de citacion"
+    }
+  },
+  "footer": {
+    "copyright": "Brapci © 2026",
+    "session": "Sesion",
+    "linkedIn": "LinkedIn de Brapci",
+    "instagram": "Instagram de Brapci",
+    "socialMedia": "Redes sociales de Brapci"
+  }
+}
