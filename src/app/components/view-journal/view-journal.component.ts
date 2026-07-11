@@ -1,10 +1,26 @@
 import { CommonModule } from '@angular/common';
-import { Component, Input, computed, signal } from '@angular/core';
+import { AfterViewInit, Component, ElementRef, Input, OnDestroy, ViewChild, computed, signal } from '@angular/core';
 import { ViewType01Component } from '../issue/view-type-01/view-type-01.component';
 import { JournalMetaGridComponent } from './journal-hero-info/journal-meta-grid/journal-meta-grid.component';
 
 type JsonRecord = Record<string, unknown>;
-type TabId = 'summary' | 'issues' | 'json';
+type TabId = 'summary' | 'issues' | 'location' | 'json';
+
+type GeoPlace = {
+  name: string;
+  lat: string;
+  long: string;
+  altitude: string;
+  id: string;
+};
+
+type GeoPoint = {
+  name: string;
+  lat: number;
+  long: number;
+  altitude: string;
+  id: string;
+};
 
 @Component({
   selector: 'app-view-journal',
@@ -15,7 +31,9 @@ type TabId = 'summary' | 'issues' | 'json';
 })
 export class ViewJournalComponent {
   @Input({ required: true }) data: unknown = null;
+  @ViewChild('locationMap') locationMap?: ElementRef<HTMLDivElement>;
   readonly activeTab = signal<TabId>('summary');
+  private mapInstance: any = null;
 
   readonly title = computed(() => this.field(['jnl_name', 'title', 'name']));
   readonly acronym = computed(() => this.field(['jnl_name_abrev', 'acronym', 'sigla']));
@@ -42,6 +60,8 @@ export class ViewJournalComponent {
   readonly url = computed(() => this.field(['jnl_url', 'url']));
   readonly oaiUrl = computed(() => this.field(['jnl_url_oai', 'oai_url']));
   readonly coverUrl = computed(() => this.field(['cover', 'image', 'cover_url']));
+  readonly location = computed(() => this.extractLocation());
+  readonly mapPoints = computed(() => this.locationPoints());
   readonly issnPortalUrl = computed(() => {
     const value = this.issn();
     if (value === '-') {
@@ -82,6 +102,13 @@ export class ViewJournalComponent {
 
   setTab(tab: TabId): void {
     this.activeTab.set(tab);
+
+    if (tab === 'location') {
+      this.scheduleLocationMapRender();
+      return;
+    }
+
+    this.destroyMap();
   }
 
   field(keys: string[]): string {
@@ -147,5 +174,167 @@ export class ViewJournalComponent {
 
   private asRecord(value: unknown): JsonRecord | null {
     return value && typeof value === 'object' ? (value as JsonRecord) : null;
+  }
+
+  ngAfterViewInit(): void {
+    if (this.activeTab() === 'location') {
+      this.scheduleLocationMapRender();
+    }
+  }
+
+  ngOnDestroy(): void {
+    this.destroyMap();
+  }
+
+  private extractLocation(): { country: GeoPlace | null; city: GeoPlace | null } {
+    const record = this.asRecord(this.data);
+    const geo = this.asRecord(record?.['geo']);
+
+    return {
+      country: this.asGeoPlace(geo?.['country']),
+      city: this.asGeoPlace(geo?.['city'])
+    };
+  }
+
+  private asGeoPlace(value: unknown): GeoPlace | null {
+    const record = this.asRecord(value);
+    if (!record) {
+      return null;
+    }
+
+    const name = this.stringFromRecord(record, ['name']);
+    const lat = this.stringFromRecord(record, ['lat']);
+    const long = this.stringFromRecord(record, ['long']);
+    const altitude = this.stringFromRecord(record, ['altitude']);
+    const id = this.stringFromRecord(record, ['id']);
+
+    if (name === '-' && lat === '-' && long === '-' && altitude === '-' && id === '-') {
+      return null;
+    }
+
+    return { name, lat, long, altitude, id };
+  }
+
+  private stringFromRecord(record: JsonRecord, keys: string[]): string {
+    for (const key of keys) {
+      const value = record[key];
+      if (typeof value === 'string' && value.trim()) {
+        return value.trim();
+      }
+
+      if (typeof value === 'number' && Number.isFinite(value)) {
+        return String(value);
+      }
+    }
+
+    return '-';
+  }
+
+  private locationPoints(): GeoPoint[] {
+    const location = this.location();
+    const points: GeoPoint[] = [];
+
+    if (location.country) {
+      const country = this.toGeoPoint(location.country);
+      if (country) {
+        points.push(country);
+      }
+    }
+
+    if (location.city) {
+      const city = this.toGeoPoint(location.city);
+      if (city) {
+        points.push(city);
+      }
+    }
+
+    return points;
+  }
+
+  private toGeoPoint(place: GeoPlace): GeoPoint | null {
+    const lat = Number.parseFloat(place.lat);
+    const long = Number.parseFloat(place.long);
+
+    if (!Number.isFinite(lat) || !Number.isFinite(long)) {
+      return null;
+    }
+
+    return {
+      name: place.name,
+      lat,
+      long,
+      altitude: place.altitude,
+      id: place.id
+    };
+  }
+
+  private async renderLocationMap(): Promise<void> {
+    if (typeof window === 'undefined' || typeof document === 'undefined') {
+      return;
+    }
+
+    const container = this.locationMap?.nativeElement;
+    const points = this.mapPoints();
+
+    if (!container || points.length === 0) {
+      return;
+    }
+
+    const leaflet = await import('leaflet');
+
+    this.destroyMap();
+
+    const map = leaflet.map(container, {
+      zoomControl: true,
+      scrollWheelZoom: true
+    });
+
+    leaflet
+      .tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+        attribution: '&copy; OpenStreetMap contributors',
+        maxZoom: 19
+      })
+      .addTo(map);
+
+    const bounds = leaflet.latLngBounds([]);
+
+    for (const point of points) {
+      const color = point === points[0] ? '#385a7c' : '#157347';
+      const marker = leaflet.circleMarker([point.lat, point.long], {
+        color,
+        fillColor: color,
+        fillOpacity: 0.9,
+        radius: 8,
+        weight: 2
+      }).addTo(map);
+
+      marker.bindPopup(
+        `<strong>${point.name}</strong><br>Lat: ${point.lat}<br>Long: ${point.long}<br>Altitude: ${point.altitude}`
+      );
+      bounds.extend([point.lat, point.long]);
+    }
+
+    if (bounds.isValid()) {
+      map.fitBounds(bounds.pad(0.35));
+    } else {
+      map.setView([points[0].lat, points[0].long], 4);
+    }
+
+    this.mapInstance = map;
+
+    requestAnimationFrame(() => map.invalidateSize());
+  }
+
+  private scheduleLocationMapRender(): void {
+    requestAnimationFrame(() => this.renderLocationMap());
+  }
+
+  private destroyMap(): void {
+    if (!this.mapInstance) {
+      return;
+    }
+
+    this.mapInstance.remove();
+    this.mapInstance = null;
   }
 }

@@ -58,6 +58,33 @@
   z-index: 1;
 }
 
+:host-context(body.theme-master.theme-dark) .portal a {
+  color: #9cc6ff;
+}
+
+:host-context(body.theme-master.theme-dark) .portal a:hover {
+  color: #d0e4ff;
+}
+
+:host-context(body.theme-master.theme-dark) .journal-field input {
+  background: rgb(13 23 39 / 88%);
+  border-color: var(--theme-line);
+  color: var(--theme-ink);
+}
+
+:host-context(body.theme-master.theme-dark) .journal-field label {
+  background: var(--theme-paper);
+  color: var(--theme-ink);
+}
+
+:host-context(body.theme-master.theme-dark) .journal-meta-grid__cover {
+  box-shadow: 0 0 0 1px rgb(255 255 255 / 8%);
+}
+
+:host-context(body.theme-master.theme-dark) .journal-meta-grid__side {
+  color: var(--theme-ink);
+}
+
 @media (max-width: 991.98px) {
   .journal-meta-grid__side {
     margin-bottom: 0.75rem;
