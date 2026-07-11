@@ -34,6 +34,7 @@ export class ViewJournalComponent {
   @ViewChild('locationMap') locationMap?: ElementRef<HTMLDivElement>;
   readonly activeTab = signal<TabId>('summary');
   private mapInstance: any = null;
+  private locationMapAttempt = 0;
 
   readonly title = computed(() => this.field(['jnl_name', 'title', 'name']));
   readonly acronym = computed(() => this.field(['jnl_name_abrev', 'acronym', 'sigla']));
@@ -280,6 +281,11 @@ export class ViewJournalComponent {
       return;
     }
 
+    if (container.getBoundingClientRect().width === 0 || container.getBoundingClientRect().height === 0) {
+      this.scheduleLocationMapRender();
+      return;
+    }
+
     const leaflet = await import('leaflet');
 
     this.destroyMap();
@@ -321,12 +327,21 @@ export class ViewJournalComponent {
     }
 
     this.mapInstance = map;
+    this.locationMapAttempt = 0;
 
-    requestAnimationFrame(() => map.invalidateSize());
+    requestAnimationFrame(() => {
+      map.invalidateSize();
+      setTimeout(() => map.invalidateSize(), 120);
+    });
   }
 
   private scheduleLocationMapRender(): void {
-    requestAnimationFrame(() => this.renderLocationMap());
+    if (this.locationMapAttempt >= 8) {
+      return;
+    }
+
+    this.locationMapAttempt += 1;
+    setTimeout(() => requestAnimationFrame(() => this.renderLocationMap()), 50);
   }
 
   private destroyMap(): void {

@@ -147,3 +147,65 @@
 .area-news-state-error {
   color: #a02b2b;
 }
+
+:host-context(body.theme-master.theme-dark) {
+  .area-news {
+    background:
+      radial-gradient(circle at top left, rgb(255 255 255 / 5%), transparent 34%),
+      linear-gradient(180deg, rgb(16 23 39 / 92%), rgb(13 19 31 / 88%));
+    border-color: rgb(48 68 95 / 88%);
+    box-shadow: 0 18px 38px rgb(0 0 0 / 28%);
+  }
+
+  .area-news-header__text,
+  .area-news-title,
+  .area-news-state,
+  .area-news-version,
+  .area-news-item,
+  .area-news-item__title {
+    color: var(--theme-ink);
+  }
+
+  .area-news-kicker,
+  .area-news-count,
+  .area-news-item__description {
+    color: var(--theme-muted);
+  }
+
+  .area-news-block {
+    background: rgb(18 32 51 / 94%);
+    border-color: rgb(48 68 95 / 88%);
+    box-shadow: 0 10px 22px rgb(0 0 0 / 18%);
+  }
+
+  .area-news-block__header {
+    background: rgb(18 32 51 / 84%);
+    border-bottom-color: rgb(48 68 95 / 88%);
+  }
+
+  .area-news-version {
+    background: linear-gradient(180deg, rgb(33 47 70 / 96%), rgb(24 35 52 / 94%));
+    border: 1px solid rgb(100 132 173 / 35%);
+  }
+
+  .area-news-item {
+    border-bottom: 1px solid rgb(100 132 173 / 16%);
+    padding: 0.25rem 0;
+  }
+
+  .area-news-item:last-child {
+    border-bottom: 0;
+  }
+
+  .area-news-item__action,
+  .area-news-item__link {
+    color: #9cc6ff;
+  }
+
+  .area-news-item__action:hover,
+  .area-news-item__action:focus-visible,
+  .area-news-item__link:hover,
+  .area-news-item__link:focus-visible {
+    color: #d0e4ff;
+  }
+}
