@@ -32,17 +32,21 @@
       <table class="table table-sm align-middle revistas-location-map__table mb-0">
         <thead>
           <tr>
+            <th>Título da revista</th>
+            <th>ISSN</th>
             <th>Cidade</th>
+            <th>Estado</th>
             <th>País</th>
-            <th>Total de revistas</th>
           </tr>
         </thead>
         <tbody>
-          @for (row of tableRows(); track row.city + row.country) {
+          @for (row of tableRows(); track row.id) {
             <tr>
+              <td>{{ row.title }}</td>
+              <td>{{ row.issn }}</td>
               <td>{{ row.city }}</td>
+              <td>{{ row.state }}</td>
               <td>{{ row.country }}</td>
-              <td>{{ row.total }}</td>
             </tr>
           }
         </tbody>

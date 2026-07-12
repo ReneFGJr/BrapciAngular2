@@ -15,12 +15,26 @@ type JournalLocation = {
   jnl_name: string;
   jnl_name_abrev?: string;
   jnl_issn?: string | null;
+  jnl_eissn?: string | null;
+  jnl_url?: string | null;
+  jnl_url_oai?: string | null;
+  publisher?: string | null;
+  jnl_editor?: string | null;
+  editor?: string | null;
+  email?: string | null;
+  jnl_email?: string | null;
+  editor_email?: string | null;
+  email_editor?: string | null;
   gc_name?: string | null;
+  state?: string | null;
+  uf?: string | null;
+  estado?: string | null;
   lat?: string | null;
   long?: string | null;
   type?: string | null;
   code?: string | null;
   cover?: string | null;
+  [key: string]: unknown;
 };
 
 type GeoPoint = {
@@ -44,9 +58,12 @@ type CityAggregate = {
 };
 
 type JournalTableRow = {
+  id: string;
+  title: string;
+  issn: string;
   city: string;
+  state: string;
   country: string;
-  total: number;
 };
 
 const COUNTRY_LABELS: Record<string, string> = {
@@ -106,11 +123,10 @@ export class RevistasLocationMapComponent implements AfterViewInit, OnChanges, O
   }
 
   private buildTableRows(): JournalTableRow[] {
-    return this.buildCityAggregates().map((aggregate) => ({
-      city: aggregate.city,
-      country: aggregate.country,
-      total: aggregate.total
-    }));
+    return this.journals
+      .map((journal) => this.toTableRow(journal))
+      .filter((row): row is JournalTableRow => row !== null)
+      .sort((left, right) => left.title.localeCompare(right.title, 'pt-BR'));
   }
 
   private buildCityAggregates(): CityAggregate[] {
@@ -163,6 +179,57 @@ export class RevistasLocationMapComponent implements AfterViewInit, OnChanges, O
       lat,
       long
     };
+  }
+
+  private toTableRow(journal: JournalLocation): JournalTableRow | null {
+    const lat = Number.parseFloat(String(journal.lat ?? '').trim());
+    const long = Number.parseFloat(String(journal.long ?? '').trim());
+
+    if (!Number.isFinite(lat) || !Number.isFinite(long)) {
+      return null;
+    }
+
+    return {
+      id: String(journal.id_jnl),
+      title: this.pickText(journal, ['jnl_name', 'jnl_name_abrev']) || 'Revista',
+      issn: this.pickText(journal, ['jnl_issn', 'jnl_eissn', 'issn', 'eissn']) || '-',
+      city: this.pickText(journal, ['gc_name', 'city', 'cidade']) || '-',
+      state: this.stateFromJournal(journal),
+      country: this.countryFromCode(this.pickText(journal, ['code', 'country_code', 'country']))
+    };
+  }
+
+  private pickText(source: Record<string, unknown>, keys: string[]): string {
+    for (const key of keys) {
+      const value = source[key];
+
+      if (typeof value === 'string' && value.trim()) {
+        return value.trim();
+      }
+
+      if (typeof value === 'number' && Number.isFinite(value)) {
+        return String(value);
+      }
+    }
+
+    return '';
+  }
+
+  private stateFromJournal(journal: JournalLocation): string {
+    const explicitState = this.pickText(journal, ['state', 'uf', 'estado']);
+    if (explicitState) {
+      return explicitState;
+    }
+
+    const code = this.pickText(journal, ['code']);
+    if (code.includes('-')) {
+      const parts = code.split('-').map((part) => part.trim()).filter(Boolean);
+      if (parts.length > 1) {
+        return parts[1];
+      }
+    }
+
+    return '-';
   }
 
   private countryFromCode(code?: string | null): string {
@@ -263,4 +330,5 @@ export class RevistasLocationMapComponent implements AfterViewInit, OnChanges, O
   protected legendDotSize(total: number): number {
     return Math.min(19, 7 + Math.max(0, total - 1) * 4);
   }
+
 }
