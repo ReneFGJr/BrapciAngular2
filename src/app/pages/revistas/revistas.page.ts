@@ -15,6 +15,7 @@ type Journal = {
   jnl_ano_inicio?: string;
   jnl_ano_final?: string;
   jnl_active?: string;
+  jnl_historic?: string | number | boolean;
   jnl_frbr?: string;
   jnl_url?: string;
   cover?: string;
@@ -40,6 +41,7 @@ export class RevistasPage {
   readonly error = signal('');
   readonly journals = signal<Journal[]>([]);
   readonly typeFilter = signal<'ALL' | 'JA' | 'JE'>('ALL');
+  readonly statusFilter = signal<'ALL' | 'CURRENT' | 'HISTORIC'>('ALL');
   readonly titleQuery = signal('');
   readonly activeSection = signal<'list' | 'location'>('list');
 
@@ -48,19 +50,22 @@ export class RevistasPage {
     this.allLocationJournals().filter((journal) => {
       const query = this.titleQuery().trim().toLowerCase();
       const activeType = this.typeFilter();
+      const activeStatus = this.statusFilter();
 
       const collection = String(journal.jnl_collection ?? '').trim().toUpperCase();
       const title = String(journal.jnl_name ?? '').toLowerCase();
 
       const matchesType = activeType === 'ALL' ? true : collection === activeType;
+      const matchesStatus = this.matchesStatusFilter(journal, activeStatus);
       const matchesTitle = query ? title.includes(query) : true;
 
-      return matchesType && matchesTitle;
+      return matchesType && matchesStatus && matchesTitle;
     })
   );
 
   readonly filteredJournals = computed(() => {
     const activeType = this.typeFilter();
+    const activeStatus = this.statusFilter();
     const query = this.titleQuery().trim().toLowerCase();
 
     return this.journals().filter((journal) => {
@@ -70,9 +75,10 @@ export class RevistasPage {
       const title = String(journal.jnl_name ?? '').toLowerCase();
 
       const matchesType = activeType === 'ALL' ? true : collection === activeType;
+      const matchesStatus = this.matchesStatusFilter(journal, activeStatus);
       const matchesTitle = query ? title.includes(query) : true;
 
-      return matchesType && matchesTitle;
+      return matchesType && matchesStatus && matchesTitle;
     });
   });
 
@@ -103,6 +109,10 @@ export class RevistasPage {
 
   setTypeFilter(type: 'ALL' | 'JA' | 'JE'): void {
     this.typeFilter.set(type);
+  }
+
+  setStatusFilter(status: 'ALL' | 'CURRENT' | 'HISTORIC'): void {
+    this.statusFilter.set(status);
   }
 
   setTitleQuery(value: string): void {
@@ -201,5 +211,29 @@ export class RevistasPage {
     const long = Number.parseFloat(String(journal['long'] ?? '').trim());
 
     return Number.isFinite(lat) && Number.isFinite(long);
+  }
+
+  private matchesStatusFilter(journal: Journal, status: 'ALL' | 'CURRENT' | 'HISTORIC'): boolean {
+    if (status === 'ALL') {
+      return true;
+    }
+
+    const isHistoric = this.isHistoricJournal(journal);
+    return status === 'HISTORIC' ? isHistoric : !isHistoric;
+  }
+
+  private isHistoricJournal(journal: Journal): boolean {
+    const value = journal.jnl_historic;
+
+    if (typeof value === 'boolean') {
+      return value;
+    }
+
+    if (typeof value === 'number') {
+      return value === 1;
+    }
+
+    const normalized = String(value ?? '').trim().toLowerCase();
+    return normalized === '1' || normalized === 'true' || normalized === 'yes';
   }
 }

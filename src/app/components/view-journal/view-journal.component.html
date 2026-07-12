@@ -48,25 +48,14 @@
       }
 
       @case ('location') {
-        @if (location().country || location().city) {
+        @if (location().city) {
           <div class="location-layout">
             <div class="location-map-wrap">
               <div #locationMap class="journal-location-map"></div>
             </div>
 
             <div class="row g-3">
-              <div class="col-12 col-md-6" [class.d-none]="!location().country">
-                <div class="border rounded-3 p-3 h-100">
-                  <h3 class="h6 mb-3">País</h3>
-                  <p class="mb-1"><strong>Nome:</strong> {{ location().country?.name }}</p>
-                  <p class="mb-1"><strong>Latitude:</strong> {{ location().country?.lat }}</p>
-                  <p class="mb-1"><strong>Longitude:</strong> {{ location().country?.long }}</p>
-                  <p class="mb-1"><strong>Altitude:</strong> {{ location().country?.altitude }}</p>
-                  <p class="mb-0"><strong>ID:</strong> {{ location().country?.id }}</p>
-                </div>
-              </div>
-
-              <div class="col-12 col-md-6" [class.d-none]="!location().city">
+              <div class="col-12" [class.d-none]="!location().city">
                 <div class="border rounded-3 p-3 h-100">
                   <h3 class="h6 mb-3">Cidade</h3>
                   <p class="mb-1"><strong>Nome:</strong> {{ location().city?.name }}</p>

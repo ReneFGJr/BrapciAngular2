@@ -187,12 +187,11 @@ export class ViewJournalComponent {
     this.destroyMap();
   }
 
-  private extractLocation(): { country: GeoPlace | null; city: GeoPlace | null } {
+  private extractLocation(): { city: GeoPlace | null } {
     const record = this.asRecord(this.data);
     const geo = this.asRecord(record?.['geo']);
 
     return {
-      country: this.asGeoPlace(geo?.['country']),
       city: this.asGeoPlace(geo?.['city'])
     };
   }
@@ -234,13 +233,6 @@ export class ViewJournalComponent {
   private locationPoints(): GeoPoint[] {
     const location = this.location();
     const points: GeoPoint[] = [];
-
-    if (location.country) {
-      const country = this.toGeoPoint(location.country);
-      if (country) {
-        points.push(country);
-      }
-    }
 
     if (location.city) {
       const city = this.toGeoPoint(location.city);
@@ -320,10 +312,12 @@ export class ViewJournalComponent {
       bounds.extend([point.lat, point.long]);
     }
 
-    if (bounds.isValid()) {
+    if (points.length === 1) {
+      map.setView([points[0].lat, points[0].long], 12);
+    } else if (bounds.isValid()) {
       map.fitBounds(bounds.pad(0.35));
     } else {
-      map.setView([points[0].lat, points[0].long], 4);
+      map.setView([points[0].lat, points[0].long], 12);
     }
 
     this.mapInstance = map;
