@@ -327,8 +327,13 @@ export class RevistasLocationMapComponent implements AfterViewInit, OnChanges, O
     return Math.min(18, 7 + Math.max(0, total - 1) * 2);
   }
 
-  protected legendDotSize(total: number): number {
-    return Math.min(19, 7 + Math.max(0, total - 1) * 4);
+  protected cityBarWidth(total: number): number {
+    const maxTotal = this.cityAggregates()[0]?.total ?? 0;
+    if (!maxTotal) {
+      return 0;
+    }
+
+    return Math.max(8, Math.round((total / maxTotal) * 100));
   }
 
 }

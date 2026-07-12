@@ -15,17 +15,31 @@
       <div #mapContainer class="revistas-location-map__map"></div>
     </div>
 
-    <div class="revistas-location-map__legend mt-3" aria-label="Legenda do mapa por cidade">
-      @for (city of cityAggregates(); track city.key) {
-        <div class="revistas-location-map__legend-item">
-          <span
-            class="revistas-location-map__legend-dot"
-            [style.width.px]="legendDotSize(city.total)"
-            [style.height.px]="legendDotSize(city.total)"
-          ></span>
-          <span class="revistas-location-map__legend-text">{{ city.city }}: {{ city.total }} revista(s)</span>
-        </div>
-      }
+    <div class="table-responsive mt-3" aria-label="Totais por cidade">
+      <table class="table table-sm align-middle revistas-location-map__city-table mb-0">
+        <thead>
+          <tr>
+            <th>Cidade</th>
+            <th>País</th>
+            <th>Total</th>
+            <th>Distribuição</th>
+          </tr>
+        </thead>
+        <tbody>
+          @for (city of cityAggregates(); track city.key) {
+            <tr>
+              <td>{{ city.city }}</td>
+              <td>{{ city.country }}</td>
+              <td>{{ city.total }}</td>
+              <td>
+                <div class="revistas-location-map__bar-track">
+                  <div class="revistas-location-map__bar-fill" [style.width.%]="cityBarWidth(city.total)"></div>
+                </div>
+              </td>
+            </tr>
+          }
+        </tbody>
+      </table>
     </div>
 
     <div class="table-responsive mt-3">
