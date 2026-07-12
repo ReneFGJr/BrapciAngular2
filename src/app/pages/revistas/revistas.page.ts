@@ -4,6 +4,7 @@ import { Router } from '@angular/router';
 import { TranslateModule } from '@ngx-translate/core';
 import { BrapciApiService } from '../../core/services/brapci-api.service';
 import { BreadcrumbsComponent } from '../../components/breadcrumbs/breadcrumbs.component';
+import { RevistasLocationMapComponent } from './revistas-location-map/revistas-location-map.component';
 
 type Journal = {
   id_jnl: string;
@@ -18,16 +19,20 @@ type Journal = {
   jnl_url?: string;
   cover?: string;
   jnl_collection?: string;
+  lat?: string;
+  long?: string;
   [key: string]: any;
 };
 
 @Component({
   selector: 'app-revistas-page',
+  standalone: true,
   imports: [CommonModule, TranslateModule, BreadcrumbsComponent],
   templateUrl: './revistas.page.html',
   styleUrl: './revistas.page.scss',
 })
 export class RevistasPage {
+  readonly revistasLocationMapComponent = RevistasLocationMapComponent;
   private readonly brapciApiService = inject(BrapciApiService);
   private readonly router = inject(Router);
 
@@ -36,6 +41,11 @@ export class RevistasPage {
   readonly journals = signal<Journal[]>([]);
   readonly typeFilter = signal<'ALL' | 'JA' | 'JE'>('ALL');
   readonly titleQuery = signal('');
+  readonly activeSection = signal<'list' | 'location'>('list');
+
+  readonly locationJournals = computed(() =>
+    this.filteredJournals().filter((journal) => this.hasLocation(journal))
+  );
 
   readonly filteredJournals = computed(() => {
     const activeType = this.typeFilter();
@@ -85,6 +95,10 @@ export class RevistasPage {
 
   setTitleQuery(value: string): void {
     this.titleQuery.set(value);
+  }
+
+  setSection(section: 'list' | 'location'): void {
+    this.activeSection.set(section);
   }
 
   exportCsv(): void {
@@ -168,5 +182,12 @@ export class RevistasPage {
     } catch {
       return String(value);
     }
+  }
+
+  private hasLocation(journal: Journal): boolean {
+    const lat = Number.parseFloat(String(journal['lat'] ?? '').trim());
+    const long = Number.parseFloat(String(journal['long'] ?? '').trim());
+
+    return Number.isFinite(lat) && Number.isFinite(long);
   }
 }

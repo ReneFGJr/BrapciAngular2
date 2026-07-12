@@ -1,0 +1,30 @@
+<section class="revistas-location-map card p-3 p-md-4" aria-labelledby="revistas-location-map-title">
+  <header class="d-flex flex-wrap align-items-center justify-content-between gap-2 mb-3">
+    <div>
+      <p class="revistas-location-map__kicker mb-1">Localização</p>
+      <h3 id="revistas-location-map-title" class="h5 mb-0">Revistas geolocalizadas</h3>
+    </div>
+
+    <p class="revistas-location-map__count mb-0">
+      {{ journals.length }} revista(s) com coordenadas válidas
+    </p>
+  </header>
+
+  @if (mapPoints().length) {
+    <div class="revistas-location-map__canvas">
+      <div #mapContainer class="revistas-location-map__map"></div>
+    </div>
+
+    <div class="revistas-location-map__legend mt-3">
+      @for (point of mapPoints(); track point.id) {
+        <div class="revistas-location-map__item">
+          <strong>{{ point.title }}</strong>
+          <span *ngIf="point.subtitle">{{ point.subtitle }}</span>
+          <small>{{ point.lat }}, {{ point.long }}</small>
+        </div>
+      }
+    </div>
+  } @else {
+    <p class="mb-0 text-secondary">Nenhuma revista com latitude e longitude foi encontrada.</p>
+  }
+</section>

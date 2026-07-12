@@ -11,7 +11,7 @@
   </div>
 
   <div class="container mb-4">
-    <div class="d-flex flex-wrap gap-2 align-items-center">
+    <div class="d-flex flex-wrap gap-2 align-items-center revistas-tabs">
       <div class="btn-group btn-group-sm" role="group" [attr.aria-label]="'journals.filterAriaLabel' | translate">
         <button
           type="button"
@@ -24,7 +24,7 @@
         </button>
         <button
           type="button"
-          class="btn"
+          class="btn ms-2"
           [class.btn-primary]="typeFilter() === 'JA'"
           [class.btn-outline-primary]="typeFilter() !== 'JA'"
           (click)="setTypeFilter('JA')"
@@ -33,7 +33,7 @@
         </button>
         <button
           type="button"
-          class="btn"
+          class="btn ms-2"
           [class.btn-primary]="typeFilter() === 'JE'"
           [class.btn-outline-primary]="typeFilter() !== 'JE'"
           (click)="setTypeFilter('JE')"
@@ -41,6 +41,26 @@
           {{ 'journals.filterJe' | translate }}
         </button>
       </div>
+
+        <button
+          type="button"
+          class="btn btn-sm btn-outline-primary ms-2"
+          (click)="setSection('location')"
+          [class.active]="activeSection() === 'location'"
+          [attr.aria-pressed]="activeSection() === 'location'"
+        >
+          Localização
+        </button>
+
+        <button
+          type="button"
+          class="btn btn-sm btn-outline-primary"
+          (click)="setSection('list')"
+          [class.active]="activeSection() === 'list'"
+          [attr.aria-pressed]="activeSection() === 'list'"
+        >
+          Lista
+        </button>
 
       <button
         type="button"
@@ -62,24 +82,43 @@
     </div>
   </div>
 
-  @if (!hasFilteredResults()) {
+  @if (activeSection() === 'location') {
+    <div class="container mb-4">
+      @if (locationJournals().length) {
+        <ng-container
+          *ngComponentOutlet="revistasLocationMapComponent; inputs: { journals: locationJournals() }"
+        ></ng-container>
+      } @else {
+        <section class="revistas-location-empty card p-3 p-md-4">
+          <h3 class="h5 mb-2">Localização</h3>
+          <p class="mb-0 text-secondary">
+            Nenhuma revista com coordenadas válidas foi encontrada no filtro atual.
+          </p>
+        </section>
+      }
+    </div>
+  }
+
+  @if (activeSection() === 'list' && !hasFilteredResults()) {
     <div class="container mb-4">
       <p class="mb-0 text-secondary">{{ 'journals.noResultsForFilters' | translate }}</p>
     </div>
   }
 
-  <div class="container revistas-grid">
-    @for (journal of filteredJournals(); track journal.id_jnl) {
-      <div class="revista-card border p-0" (click)="openV(journal)" style="cursor: pointer">
-        <div>
-          @if (journal.cover) {
-            <img class="revista-cover" [src]="journal.cover" [alt]="journal.jnl_name" />
-          }
+  @if (activeSection() === 'list') {
+    <div class="container revistas-grid">
+      @for (journal of filteredJournals(); track journal.id_jnl) {
+        <div class="revista-card border p-0" (click)="openV(journal)" style="cursor: pointer">
+          <div>
+            @if (journal.cover) {
+              <img class="revista-cover" [src]="journal.cover" [alt]="journal.jnl_name" />
+            }
 
-          <span class="mb-2 small">{{ journal.jnl_name_abrev }}</span>
+            <span class="mb-2 small">{{ journal.jnl_name_abrev }}</span>
+          </div>
         </div>
-      </div>
-    }
-  </div>
+      }
+    </div>
+  }
 }
 </section>

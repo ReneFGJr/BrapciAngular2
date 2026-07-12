@@ -223,8 +223,8 @@
     "exportCsv": "Exportar CSV",
     "filterAriaLabel": "Filtro por tipo de publicacion",
     "filterAll": "Todas",
-    "filterJa": "JA - Revistas brasilenas",
-    "filterJe": "JE - Revistas extranjeras",
+    "filterJa": "Revistas brasilenas",
+    "filterJe": "Revistas extranjeras",
     "searchPlaceholder": "Buscar por titulo",
     "noResultsForFilters": "No hay resultados para los filtros seleccionados."
   },

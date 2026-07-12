@@ -1,0 +1,82 @@
+.revistas-location-map {
+  background: var(--theme-card-bg);
+  border: 1px solid var(--theme-line);
+  border-radius: 1rem;
+  box-shadow: 0 14px 40px rgb(16 37 66 / 8%);
+}
+
+.revistas-location-map__kicker {
+  color: var(--theme-muted);
+  font-size: 0.72rem;
+  letter-spacing: 0.12rem;
+  text-transform: uppercase;
+}
+
+.revistas-location-map__count {
+  color: var(--theme-muted);
+  font-size: 0.9rem;
+}
+
+.revistas-location-map__canvas {
+  border: 1px solid var(--theme-line);
+  border-radius: 0.85rem;
+  overflow: hidden;
+}
+
+.revistas-location-map__map {
+  min-height: 420px;
+  width: 100%;
+}
+
+.revistas-location-map__legend {
+  display: grid;
+  gap: 0.65rem;
+}
+
+.revistas-location-map__item {
+  border: 1px solid var(--theme-line);
+  border-radius: 0.75rem;
+  display: grid;
+  gap: 0.15rem;
+  padding: 0.7rem 0.8rem;
+}
+
+.revistas-location-map__item strong {
+  color: var(--theme-ink);
+}
+
+.revistas-location-map__item span,
+.revistas-location-map__item small {
+  color: var(--theme-muted);
+}
+
+:host-context(body.theme-master.theme-dark) .revistas-location-map {
+  background:
+    radial-gradient(circle at top left, rgb(255 255 255 / 6%), transparent 36%),
+    linear-gradient(180deg, rgb(16 23 39 / 92%), rgb(13 19 31 / 88%));
+  border-color: rgb(48 68 95 / 88%);
+  box-shadow: 0 18px 38px rgb(0 0 0 / 28%);
+}
+
+:host-context(body.theme-master.theme-dark) .revistas-location-map__canvas,
+:host-context(body.theme-master.theme-dark) .revistas-location-map__item {
+  background: rgb(18 32 51 / 94%);
+  border-color: rgb(48 68 95 / 88%);
+}
+
+:host-context(body.theme-master.theme-dark) .revistas-location-map__item strong {
+  color: var(--theme-ink);
+}
+
+:host-context(body.theme-master.theme-dark) .revistas-location-map__kicker,
+:host-context(body.theme-master.theme-dark) .revistas-location-map__count,
+:host-context(body.theme-master.theme-dark) .revistas-location-map__item span,
+:host-context(body.theme-master.theme-dark) .revistas-location-map__item small {
+  color: var(--theme-muted);
+}
+
+@media (min-width: 768px) {
+  .revistas-location-map__legend {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}

@@ -294,8 +294,8 @@
     "exportCsv": "Exportar CSV",
     "filterAriaLabel": "Filtro por tipo de publicacao",
     "filterAll": "Todas",
-    "filterJa": "JA - Revistas Brasileiras",
-    "filterJe": "JE - Revistas Estrangeiras",
+    "filterJa": "Revistas Brasileiras",
+    "filterJe": "Revistas Estrangeiras",
     "searchPlaceholder": "Pesquisar por titulo",
     "noResultsForFilters": "Nenhum resultado para os filtros selecionados.",
     "noResults": "Nenhuma revista encontrada."
