@@ -31,23 +31,59 @@
 .revistas-location-map__legend {
   display: grid;
   gap: 0.65rem;
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
 }
 
-.revistas-location-map__item {
+.revistas-location-map__legend-item {
+  align-items: center;
+  background: rgb(56 90 124 / 8%);
+  border: 1px solid rgb(56 90 124 / 18%);
+  border-radius: 0.85rem;
+  display: flex;
+  gap: 0.75rem;
+  min-height: 3rem;
+  padding: 0.7rem 0.9rem;
+}
+
+.revistas-location-map__legend-dot {
+  background: #385a7c;
+  border: 2px solid #385a7c;
+  border-radius: 999px;
+  display: inline-block;
+  flex: 0 0 auto;
+  max-height: 19px;
+  max-width: 19px;
+  min-height: 7px;
+  min-width: 7px;
+  opacity: 0.9;
+}
+
+.revistas-location-map__legend-text {
+  color: var(--theme-ink);
+  font-size: 0.92rem;
+}
+
+.revistas-location-map__table {
+  background: var(--theme-card-bg);
   border: 1px solid var(--theme-line);
   border-radius: 0.75rem;
-  display: grid;
-  gap: 0.15rem;
-  padding: 0.7rem 0.8rem;
+  overflow: hidden;
 }
 
-.revistas-location-map__item strong {
+.revistas-location-map__table thead th {
+  background: var(--theme-sand);
+  color: var(--theme-ink);
+  font-size: 0.8rem;
+  font-weight: 700;
+  text-transform: uppercase;
+}
+
+.revistas-location-map__table td {
   color: var(--theme-ink);
 }
 
-.revistas-location-map__item span,
-.revistas-location-map__item small {
-  color: var(--theme-muted);
+.revistas-location-map__table tbody tr:nth-child(even) {
+  background: rgb(255 255 255 / 24%);
 }
 
 :host-context(body.theme-master.theme-dark) .revistas-location-map {
@@ -59,24 +95,32 @@
 }
 
 :host-context(body.theme-master.theme-dark) .revistas-location-map__canvas,
-:host-context(body.theme-master.theme-dark) .revistas-location-map__item {
+:host-context(body.theme-master.theme-dark) .revistas-location-map__table {
   background: rgb(18 32 51 / 94%);
   border-color: rgb(48 68 95 / 88%);
 }
 
-:host-context(body.theme-master.theme-dark) .revistas-location-map__item strong {
-  color: var(--theme-ink);
+:host-context(body.theme-master.theme-dark) .revistas-location-map__legend-item {
+  background: rgb(18 32 51 / 94%);
+  border-color: rgb(48 68 95 / 88%);
 }
 
 :host-context(body.theme-master.theme-dark) .revistas-location-map__kicker,
 :host-context(body.theme-master.theme-dark) .revistas-location-map__count,
-:host-context(body.theme-master.theme-dark) .revistas-location-map__item span,
-:host-context(body.theme-master.theme-dark) .revistas-location-map__item small {
+:host-context(body.theme-master.theme-dark) .revistas-location-map__legend-text,
+:host-context(body.theme-master.theme-dark) .revistas-location-map__table td,
+:host-context(body.theme-master.theme-dark) .revistas-location-map__table th {
   color: var(--theme-muted);
 }
 
+:host-context(body.theme-master.theme-dark) .revistas-location-map__table thead th {
+  background: rgb(33 47 70 / 96%);
+  color: var(--theme-ink);
+}
+
+:host-context(body.theme-master.theme-dark) .revistas-location-map__table tbody tr:nth-child(even) {
+  background: rgb(255 255 255 / 4%);
+}
+
 @media (min-width: 768px) {
-  .revistas-location-map__legend {
-    grid-template-columns: repeat(2, minmax(0, 1fr));
-  }
 }

@@ -43,8 +43,20 @@ export class RevistasPage {
   readonly titleQuery = signal('');
   readonly activeSection = signal<'list' | 'location'>('list');
 
+  readonly allLocationJournals = computed(() => this.journals().filter((journal) => this.hasLocation(journal)));
   readonly locationJournals = computed(() =>
-    this.filteredJournals().filter((journal) => this.hasLocation(journal))
+    this.allLocationJournals().filter((journal) => {
+      const query = this.titleQuery().trim().toLowerCase();
+      const activeType = this.typeFilter();
+
+      const collection = String(journal.jnl_collection ?? '').trim().toUpperCase();
+      const title = String(journal.jnl_name ?? '').toLowerCase();
+
+      const matchesType = activeType === 'ALL' ? true : collection === activeType;
+      const matchesTitle = query ? title.includes(query) : true;
+
+      return matchesType && matchesTitle;
+    })
   );
 
   readonly filteredJournals = computed(() => {

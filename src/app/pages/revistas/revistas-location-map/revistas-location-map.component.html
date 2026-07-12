@@ -6,23 +6,47 @@
     </div>
 
     <p class="revistas-location-map__count mb-0">
-      {{ journals.length }} revista(s) com coordenadas válidas
+      {{ cityAggregates().length }} cidade(s) com {{ mapPoints().length }} revista(s) geolocalizadas
     </p>
   </header>
 
-  @if (mapPoints().length) {
+  @if (cityAggregates().length) {
     <div class="revistas-location-map__canvas">
       <div #mapContainer class="revistas-location-map__map"></div>
     </div>
 
-    <div class="revistas-location-map__legend mt-3">
-      @for (point of mapPoints(); track point.id) {
-        <div class="revistas-location-map__item">
-          <strong>{{ point.title }}</strong>
-          <span *ngIf="point.subtitle">{{ point.subtitle }}</span>
-          <small>{{ point.lat }}, {{ point.long }}</small>
+    <div class="revistas-location-map__legend mt-3" aria-label="Legenda do mapa por cidade">
+      @for (city of cityAggregates(); track city.key) {
+        <div class="revistas-location-map__legend-item">
+          <span
+            class="revistas-location-map__legend-dot"
+            [style.width.px]="legendDotSize(city.total)"
+            [style.height.px]="legendDotSize(city.total)"
+          ></span>
+          <span class="revistas-location-map__legend-text">{{ city.city }}: {{ city.total }} revista(s)</span>
         </div>
       }
+    </div>
+
+    <div class="table-responsive mt-3">
+      <table class="table table-sm align-middle revistas-location-map__table mb-0">
+        <thead>
+          <tr>
+            <th>Cidade</th>
+            <th>País</th>
+            <th>Total de revistas</th>
+          </tr>
+        </thead>
+        <tbody>
+          @for (row of tableRows(); track row.city + row.country) {
+            <tr>
+              <td>{{ row.city }}</td>
+              <td>{{ row.country }}</td>
+              <td>{{ row.total }}</td>
+            </tr>
+          }
+        </tbody>
+      </table>
     </div>
   } @else {
     <p class="mb-0 text-secondary">Nenhuma revista com latitude e longitude foi encontrada.</p>

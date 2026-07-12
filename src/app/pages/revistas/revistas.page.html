@@ -84,9 +84,9 @@
 
   @if (activeSection() === 'location') {
     <div class="container mb-4">
-      @if (locationJournals().length) {
+      @if (allLocationJournals().length) {
         <ng-container
-          *ngComponentOutlet="revistasLocationMapComponent; inputs: { journals: locationJournals() }"
+          *ngComponentOutlet="revistasLocationMapComponent; inputs: { journals: allLocationJournals() }"
         ></ng-container>
       } @else {
         <section class="revistas-location-empty card p-3 p-md-4">

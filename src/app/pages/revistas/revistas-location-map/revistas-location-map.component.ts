@@ -14,6 +14,7 @@ type JournalLocation = {
   id_jnl: string;
   jnl_name: string;
   jnl_name_abrev?: string;
+  jnl_issn?: string | null;
   gc_name?: string | null;
   lat?: string | null;
   long?: string | null;
@@ -24,10 +25,46 @@ type JournalLocation = {
 
 type GeoPoint = {
   id: string;
-  title: string;
-  subtitle: string;
+  name: string;
+  issn: string;
+  city: string;
+  country: string;
   lat: number;
   long: number;
+};
+
+type CityAggregate = {
+  key: string;
+  city: string;
+  country: string;
+  lat: number;
+  long: number;
+  total: number;
+  journals: GeoPoint[];
+};
+
+type JournalTableRow = {
+  city: string;
+  country: string;
+  total: number;
+};
+
+const COUNTRY_LABELS: Record<string, string> = {
+  AR: 'Argentina',
+  BR: 'Brasil',
+  CL: 'Chile',
+  CO: 'Colombia',
+  CR: 'Costa Rica',
+  CU: 'Cuba',
+  EC: 'Equador',
+  ES: 'Espanha',
+  ET: 'Estonia',
+  MX: 'México',
+  PA: 'Panamá',
+  PE: 'Peru',
+  PT: 'Portugal',
+  UY: 'Uruguai',
+  US: 'Estados Unidos'
 };
 
 @Component({
@@ -45,6 +82,8 @@ export class RevistasLocationMapComponent implements AfterViewInit, OnChanges, O
   private renderAttempts = 0;
 
   readonly mapPoints = (() => this.buildPoints()) as () => GeoPoint[];
+  readonly cityAggregates = (() => this.buildCityAggregates()) as () => CityAggregate[];
+  readonly tableRows = (() => this.buildTableRows()) as () => JournalTableRow[];
 
   ngAfterViewInit(): void {
     this.scheduleRender();
@@ -66,6 +105,47 @@ export class RevistasLocationMapComponent implements AfterViewInit, OnChanges, O
       .filter((point): point is GeoPoint => point !== null);
   }
 
+  private buildTableRows(): JournalTableRow[] {
+    return this.buildCityAggregates().map((aggregate) => ({
+      city: aggregate.city,
+      country: aggregate.country,
+      total: aggregate.total
+    }));
+  }
+
+  private buildCityAggregates(): CityAggregate[] {
+    const grouped = new Map<string, CityAggregate>();
+
+    for (const point of this.buildPoints()) {
+      const key = `${point.city}__${point.country}__${point.lat.toFixed(6)}__${point.long.toFixed(6)}`;
+      const current = grouped.get(key);
+
+      if (current) {
+        current.total += 1;
+        current.journals.push(point);
+        continue;
+      }
+
+      grouped.set(key, {
+        key,
+        city: point.city,
+        country: point.country,
+        lat: point.lat,
+        long: point.long,
+        total: 1,
+        journals: [point]
+      });
+    }
+
+    return Array.from(grouped.values()).sort((left, right) => {
+      if (right.total !== left.total) {
+        return right.total - left.total;
+      }
+
+      return left.city.localeCompare(right.city, 'pt-BR');
+    });
+  }
+
   private toPoint(journal: JournalLocation): GeoPoint | null {
     const lat = Number.parseFloat(String(journal.lat ?? '').trim());
     const long = Number.parseFloat(String(journal.long ?? '').trim());
@@ -76,11 +156,23 @@ export class RevistasLocationMapComponent implements AfterViewInit, OnChanges, O
 
     return {
       id: String(journal.id_jnl),
-      title: journal.jnl_name_abrev?.trim() || journal.jnl_name?.trim() || 'Revista',
-      subtitle: journal.gc_name?.trim() || journal.code?.trim() || '',
+      name: journal.jnl_name?.trim() || journal.jnl_name_abrev?.trim() || 'Revista',
+      issn: journal.jnl_issn?.trim() || '-',
+      city: journal.gc_name?.trim() || '-',
+      country: this.countryFromCode(journal.code),
       lat,
       long
     };
+  }
+
+  private countryFromCode(code?: string | null): string {
+    const value = String(code ?? '').trim().toUpperCase();
+    if (!value) {
+      return '-';
+    }
+
+    const countryCode = value.includes('-') ? value.split('-')[0] : value;
+    return COUNTRY_LABELS[countryCode] ?? countryCode;
   }
 
   private async renderMap(): Promise<void> {
@@ -89,9 +181,9 @@ export class RevistasLocationMapComponent implements AfterViewInit, OnChanges, O
     }
 
     const container = this.mapContainer?.nativeElement;
-    const points = this.buildPoints();
+    const cities = this.buildCityAggregates();
 
-    if (!container || points.length === 0) {
+    if (!container || cities.length === 0) {
       return;
     }
 
@@ -115,26 +207,26 @@ export class RevistasLocationMapComponent implements AfterViewInit, OnChanges, O
 
     const bounds = leaflet.latLngBounds([]);
 
-    for (const point of points) {
-      const marker = leaflet.circleMarker([point.lat, point.long], {
+    for (const city of cities) {
+      const marker = leaflet.circleMarker([city.lat, city.long], {
         color: '#385a7c',
         fillColor: '#385a7c',
         fillOpacity: 0.9,
-        radius: 7,
+        radius: this.markerRadius(city.total),
         weight: 2
       }).addTo(map);
 
       marker.bindPopup(
-        `<strong>${point.title}</strong><br>${point.subtitle ? `${point.subtitle}<br>` : ''}Lat: ${point.lat}<br>Long: ${point.long}`
+        `<strong>${city.city}</strong><br>País: ${city.country}<br>Total de revistas: ${city.total}<br>${city.journals.map((journal) => journal.name).join('<br>')}`
       );
 
-      bounds.extend([point.lat, point.long]);
+      bounds.extend([city.lat, city.long]);
     }
 
     if (bounds.isValid()) {
       map.fitBounds(bounds.pad(0.2));
     } else {
-      map.setView([points[0].lat, points[0].long], 4);
+      map.setView([cities[0].lat, cities[0].long], 4);
     }
 
     this.mapInstance = map;
@@ -162,5 +254,13 @@ export class RevistasLocationMapComponent implements AfterViewInit, OnChanges, O
 
     this.mapInstance.remove();
     this.mapInstance = null;
+  }
+
+  private markerRadius(total: number): number {
+    return Math.min(18, 7 + Math.max(0, total - 1) * 2);
+  }
+
+  protected legendDotSize(total: number): number {
+    return Math.min(19, 7 + Math.max(0, total - 1) * 4);
   }
 }
