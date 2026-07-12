@@ -313,11 +313,11 @@ export class ViewJournalComponent {
     }
 
     if (points.length === 1) {
-      map.setView([points[0].lat, points[0].long], 12);
+      map.setView([points[0].lat, points[0].long], 6);
     } else if (bounds.isValid()) {
       map.fitBounds(bounds.pad(0.35));
     } else {
-      map.setView([points[0].lat, points[0].long], 12);
+      map.setView([points[0].lat, points[0].long], 6);
     }
 
     this.mapInstance = map;
