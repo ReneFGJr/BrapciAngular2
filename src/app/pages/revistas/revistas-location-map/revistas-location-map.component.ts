@@ -92,7 +92,17 @@ const COUNTRY_LABELS: Record<string, string> = {
   styleUrl: './revistas-location-map.component.scss'
 })
 export class RevistasLocationMapComponent implements AfterViewInit, OnChanges, OnDestroy {
-  @Input() journals: JournalLocation[] = [];
+  private journalsInput: JournalLocation[] = [];
+
+  @Input()
+  set journals(value: unknown) {
+    this.journalsInput = this.normalizeJournalsInput(value);
+  }
+
+  get journals(): JournalLocation[] {
+    return this.journalsInput;
+  }
+
   @ViewChild('mapContainer') mapContainer?: ElementRef<HTMLDivElement>;
 
   private mapInstance: any = null;
@@ -127,6 +137,26 @@ export class RevistasLocationMapComponent implements AfterViewInit, OnChanges, O
       .map((journal) => this.toTableRow(journal))
       .filter((row): row is JournalTableRow => row !== null)
       .sort((left, right) => left.title.localeCompare(right.title, 'pt-BR'));
+  }
+
+  private normalizeJournalsInput(value: unknown): JournalLocation[] {
+    if (Array.isArray(value)) {
+      return value as JournalLocation[];
+    }
+
+    if (value && typeof value === 'object') {
+      const record = value as Record<string, unknown>;
+
+      if (Array.isArray(record['data'])) {
+        return record['data'] as JournalLocation[];
+      }
+
+      if (Array.isArray(record['items'])) {
+        return record['items'] as JournalLocation[];
+      }
+    }
+
+    return [];
   }
 
   private buildCityAggregates(): CityAggregate[] {
