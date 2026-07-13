@@ -235,7 +235,7 @@ export class RevistaTimelinePage {
       ...yearItem,
       journals: yearItem.journals.map((journal) => {
         const journalId = this.normalizeId(this.getJournalLinkId(journal));
-        const metadata = metadataMap.get(journalId);
+        const metadata = metadataMap.get(`frbr:${journalId}`) ?? metadataMap.get(`id_jnl:${journalId}`);
 
         if (!metadata) {
           return journal;
@@ -276,11 +276,14 @@ export class RevistaTimelinePage {
       };
 
       const keys = [journal.id_jnl, journal.jnl_frbr]
-        .map((value) => this.normalizeId(value))
-        .filter((value) => value.length > 0);
+        .map((value) => this.normalizeId(value));
 
-      for (const key of keys) {
-        map.set(key, metadata);
+      if (keys[0].length > 0) {
+        map.set(`id_jnl:${keys[0]}`, metadata);
+      }
+
+      if (keys[1].length > 0) {
+        map.set(`frbr:${keys[1]}`, metadata);
       }
     }
 
