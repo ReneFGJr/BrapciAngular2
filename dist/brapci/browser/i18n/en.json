@@ -1,0 +1,483 @@
+{
+  "common": {
+    "loading": "Loading...",
+    "dark": "Dark",
+    "toggleDarkMode": "Toggle dark mode",
+    "toggleNavigation": "Toggle navigation",
+    "selectLanguage": "Select language",
+    "openLanguageSelection": "Open language selection",
+    "login": "Sign in",
+    "userProfile": "User profile",
+    "markedDocuments": "Marked documents",
+    "sessionLabel": "Session"
+  },
+  "accessibility": {
+    "eyebrow": "Accessibility",
+    "title": "Quick settings",
+    "dialogLabel": "Accessibility panel",
+    "close": "Close panel",
+    "launcherAria": "Open accessibility panel",
+    "launcherTitle": "Accessibility",
+    "fontSize": "Font size",
+    "fontOptions": {
+      "normal": "Normal",
+      "large": "Large",
+      "giant": "Giant"
+    },
+    "darkMode": "Dark mode",
+    "enableDarkMode": "Enter dark mode",
+    "disableDarkMode": "Disable dark mode",
+    "letterSpacing": "Increase letter spacing",
+    "cursorLarge": "Increase cursor size",
+    "highlights": "Highlight H1-H6 headings",
+    "on": "On",
+    "off": "Off"
+  },
+  "app": {
+    "title": "Brapci",
+    "subtitle": "Portal with semantic SEO, authentication and API search"
+  },
+  "language": {
+    "label": "Language",
+    "pt": "Portuguese",
+    "en": "English",
+    "es": "Spanish"
+  },
+  "bollean": {
+    "title": "Boolean search"
+  },
+  "auth": {
+    "title": "Authentication",
+    "fullName": "Full name",
+    "username": "Username",
+    "email": "Email",
+    "accountEmail": "Account email",
+    "password": "Password",
+    "submit": "Entrar",
+    "register": "Create account",
+    "createAccount": "Create account",
+    "backToLogin": "Back to login",
+    "resendPassword": "Resend password",
+    "logout": "Sign out",
+    "welcome": "Welcome",
+    "invalid": "Invalid credentials. Use admin/admin123 or user/user123.",
+    "messages": {
+      "invalidCredentials": "Invalid username or password.",
+      "registerFailed": "Unable to create your account. Please review your data and try again.",
+      "registerSuccess": "Account created successfully.",
+      "resendFailed": "Unable to resend password right now.",
+      "resendSuccess": "If the email exists, we will send recovery instructions."
+    }
+  },
+    "basket": {
+      "selected": {
+        "title": "Selected documents",
+        "none": "No selected documents.",
+        "loading": "Loading selection...",
+        "none_category": "No items in this category.",
+        "clear": "Clear selection",
+        "Articles": "Articles",
+        "Books": "Books",
+        "BooksChapter": "Book Chapters",
+        "Proceedings": "Conference Proceedings"
+      }
+    },
+  "cited": {
+    "title": "Citation search",
+    "subtitle": "Search works and inspect citation formats.",
+    "inputLabel": "Search term",
+    "placeholder": "Type a term, author, or title",
+    "searchButton": "Search citations",
+    "loading": "Searching citations...",
+    "empty": "No citations found for this term.",
+    "error": "Unable to search citations."
+  },
+  "signin": {
+    "kicker": "Brapci Access",
+    "title": "Institutional authentication portal",
+    "subtitle": "Sign in to access personalized platform features.",
+    "cardSubtitle": "Use your username and password to sign in."
+  },
+  "search": {
+    "bollean": {
+      "title": "Boolean search",
+      "strategy": "Boolean search strategy",
+      "button": "Search",
+      "linkBack": "Back to normal search"
+    },
+    "title": "What are you looking for?",
+    "input": "Type a term",
+    "button": "Search",
+    "empty": "No results found for this query.",
+    "idle": "Type a term to query the Brapci API.",
+    "filters": {
+      "title": "Search filters",
+      "year_start": "Start year",
+      "year_end": "End year",
+      "publication_type": "Publication type",
+      "search_field": "Search field",
+      "types": {
+        "JA": "Brazilian journals",
+        "JE": "Foreign journals",
+        "BK": "Books and chapters",
+        "EV": "Conference proceedings"
+      },
+      "fields": {
+        "TI": "Title",
+        "AB": "Abstract",
+        "KW": "Keywords",
+        "AU": "Author",
+        "FL": "All fields"
+      }
+    }
+  },
+  "searchBook": {
+    "title": "Work Search - Books",
+    "labels": {
+      "keywords": "Keywords:",
+      "workType": "Work Type:"
+    },
+    "placeholders": {
+      "keywords": "Enter search terms"
+    },
+    "options": {
+      "selectType": "Select Type",
+      "book": "Book",
+      "chapter": "Chapter"
+    },
+    "states": {
+      "loadingResults": "Loading results..."
+    },
+    "errors": {
+      "noneFound": "No books found for the selected filters.",
+      "requestFailed": "Unable to search books at this moment."
+    },
+    "results": {
+      "noMetadata": "No additional metadata"
+    },
+    "actions": {
+      "view": "View"
+    }
+  },
+  "authority": {
+    "bannerAlt": "Authority control",
+    "title": "Authority Control",
+    "searchLabel": "Search term",
+    "placeholder": "Enter the author name",
+    "loading": "Loading...",
+    "resultsTitle": "",
+    "empty": "No results where use = ID for the informed term.",
+    "apiError": "Unable to query the authority API."
+  },
+  "author": {
+    "gadget": "Author Gadget",
+    "name": "Name",
+    "nameAbnt": "ABNT Name",
+    "id": "ID",
+    "allProduction": "All production",
+    "yearsProduction": "years",
+    "bibliographic": "Bibliographic productions",
+    "total": "Total",
+    "noRecords": "No records for this type.",
+    "coauthors": {
+      "label": "Co-authors",
+      "name": "Name",
+      "publications": "Publications"
+    },
+    "network": {
+      "label": "Collaboration Network"
+    },
+    "citationsGranted": {
+      "label": "Granted Citations"
+    },
+    "workTypes": {
+      "Article": "Articles",
+      "Book": "Books",
+      "BookChapter": "Book Chapters",
+      "Proceeding": "Conference Papers"
+    },
+    "summary": {
+      "label": "Summary",
+      "journals": "Journals",
+      "points": "Points",
+      "volume": "Volume",
+      "dispersionTitle": "Journal dispersion chart",
+      "yearAxis": "X axis",
+      "volumeAxis": "Y axis",
+      "frequency": "Frequency",
+      "journal": "Journal",
+      "tableTitle": "Data table",
+      "pieTitle": "Journal distribution",
+      "others": "Others",
+      "noData": "No dataJOUR data available to display."
+    },
+    "tags": {
+      "title": "Tag cloud",
+      "noData": "No dataTAG data available to display."
+    }
+  },
+  "issue": {
+    "hero": {
+      "kicker": "Issue",
+      "badgesLabel": "Quick issue summary",
+      "metricsLabel": "Issue indicators"
+    },
+    "badges": {
+      "id": "ID",
+      "volume": "Vol.",
+      "articles": "Articles"
+    },
+    "tabs": {
+      "ariaLabel": "Issue content tabs",
+      "summary": "Summary",
+      "works": "Works",
+      "authors": "Authors",
+      "keywords": "Keywords",
+      "json": "JSON"
+    },
+    "common": {
+      "csv": "CSV"
+    },
+    "summary": {
+      "main": {
+        "title": "Main data",
+        "acronym": "Acronym",
+        "source": "Source",
+        "journalId": "Journal identifier",
+        "year": "Year",
+        "issue": "Issue",
+        "location": "Location"
+      },
+      "production": {
+        "title": "Production",
+        "works": "Works",
+        "authors": "Authors",
+        "coauthorAverage": "Average co-authorship"
+      }
+    },
+    "works": {
+      "empty": "No works available.",
+      "authorsLabel": "Authors",
+      "flagsLabel": "Work indicators"
+    },
+    "authors": {
+      "title": "Authors",
+      "subtitle": "Total works by author",
+      "exportCsv": "Export authors as CSV",
+      "empty": "No authors available.",
+      "distribution": {
+        "title": "Distribution",
+        "subtitle": "Number of authors per work",
+        "unit": "author(s)",
+        "empty": "No distribution available."
+      }
+    },
+    "keywords": {
+      "title": "Tag cloud",
+      "subtitle": "Keywords ordered by frequency",
+      "exportCsv": "Export keywords as CSV",
+      "frequencyTitle": "Frequency",
+      "frequencySubtitle": "Occurrences by term",
+      "table": {
+        "keyword": "Keyword",
+        "freq": "Freq."
+      },
+      "empty": "No keywords available."
+    },
+    "tags": {
+      "title": "Tag cloud",
+      "noData": "No keywords available."
+    }
+  },
+  "journals": {
+    "accessLink": "Access journal",
+    "publicationsList": "Publications list",
+    "eventsList": "Events list",
+    "exportCsv": "Export CSV",
+    "filterAriaLabel": "Filter by publication type",
+    "filterAll": "All",
+    "filterJa": "JA - Brazilian journals",
+    "filterJe": "JE - Foreign journals",
+    "searchPlaceholder": "Search by title",
+    "noResultsForFilters": "No results for the selected filters.",
+    "noResults": "No journals found."
+  },
+  "timeline": {
+    "title": "Journals Timeline",
+    "loading": "Loading journals timeline...",
+    "yearsRange": "Journals from {{min}} to {{max}}",
+    "period": "Period",
+    "collection": "Collection",
+    "active": "Active",
+    "inactive": "Inactive",
+    "noData": "No timeline data available for the selected filters."
+  },
+  "profile": {
+    "title": "User Profile",
+    "notLogged": "You need to be logged in to view your profile.",
+    "goToLogin": "Go to login",
+    "name": "Name",
+    "username": "Username",
+    "id": "ID",
+    "role": "Role",
+    "localUserTitle": "Local session data",
+    "sessionExpiresAt": "Expires at",
+    "noLocalUser": "No local session data found.",
+    "openExternal": "Open external profile"
+  },
+  "menu": {
+    "tools": "Tools",
+    "toolsBibliographics": "Bibliographic tools",
+    "toolsBibliometric": "Bibliometric tools",
+    "toolsText": "Text tools",
+    "navbar": {
+      "authorities": "Authorities",
+      "magazines": "Journals",
+      "events": "Events",
+      "benancib": "Benancib",
+      "books": "Books",
+      "about": "About",
+      "worldSmall": "Small World in CI",
+      "aboutBrapci": "About Brapci",
+      "aboutBenancib": "About Benancib",
+      "aboutBrapciBooks": "About Brapci Books",
+      "howIndex": "How to be indexed at Brapci",
+      "team": "Team",
+      "subjectIndex": "Subject Indexes",
+      "authorIndex": "Author Indexes",
+      "productionIndicator": "Production Indicator",
+      "searchIndicator": "Search Indicator",
+      "apiDoc": "API Documentation"
+    }
+  },
+  "tools": {
+    "kicker": "Tools",
+    "bibliographics": {
+      "title": "Bibliographic tools",
+      "subtitle": "Area dedicated to utilities for citation, references, and bibliographic organization.",
+      "card1Title": "Reference normalization",
+      "card1Text": "Standardize references according to academic styles and export to common formats.",
+      "card2Title": "Citation generator",
+      "card2Text": "Build direct and indirect citations from article metadata."
+    },
+    "bibliometric": {
+      "title": "Bibliometric tools",
+      "subtitle": "Area for bibliometric analysis, production indicators, and citation network exploration.",
+      "card1Title": "Impact indicators",
+      "card1Text": "Visualize citation metrics, production over time, and journal distribution.",
+      "card2Title": "Co-authorship analysis",
+      "card2Text": "Map author collaborations and discover research communities."
+    },
+    "text": {
+      "title": "Text tools",
+      "subtitle": "Resources for analysis, review, and textual preparation of scientific content.",
+      "card1Title": "Language reviewer",
+      "card1Text": "Support spelling review and clarity improvements for academic texts.",
+      "card2Title": "Keyword extraction",
+      "card2Text": "Identify key terms for indexing and information retrieval."
+    }
+  },
+  "article": {
+    "kicker": "Scientific Article",
+    "noCover": "Image not available",
+    "sections": {
+      "label": "Section",
+      "title": "Sections"
+    },
+    "authors": {
+      "label": "Authors",
+      "title": "Article Authors",
+      "profile": "View Profile"
+    },
+    "meta": {
+      "journal": "Journal",
+      "year": "Year",
+      "doi": "DOI",
+      "language": "Language"
+    },
+    "abstract": {
+      "title": "Abstract"
+    },
+    "citation": {
+      "title": "How to cite"
+    },
+    "indicators": {
+      "title": "Indicators",
+      "views": "Views",
+      "downloads": "Downloads",
+      "likes": "Likes",
+      "citations": "Citations"
+    },
+    "data": {
+      "title": "Data",
+      "copy": "Copy",
+      "tabs": {
+        "fulltext": "Full Text",
+        "json": "JSON",
+        "rdf": "RDF (Turtle)",
+        "ris": "RIS",
+        "marc21": "MARC21",
+        "references": "References",
+        "citations": "Citations"
+      },
+      "aria": {
+        "viewData": "View data in {{format}}",
+        "copyData": "Copy {{format}} to clipboard"
+      }
+    },
+    "actions": {
+      "downloadPdf": "Download PDF",
+      "copyLink": "Copy link",
+      "shareWhatsApp": "Share on WhatsApp",
+      "shareInstagram": "Share on Instagram",
+      "shareLinkedIn": "Share on LinkedIn"
+    }
+  },
+  "bookChapter": {
+    "aria": {
+      "page": "Book chapter page"
+    },
+    "kicker": "Book Chapter",
+    "cover": {
+      "alt": "Book cover",
+      "unavailable": "No cover"
+    },
+    "actions": {
+      "openBook": "Open full book",
+      "openPdf": "Open chapter PDF"
+    },
+    "meta": {
+      "authors": "Authors",
+      "book": "Book",
+      "year": "Year",
+      "pages": "Pages",
+      "language": "Language"
+    },
+    "sections": {
+      "abstract": "Abstract",
+      "citation": "How to cite",
+      "indicators": "Indicators",
+      "data": "Data"
+    }
+  },
+  "citation": {
+    "styles": {
+      "abnt": "ABNT",
+      "apa": "APA",
+      "vancouver": "Vancouver"
+    },
+    "actions": {
+      "copy": "Copy Citation"
+    },
+    "aria": {
+      "tabs": "Citation Styles"
+    }
+  },
+  "footer": {
+    "copyright": "Brapci © 2026",
+    "session": "Session",
+    "linkedIn": "Brapci LinkedIn",
+    "instagram": "Brapci Instagram",
+    "socialMedia": "Brapci social media"
+  }
+}
