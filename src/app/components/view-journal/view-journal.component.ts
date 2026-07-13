@@ -278,7 +278,8 @@ export class ViewJournalComponent {
       return;
     }
 
-    const leaflet = await import('leaflet');
+    const leafletModule = await import('leaflet');
+    const leaflet = (leafletModule as any).default ?? leafletModule;
 
     this.destroyMap();
 

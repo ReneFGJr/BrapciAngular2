@@ -289,7 +289,8 @@ export class RevistasLocationMapComponent implements AfterViewInit, OnChanges, O
       return;
     }
 
-    const leaflet = await import('leaflet');
+    const leafletModule = await import('leaflet');
+    const leaflet = (leafletModule as any).default ?? leafletModule;
     this.destroyMap();
 
     const map = leaflet.map(container, {
