@@ -151,6 +151,35 @@
                 {{ 'timeline.yearsRange' | translate: yearsRange() }}
               </p>
             </div>
+
+            <div class="summary-table-wrap mt-4">
+              <div class="table-responsive">
+                <table class="table table-sm align-middle mb-0 summary-table">
+                  <thead>
+                    <tr>
+                      <th>Revista</th>
+                      <th>ISSN</th>
+                      <th>Cidade</th>
+                      <th>Data início</th>
+                      <th>Data fim</th>
+                      <th>Status</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    @for (row of summaryTableRows(); track row.name + '-' + row.issn + '-' + row.city) {
+                      <tr>
+                        <td>{{ row.name }}</td>
+                        <td>{{ row.issn }}</td>
+                        <td>{{ row.city }}</td>
+                        <td>{{ row.startYear }}</td>
+                        <td>{{ row.endYear }}</td>
+                        <td>{{ row.status }}</td>
+                      </tr>
+                    }
+                  </tbody>
+                </table>
+              </div>
+            </div>
           }
 
           @if (activeTab() === 'timeline') {

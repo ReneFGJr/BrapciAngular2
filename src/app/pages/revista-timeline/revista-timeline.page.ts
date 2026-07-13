@@ -22,10 +22,26 @@ type TimelineYear = {
 type JournalCatalogItem = {
   id_jnl?: string | number;
   jnl_frbr?: string | number;
+  jnl_name?: string;
+  jnl_issn?: string;
+  gc_name?: string;
+  jnl_ano_inicio?: string | number;
+  jnl_ano_final?: string | number;
   jnl_collection?: string;
   jnl_historic?: string | number | boolean;
   [key: string]: unknown;
 };
+
+type SummaryRow = {
+  name: string;
+  issn: string;
+  city: string;
+  startYear: string;
+  endYear: string;
+  status: 'Histórica' | 'Corrente';
+};
+
+type SummaryStatus = SummaryRow['status'];
 
 type TypeFilter = 'ALL' | 'JA' | 'JE';
 type StatusFilter = 'ALL' | 'CURRENT' | 'HISTORIC';
@@ -96,6 +112,26 @@ export class RevistaTimelinePage {
       oldestYear: timeline[timeline.length - 1].year,
       newestYear: timeline[0].year,
     };
+  });
+
+  readonly summaryTableRows = computed<SummaryRow[]>(() => {
+    return this.filteredTimeline()
+      .flatMap((yearItem) =>
+        yearItem.journals.map((journal) => {
+          const startYear = this.toDisplayValue(journal['jnl_ano_inicio']);
+          const endYearRaw = this.toDisplayValue(journal['jnl_ano_final']);
+
+          return {
+            name: String(journal.name ?? '-'),
+            issn: this.toDisplayValue(journal['jnl_issn']),
+            city: this.toDisplayValue(journal['gc_name']),
+            startYear,
+            endYear: endYearRaw === '0' ? '-' : endYearRaw,
+            status: (this.isHistoricJournal(journal) ? 'Histórica' : 'Corrente') as SummaryStatus,
+          };
+        })
+      )
+      .sort((a, b) => a.name.localeCompare(b.name, 'pt-BR'));
   });
 
   readonly chartBars = computed(() => {
@@ -190,7 +226,10 @@ export class RevistaTimelinePage {
 
   private enrichTimelineWithMetadata(
     timeline: TimelineYear[],
-    metadataMap: Map<string, Pick<JournalCatalogItem, 'jnl_collection' | 'jnl_historic'>>
+    metadataMap: Map<
+      string,
+      Pick<JournalCatalogItem, 'jnl_collection' | 'jnl_historic' | 'jnl_issn' | 'gc_name' | 'jnl_ano_inicio' | 'jnl_ano_final'>
+    >
   ): TimelineYear[] {
     return timeline.map((yearItem) => ({
       ...yearItem,
@@ -204,6 +243,10 @@ export class RevistaTimelinePage {
 
         return {
           ...journal,
+          jnl_issn: journal['jnl_issn'] ?? metadata.jnl_issn,
+          gc_name: journal['gc_name'] ?? metadata.gc_name,
+          jnl_ano_inicio: journal['jnl_ano_inicio'] ?? metadata.jnl_ano_inicio,
+          jnl_ano_final: journal['jnl_ano_final'] ?? metadata.jnl_ano_final,
           jnl_collection: journal.jnl_collection ?? metadata.jnl_collection,
           jnl_historic: journal.jnl_historic ?? metadata.jnl_historic,
         };
@@ -213,13 +256,23 @@ export class RevistaTimelinePage {
 
   private buildJournalMetadataMap(
     journals: JournalCatalogItem[]
-  ): Map<string, Pick<JournalCatalogItem, 'jnl_collection' | 'jnl_historic'>> {
-    const map = new Map<string, Pick<JournalCatalogItem, 'jnl_collection' | 'jnl_historic'>>();
+  ): Map<
+    string,
+    Pick<JournalCatalogItem, 'jnl_collection' | 'jnl_historic' | 'jnl_issn' | 'gc_name' | 'jnl_ano_inicio' | 'jnl_ano_final'>
+  > {
+    const map = new Map<
+      string,
+      Pick<JournalCatalogItem, 'jnl_collection' | 'jnl_historic' | 'jnl_issn' | 'gc_name' | 'jnl_ano_inicio' | 'jnl_ano_final'>
+    >();
 
     for (const journal of journals) {
       const metadata = {
         jnl_collection: journal.jnl_collection,
         jnl_historic: journal.jnl_historic,
+        jnl_issn: journal.jnl_issn,
+        gc_name: journal.gc_name,
+        jnl_ano_inicio: journal.jnl_ano_inicio,
+        jnl_ano_final: journal.jnl_ano_final,
       };
 
       const keys = [journal.id_jnl, journal.jnl_frbr]
@@ -369,5 +422,10 @@ export class RevistaTimelinePage {
 
   private escapeCsv(value: string): string {
     return `"${value.replaceAll('"', '""')}"`;
+  }
+
+  private toDisplayValue(value: unknown): string {
+    const parsed = String(value ?? '').trim();
+    return parsed.length ? parsed : '-';
   }
 }

@@ -82,6 +82,30 @@
   border-radius: 0.3rem;
 }
 
+.summary-table-wrap {
+  background: var(--theme-card-bg);
+  border: 1px solid var(--theme-line);
+  border-radius: 0.7rem;
+  overflow: hidden;
+}
+
+.summary-table {
+  margin-bottom: 0;
+
+  thead th {
+    background: color-mix(in srgb, var(--theme-link) 12%, var(--theme-card-bg));
+    color: var(--theme-ink);
+    font-weight: 700;
+    border-bottom: 1px solid var(--theme-line);
+    white-space: nowrap;
+  }
+
+  tbody td {
+    border-color: var(--theme-line);
+    color: var(--theme-ink);
+  }
+}
+
 .timeline-container {
   position: relative;
   padding: 2rem 0;
