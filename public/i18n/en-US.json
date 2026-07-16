@@ -155,6 +155,7 @@
       "badges": {
         "id": "ID",
         "volume": "Vol.",
+        "nr": "No.",
         "articles": "Articles"
       },
       "tabs": {

@@ -4,13 +4,14 @@
       <p class="issue-kicker mb-2">{{ 'issue.hero.kicker' | translate }}</p>
       <h2 class="issue-title mb-2">{{ title() }}</h2>
       <p class="issue-subtitle mb-0">
-        {{ sourceName() }} · {{ year() }}
+        {{ acronym() }} · {{ year() }}
       </p>
     </div>
 
     <div class="issue-badges" [attr.aria-label]="'issue.hero.badgesLabel' | translate">
-      <span class="issue-badge">{{ 'issue.badges.id' | translate }} {{ issueId() }}</span>
-      <span class="issue-badge">{{ 'issue.badges.volume' | translate }} {{ year() }}</span>
+      <span class="issue-badge">{{ 'issue.badges.id' | translate }}: {{ issueId() }}</span>
+      <span class="issue-badge">{{ 'issue.badges.volume' | translate }}: {{ issueVol() }}</span>
+      <span class="issue-badge">{{ 'issue.badges.nr' | translate }}: {{ issueNumber() }}</span>
       <span class="issue-badge">{{ 'issue.badges.articles' | translate }} {{ worksTotal() }}</span>
     </div>
 
@@ -31,7 +32,7 @@
       </div>
       <div class="issue-metric">
         <span class="issue-metric-label">{{ 'issue.summary.main.issue' | translate }}</span>
-        <strong class="issue-metric-value">{{ issueNumber() }}</strong>
+        <strong class="issue-metric-value">{{ issueVol() }} {{ issueNumber() }}</strong>
       </div>
       <div class="issue-metric">
         <span class="issue-metric-label">{{ 'issue.summary.main.year' | translate }}</span>
@@ -99,10 +100,14 @@
                 <span>{{ 'issue.summary.production.works' | translate }}</span>
                 <strong>{{ worksTotal() }}</strong>
               </div>
-              <ul class="summary-list mb-0">
-                <li><strong>{{ 'issue.summary.production.authors' | translate }}:</strong> {{ totalAuthors() }}</li>
-                <li><strong>{{ 'issue.summary.production.coauthorAverage' | translate }}:</strong> {{ coAuthorsMedia() }}</li>
-              </ul>
+              <div class="stats-highlight">
+                <span>{{ 'issue.summary.production.authors' | translate }}</span>
+                <strong>{{ totalAuthors() }}</strong>
+              </div>
+              <div class="stats-highlight">
+                <span>{{ 'issue.summary.production.coauthorAverage' | translate }}</span>
+                <strong>{{ coAuthorsMedia() }}</strong>
+              </div>
             </div>
           </section>
         </div>
@@ -126,7 +131,7 @@
                       <div class="work-entry">
                         <div class="work-item-head">
                           @if (work.link) {
-                            <a [href]="work.link" class="work-title">{{ work.text }}</a>
+                            <a [href]="work.link" class="work-title" target="_blank" title="{{ work.text }}">{{ work.text }}</a>
                           } @else {
                             <h4 class="work-title mb-0">{{ work.text }}</h4>
                           }
@@ -134,10 +139,11 @@
                           @if (work.session || work.pdf === '1') {
                             <div class="work-flags" [attr.aria-label]="'issue.works.flagsLabel' | translate">
                               @if (work.pdf === '1') {
-                                <span class="work-flag">PDF</span>
-                              }
-                              @if (work.session) {
-                                <span class="work-flag work-flag-muted">{{ work.session }}</span>
+                                @if (work.pdfUrl) {
+                                  <a class="btn btn-outline-danger supersmall text-decoration-none"  [href]="work.pdfUrl" target="_blank" rel="noopener noreferrer">PDF</a>
+                                } @else {
+                                  <span class="work-flag">-</span>
+                                }
                               }
                             </div>
                           }

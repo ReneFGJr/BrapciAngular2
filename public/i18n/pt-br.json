@@ -223,6 +223,7 @@
     "badges": {
       "id": "ID",
       "volume": "Vol.",
+      "nr": "N.",
       "articles": "Artigos"
     },
     "tabs": {

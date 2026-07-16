@@ -10,6 +10,7 @@ type WorkItem = {
   id: string;
   text: string;
   link?: string;
+  pdfUrl?: string;
   authors: string[];
   session: string;
   pdf: string;
@@ -57,14 +58,15 @@ export class ViewIssueComponent {
   @Input({ required: true }) data: unknown = null;
   readonly activeTab = signal<TabId>('summary');
 
-  readonly title = computed(() => this.field(['title', 'titulo', 'name', 'jnl_name', 'journal']));
+  readonly title = computed(() => this.field(['legend','title', 'titulo', 'name', 'jnl_name', 'journal']));
   readonly issueId = computed(() => this.field(['ID', 'id', 'issue_id']));
   readonly year = computed(() => this.field(['year', 'YEAR', 'ano']));
-  readonly sourceName = computed(() => this.pickText(this.asRecord(this.data), ['source', 'name']) ?? '-');
+  readonly sourceName = computed(() => this.pickText(this.pickRecord(this.asRecord(this.data), ['source']), ['name']) ?? '-');
   readonly sourceRdf = computed(() => this.pickText(this.pickRecord(this.asRecord(this.data), ['source']), ['rdf']) ?? '');
   readonly journalId = computed(() => this.pickText(this.pickRecord(this.asRecord(this.data), ['source']), ['id_jnl', 'ID', 'id']) ?? '-');
   readonly acronym = computed(() => this.field(['acron', 'acronym', 'sigla']));
   readonly place = computed(() => this.field(['place', 'city', 'cidade', 'location', 'local']));
+  readonly issueVol = computed(() => this.field(['VOL', 'vol', 'volume', 'issue_vol', 'issue_volume']));
   readonly issueNumber = computed(() => this.field(['nr', 'NR', 'number', 'num']));
   readonly worksTotal = computed(() => this.toNumber(this.field(['worksTotal', 'works_total'])) ?? this.workGroups().reduce((sum, group) => sum + group.items.length, 0));
 
@@ -266,6 +268,7 @@ export class ViewIssueComponent {
       return {
         id: item.trim(),
         text: item.trim(),
+        pdfUrl: this.buildPdfDownloadUrl(item.trim()),
         authors: [],
         session: '',
         pdf: '',
@@ -277,6 +280,7 @@ export class ViewIssueComponent {
       return {
         id: value,
         text: value,
+        pdfUrl: this.buildPdfDownloadUrl(value),
         authors: [],
         session: '',
         pdf: '',
@@ -308,6 +312,7 @@ export class ViewIssueComponent {
       id,
       text,
       link,
+      pdfUrl: this.buildPdfDownloadUrl(idCandidate ?? id),
       authors,
       session,
       pdf,
@@ -321,6 +326,18 @@ export class ViewIssueComponent {
 
     if (typeof value === 'string' && value.trim()) {
       return `/v/${value.trim()}`;
+    }
+
+    return undefined;
+  }
+
+  private buildPdfDownloadUrl(value: unknown): string | undefined {
+    if (typeof value === 'number' && Number.isFinite(value)) {
+      return `https://cip.brapci.inf.br/download/${value}`;
+    }
+
+    if (typeof value === 'string' && value.trim()) {
+      return `https://cip.brapci.inf.br/download/${value.trim()}`;
     }
 
     return undefined;
