@@ -85,6 +85,24 @@
   gap: 0.6rem;
 }
 
+.perfil-api-row {
+  align-items: center;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.6rem;
+}
+
+.perfil-api-input {
+  flex: 1;
+  font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, 'Liberation Mono', 'Courier New', monospace;
+  min-width: 240px;
+}
+
+.perfil-copy-feedback {
+  font-size: 0.9rem;
+  margin-top: 0.55rem;
+}
+
 :host-context(body.theme-master.theme-dark) {
   .perfil-wrap,
   .perfil-wrap h1,
@@ -155,6 +173,12 @@
   .perfil-wrap .btn-outline-primary:focus-visible {
     background: rgb(28 44 68 / 96%);
     border-color: rgb(128 160 196 / 70%);
+    color: var(--theme-ink);
+  }
+
+  .perfil-api-input {
+    background: rgb(18 32 51 / 92%);
+    border-color: rgb(100 132 173 / 60%);
     color: var(--theme-ink);
   }
 }

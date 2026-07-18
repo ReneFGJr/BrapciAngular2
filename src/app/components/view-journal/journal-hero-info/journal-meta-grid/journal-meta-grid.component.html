@@ -5,9 +5,26 @@
     }
 
     @if (issnPortalUrl !== '-') {
-      <div id="jnl_issn" class="mb-3 portal">
-        <a [href]="issnPortalUrl" target="_blank" rel="noopener noreferrer">ISSN Portal</a>
-      </div>
+      <a
+        id="jnl_issn"
+        class="mb-1 btn btn-outline-secondary journal-meta-grid__action"
+        [href]="issnPortalUrl"
+        target="_blank"
+        rel="noopener noreferrer"
+      >
+        ISSN Portal
+      </a>
+    }
+    @if (url !== '') {
+      <a
+        id="jnl_url"
+        class="mb-1 btn btn-outline-secondary journal-meta-grid__action"
+        [href]="url"
+        target="_blank"
+        rel="noopener noreferrer"
+      >
+        Página da Revista
+      </a>
     }
   </div>
 

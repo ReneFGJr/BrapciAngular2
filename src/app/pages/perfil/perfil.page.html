@@ -42,6 +42,34 @@
               </dl>
             </section>
 
+            <section class="perfil-section mb-4" aria-label="Token de API do usuario">
+              <h2 class="h5 mb-3">{{ 'profile.apiTokenTitle' | translate }}</h2>
+
+              <div class="perfil-api-row">
+                <input
+                  class="form-control perfil-api-input"
+                  type="text"
+                  [value]="userApiToken() || '-'"
+                  [attr.aria-label]="'profile.apiTokenTitle' | translate"
+                  readonly
+                />
+                <button
+                  type="button"
+                  class="btn btn-outline-primary"
+                  (click)="copyUserApiToken()"
+                  [disabled]="!userApiToken()"
+                >
+                  {{ 'profile.copyApiToken' | translate }}
+                </button>
+              </div>
+
+              @if (copyStatus() === 'success') {
+                <p class="perfil-copy-feedback text-success mb-0">{{ 'profile.apiTokenCopied' | translate }}</p>
+              } @else if (copyStatus() === 'error') {
+                <p class="perfil-copy-feedback text-danger mb-0">{{ 'profile.apiTokenCopyError' | translate }}</p>
+              }
+            </section>
+
             <section class="perfil-section mb-4" aria-label="Dados da sessao local">
               <h2 class="h5 mb-3">{{ 'profile.localUserTitle' | translate }}</h2>
 
