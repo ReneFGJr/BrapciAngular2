@@ -25,10 +25,11 @@
           </div>
 
           <div class="content">
+           <p class="journal">{{ card.journal }}</p>
+
             <header class="meta-top">
               <span class="pill">{{ card.year }}</span>
               <span class="pill">{{ card.type }}</span>
-              <span class="pill score">Score {{ card.score }}</span>
             </header>
 
             <h3 class="title">
@@ -39,15 +40,10 @@
               title="Marcar/desmarcar trabalho"
               style="margin-right: 0.5em;"
             />
-              <a class="title-link link small" [href]="'/v/' + card.id" target="_blank" rel="noopener">{{ card.title }}</a>
+              <a class="title-link link" [href]="'/v/' + card.id" target="_blank" rel="noopener">{{ card.title }}</a>
             </h3>
 
             <p class="authors">{{ card.authors }}</p>
-            <p class="journal">{{ card.journal }}</p>
-
-            @if (card.legend) {
-              <p class="legend">{{ card.legend }}</p>
-            }
 
             @if (card.keywords.length) {
               <div class="keywords">

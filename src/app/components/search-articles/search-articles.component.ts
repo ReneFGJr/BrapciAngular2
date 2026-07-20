@@ -25,7 +25,8 @@ import { SearchResultComponent } from '../search-result/search-result.component'
   styleUrl: './search-articles.component.scss',
 })
 export class SearchArticlesComponent {
-    private readonly basketService = inject(BasketService);
+  public loadingImg: string = '/assets/img/loading.svg';
+  private readonly basketService = inject(BasketService);
   private readonly brapciApiService = inject(BrapciApiService);
   readonly areaNewsComponent = AreaNewsComponent;
   readonly areaEventsComponent = AreaEventsComponent;

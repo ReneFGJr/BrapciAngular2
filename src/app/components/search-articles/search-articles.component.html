@@ -23,8 +23,13 @@
             placeholder="{{ 'search.input' | translate }}"
           ></textarea>
           <button type="submit" class="btn btn-primary" [disabled]="loading()">
-            {{ 'search.button' | translate }}
+            <span *ngIf="!loading()">{{ 'search.button' | translate }}</span>
+            <span *ngIf="loading()" class="d-inline-flex align-items-center gap-2">
+              <span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>
+              <span>{{ 'search.button' | translate }}</span>
+            </span>
           </button>
+
         </div>
       </form>
 
@@ -69,6 +74,7 @@
       @if (search) {
         <div class="search-results-grid mt-4">
           <div class="search-results-main">
+
             <ng-container *ngIf="hasResults()">
               <app-search-result
                 [results]="apiResults()"
@@ -173,7 +179,7 @@
       </div>
     </form>
   </div>
-
+XXXXXXXXXX
   <div *ngIf="!search" class="idle-layout mt-5">
     <section class="idle-col idle-col-news">
       <ng-container *ngComponentOutlet="areaNewsComponent"></ng-container>
