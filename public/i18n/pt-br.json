@@ -380,6 +380,20 @@
       "card2Text": "Identifique termos centrais para indexacao e recuperacao da informacao."
     }
   },
+  "subject": {
+    "title": "Assunto",
+    "emptyDescription": "Sem descricao disponivel.",
+    "metadata": "Metadados",
+    "aliases": "Nomes alternativos",
+    "broaderTerms": "Termos amplos",
+    "narrowerTerms": "Termos especificos",
+    "relatedTerms": "Termos relacionados",
+    "json": "JSON",
+    "fields": {
+      "id": "ID",
+      "class": "Classe"
+    }
+  },
   "article": {
     "kicker": "Artigo Cientifico",
     "noCover": "Imagem nao disponivel",

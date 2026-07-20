@@ -225,6 +225,7 @@
     "badges": {
       "id": "ID",
       "volume": "Vol.",
+      "nr": "Núm.",
       "articles": "Artículos"
     },
     "tabs": {
@@ -320,6 +321,10 @@
     "username": "Usuario",
     "id": "ID",
     "role": "Perfil",
+    "apiTokenTitle": "Token de API del usuario",
+    "copyApiToken": "Copiar API",
+    "apiTokenCopied": "Token de API copiado al portapapeles.",
+    "apiTokenCopyError": "No fue posible copiar el token de API.",
     "localUserTitle": "Datos de sesion local",
     "sessionExpiresAt": "Expira en",
     "noLocalUser": "No se encontraron datos de sesion local.",
@@ -375,6 +380,20 @@
       "card1Text": "Apoye la revision ortografica y la claridad de textos academicos.",
       "card2Title": "Extraccion de palabras clave",
       "card2Text": "Identifique terminos centrales para indexacion y recuperacion de informacion."
+    }
+  },
+  "subject": {
+    "title": "Materia",
+    "emptyDescription": "Sin descripcion disponible.",
+    "metadata": "Metadatos",
+    "aliases": "Nombres alternativos",
+    "broaderTerms": "Terminos amplios",
+    "narrowerTerms": "Terminos especificos",
+    "relatedTerms": "Terminos relacionados",
+    "json": "JSON",
+    "fields": {
+      "id": "ID",
+      "class": "Clase"
     }
   },
   "article": {

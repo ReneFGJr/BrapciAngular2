@@ -13,6 +13,7 @@ import { BreadcrumbsComponent } from '../../components/breadcrumbs/breadcrumbs.c
 import { ViewJournalComponent } from '../../components/view-journal/view-journal.component';
 import { ViewEventComponent } from '../../components/view-event/view-event.component';
 import { ViewIssueComponent } from '../../components/view-issue/view-issue.component';
+import { ViewSubjectComponent } from '../../components/view-subject/view-subject.component';
 import type { AuthorWorksGroup } from '../../components/author-works/author-works.component';
 import { BarChartPoint } from '../../components/bar-chart/bar-chart.component';
 
@@ -29,6 +30,7 @@ type AuthorLink = {
 
 @Component({
   selector: 'app-v-id-page',
+  standalone: true,
   imports: [
     CommonModule,
     AuthorGadgetComponent,
@@ -50,6 +52,7 @@ export class VIdPage {
   readonly issueViewComponent = ViewIssueComponent;
   readonly bookChapterViewComponent = BookChapterViewComponent;
   readonly seoMetadataComponent = SeoMetadataComponent;
+  readonly subjectViewComponent = ViewSubjectComponent;
 
   readonly id = signal('');
   readonly loading = signal(true);
@@ -83,6 +86,7 @@ export class VIdPage {
   readonly isProceeding = computed(() => this.classe().toLowerCase() === 'proceeding');
   readonly isJournal = computed(() => this.classe().toLowerCase() === 'journal');
   readonly isBookChapter = computed(() => this.classe().toLowerCase() === 'bookchapter');
+  readonly isSubject = computed(() => this.classe().toLowerCase() === 'subject');
 
   readonly breadcrumbLabels = computed<Record<string, string>>(() => {
     const classe = this.classe();

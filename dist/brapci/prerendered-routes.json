@@ -1,21 +1,21 @@
 {
   "routes": {
-    "/web2": {},
-    "/web2/autoridade": {},
-    "/web2/basket/selected": {},
-    "/web2/cited": {},
-    "/web2/doc": {},
-    "/web2/eventos": {},
-    "/web2/livros": {},
-    "/web2/livros/submit": {},
-    "/web2/painel": {},
-    "/web2/perfil": {},
-    "/web2/revistas": {},
-    "/web2/revistas/timeline": {},
-    "/web2/signin": {},
-    "/web2/sobre/brapci": {},
-    "/web2/tools_bibliografics": {},
-    "/web2/tools_bibliometric": {},
-    "/web2/tools_text": {}
+    "/": {},
+    "/autoridade": {},
+    "/basket/selected": {},
+    "/cited": {},
+    "/doc": {},
+    "/eventos": {},
+    "/livros": {},
+    "/livros/submit": {},
+    "/painel": {},
+    "/perfil": {},
+    "/revistas": {},
+    "/revistas/timeline": {},
+    "/signin": {},
+    "/sobre/brapci": {},
+    "/tools_bibliografics": {},
+    "/tools_bibliometric": {},
+    "/tools_text": {}
   }
 }

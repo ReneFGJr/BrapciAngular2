@@ -1,0 +1,84 @@
+<article class="view-card p-3 p-md-4">
+  <h2 class="h5 mb-3">{{ 'subject.title' | translate }}</h2>
+
+  <div class="row g-3">
+    <div class="col-12 col-lg-8">
+      <section class="subject-panel h-100">
+        <h3 class="h4 mb-2">{{ title() }}</h3>
+
+        @if (description() !== '-') {
+          <p class="mb-0">{{ description() }}</p>
+        } @else {
+          <p class="mb-0 text-body-secondary">{{ 'subject.emptyDescription' | translate }}</p>
+        }
+      </section>
+    </div>
+
+    <div class="col-12 col-lg-4">
+      <section class="subject-panel h-100">
+        <h3 class="h6 text-uppercase mb-3">{{ 'subject.metadata' | translate }}</h3>
+        <p class="mb-2"><strong>{{ 'subject.fields.id' | translate }}:</strong> {{ subjectId() }}</p>
+        <p class="mb-0"><strong>{{ 'subject.fields.class' | translate }}:</strong> {{ classe() }}</p>
+      </section>
+    </div>
+
+    @if (aliases().length) {
+      <div class="col-12">
+        <section class="subject-panel">
+          <h3 class="h6 text-uppercase mb-3">{{ 'subject.aliases' | translate }}</h3>
+          <div class="subject-chips">
+            @for (item of aliases(); track trackByValue($index, item)) {
+              <span class="subject-chip">{{ item }}</span>
+            }
+          </div>
+        </section>
+      </div>
+    }
+
+    @if (broaderTerms().length) {
+      <div class="col-12 col-xl-4">
+        <section class="subject-panel h-100">
+          <h3 class="h6 text-uppercase mb-3">{{ 'subject.broaderTerms' | translate }}</h3>
+          <div class="subject-chips">
+            @for (item of broaderTerms(); track trackByValue($index, item)) {
+              <span class="subject-chip">{{ item }}</span>
+            }
+          </div>
+        </section>
+      </div>
+    }
+
+    @if (narrowerTerms().length) {
+      <div class="col-12 col-xl-4">
+        <section class="subject-panel h-100">
+          <h3 class="h6 text-uppercase mb-3">{{ 'subject.narrowerTerms' | translate }}</h3>
+          <div class="subject-chips">
+            @for (item of narrowerTerms(); track trackByValue($index, item)) {
+              <span class="subject-chip">{{ item }}</span>
+            }
+          </div>
+        </section>
+      </div>
+    }
+
+    @if (relatedTerms().length) {
+      <div class="col-12 col-xl-4">
+        <section class="subject-panel h-100">
+          <h3 class="h6 text-uppercase mb-3">{{ 'subject.relatedTerms' | translate }}</h3>
+          <div class="subject-chips">
+            @for (item of relatedTerms(); track trackByValue($index, item)) {
+              <span class="subject-chip">{{ item }}</span>
+            }
+          </div>
+        </section>
+      </div>
+    }
+
+    <div class="col-12">
+      <details class="subject-panel">
+        <summary class="subject-summary">{{ 'subject.json' | translate }}</summary>
+        <pre class="subject-json mb-0 mt-3">{{ jsonContent() }}</pre>
+      </details>
+    </div>
+  </div>
+</article>

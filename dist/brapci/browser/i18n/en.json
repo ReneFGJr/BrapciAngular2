@@ -225,6 +225,7 @@
     "badges": {
       "id": "ID",
       "volume": "Vol.",
+      "nr": "No.",
       "articles": "Articles"
     },
     "tabs": {
@@ -320,6 +321,10 @@
     "username": "Username",
     "id": "ID",
     "role": "Role",
+    "apiTokenTitle": "User API token",
+    "copyApiToken": "Copy API",
+    "apiTokenCopied": "API token copied to clipboard.",
+    "apiTokenCopyError": "Could not copy API token.",
     "localUserTitle": "Local session data",
     "sessionExpiresAt": "Expires at",
     "noLocalUser": "No local session data found.",
@@ -375,6 +380,20 @@
       "card1Text": "Support spelling review and clarity improvements for academic texts.",
       "card2Title": "Keyword extraction",
       "card2Text": "Identify key terms for indexing and information retrieval."
+    }
+  },
+  "subject": {
+    "title": "Subject",
+    "emptyDescription": "No description available.",
+    "metadata": "Metadata",
+    "aliases": "Alternative names",
+    "broaderTerms": "Broader terms",
+    "narrowerTerms": "Narrower terms",
+    "relatedTerms": "Related terms",
+    "json": "JSON",
+    "fields": {
+      "id": "ID",
+      "class": "Class"
     }
   },
   "article": {

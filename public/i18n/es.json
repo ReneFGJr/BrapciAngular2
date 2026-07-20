@@ -382,6 +382,20 @@
       "card2Text": "Identifique terminos centrales para indexacion y recuperacion de informacion."
     }
   },
+  "subject": {
+    "title": "Materia",
+    "emptyDescription": "Sin descripcion disponible.",
+    "metadata": "Metadatos",
+    "aliases": "Nombres alternativos",
+    "broaderTerms": "Terminos amplios",
+    "narrowerTerms": "Terminos especificos",
+    "relatedTerms": "Terminos relacionados",
+    "json": "JSON",
+    "fields": {
+      "id": "ID",
+      "class": "Clase"
+    }
+  },
   "article": {
     "kicker": "Articulo Cientifico",
     "noCover": "Imagen no disponible",

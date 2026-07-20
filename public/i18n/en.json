@@ -382,6 +382,20 @@
       "card2Text": "Identify key terms for indexing and information retrieval."
     }
   },
+  "subject": {
+    "title": "Subject",
+    "emptyDescription": "No description available.",
+    "metadata": "Metadata",
+    "aliases": "Alternative names",
+    "broaderTerms": "Broader terms",
+    "narrowerTerms": "Narrower terms",
+    "relatedTerms": "Related terms",
+    "json": "JSON",
+    "fields": {
+      "id": "ID",
+      "class": "Class"
+    }
+  },
   "article": {
     "kicker": "Scientific Article",
     "noCover": "Image not available",

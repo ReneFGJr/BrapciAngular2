@@ -28,6 +28,8 @@
             [metrics]="articleMetrics()"
             [dataTag]="dataTag()"
           ></app-proceeding-gadget>
+        } @else if (isSubject()) {
+          <ng-container *ngComponentOutlet="subjectViewComponent; inputs: { data: response() }"></ng-container>
         } @else if (isJournal()) {
           <app-view-journal class="mb-4 d-block" [data]="response()"></app-view-journal>
         } @else if (isBookChapter()) {
