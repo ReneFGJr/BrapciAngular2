@@ -26,8 +26,8 @@
           [attr.aria-labelledby]="'citation-tab-' + tab.id"
         >
           <div class="citation-text">
-            @if (isAbntTab(tab.id)) {
-              <p [innerHTML]="getTabContent(tab.id)"></p>
+            @if (shouldRenderHtml(tab.id)) {
+              <div [innerHTML]="getRenderedContent(tab.id)"></div>
             } @else {
               <p>{{ getTabContent(tab.id) }}</p>
             }

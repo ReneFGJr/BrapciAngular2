@@ -1,84 +1,144 @@
 <article class="view-card p-3 p-md-4">
-  <h2 class="h5 mb-3">{{ 'subject.title' | translate }}</h2>
-
-  <div class="row g-3">
-    <div class="col-12 col-lg-8">
-      <section class="subject-panel h-100">
-        <h3 class="h4 mb-2">{{ title() }}</h3>
-
-        @if (description() !== '-') {
-          <p class="mb-0">{{ description() }}</p>
-        } @else {
-          <p class="mb-0 text-body-secondary">{{ 'subject.emptyDescription' | translate }}</p>
-        }
-      </section>
+  <header class="subject-hero mb-3">
+    <div class="subject-hero-copy">
+      <p class="subject-kicker mb-2">{{ 'subject.title' | translate }}</p>
+      <h2 class="subject-title mb-2">{{ title() }}</h2>
+      <p class="subject-subtitle mb-0">
+        {{ 'subject.fields.id' | translate }}: {{ subjectId() }} · {{ 'subject.fields.class' | translate }}: {{ classe() }}
+      </p>
     </div>
 
-    <div class="col-12 col-lg-4">
-      <section class="subject-panel h-100">
-        <h3 class="h6 text-uppercase mb-3">{{ 'subject.metadata' | translate }}</h3>
-        <p class="mb-2"><strong>{{ 'subject.fields.id' | translate }}:</strong> {{ subjectId() }}</p>
-        <p class="mb-0"><strong>{{ 'subject.fields.class' | translate }}:</strong> {{ classe() }}</p>
-      </section>
-    </div>
+  </header>
 
-    @if (aliases().length) {
-      <div class="col-12">
+  <div class="tab-nav mb-3" role="tablist" [attr.aria-label]="'subject.tabs.ariaLabel' | translate">
+    <button type="button" class="tab-btn" [class.active]="activeTab() === 'summary'" (click)="setTab('summary')">
+      {{ 'subject.tabs.summary' | translate }}
+    </button>
+    <button type="button" class="tab-btn" [class.active]="activeTab() === 'works'" (click)="setTab('works')">
+      {{ 'subject.tabs.works' | translate }}
+    </button>
+    <button type="button" class="tab-btn" [class.active]="activeTab() === 'json'" (click)="setTab('json')">
+      {{ 'subject.tabs.json' | translate }}
+    </button>
+  </div>
+
+  <div class="tab-panel">
+    @switch (activeTab()) {
+      @case ('summary') {
+        <div class="subject-summary-grid">
+          <section class="subject-panel">
+            <h3 class="h6 mb-3">{{ 'subject.summary.main.title' | translate }}</h3>
+            <dl class="subject-definition-list mb-0">
+              <div>
+                <dt>{{ 'subject.fields.id' | translate }}</dt>
+                <dd>{{ subjectId() }}</dd>
+              </div>
+              <div>
+                <dt>{{ 'subject.fields.class' | translate }}</dt>
+                <dd>{{ classe() }}</dd>
+              </div>
+              <div>
+                <dt>{{ 'subject.fields.title' | translate }}</dt>
+                <dd>{{ title() }}</dd>
+              </div>
+              <div>
+                <dt>{{ 'subject.fields.prefLabel' | translate }}</dt>
+                <dd>{{ prefLabel() }}</dd>
+              </div>
+            </dl>
+
+            @if (description() !== '-') {
+              <div class="subject-description mt-3">
+                <h4 class="h6 mb-2">{{ 'subject.summary.description' | translate }}</h4>
+                <p class="mb-0">{{ description() }}</p>
+              </div>
+            }
+          </section>
+
+          <section class="subject-panel">
+            <h3 class="h6 mb-3">{{ 'subject.summary.distribution.title' | translate }}</h3>
+
+            <div class="subject-summary-block">
+              <h4 class="h6 mb-2">{{ 'subject.summary.stats.title' | translate }}</h4>
+              <div class="subject-metrics">
+                <div class="subject-metric">
+                  <span class="subject-metric-label">{{ 'subject.stats.works' | translate }}</span>
+                  <strong class="subject-metric-value">{{ worksTotal() }}</strong>
+                </div>
+                <div class="subject-metric">
+                  <span class="subject-metric-label">{{ 'subject.stats.records' | translate }}</span>
+                  <strong class="subject-metric-value">{{ dataTotal() }}</strong>
+                </div>
+                <div class="subject-metric">
+                  <span class="subject-metric-label">{{ 'subject.stats.views' | translate }}</span>
+                  <strong class="subject-metric-value">{{ views() }}</strong>
+                </div>
+                <div class="subject-metric">
+                  <span class="subject-metric-label">{{ 'subject.stats.downloads' | translate }}</span>
+                  <strong class="subject-metric-value">{{ downloads() }}</strong>
+                </div>
+                <div class="subject-metric">
+                  <span class="subject-metric-label">{{ 'subject.stats.likes' | translate }}</span>
+                  <strong class="subject-metric-value">{{ likes() }}</strong>
+                </div>
+              </div>
+            </div>
+
+            <div class="subject-summary-block mt-3">
+              <h4 class="h6 mb-2">{{ 'subject.summary.distribution.byClass' | translate }}</h4>
+              <div class="subject-chips">
+                @for (item of classSummary(); track trackBySummary($index, item)) {
+                  <span class="subject-chip">{{ item.label }}: {{ item.total }}</span>
+                }
+              </div>
+            </div>
+
+            <div class="subject-summary-block mt-3">
+              <h4 class="h6 mb-2">{{ 'subject.summary.distribution.byLanguage' | translate }}</h4>
+              <div class="subject-chips">
+                @for (item of languageSummary(); track trackBySummary($index, item)) {
+                  <span class="subject-chip">{{ item.label }}: {{ item.total }}</span>
+                }
+              </div>
+            </div>
+          </section>
+
+          <section class="subject-panel subject-panel-full">
+            <h3 class="h6 mb-3">{{ 'subject.summary.citation.title' | translate }}</h3>
+            @if (hasCitationData()) {
+              <app-citation-tabs [citations]="citations()"></app-citation-tabs>
+            } @else {
+              <p class="mb-0 text-body-secondary">{{ 'subject.emptyDescription' | translate }}</p>
+            }
+          </section>
+        </div>
+      }
+
+      @case ('works') {
         <section class="subject-panel">
-          <h3 class="h6 text-uppercase mb-3">{{ 'subject.aliases' | translate }}</h3>
-          <div class="subject-chips">
-            @for (item of aliases(); track trackByValue($index, item)) {
-              <span class="subject-chip">{{ item }}</span>
-            }
+          <div class="subject-panel-head">
+            <h3 class="h6 mb-0">{{ 'subject.works.title' | translate }}</h3>
+            <span class="subject-count">{{ worksTotal() }}</span>
           </div>
-        </section>
-      </div>
-    }
 
-    @if (broaderTerms().length) {
-      <div class="col-12 col-xl-4">
-        <section class="subject-panel h-100">
-          <h3 class="h6 text-uppercase mb-3">{{ 'subject.broaderTerms' | translate }}</h3>
-          <div class="subject-chips">
-            @for (item of broaderTerms(); track trackByValue($index, item)) {
-              <span class="subject-chip">{{ item }}</span>
-            }
-          </div>
+          @if (works().length) {
+            <ol class="subject-work-list mb-0">
+              @for (work of works(); track trackByWork($index, work); let index = $index) {
+                <li class="subject-work-item">
+                  <div class="subject-work-number">{{ index + 1 }}</div>
+                  <div class="subject-work-entry" [innerHTML]="work.html"></div>
+                </li>
+              }
+            </ol>
+          } @else {
+            <p class="mb-0 text-body-secondary">{{ 'subject.works.empty' | translate }}</p>
+          }
         </section>
-      </div>
-    }
+      }
 
-    @if (narrowerTerms().length) {
-      <div class="col-12 col-xl-4">
-        <section class="subject-panel h-100">
-          <h3 class="h6 text-uppercase mb-3">{{ 'subject.narrowerTerms' | translate }}</h3>
-          <div class="subject-chips">
-            @for (item of narrowerTerms(); track trackByValue($index, item)) {
-              <span class="subject-chip">{{ item }}</span>
-            }
-          </div>
-        </section>
-      </div>
+      @case ('json') {
+        <pre class="subject-json mb-0">{{ jsonContent() }}</pre>
+      }
     }
-
-    @if (relatedTerms().length) {
-      <div class="col-12 col-xl-4">
-        <section class="subject-panel h-100">
-          <h3 class="h6 text-uppercase mb-3">{{ 'subject.relatedTerms' | translate }}</h3>
-          <div class="subject-chips">
-            @for (item of relatedTerms(); track trackByValue($index, item)) {
-              <span class="subject-chip">{{ item }}</span>
-            }
-          </div>
-        </section>
-      </div>
-    }
-
-    <div class="col-12">
-      <details class="subject-panel">
-        <summary class="subject-summary">{{ 'subject.json' | translate }}</summary>
-        <pre class="subject-json mb-0 mt-3">{{ jsonContent() }}</pre>
-      </details>
-    </div>
   </div>
 </article>

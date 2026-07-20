@@ -389,9 +389,45 @@
     "narrowerTerms": "Termos especificos",
     "relatedTerms": "Termos relacionados",
     "json": "JSON",
+    "tabs": {
+      "ariaLabel": "Abas do assunto",
+      "summary": "Resumo",
+      "works": "Trabalhos",
+      "json": "JSON"
+    },
+    "stats": {
+      "works": "Trabalhos",
+      "records": "Registros",
+      "views": "Visualizacoes",
+      "downloads": "Downloads",
+      "likes": "Curtidas"
+    },
+    "summary": {
+      "main": {
+        "title": "Resumo do assunto"
+      },
+      "description": "Descricao",
+      "stats": {
+        "title": "Estatisticas"
+      },
+      "distribution": {
+        "title": "Distribuicao dos registros",
+        "byClass": "Por classe",
+        "byLanguage": "Por idioma"
+      },
+      "citation": {
+        "title": "Como citar"
+      }
+    },
+    "works": {
+      "title": "Trabalhos relacionados",
+      "empty": "Nenhum trabalho encontrado para este assunto."
+    },
     "fields": {
       "id": "ID",
-      "class": "Classe"
+      "class": "Classe",
+      "title": "Titulo",
+      "prefLabel": "Rotulo preferencial"
     }
   },
   "article": {

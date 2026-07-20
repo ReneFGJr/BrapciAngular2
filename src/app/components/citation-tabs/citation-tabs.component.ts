@@ -35,6 +35,10 @@ export class CitationTabsComponent {
     return this.citations[tabId] ?? '';
   }
 
+  getRenderedContent(tabId: CitationStyle): string {
+    return this.getTabContent(tabId).replace(/\r?\n/g, '<br>');
+  }
+
   hasContent(tabId: CitationStyle): boolean {
     return Boolean(this.citations[tabId]?.trim());
   }
@@ -43,13 +47,26 @@ export class CitationTabsComponent {
     return this.tabs.filter((tab) => this.hasContent(tab.id));
   }
 
-  // For ABNT, preserve HTML formatting
-  isAbntTab(tabId: CitationStyle): boolean {
-    return tabId === 'abnt';
+  shouldRenderHtml(tabId: CitationStyle): boolean {
+    const content = this.getTabContent(tabId);
+    return /<[^>]+>/.test(content) || content.includes('\n') || content.includes('\r');
+  }
+
+  private getClipboardText(tabId: CitationStyle): string {
+    const content = this.getTabContent(tabId);
+    const normalized = content.replace(/<br\s*\/?>/gi, '\n');
+
+    if (!/<[^>]+>/.test(normalized)) {
+      return normalized;
+    }
+
+    const element = document.createElement('div');
+    element.innerHTML = normalized;
+    return element.textContent?.trim() ?? '';
   }
 
   copyToClipboard(tabId: CitationStyle): void {
-    const text = this.getTabContent(tabId);
+    const text = this.getClipboardText(tabId);
     if (text) {
       navigator.clipboard.writeText(text).catch((err) => {
         console.error('Failed to copy citation:', err);

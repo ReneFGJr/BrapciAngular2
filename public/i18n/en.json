@@ -391,9 +391,45 @@
     "narrowerTerms": "Narrower terms",
     "relatedTerms": "Related terms",
     "json": "JSON",
+    "tabs": {
+      "ariaLabel": "Subject tabs",
+      "summary": "Summary",
+      "works": "Works",
+      "json": "JSON"
+    },
+    "stats": {
+      "works": "Works",
+      "records": "Records",
+      "views": "Views",
+      "downloads": "Downloads",
+      "likes": "Likes"
+    },
+    "summary": {
+      "main": {
+        "title": "Subject summary"
+      },
+      "description": "Description",
+      "stats": {
+        "title": "Statistics"
+      },
+      "distribution": {
+        "title": "Record distribution",
+        "byClass": "By class",
+        "byLanguage": "By language"
+      },
+      "citation": {
+        "title": "How to cite"
+      }
+    },
+    "works": {
+      "title": "Related works",
+      "empty": "No works found for this subject."
+    },
     "fields": {
       "id": "ID",
-      "class": "Class"
+      "class": "Class",
+      "title": "Title",
+      "prefLabel": "Preferred label"
     }
   },
   "article": {

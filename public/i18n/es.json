@@ -391,9 +391,45 @@
     "narrowerTerms": "Terminos especificos",
     "relatedTerms": "Terminos relacionados",
     "json": "JSON",
+    "tabs": {
+      "ariaLabel": "Pestanas de la materia",
+      "summary": "Resumen",
+      "works": "Trabajos",
+      "json": "JSON"
+    },
+    "stats": {
+      "works": "Trabajos",
+      "records": "Registros",
+      "views": "Vistas",
+      "downloads": "Descargas",
+      "likes": "Me gusta"
+    },
+    "summary": {
+      "main": {
+        "title": "Resumen de la materia"
+      },
+      "description": "Descripcion",
+      "stats": {
+        "title": "Estadisticas"
+      },
+      "distribution": {
+        "title": "Distribucion de registros",
+        "byClass": "Por clase",
+        "byLanguage": "Por idioma"
+      },
+      "citation": {
+        "title": "Como citar"
+      }
+    },
+    "works": {
+      "title": "Trabajos relacionados",
+      "empty": "No se encontraron trabajos para esta materia."
+    },
     "fields": {
       "id": "ID",
-      "class": "Clase"
+      "class": "Clase",
+      "title": "Titulo",
+      "prefLabel": "Etiqueta preferente"
     }
   },
   "article": {
