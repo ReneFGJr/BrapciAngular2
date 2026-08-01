@@ -6,7 +6,7 @@
   width: 100%;
   border: 1px solid var(--theme-line, #d8dee4);
   border-radius: 8px;
-  background: #ffffff;
+  background: var(--rede-circle-bg, #ffffff);
   padding: 0.5rem;
 }
 
@@ -19,7 +19,7 @@
 
 .ring-guide {
   fill: none;
-  stroke: #d7dde4;
+  stroke: var(--rede-circle-ring, #d7dde4);
   stroke-width: 1;
   stroke-dasharray: 3 7;
 }
@@ -29,26 +29,54 @@
 }
 
 .ribbon {
-  stroke: rgba(15, 23, 42, 0.08);
+  stroke: var(--rede-circle-ribbon-stroke, rgba(15, 23, 42, 0.08));
   stroke-width: 0.7;
 }
 
 .arc {
-  stroke: #ffffff;
+  stroke: var(--rede-circle-bg, #ffffff);
   stroke-width: 1;
 }
 
 .labels .node-label {
-  fill: #1e40af;
+  fill: var(--rede-circle-label, #1e40af);
   font-size: 11px;
   font-weight: 600;
   text-decoration: none;
-  cursor: default;
+  cursor: pointer;
+}
+
+.labels a:hover .node-label,
+.labels a:focus .node-label {
+  fill: var(--rede-circle-label-hover, #60a5fa);
+  text-decoration: underline;
 }
 
 .rede-empty {
-  color: #51606f;
+  color: var(--rede-circle-empty, #51606f);
   padding: 1rem;
+}
+
+:host-context([data-bs-theme='dark']) .rede-circle,
+:host-context(.dark) .rede-circle,
+:host-context(.dark-theme) .rede-circle {
+  --rede-circle-bg: #101924;
+  --rede-circle-ring: #334155;
+  --rede-circle-ribbon-stroke: rgba(148, 163, 184, 0.2);
+  --rede-circle-label: #bfdbfe;
+  --rede-circle-label-hover: #ffffff;
+  --rede-circle-empty: #cbd5e1;
+}
+
+@media (prefers-color-scheme: dark) {
+  .rede-circle {
+    --rede-circle-bg: #101924;
+    --rede-circle-ring: #334155;
+    --rede-circle-ribbon-stroke: rgba(148, 163, 184, 0.2);
+    --rede-circle-label: #bfdbfe;
+    --rede-circle-label-hover: #ffffff;
+    --rede-circle-empty: #cbd5e1;
+  }
 }
 
 @media (max-width: 768px) {

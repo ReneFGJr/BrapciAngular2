@@ -1,6 +1,6 @@
 
 export default {
-  basePath: '/web2',
+  basePath: '/',
   allowedHosts: [],
   supportedLocales: {
   "en-US": ""

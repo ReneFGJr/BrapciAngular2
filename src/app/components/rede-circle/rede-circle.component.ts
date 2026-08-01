@@ -5,6 +5,7 @@ import type { NetworkEdge, NetworkGraph, NetworkNode } from '../../core/models/n
 type ArcNode = {
   id: string;
   label: string;
+  url: string;
   color: string;
   weight: number;
   startAngle: number;
@@ -43,9 +44,9 @@ export class RedeCircleComponent {
 
   readonly viewSize = 680;
   private readonly center = this.viewSize / 2;
-  readonly outerRadius = 230;
+  readonly outerRadius = 130;
   readonly innerRadius = 212;
-  readonly labelRadius = 238;
+  readonly labelRadius = 221;
   private readonly arcGap = 0.018;
 
   readonly normalizedNodes = computed(() => this.normalizeNodes(this.networkData.nodes));
@@ -95,6 +96,7 @@ export class RedeCircleComponent {
       return {
         id: node.id,
         label: node.label,
+        url: this.authorUrl(node.id),
         color: this.colorFromId(node.id),
         weight,
         startAngle,
@@ -241,5 +243,9 @@ export class RedeCircleComponent {
     const lightness = 42 + (hash % 16);
 
     return `hsl(${hue}, ${saturation}%, ${lightness}%)`;
+  }
+
+  private authorUrl(id: string): string {
+    return `/v/${encodeURIComponent(id)}`;
   }
 }

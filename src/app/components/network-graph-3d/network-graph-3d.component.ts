@@ -30,11 +30,13 @@ import type { NetworkGraph } from '../../core/models/network.model';
 
     .network-3d-container {
       width: 100%;
-      height: 500px;
+      min-height: 620px;
+      height: clamp(320px, 58vw, 500px);
       position: relative;
       border: 1px solid var(--theme-line, #dee2e6);
-      border-radius: 4px;
+      border-radius: 0.75rem;
       background: var(--theme-card-bg, #ffffff);
+      color: var(--theme-ink, #102542);
       overflow: hidden;
     }
 
@@ -45,13 +47,33 @@ import type { NetworkGraph } from '../../core/models/network.model';
 
     .network-3d-controls {
       position: absolute;
-      bottom: 10px;
-      left: 10px;
-      background: rgba(255, 255, 255, 0.9);
-      padding: 0.5rem;
-      border-radius: 4px;
+      right: 0.75rem;
+      bottom: 0.75rem;
+      left: 0.75rem;
+      background: var(--theme-card-bg, rgba(255, 255, 255, 0.9));
+      border: 1px solid var(--theme-line, #dee2e6);
+      color: var(--theme-ink, #102542);
+      padding: 0.55rem 0.7rem;
+      border-radius: 0.55rem;
       font-size: 0.85rem;
       pointer-events: none;
+      backdrop-filter: blur(6px);
+    }
+
+    .network-3d-controls .text-muted {
+      color: inherit !important;
+    }
+
+    @media (max-width: 768px) {
+      .network-3d-container {
+        min-height: 280px;
+        height: min(68vw, 420px);
+      }
+
+      .network-3d-controls {
+        font-size: 0.75rem;
+        line-height: 1.4;
+      }
     }
   `
 })
@@ -63,7 +85,7 @@ export class NetworkGraph3dComponent implements AfterViewInit, OnChanges, OnDest
   private camera?: THREE.PerspectiveCamera;
   private renderer?: THREE.WebGLRenderer;
   private nodes: THREE.Mesh[] = [];
-  private edges: THREE.Line[] = [];
+  private edges: THREE.Mesh[] = [];
   private labels: THREE.Sprite[] = [];
   private animationId?: number;
   private raycaster = new THREE.Raycaster();
@@ -108,7 +130,6 @@ export class NetworkGraph3dComponent implements AfterViewInit, OnChanges, OnDest
 
     // Scene setup
     this.scene = new THREE.Scene();
-    this.scene.background = new THREE.Color(0xffffff);
 
     // Camera
     this.camera = new THREE.PerspectiveCamera(75, width / height, 0.1, 1000);
@@ -118,6 +139,7 @@ export class NetworkGraph3dComponent implements AfterViewInit, OnChanges, OnDest
     this.renderer = new THREE.WebGLRenderer({ antialias: true, alpha: true });
     this.renderer.setSize(width, height);
     this.renderer.setPixelRatio(window.devicePixelRatio);
+    this.renderer.setClearAlpha(0);
     container.appendChild(this.renderer.domElement);
 
     // Lighting
@@ -185,6 +207,9 @@ export class NetworkGraph3dComponent implements AfterViewInit, OnChanges, OnDest
   private buildNetwork(): void {
     if (!this.scene || this.networkData.nodes.length === 0) return;
 
+    const theme = this.getThemeColors();
+    const edgeWeightRange = this.getEdgeWeightRange();
+
     // Create nodes
     const nodePositions = new Map<string, THREE.Vector3>();
 
@@ -201,7 +226,7 @@ export class NetworkGraph3dComponent implements AfterViewInit, OnChanges, OnDest
       const position = new THREE.Vector3(x, y, z);
       nodePositions.set(node.id, position);
 
-      const size = node.size ?? 2;
+      const size = (node.size ?? 2) * 2;
       const geometry = new THREE.SphereGeometry(size, 32, 32);
       const color = new THREE.Color(node.color ?? 0x483d8b);
       const material = new THREE.MeshPhongMaterial({ color });
@@ -213,7 +238,7 @@ export class NetworkGraph3dComponent implements AfterViewInit, OnChanges, OnDest
       this.scene!.add(mesh);
       this.nodes.push(mesh);
 
-      const labelSprite = this.createLabelSprite(node.label);
+      const labelSprite = this.createLabelSprite(node.label, theme);
       labelSprite.position.set(position.x, position.y + size + 1.2, position.z);
       this.scene!.add(labelSprite);
       this.labels.push(labelSprite);
@@ -225,11 +250,13 @@ export class NetworkGraph3dComponent implements AfterViewInit, OnChanges, OnDest
       const targetPos = nodePositions.get(String(edge.target));
 
       if (sourcePos && targetPos) {
-        const geometry = new THREE.BufferGeometry();
-        geometry.setFromPoints([sourcePos, targetPos]);
-
-        const material = new THREE.LineBasicMaterial({ color: 0xcccccc, transparent: true, opacity: 0.6 });
-        const line = new THREE.Line(geometry, material);
+        const geometry = this.createEdgeGeometry(sourcePos, targetPos, edge.weight, edgeWeightRange);
+        const material = new THREE.MeshPhongMaterial({
+          color: theme.edgeColor,
+          transparent: true,
+          opacity: 0.72
+        });
+        const line = new THREE.Mesh(geometry, material);
 
         this.scene!.add(line);
         this.edges.push(line);
@@ -240,21 +267,24 @@ export class NetworkGraph3dComponent implements AfterViewInit, OnChanges, OnDest
     this.fitCameraToScene();
   }
 
-  private createLabelSprite(text: string): THREE.Sprite {
+  private createLabelSprite(
+    text: string,
+    theme: { labelBackground: string; labelBorder: string; labelText: string }
+  ): THREE.Sprite {
     const canvas = document.createElement('canvas');
     const context = canvas.getContext('2d');
 
     if (!context) {
-      return new THREE.Sprite(new THREE.SpriteMaterial({ color: 0x0d1b2a }));
+      return new THREE.Sprite(new THREE.SpriteMaterial({ color: theme.labelText }));
     }
 
     const safeText = (text || '').trim() || 'Autor';
-    const fontSize = 28;
+    const fontSize = 96;
     context.font = `${fontSize}px Arial`;
     const textWidth = Math.ceil(context.measureText(safeText).width);
 
-    const horizontalPadding = 18;
-    const verticalPadding = 10;
+    const horizontalPadding = 28;
+    const verticalPadding = 18;
     canvas.width = textWidth + horizontalPadding * 2;
     canvas.height = fontSize + verticalPadding * 2;
 
@@ -262,14 +292,14 @@ export class NetworkGraph3dComponent implements AfterViewInit, OnChanges, OnDest
     context.textAlign = 'center';
     context.textBaseline = 'middle';
 
-    context.fillStyle = 'rgba(255,255,255,0.88)';
+    context.fillStyle = theme.labelBackground;
     context.fillRect(0, 0, canvas.width, canvas.height);
 
-    context.strokeStyle = 'rgba(13,27,42,0.35)';
+    context.strokeStyle = theme.labelBorder;
     context.lineWidth = 2;
     context.strokeRect(0, 0, canvas.width, canvas.height);
 
-    context.fillStyle = '#0d1b2a';
+    context.fillStyle = theme.labelText;
     context.fillText(safeText, canvas.width / 2, canvas.height / 2);
 
     const texture = new THREE.CanvasTexture(canvas);
@@ -283,10 +313,82 @@ export class NetworkGraph3dComponent implements AfterViewInit, OnChanges, OnDest
     });
 
     const sprite = new THREE.Sprite(material);
-    const scaleFactor = 0.022;
+    const scaleFactor = 0.03;
     sprite.scale.set(canvas.width * scaleFactor, canvas.height * scaleFactor, 1);
 
     return sprite;
+  }
+
+  private getThemeColors(): {
+    labelBackground: string;
+    labelBorder: string;
+    labelText: string;
+    edgeColor: string;
+  } {
+    const styleTarget = this.canvasRef?.nativeElement ?? document.documentElement;
+    const computedStyle = getComputedStyle(styleTarget);
+
+    const cardBackground = computedStyle.getPropertyValue('--theme-card-bg').trim() || 'rgba(255,255,255,0.9)';
+    const lineColor = computedStyle.getPropertyValue('--theme-line').trim() || 'rgba(148, 163, 184, 0.65)';
+    const inkColor = computedStyle.getPropertyValue('--theme-ink').trim() || '#102542';
+
+    return {
+      labelBackground: cardBackground,
+      labelBorder: lineColor,
+      labelText: inkColor,
+      edgeColor: lineColor
+    };
+  }
+
+  private getEdgeWeightRange(): { min: number; max: number } {
+    const weights = this.networkData.edges
+      .map((edge) => edge.weight ?? 1)
+      .filter((weight) => Number.isFinite(weight) && weight > 0);
+
+    if (weights.length === 0) {
+      return { min: 1, max: 1 };
+    }
+
+    return {
+      min: Math.min(...weights),
+      max: Math.max(...weights)
+    };
+  }
+
+  private createEdgeGeometry(
+    source: THREE.Vector3,
+    target: THREE.Vector3,
+    weight: number | undefined,
+    range: { min: number; max: number }
+  ): THREE.CylinderGeometry {
+    const start = source.clone();
+    const end = target.clone();
+    const direction = end.clone().sub(start);
+    const length = direction.length();
+    const thickness = this.getEdgeThickness(weight, range);
+    const geometry = new THREE.CylinderGeometry(thickness, thickness, length, 10, 1, false);
+
+    const midpoint = start.clone().add(end).multiplyScalar(0.5);
+    geometry.translate(0, length / 2, 0);
+
+    const orientation = new THREE.Matrix4();
+    orientation.lookAt(start, end, new THREE.Vector3(0, 1, 0));
+    orientation.multiply(new THREE.Matrix4().makeRotationX(Math.PI / 2));
+    geometry.applyMatrix4(orientation);
+    geometry.translate(midpoint.x, midpoint.y, midpoint.z);
+
+    return geometry;
+  }
+
+  private getEdgeThickness(weight: number | undefined, range: { min: number; max: number }): number {
+    const normalizedWeight = Math.max(0, weight ?? 1);
+
+    if (range.max === range.min) {
+      return 0.24;
+    }
+
+    const ratio = (normalizedWeight - range.min) / (range.max - range.min);
+    return 0.12 + ratio * 0.4;
   }
 
   private animate = (): void => {

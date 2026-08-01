@@ -2,7 +2,7 @@
   @if (hasData()) {
     <svg class="rede-circle-svg" [attr.viewBox]="'0 0 ' + viewSize + ' ' + viewSize" role="img" aria-label="Grafo radial de coautoria">
       <g [attr.transform]="'translate(' + (viewSize / 2) + ',' + (viewSize / 2) + ')'">
-        <circle class="ring-guide" r="260"></circle>
+        <circle class="ring-guide" [attr.r]="outerRadius"></circle>
 
         <g class="ribbons-layer">
           @for (ribbon of ribbons(); track ribbon.id) {
@@ -29,15 +29,17 @@
               </path>
 
               <g class="labels">
-                <text
-                  dy=".35em"
-                  class="node-label"
-                  [attr.transform]="node.labelTransform"
-                  [attr.text-anchor]="node.labelAnchor"
-                >
-                  {{ node.label }}
-                  <title>{{ node.label }} | {{ node.tooltip }}</title>
-                </text>
+                <a [attr.href]="node.url" [attr.aria-label]="'Abrir perfil de ' + node.label">
+                  <text
+                    dy=".35em"
+                    class="node-label"
+                    [attr.transform]="node.labelTransform"
+                    [attr.text-anchor]="node.labelAnchor"
+                  >
+                    {{ node.label }}
+                    <title>{{ node.label }} | {{ node.tooltip }}</title>
+                  </text>
+                </a>
               </g>
             </g>
           }
