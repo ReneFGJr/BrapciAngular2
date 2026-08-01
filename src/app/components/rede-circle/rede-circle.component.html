@@ -1,43 +1,48 @@
 <section class="rede-circle" aria-label="Rede circular de autores">
   @if (hasData()) {
-    <svg class="rede-circle-svg" [attr.viewBox]="'0 0 ' + viewSize + ' ' + viewSize" role="img" aria-label="Grafo circular de coautoria">
-      <circle class="ring-guide" [attr.cx]="viewSize / 2" [attr.cy]="viewSize / 2" r="300"></circle>
+    <svg class="rede-circle-svg" [attr.viewBox]="'0 0 ' + viewSize + ' ' + viewSize" role="img" aria-label="Grafo radial de coautoria">
+      <g [attr.transform]="'translate(' + (viewSize / 2) + ',' + (viewSize / 2) + ')'">
+        <circle class="ring-guide" r="260"></circle>
 
-      @for (edge of edges(); track edge.source + '-' + edge.target + '-' + edge.label) {
-        <line
-          class="edge-line"
-          [attr.x1]="edge.x1"
-          [attr.y1]="edge.y1"
-          [attr.x2]="edge.x2"
-          [attr.y2]="edge.y2"
-          [attr.stroke-width]="edge.strokeWidth"
-        >
-          <title>{{ edge.source }} - {{ edge.target }} ({{ edge.label }})</title>
-        </line>
-      }
-
-      @for (node of sizedNodes(); track node.id) {
-        <g class="node-group">
-          <circle
-            class="node-circle"
-            [attr.cx]="node.x"
-            [attr.cy]="node.y"
-            [attr.r]="node.radius"
-            [attr.fill]="node.color"
-          >
-            <title>{{ node.label }}</title>
-          </circle>
-
-          <text
-            class="node-label"
-            [attr.x]="node.x"
-            [attr.y]="node.y + node.radius + 18"
-            text-anchor="middle"
-          >
-            {{ node.label }}
-          </text>
+        <g class="ribbons-layer">
+          @for (ribbon of ribbons(); track ribbon.id) {
+            <path
+              class="ribbon"
+              [attr.d]="ribbon.path"
+              [attr.fill]="ribbon.color"
+              [attr.fill-opacity]="ribbon.opacity"
+            >
+              <title>{{ ribbon.tooltip }}</title>
+            </path>
+          }
         </g>
-      }
+
+        <g class="arcs-layer">
+          @for (node of arcNodes(); track node.id) {
+            <g>
+              <path
+                class="arc"
+                [attr.d]="node.arcPath"
+                [attr.fill]="node.color"
+              >
+                <title>{{ node.label }} | {{ node.tooltip }}</title>
+              </path>
+
+              <g class="labels">
+                <text
+                  dy=".35em"
+                  class="node-label"
+                  [attr.transform]="node.labelTransform"
+                  [attr.text-anchor]="node.labelAnchor"
+                >
+                  {{ node.label }}
+                  <title>{{ node.label }} | {{ node.tooltip }}</title>
+                </text>
+              </g>
+            </g>
+          }
+        </g>
+      </g>
     </svg>
   } @else {
     <p class="rede-empty mb-0">Sem dados de rede.</p>

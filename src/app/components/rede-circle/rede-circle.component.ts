@@ -2,30 +2,34 @@ import { CommonModule } from '@angular/common';
 import { Component, Input, computed } from '@angular/core';
 import type { NetworkEdge, NetworkGraph, NetworkNode } from '../../core/models/network.model';
 
-type GraphNode = {
+type ArcNode = {
   id: string;
   label: string;
-  size: number;
-  x: number;
-  y: number;
-  radius: number;
   color: string;
+  weight: number;
+  startAngle: number;
+  endAngle: number;
+  midAngle: number;
+  arcPath: string;
+  labelTransform: string;
+  labelAnchor: 'start' | 'end';
+  tooltip: string;
 };
 
-type GraphEdge = {
+type Ribbon = {
+  id: string;
   source: string;
   target: string;
-  x1: number;
-  y1: number;
-  x2: number;
-  y2: number;
-  strokeWidth: number;
+  path: string;
+  color: string;
+  opacity: number;
+  width: number;
   label: string;
-  midX: number;
-  midY: number;
+  tooltip: string;
 };
 
 type NormalizedNode = NetworkNode & { size: number; label: string; id: string };
+type NormalizedEdge = NetworkEdge & { weight: number; label: string; source: string; target: string };
 
 @Component({
   selector: 'app-rede-circle',
@@ -37,77 +41,128 @@ type NormalizedNode = NetworkNode & { size: number; label: string; id: string };
 export class RedeCircleComponent {
   @Input() networkData: NetworkGraph = { nodes: [], edges: [] };
 
-  readonly viewSize = 860;
+  readonly viewSize = 680;
   private readonly center = this.viewSize / 2;
-  private readonly ringRadius = 300;
+  readonly outerRadius = 230;
+  readonly innerRadius = 212;
+  readonly labelRadius = 238;
+  private readonly arcGap = 0.018;
 
   readonly normalizedNodes = computed(() => this.normalizeNodes(this.networkData.nodes));
+  readonly normalizedEdges = computed(() => this.normalizeEdges(this.networkData.edges));
 
-  readonly sizedNodes = computed(() => {
+  readonly arcNodes = computed(() => {
     const nodes = this.normalizedNodes();
+    const edges = this.normalizedEdges();
+
     if (nodes.length === 0) {
-      return [] as GraphNode[];
+      return [] as ArcNode[];
     }
 
-    const maxSize = Math.max(...nodes.map((node) => node.size), 1);
+    const nodeWeight = new Map<string, number>();
 
-    return nodes.map((node, index) => {
-      const angle = (Math.PI * 2 * index) / nodes.length - Math.PI / 2;
-      const x = this.center + this.ringRadius * Math.cos(angle);
-      const y = this.center + this.ringRadius * Math.sin(angle);
-      const radius = 8 + (node.size / maxSize) * 18;
+    for (const node of nodes) {
+      nodeWeight.set(node.id, Math.max(1, node.size));
+    }
+
+    for (const edge of edges) {
+      nodeWeight.set(edge.source, (nodeWeight.get(edge.source) ?? 0) + edge.weight);
+      if (edge.target !== edge.source) {
+        nodeWeight.set(edge.target, (nodeWeight.get(edge.target) ?? 0) + edge.weight);
+      }
+    }
+
+    const totalWeight = [...nodeWeight.values()].reduce((sum, value) => sum + value, 0) || nodes.length;
+    const availableAngle = Math.PI * 2 - this.arcGap * nodes.length;
+
+    let currentAngle = -Math.PI / 2;
+
+    return nodes.map((node) => {
+      const weight = nodeWeight.get(node.id) ?? 1;
+      const span = availableAngle * (weight / totalWeight);
+      const startAngle = currentAngle;
+      const endAngle = startAngle + Math.max(0.02, span);
+      const midAngle = (startAngle + endAngle) / 2;
+      currentAngle = endAngle + this.arcGap;
+
+      const midDegrees = this.radToDeg(midAngle);
+      const flip = midDegrees > 90 || midDegrees < -90;
+      const labelAnchor: 'start' | 'end' = flip ? 'end' : 'start';
+      const labelTransform = flip
+        ? `rotate(${midDegrees}) translate(${this.labelRadius}) rotate(180)`
+        : `rotate(${midDegrees}) translate(${this.labelRadius})`;
 
       return {
         id: node.id,
         label: node.label,
-        size: node.size,
-        x,
-        y,
-        radius,
-        color: this.colorFromId(node.id)
+        color: this.colorFromId(node.id),
+        weight,
+        startAngle,
+        endAngle,
+        midAngle,
+        arcPath: this.describeArcBand(startAngle, endAngle, this.innerRadius, this.outerRadius),
+        labelTransform,
+        labelAnchor,
+        tooltip: `Coautorias/peso total: ${weight}`
       };
     });
   });
 
-  readonly edges = computed(() => {
-    const nodes = this.sizedNodes();
-    const nodeMap = new Map(nodes.map((node) => [node.id, node]));
-    const edges = this.normalizeEdges(this.networkData.edges);
+  readonly ribbons = computed(() => {
+    const arcs = this.arcNodes();
+    const edges = this.normalizedEdges();
 
-    if (edges.length === 0) {
-      return [] as GraphEdge[];
+    if (arcs.length === 0 || edges.length === 0) {
+      return [] as Ribbon[];
     }
 
+    const arcMap = new Map(arcs.map((arc) => [arc.id, arc]));
     const maxWeight = Math.max(...edges.map((edge) => edge.weight), 1);
 
     return edges
-      .map((edge) => {
-        const source = nodeMap.get(edge.source);
-        const target = nodeMap.get(edge.target);
+      .map((edge, index) => {
+        const source = arcMap.get(edge.source);
+        const target = arcMap.get(edge.target);
 
         if (!source || !target || source.id === target.id) {
           return null;
         }
 
-        const strokeWidth = 1 + (edge.weight / maxWeight) * 7;
+        const width = Math.min(0.085, 0.012 + (edge.weight / maxWeight) * 0.055);
+        const sourceA1 = source.midAngle - width / 2;
+        const sourceA2 = source.midAngle + width / 2;
+        const targetA1 = target.midAngle - width / 2;
+        const targetA2 = target.midAngle + width / 2;
+
+        const p1 = this.polar(sourceA1, this.innerRadius);
+        const p2 = this.polar(targetA1, this.innerRadius);
+        const p3 = this.polar(targetA2, this.innerRadius);
+        const p4 = this.polar(sourceA2, this.innerRadius);
+
+        const path = [
+          `M${p1.x},${p1.y}`,
+          `Q0,0 ${p2.x},${p2.y}`,
+          `L${p3.x},${p3.y}`,
+          `Q0,0 ${p4.x},${p4.y}`,
+          'Z'
+        ].join(' ');
 
         return {
-          source: source.id,
-          target: target.id,
-          x1: source.x,
-          y1: source.y,
-          x2: target.x,
-          y2: target.y,
-          strokeWidth,
+          id: `${edge.source}-${edge.target}-${index}`,
+          source: edge.source,
+          target: edge.target,
+          path,
+          color: source.color,
+          opacity: 0.4 + (edge.weight / maxWeight) * 0.4,
+          width,
           label: edge.label,
-          midX: (source.x + target.x) / 2,
-          midY: (source.y + target.y) / 2
+          tooltip: `${source.label} -> ${target.label} (${edge.label})`
         };
       })
-      .filter((edge): edge is GraphEdge => edge !== null);
+      .filter((ribbon): ribbon is Ribbon => ribbon !== null);
   });
 
-  readonly hasData = computed(() => this.sizedNodes().length > 0);
+  readonly hasData = computed(() => this.arcNodes().length > 0);
 
   private normalizeNodes(rawNodes: NetworkNode[]): NormalizedNode[] {
     const unique = new Map<string, NormalizedNode>();
@@ -131,7 +186,7 @@ export class RedeCircleComponent {
     return [...unique.values()].sort((a, b) => (b.size ?? 0) - (a.size ?? 0));
   }
 
-  private normalizeEdges(rawEdges: NetworkEdge[]): Array<NetworkEdge & { weight: number; label: string }> {
+  private normalizeEdges(rawEdges: NetworkEdge[]): NormalizedEdge[] {
     return rawEdges
       .map((edge) => {
         const rawWeight = Number(edge.weight ?? edge.label ?? 1);
@@ -146,6 +201,33 @@ export class RedeCircleComponent {
         };
       })
       .filter((edge) => edge.source.length > 0 && edge.target.length > 0);
+  }
+
+  private describeArcBand(start: number, end: number, innerRadius: number, outerRadius: number): string {
+    const startOuter = this.polar(start, outerRadius);
+    const endOuter = this.polar(end, outerRadius);
+    const startInner = this.polar(start, innerRadius);
+    const endInner = this.polar(end, innerRadius);
+    const largeArc = end - start > Math.PI ? 1 : 0;
+
+    return [
+      `M${startOuter.x},${startOuter.y}`,
+      `A${outerRadius},${outerRadius},0,${largeArc},1,${endOuter.x},${endOuter.y}`,
+      `L${endInner.x},${endInner.y}`,
+      `A${innerRadius},${innerRadius},0,${largeArc},0,${startInner.x},${startInner.y}`,
+      'Z'
+    ].join(' ');
+  }
+
+  private polar(angle: number, radius: number): { x: number; y: number } {
+    return {
+      x: Number((Math.cos(angle) * radius).toFixed(3)),
+      y: Number((Math.sin(angle) * radius).toFixed(3))
+    };
+  }
+
+  private radToDeg(angle: number): number {
+    return (angle * 180) / Math.PI;
   }
 
   private colorFromId(id: string): string {
