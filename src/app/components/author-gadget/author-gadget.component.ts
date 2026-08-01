@@ -16,6 +16,7 @@ type AuthorMetric = {
 type AuthorLink = {
   type: 'lattes' | 'orcid' | 'openalex' | 'googlescholar';
   icon: string;
+  iconImage?: string;
   label: string;
   url: string;
 };

@@ -3,6 +3,7 @@ import { Component, Input, computed, signal } from '@angular/core';
 import { TranslateModule } from '@ngx-translate/core';
 import { CoauthorsListComponent } from '../coauthors-list/coauthors-list.component';
 import { NetworkGraph3dComponent } from '../network-graph-3d/network-graph-3d.component';
+import { RedeCircleComponent } from '../rede-circle/rede-circle.component';
 import type { Coauthor } from '../../core/models/coauthor.model';
 import type { NetworkGraph } from '../../core/models/network.model';
 
@@ -44,7 +45,7 @@ export type AuthorContentTab = {
 
 @Component({
   selector: 'app-author-works',
-  imports: [CommonModule, TranslateModule, CoauthorsListComponent, NetworkGraph3dComponent],
+  imports: [CommonModule, TranslateModule, CoauthorsListComponent, NetworkGraph3dComponent, RedeCircleComponent],
   templateUrl: './author-works.component.html',
   styleUrl: './author-works.component.scss'
 })

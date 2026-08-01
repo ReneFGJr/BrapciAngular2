@@ -32,14 +32,48 @@
 
       @if (!loading() && !error()) {
 
-        @if (hasResults()) {
-          <ul class="autoridade-results mb-0 ps-3 pe-3">
-            @for (entry of results(); track entry.id) {
-              <li>
-                <a class="autoridade-link" [href]="'/v/' + entry.id">{{ entry.term }}</a>
-              </li>
-            }
-          </ul>
+        @if (hasAnyResults()) {
+          @if (hasResults()) {
+            <h2 class="autoridade-section-title ps-3 pe-3 mb-2">Autores</h2>
+            <ul class="autoridade-results mb-3 ps-3 pe-3">
+              @for (entry of results(); track entry.id) {
+                <li class="autoridade-result-item">
+                  <a class="autoridade-link" [href]="'/v/' + entry.id">
+                    @if (entry.picture) {
+                      <img class="autoridade-picture" [src]="entry.picture" [alt]="entry.term" loading="lazy" />
+                    } @else {
+                      <span class="autoridade-picture autoridade-picture--placeholder" aria-hidden="true">{{ entry.term.charAt(0) }}</span>
+                    }
+                    <span class="autoridade-content">
+                      <strong class="autoridade-term">{{ entry.term }}</strong>
+                      <small class="autoridade-id">ID: {{ entry.id }}</small>
+                    </span>
+                  </a>
+                </li>
+              }
+            </ul>
+          }
+
+          @if (hasCorporateResults()) {
+            <h2 class="autoridade-section-title ps-3 pe-3 mb-2">Corporate</h2>
+            <ul class="autoridade-results mb-0 ps-3 pe-3">
+              @for (entry of corporateResults(); track entry.id) {
+                <li class="autoridade-result-item">
+                  <a class="autoridade-link" [href]="'/v/' + entry.id">
+                    @if (entry.picture) {
+                      <img class="autoridade-picture" [src]="entry.picture" [alt]="entry.term" loading="lazy" />
+                    } @else {
+                      <span class="autoridade-picture autoridade-picture--placeholder" aria-hidden="true">{{ entry.term.charAt(0) }}</span>
+                    }
+                    <span class="autoridade-content">
+                      <strong class="autoridade-term">{{ entry.term }}</strong>
+                      <small class="autoridade-id">ID: {{ entry.id }}</small>
+                    </span>
+                  </a>
+                </li>
+              }
+            </ul>
+          }
         } @else {
           <p class="mb-0 ps-3 p-3">{{ 'authority.empty' | translate }}</p>
         }

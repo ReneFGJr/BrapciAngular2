@@ -9,16 +9,19 @@ type AuthorityItem = {
   ID?: string;
   Term?: string;
   use?: string;
+  picture?: string;
 };
 
 type AuthorityResult = {
   id: string;
   term: string;
+  picture?: string;
 };
 
 type AuthorityResponse = {
   data?: {
-    item?: AuthorityItem[];
+    item?: AuthorityItem[] | Record<string, AuthorityItem>;
+    corporate?: AuthorityItem[] | Record<string, AuthorityItem>;
   };
 };
 
@@ -36,8 +39,23 @@ export class AutoridadePage {
   readonly loading = signal(false);
   readonly error = signal('');
   readonly results = signal<AuthorityResult[]>([]);
+  readonly corporateResults = signal<AuthorityResult[]>([]);
 
   readonly hasResults = computed(() => this.results().length > 0);
+  readonly hasCorporateResults = computed(() => this.corporateResults().length > 0);
+  readonly hasAnyResults = computed(() => this.hasResults() || this.hasCorporateResults());
+
+  private normalizeItems(items?: AuthorityItem[] | Record<string, AuthorityItem>): AuthorityItem[] {
+    if (!items) {
+      return [];
+    }
+
+    if (Array.isArray(items)) {
+      return items;
+    }
+
+    return Object.values(items);
+  }
 
   constructor() {
     this.search();
@@ -47,6 +65,7 @@ export class AutoridadePage {
     const value = this.term().trim();
     if (!value) {
       this.results.set([]);
+      this.corporateResults.set([]);
       return;
     }
 
@@ -55,19 +74,31 @@ export class AutoridadePage {
 
     this.brapciApiService.authoritySearch<AuthorityResponse>(value).subscribe({
       next: (response) => {
-        const items = response.data?.item ?? [];
+        const items = this.normalizeItems(response.data?.item);
+        const corporate = this.normalizeItems(response.data?.corporate);
         const filtered = items
           .filter((entry) => !!entry.ID && !!entry.use && entry.ID === entry.use)
           .map((entry) => ({
             id: entry.ID as string,
-            term: (entry.Term ?? '').trim() || (entry.ID as string)
+            term: (entry.Term ?? '').trim() || (entry.ID as string),
+            picture: (entry.picture ?? '').trim() || undefined
+          }));
+
+        const corporateFiltered = corporate
+          .filter((entry) => !!entry.ID && !!entry.use && entry.ID === entry.use)
+          .map((entry) => ({
+            id: entry.ID as string,
+            term: (entry.Term ?? '').trim() || (entry.ID as string),
+            picture: (entry.picture ?? '').trim() || undefined
           }));
 
         this.results.set(filtered);
+        this.corporateResults.set(corporateFiltered);
         this.loading.set(false);
       },
       error: () => {
         this.results.set([]);
+        this.corporateResults.set([]);
         this.error.set(this.translate.instant('authority.apiError'));
         this.loading.set(false);
       }

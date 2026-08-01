@@ -1,0 +1,45 @@
+<section class="rede-circle" aria-label="Rede circular de autores">
+  @if (hasData()) {
+    <svg class="rede-circle-svg" [attr.viewBox]="'0 0 ' + viewSize + ' ' + viewSize" role="img" aria-label="Grafo circular de coautoria">
+      <circle class="ring-guide" [attr.cx]="viewSize / 2" [attr.cy]="viewSize / 2" r="300"></circle>
+
+      @for (edge of edges(); track edge.source + '-' + edge.target + '-' + edge.label) {
+        <line
+          class="edge-line"
+          [attr.x1]="edge.x1"
+          [attr.y1]="edge.y1"
+          [attr.x2]="edge.x2"
+          [attr.y2]="edge.y2"
+          [attr.stroke-width]="edge.strokeWidth"
+        >
+          <title>{{ edge.source }} - {{ edge.target }} ({{ edge.label }})</title>
+        </line>
+      }
+
+      @for (node of sizedNodes(); track node.id) {
+        <g class="node-group">
+          <circle
+            class="node-circle"
+            [attr.cx]="node.x"
+            [attr.cy]="node.y"
+            [attr.r]="node.radius"
+            [attr.fill]="node.color"
+          >
+            <title>{{ node.label }}</title>
+          </circle>
+
+          <text
+            class="node-label"
+            [attr.x]="node.x"
+            [attr.y]="node.y + node.radius + 18"
+            text-anchor="middle"
+          >
+            {{ node.label }}
+          </text>
+        </g>
+      }
+    </svg>
+  } @else {
+    <p class="rede-empty mb-0">Sem dados de rede.</p>
+  }
+</section>

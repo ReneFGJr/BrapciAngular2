@@ -1,5 +1,14 @@
 import { CommonModule } from '@angular/common';
-import { Component, Input, OnInit, ViewChild, ElementRef, OnDestroy, effect } from '@angular/core';
+import {
+  AfterViewInit,
+  Component,
+  Input,
+  OnChanges,
+  OnDestroy,
+  SimpleChanges,
+  ViewChild,
+  ElementRef
+} from '@angular/core';
 import * as THREE from 'three';
 import type { NetworkGraph } from '../../core/models/network.model';
 
@@ -46,7 +55,7 @@ import type { NetworkGraph } from '../../core/models/network.model';
     }
   `
 })
-export class NetworkGraph3dComponent implements OnInit, OnDestroy {
+export class NetworkGraph3dComponent implements AfterViewInit, OnChanges, OnDestroy {
   @Input() networkData: NetworkGraph = { nodes: [], edges: [] };
   @ViewChild('canvas') canvasRef?: ElementRef<HTMLDivElement>;
 
@@ -55,6 +64,7 @@ export class NetworkGraph3dComponent implements OnInit, OnDestroy {
   private renderer?: THREE.WebGLRenderer;
   private nodes: THREE.Mesh[] = [];
   private edges: THREE.Line[] = [];
+  private labels: THREE.Sprite[] = [];
   private animationId?: number;
   private raycaster = new THREE.Raycaster();
   private mouse = new THREE.Vector2();
@@ -62,15 +72,27 @@ export class NetworkGraph3dComponent implements OnInit, OnDestroy {
   private isDragging = false;
   private dragPlane = new THREE.Plane(new THREE.Vector3(0, 0, 1), 0);
   private dragPoint = new THREE.Vector3();
+  private hasInitialized = false;
 
-  constructor(private elementRef: ElementRef) {
-    effect(() => {
-      this.render();
-    });
+  private readonly onResize = (): void => this.onWindowResize();
+  private readonly onMouseDownHandler = (event: MouseEvent): void => this.onMouseDown(event);
+  private readonly onMouseMoveHandler = (event: MouseEvent): void => this.onMouseMove(event);
+  private readonly onMouseUpHandler = (): void => this.onMouseUp();
+  private readonly onDoubleClickHandler = (): void => this.resetView();
+  private readonly onWheelHandler = (event: WheelEvent): void => this.onMouseWheel(event);
+
+  ngAfterViewInit(): void {
+    this.initThreeScene();
+    this.hasInitialized = true;
   }
 
-  ngOnInit(): void {
-    this.initThreeScene();
+  ngOnChanges(changes: SimpleChanges): void {
+    if (!this.hasInitialized || !changes['networkData']) {
+      return;
+    }
+
+    this.rebuildNetwork();
+    this.render();
   }
 
   ngOnDestroy(): void {
@@ -107,24 +129,63 @@ export class NetworkGraph3dComponent implements OnInit, OnDestroy {
     this.scene.add(light2);
 
     // Build network
-    this.buildNetwork();
+    this.rebuildNetwork();
 
     // Event listeners
-    window.addEventListener('resize', () => this.onWindowResize());
-    container.addEventListener('mousedown', (e) => this.onMouseDown(e));
-    container.addEventListener('mousemove', (e) => this.onMouseMove(e));
-    container.addEventListener('mouseup', () => this.onMouseUp());
-    container.addEventListener('dblclick', () => this.resetView());
-    container.addEventListener('wheel', (e) => this.onMouseWheel(e), { passive: false });
+    window.addEventListener('resize', this.onResize);
+    container.addEventListener('mousedown', this.onMouseDownHandler);
+    container.addEventListener('mousemove', this.onMouseMoveHandler);
+    container.addEventListener('mouseup', this.onMouseUpHandler);
+    container.addEventListener('dblclick', this.onDoubleClickHandler);
+    container.addEventListener('wheel', this.onWheelHandler, { passive: false });
 
     this.animate();
+  }
+
+  private rebuildNetwork(): void {
+    if (!this.scene) {
+      return;
+    }
+
+    this.clearGraph();
+    this.buildNetwork();
+  }
+
+  private clearGraph(): void {
+    if (!this.scene) {
+      return;
+    }
+
+    this.nodes.forEach((node) => {
+      this.scene!.remove(node);
+      node.geometry.dispose();
+      (node.material as THREE.Material).dispose();
+    });
+
+    this.edges.forEach((edge) => {
+      this.scene!.remove(edge);
+      edge.geometry.dispose();
+      (edge.material as THREE.Material).dispose();
+    });
+
+    this.labels.forEach((label) => {
+      this.scene!.remove(label);
+      const material = label.material as THREE.SpriteMaterial;
+      if (material.map) {
+        material.map.dispose();
+      }
+      material.dispose();
+    });
+
+    this.nodes = [];
+    this.edges = [];
+    this.labels = [];
   }
 
   private buildNetwork(): void {
     if (!this.scene || this.networkData.nodes.length === 0) return;
 
     // Create nodes
-    const nodeMap = new Map<string, THREE.Mesh>();
     const nodePositions = new Map<string, THREE.Vector3>();
 
     // Arrange nodes in a sphere
@@ -151,13 +212,17 @@ export class NetworkGraph3dComponent implements OnInit, OnDestroy {
 
       this.scene!.add(mesh);
       this.nodes.push(mesh);
-      nodeMap.set(node.id, mesh);
+
+      const labelSprite = this.createLabelSprite(node.label);
+      labelSprite.position.set(position.x, position.y + size + 1.2, position.z);
+      this.scene!.add(labelSprite);
+      this.labels.push(labelSprite);
     });
 
     // Create edges
     this.networkData.edges.forEach((edge) => {
-      const sourcePos = nodePositions.get(edge.source);
-      const targetPos = nodePositions.get(edge.target);
+      const sourcePos = nodePositions.get(String(edge.source));
+      const targetPos = nodePositions.get(String(edge.target));
 
       if (sourcePos && targetPos) {
         const geometry = new THREE.BufferGeometry();
@@ -173,6 +238,55 @@ export class NetworkGraph3dComponent implements OnInit, OnDestroy {
 
     // Auto-fit camera
     this.fitCameraToScene();
+  }
+
+  private createLabelSprite(text: string): THREE.Sprite {
+    const canvas = document.createElement('canvas');
+    const context = canvas.getContext('2d');
+
+    if (!context) {
+      return new THREE.Sprite(new THREE.SpriteMaterial({ color: 0x0d1b2a }));
+    }
+
+    const safeText = (text || '').trim() || 'Autor';
+    const fontSize = 28;
+    context.font = `${fontSize}px Arial`;
+    const textWidth = Math.ceil(context.measureText(safeText).width);
+
+    const horizontalPadding = 18;
+    const verticalPadding = 10;
+    canvas.width = textWidth + horizontalPadding * 2;
+    canvas.height = fontSize + verticalPadding * 2;
+
+    context.font = `${fontSize}px Arial`;
+    context.textAlign = 'center';
+    context.textBaseline = 'middle';
+
+    context.fillStyle = 'rgba(255,255,255,0.88)';
+    context.fillRect(0, 0, canvas.width, canvas.height);
+
+    context.strokeStyle = 'rgba(13,27,42,0.35)';
+    context.lineWidth = 2;
+    context.strokeRect(0, 0, canvas.width, canvas.height);
+
+    context.fillStyle = '#0d1b2a';
+    context.fillText(safeText, canvas.width / 2, canvas.height / 2);
+
+    const texture = new THREE.CanvasTexture(canvas);
+    texture.needsUpdate = true;
+
+    const material = new THREE.SpriteMaterial({
+      map: texture,
+      transparent: true,
+      depthTest: false,
+      depthWrite: false
+    });
+
+    const sprite = new THREE.Sprite(material);
+    const scaleFactor = 0.022;
+    sprite.scale.set(canvas.width * scaleFactor, canvas.height * scaleFactor, 1);
+
+    return sprite;
   }
 
   private animate = (): void => {
@@ -279,21 +393,22 @@ export class NetworkGraph3dComponent implements OnInit, OnDestroy {
       cancelAnimationFrame(this.animationId);
     }
 
-    this.nodes.forEach((node) => {
-      if (node.geometry) node.geometry.dispose();
-      if (node.material) (node.material as THREE.Material).dispose();
-    });
-
-    this.edges.forEach((edge) => {
-      if (edge.geometry) edge.geometry.dispose();
-      if (edge.material) (edge.material as THREE.Material).dispose();
-    });
+    this.clearGraph();
 
     if (this.renderer) {
       this.renderer.dispose();
       this.canvasRef?.nativeElement.removeChild(this.renderer.domElement);
     }
 
-    window.removeEventListener('resize', () => this.onWindowResize());
+    if (this.canvasRef?.nativeElement) {
+      const container = this.canvasRef.nativeElement;
+      container.removeEventListener('mousedown', this.onMouseDownHandler);
+      container.removeEventListener('mousemove', this.onMouseMoveHandler);
+      container.removeEventListener('mouseup', this.onMouseUpHandler);
+      container.removeEventListener('dblclick', this.onDoubleClickHandler);
+      container.removeEventListener('wheel', this.onWheelHandler);
+    }
+
+    window.removeEventListener('resize', this.onResize);
   }
 }

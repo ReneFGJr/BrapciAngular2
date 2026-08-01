@@ -1,0 +1,61 @@
+:host {
+  display: block;
+}
+
+.rede-circle {
+  width: 100%;
+  border: 1px solid var(--theme-line, #d8dee4);
+  border-radius: 8px;
+  background: #fbfdff;
+  padding: 0.5rem;
+}
+
+.rede-circle-svg {
+  width: 100%;
+  height: auto;
+  min-height: 560px;
+  display: block;
+}
+
+.ring-guide {
+  fill: none;
+  stroke: #d9e2ec;
+  stroke-width: 1;
+  stroke-dasharray: 4 8;
+}
+
+.edge-line {
+  stroke: rgba(31, 41, 55, 0.45);
+  stroke-linecap: round;
+}
+
+.node-circle {
+  stroke: #ffffff;
+  stroke-width: 2;
+  filter: drop-shadow(0 1px 2px rgba(0, 0, 0, 0.25));
+}
+
+.node-label {
+  fill: #0f172a;
+  font-size: 12px;
+  font-weight: 600;
+  paint-order: stroke;
+  stroke: #ffffff;
+  stroke-width: 3px;
+  stroke-linejoin: round;
+}
+
+.rede-empty {
+  color: #51606f;
+  padding: 1rem;
+}
+
+@media (max-width: 768px) {
+  .rede-circle-svg {
+    min-height: 430px;
+  }
+
+  .node-label {
+    font-size: 11px;
+  }
+}
