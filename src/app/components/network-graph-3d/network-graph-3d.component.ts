@@ -85,7 +85,7 @@ export class NetworkGraph3dComponent implements AfterViewInit, OnChanges, OnDest
   private camera?: THREE.PerspectiveCamera;
   private renderer?: THREE.WebGLRenderer;
   private nodes: THREE.Mesh[] = [];
-  private edges: THREE.Mesh[] = [];
+  private edges: THREE.Line[] = [];
   private labels: THREE.Sprite[] = [];
   private animationId?: number;
   private raycaster = new THREE.Raycaster();
@@ -208,7 +208,6 @@ export class NetworkGraph3dComponent implements AfterViewInit, OnChanges, OnDest
     if (!this.scene || this.networkData.nodes.length === 0) return;
 
     const theme = this.getThemeColors();
-    const edgeWeightRange = this.getEdgeWeightRange();
 
     // Create nodes
     const nodePositions = new Map<string, THREE.Vector3>();
@@ -250,13 +249,15 @@ export class NetworkGraph3dComponent implements AfterViewInit, OnChanges, OnDest
       const targetPos = nodePositions.get(String(edge.target));
 
       if (sourcePos && targetPos) {
-        const geometry = this.createEdgeGeometry(sourcePos, targetPos, edge.weight, edgeWeightRange);
-        const material = new THREE.MeshPhongMaterial({
+        const geometry = new THREE.BufferGeometry();
+        geometry.setFromPoints([sourcePos, targetPos]);
+
+        const material = new THREE.LineBasicMaterial({
           color: theme.edgeColor,
           transparent: true,
-          opacity: 0.72
+          opacity: 0.7
         });
-        const line = new THREE.Mesh(geometry, material);
+        const line = new THREE.Line(geometry, material);
 
         this.scene!.add(line);
         this.edges.push(line);
@@ -338,57 +339,6 @@ export class NetworkGraph3dComponent implements AfterViewInit, OnChanges, OnDest
       labelText: inkColor,
       edgeColor: lineColor
     };
-  }
-
-  private getEdgeWeightRange(): { min: number; max: number } {
-    const weights = this.networkData.edges
-      .map((edge) => edge.weight ?? 1)
-      .filter((weight) => Number.isFinite(weight) && weight > 0);
-
-    if (weights.length === 0) {
-      return { min: 1, max: 1 };
-    }
-
-    return {
-      min: Math.min(...weights),
-      max: Math.max(...weights)
-    };
-  }
-
-  private createEdgeGeometry(
-    source: THREE.Vector3,
-    target: THREE.Vector3,
-    weight: number | undefined,
-    range: { min: number; max: number }
-  ): THREE.CylinderGeometry {
-    const start = source.clone();
-    const end = target.clone();
-    const direction = end.clone().sub(start);
-    const length = direction.length();
-    const thickness = this.getEdgeThickness(weight, range);
-    const geometry = new THREE.CylinderGeometry(thickness, thickness, length, 10, 1, false);
-
-    const midpoint = start.clone().add(end).multiplyScalar(0.5);
-    geometry.translate(0, length / 2, 0);
-
-    const orientation = new THREE.Matrix4();
-    orientation.lookAt(start, end, new THREE.Vector3(0, 1, 0));
-    orientation.multiply(new THREE.Matrix4().makeRotationX(Math.PI / 2));
-    geometry.applyMatrix4(orientation);
-    geometry.translate(midpoint.x, midpoint.y, midpoint.z);
-
-    return geometry;
-  }
-
-  private getEdgeThickness(weight: number | undefined, range: { min: number; max: number }): number {
-    const normalizedWeight = Math.max(0, weight ?? 1);
-
-    if (range.max === range.min) {
-      return 0.24;
-    }
-
-    const ratio = (normalizedWeight - range.min) / (range.max - range.min);
-    return 0.12 + ratio * 0.4;
   }
 
   private animate = (): void => {
