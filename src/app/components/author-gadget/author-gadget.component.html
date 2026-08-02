@@ -1,10 +1,12 @@
 <section class="author-gadget" aria-label="Dados do autor">
   <div class="author-header d-flex align-items-start gap-2">
     <div class="author-info flex-grow-1">
-      <h2 class="h5 mb-3">{{ 'author.gadget' | translate }}</h2>
-      <p class="mb-1"><strong>{{ 'author.name' | translate }}:</strong> {{ name }}</p>
+      <h1 class="h1">{{ name}}</h1>
       <p class="mb-1"><strong>{{ 'author.nameAbnt' | translate }}:</strong> {{ nameAbnt }}</p>
-      <p class="mb-1"><strong>{{ 'author.id' | translate }}:</strong> {{ authorId }}</p>
+      <p class="mb-1">
+        ## Genero
+        <strong>{{ 'author.id' | translate }}:</strong> {{ authorId }}
+      </p>
     </div>
     <div class="author-links flex-shrink-0">
       @for (link of authorLinks; track link.type) {
