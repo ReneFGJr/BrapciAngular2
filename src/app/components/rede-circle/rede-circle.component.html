@@ -10,7 +10,7 @@
               class="ribbon"
               [attr.d]="ribbon.path"
               [attr.fill]="ribbon.color"
-              [attr.fill-opacity]="ribbon.opacity"
+              [attr.fill-opacity]="isRibbonDimmed(ribbon.source, ribbon.target) ? ribbon.opacity * 0.1 : ribbon.opacity"
             >
               <title>{{ ribbon.tooltip }}</title>
             </path>
@@ -24,17 +24,27 @@
                 class="arc"
                 [attr.d]="node.arcPath"
                 [attr.fill]="node.color"
+                [attr.opacity]="isLabelDimmed(node.id) ? 0.1 : 1"
               >
                 <title>{{ node.label }} | {{ node.tooltip }}</title>
               </path>
 
               <g class="labels">
-                <a [attr.href]="node.url" [attr.aria-label]="'Abrir perfil de ' + node.label">
+                <a
+                  [attr.href]="node.url"
+                  [attr.aria-label]="'Abrir perfil de ' + node.label"
+                  (focus)="setHoveredNode(node.id)"
+                  (blur)="setHoveredNode(null)"
+                >
                   <text
                     dy=".35em"
                     class="node-label"
+                    [class.node-label-dimmed]="isLabelDimmed(node.id)"
+                    [attr.opacity]="isLabelDimmed(node.id) ? 0.1 : 1"
                     [attr.transform]="node.labelTransform"
                     [attr.text-anchor]="node.labelAnchor"
+                    (pointerenter)="setHoveredNode(node.id)"
+                    (pointerleave)="setHoveredNode(null)"
                   >
                     {{ node.label }}
                     <title>{{ node.label }} | {{ node.tooltip }}</title>

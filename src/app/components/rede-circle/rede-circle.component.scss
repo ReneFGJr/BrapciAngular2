@@ -31,19 +31,27 @@
 .ribbon {
   stroke: var(--rede-circle-ribbon-stroke, rgba(15, 23, 42, 0.08));
   stroke-width: 0.7;
+  transition: fill-opacity 160ms ease;
 }
 
 .arc {
   stroke: var(--rede-circle-bg, #ffffff);
   stroke-width: 1;
+  transition: opacity 160ms ease;
 }
 
 .labels .node-label {
   fill: var(--rede-circle-label, #1e40af);
   font-size: 9px;
   font-weight: 600;
+  opacity: 1;
   text-decoration: none;
+  transition: opacity 160ms ease, fill 160ms ease;
   cursor: pointer;
+}
+
+.labels .node-label.node-label-dimmed {
+  opacity: 0.1;
 }
 
 .labels a:hover .node-label,

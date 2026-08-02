@@ -1,5 +1,5 @@
 import { CommonModule } from '@angular/common';
-import { Component, Input, computed } from '@angular/core';
+import { Component, Input, computed, signal } from '@angular/core';
 import type { NetworkEdge, NetworkGraph, NetworkNode } from '../../core/models/network.model';
 
 type ArcNode = {
@@ -41,6 +41,7 @@ type NormalizedEdge = NetworkEdge & { weight: number; label: string; source: str
 })
 export class RedeCircleComponent {
   @Input() networkData: NetworkGraph = { nodes: [], edges: [] };
+  readonly hoveredNodeId = signal<string | null>(null);
 
   readonly viewSize = 680;
   private readonly center = this.viewSize / 2;
@@ -165,6 +166,28 @@ export class RedeCircleComponent {
   });
 
   readonly hasData = computed(() => this.arcNodes().length > 0);
+
+  setHoveredNode(nodeId: string | null): void {
+    this.hoveredNodeId.set(nodeId);
+  }
+
+  isLabelDimmed(nodeId: string): boolean {
+    const hoveredId = this.hoveredNodeId();
+    if (!hoveredId || hoveredId === nodeId) {
+      return false;
+    }
+
+    return !this.normalizedEdges().some(
+      (edge) =>
+        (edge.source === hoveredId && edge.target === nodeId) ||
+        (edge.target === hoveredId && edge.source === nodeId),
+    );
+  }
+
+  isRibbonDimmed(sourceId: string, targetId: string): boolean {
+    const hoveredId = this.hoveredNodeId();
+    return Boolean(hoveredId && sourceId !== hoveredId && targetId !== hoveredId);
+  }
 
   private normalizeNodes(rawNodes: NetworkNode[]): NormalizedNode[] {
     const unique = new Map<string, NormalizedNode>();
