@@ -30,7 +30,7 @@ import type { NetworkGraph } from '../../core/models/network.model';
 
     .network-3d-container {
       width: 100%;
-      min-height: 620px;
+      min-height: 1024px;
       height: clamp(320px, 58vw, 500px);
       position: relative;
       border: 1px solid var(--theme-line, #dee2e6);
@@ -75,7 +75,7 @@ import type { NetworkGraph } from '../../core/models/network.model';
         line-height: 1.4;
       }
     }
-  `
+  `,
 })
 export class NetworkGraph3dComponent implements AfterViewInit, OnChanges, OnDestroy {
   @Input() networkData: NetworkGraph = { nodes: [], edges: [] };
@@ -102,6 +102,9 @@ export class NetworkGraph3dComponent implements AfterViewInit, OnChanges, OnDest
   private readonly onMouseUpHandler = (): void => this.onMouseUp();
   private readonly onDoubleClickHandler = (): void => this.resetView();
   private readonly onWheelHandler = (event: WheelEvent): void => this.onMouseWheel(event);
+
+  private isRotating = false;
+  private previousMouse = new THREE.Vector2();
 
   ngAfterViewInit(): void {
     this.initThreeScene();
@@ -255,7 +258,8 @@ export class NetworkGraph3dComponent implements AfterViewInit, OnChanges, OnDest
         const material = new THREE.LineBasicMaterial({
           color: theme.edgeColor,
           transparent: true,
-          opacity: 0.7
+          opacity: 0.7,
+          linewidth: 5,
         });
         const line = new THREE.Line(geometry, material);
 
@@ -270,7 +274,7 @@ export class NetworkGraph3dComponent implements AfterViewInit, OnChanges, OnDest
 
   private createLabelSprite(
     text: string,
-    theme: { labelBackground: string; labelBorder: string; labelText: string }
+    theme: { labelBackground: string; labelBorder: string; labelText: string },
   ): THREE.Sprite {
     const canvas = document.createElement('canvas');
     const context = canvas.getContext('2d');
@@ -310,7 +314,7 @@ export class NetworkGraph3dComponent implements AfterViewInit, OnChanges, OnDest
       map: texture,
       transparent: true,
       depthTest: false,
-      depthWrite: false
+      depthWrite: false,
     });
 
     const sprite = new THREE.Sprite(material);
@@ -329,15 +333,17 @@ export class NetworkGraph3dComponent implements AfterViewInit, OnChanges, OnDest
     const styleTarget = this.canvasRef?.nativeElement ?? document.documentElement;
     const computedStyle = getComputedStyle(styleTarget);
 
-    const cardBackground = computedStyle.getPropertyValue('--theme-card-bg').trim() || 'rgba(255,255,255,0.9)';
-    const lineColor = computedStyle.getPropertyValue('--theme-line').trim() || 'rgba(148, 163, 184, 0.65)';
+    const cardBackground =
+      computedStyle.getPropertyValue('--theme-card-bg').trim() || 'rgba(255,255,255,0.9)';
+    const lineColor =
+      computedStyle.getPropertyValue('--theme-line').trim() || 'rgba(148, 163, 184, 0.65)';
     const inkColor = computedStyle.getPropertyValue('--theme-ink').trim() || '#102542';
 
     return {
       labelBackground: cardBackground,
       labelBorder: lineColor,
       labelText: inkColor,
-      edgeColor: lineColor
+      edgeColor: lineColor,
     };
   }
 
@@ -355,6 +361,12 @@ export class NetworkGraph3dComponent implements AfterViewInit, OnChanges, OnDest
   };
 
   private onMouseDown(event: MouseEvent): void {
+    this.isRotating = true;
+
+    this.previousMouse.set(event.clientX, event.clientY);
+  }
+
+  private onMouseDown2(event: MouseEvent): void {
     if (!this.renderer) return;
 
     const rect = this.renderer.domElement.getBoundingClientRect();
@@ -372,6 +384,26 @@ export class NetworkGraph3dComponent implements AfterViewInit, OnChanges, OnDest
   }
 
   private onMouseMove(event: MouseEvent): void {
+    if (!this.isRotating || !this.scene) {
+      return;
+    }
+
+    const deltaX = event.clientX - this.previousMouse.x;
+    const deltaY = event.clientY - this.previousMouse.y;
+
+    const rotationSpeed = 0.005;
+
+    this.scene.rotation.y += deltaX * rotationSpeed;
+    this.scene.rotation.x += deltaY * rotationSpeed;
+
+    // evita virar completamente o gráfico
+    const limit = Math.PI / 2;
+    this.scene.rotation.x = Math.max(-limit, Math.min(limit, this.scene.rotation.x));
+
+    this.previousMouse.set(event.clientX, event.clientY);
+  }
+
+  private onMouseMove2(event: MouseEvent): void {
     if (!this.isDragging || !this.selectedNode || !this.renderer) return;
 
     const rect = this.renderer.domElement.getBoundingClientRect();
@@ -383,13 +415,18 @@ export class NetworkGraph3dComponent implements AfterViewInit, OnChanges, OnDest
 
     this.selectedNode.position.copy(this.dragPoint);
   }
-
-  private onMouseUp(): void {
+  /*
+  private onMouseUp2(): void {
     if (this.selectedNode) {
       (this.selectedNode.material as THREE.MeshPhongMaterial).emissive.setHex(0x000000);
     }
     this.isDragging = false;
     this.selectedNode = undefined;
+  }
+  */
+
+  private onMouseUp(): void {
+    this.isRotating = false;
   }
 
   private onMouseWheel(event: WheelEvent): void {
