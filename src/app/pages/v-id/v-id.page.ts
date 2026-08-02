@@ -427,70 +427,91 @@ export class VIdPage {
   });
 
   readonly collaborationNetwork = computed((): NetworkGraph => {
-    const coauthors = this.coauthorsList();
-    if (coauthors.length === 0) {
+    const response = this.responseRecord();
+    const network = response?.['network'];
+    if (!network || typeof network !== 'object' || Array.isArray(network)) {
+      return { nodes: [], edges: [] };
+    }
+
+    const rawRelations = (network as Record<string, unknown>)['data'];
+    if (!Array.isArray(rawRelations)) {
       return { nodes: [], edges: [] };
     }
 
     const mainId = this.authorId() || this.id() || 'main';
-    const mainName = this.authorName() || 'Autor';
+    const mainName = this.authorName() !== '-' ? this.authorName() : 'Autor';
+    const mainNames = new Set(
+      [mainName, this.authorNameAbnt()]
+        .map((name) => this.normalizeAuthorName(name))
+        .filter(Boolean),
+    );
+    const knownIds = new Map<string, string>();
+    for (const coauthor of this.coauthorsList()) {
+      knownIds.set(this.normalizeAuthorName(coauthor.name), coauthor.id);
+    }
 
-    const nodes: NetworkGraph['nodes'] = [
-      {
-        id: mainId,
-        label: mainName,
-        size: 3,
-        color: '#483d8b',
-        type: 'author',
-      },
-    ];
+    const nodeNames = new Map<string, string>();
+    const nodeWeights = new Map<string, number>();
+    const relations: Array<{ from: string; to: string; width: number }> = [];
 
-    const edges: NetworkGraph['edges'] = [];
+    for (const rawRelation of rawRelations) {
+      if (!rawRelation || typeof rawRelation !== 'object' || Array.isArray(rawRelation)) {
+        continue;
+      }
+      const relation = rawRelation as Record<string, unknown>;
+      const from = typeof relation['from'] === 'string' ? relation['from'].trim() : '';
+      const to = typeof relation['to'] === 'string' ? relation['to'].trim() : '';
+      const parsedWidth = Number(relation['width']);
+      const width = Number.isFinite(parsedWidth) && parsedWidth > 0 ? parsedWidth : 1;
+      if (!from || !to) {
+        continue;
+      }
 
-    coauthors.forEach((coauthor, index) => {
-      const nodeId = coauthor.id || `coauthor_${index + 1}`;
-      nodes.push({
-        id: nodeId,
-        label: coauthor.name,
-        size: 1.5 + Math.min(coauthor.totalPublications / 10, 2.5),
-        color: '#5EA9FF',
-        type: 'author',
-      });
+      const fromKey = this.normalizeAuthorName(from);
+      const toKey = this.normalizeAuthorName(to);
+      if (!fromKey || !toKey || fromKey === toKey) {
+        continue;
+      }
+      nodeNames.set(fromKey, from);
+      nodeNames.set(toKey, to);
+      nodeWeights.set(fromKey, (nodeWeights.get(fromKey) ?? 0) + width);
+      nodeWeights.set(toKey, (nodeWeights.get(toKey) ?? 0) + width);
+      relations.push({ from: fromKey, to: toKey, width });
+    }
 
-      edges.push({
-        source: mainId,
-        target: nodeId,
-        weight: Math.max(1, coauthor.totalPublications),
-        label: `${coauthor.totalPublications}`,
-      });
+    const nodeIds = new Map<string, string>();
+    const nodes: NetworkGraph['nodes'] = [...nodeNames.entries()].map(([key, label], index) => {
+      const id = mainNames.has(key)
+        ? mainId
+        : knownIds.get(key) || `network_${index + 1}_${this.networkKey(key)}`;
+      nodeIds.set(key, id);
+      const isMain = mainNames.has(key);
+      return {
+        id,
+        label,
+        size: isMain ? 3 : 1.4 + Math.min(Math.sqrt(nodeWeights.get(key) ?? 1) / 4, 2.8),
+        color: isMain ? '#483d8b' : '#5EA9FF',
+        type: 'author' as const,
+      };
     });
 
-    // Add lateral links for denser collaboration topology.
-    for (let i = 0; i < coauthors.length; i += 1) {
-      const sourceId = coauthors[i].id || `coauthor_${i + 1}`;
-      const next = coauthors[i + 1];
-      if (next) {
-        edges.push({
-          source: sourceId,
-          target: next.id || `coauthor_${i + 2}`,
-          weight: 1,
-          label: 'co',
-        });
-      }
-
-      const secondNext = coauthors[i + 2];
-      if (secondNext && i % 2 === 0) {
-        edges.push({
-          source: sourceId,
-          target: secondNext.id || `coauthor_${i + 3}`,
-          weight: 1,
-          label: 'co',
-        });
-      }
-    }
+    const edges: NetworkGraph['edges'] = relations.map((relation) => ({
+      source: nodeIds.get(relation.from)!,
+      target: nodeIds.get(relation.to)!,
+      weight: relation.width,
+      label: String(relation.width),
+    }));
 
     return { nodes, edges };
   });
+
+  private networkKey(value: string): string {
+    let hash = 0;
+    for (let index = 0; index < value.length; index += 1) {
+      hash = (hash * 31 + value.charCodeAt(index)) >>> 0;
+    }
+    return hash.toString(36);
+  }
 
   private extractCoauthorCandidatesFromWorkItem(
     item: string,
