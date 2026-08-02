@@ -363,6 +363,13 @@ export class VIdPage {
         } satisfies Coauthor;
       })
       .filter((item): item is Coauthor => item !== null)
+      .filter((item) => {
+        const candidate = this.normalizeAuthorName(item.name);
+        const mainNames = [this.authorName(), this.authorNameAbnt()]
+          .map((name) => this.normalizeAuthorName(name))
+          .filter(Boolean);
+        return !mainNames.includes(candidate);
+      })
       .sort((a, b) => a.name.localeCompare(b.name, 'pt-BR', { sensitivity: 'base' }));
 
     if (fromApi.length > 0) {
