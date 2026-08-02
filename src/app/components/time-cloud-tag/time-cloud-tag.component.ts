@@ -1,5 +1,5 @@
 import { CommonModule } from '@angular/common';
-import { Component, Input, computed, signal } from '@angular/core';
+import { Component, Input, OnDestroy, computed, signal } from '@angular/core';
 import { TagCloudComponent } from '../tag-cloud/tag-cloud.component';
 
 type JsonRecord = Record<string, unknown>;
@@ -11,12 +11,16 @@ type JsonRecord = Record<string, unknown>;
   templateUrl: './time-cloud-tag.component.html',
   styleUrl: './time-cloud-tag.component.scss',
 })
-export class TimeCloudTagComponent {
+export class TimeCloudTagComponent implements OnDestroy {
   private readonly subjectValue = signal<unknown>(null);
   readonly selectedMin = signal(0);
   readonly selectedMax = signal(0);
+  readonly playing = signal(false);
+  readonly animationSeconds = signal(5);
+  private animationTimer?: ReturnType<typeof setInterval>;
 
   @Input() set subject(value: unknown) {
+    this.pause();
     this.subjectValue.set(value);
     const years = this.availableYearsFrom(value);
     const record = this.asRecord(value);
@@ -78,13 +82,61 @@ export class TimeCloudTagComponent {
   });
 
   updateMin(event: Event): void {
+    this.pause();
     const value = Number((event.target as HTMLInputElement).value);
     this.selectedMin.set(Math.min(value, this.selectedMax()));
   }
 
   updateMax(event: Event): void {
+    this.pause();
     const value = Number((event.target as HTMLInputElement).value);
     this.selectedMax.set(Math.max(value, this.selectedMin()));
+  }
+
+  play(): void {
+    if (this.playing() || !this.hasData()) return;
+    if (this.selectedMin() !== this.selectedMax() || this.selectedMax() >= this.yearMax()) {
+      this.selectAnimationYear(this.yearMin());
+    }
+    this.playing.set(true);
+    this.startTimer();
+  }
+
+  pause(): void {
+    this.playing.set(false);
+    if (this.animationTimer) {
+      clearInterval(this.animationTimer);
+      this.animationTimer = undefined;
+    }
+  }
+
+  updateAnimationSeconds(event: Event): void {
+    const seconds = Number((event.target as HTMLInputElement).value);
+    this.animationSeconds.set(Number.isFinite(seconds) ? Math.max(1, Math.min(60, seconds)) : 5);
+    if (this.playing()) {
+      this.startTimer();
+    }
+  }
+
+  ngOnDestroy(): void {
+    this.pause();
+  }
+
+  private startTimer(): void {
+    if (this.animationTimer) clearInterval(this.animationTimer);
+    this.animationTimer = setInterval(() => {
+      const current = this.selectedMax();
+      if (current >= this.yearMax()) {
+        this.pause();
+        return;
+      }
+      this.selectAnimationYear(current + 1);
+    }, this.animationSeconds() * 1000);
+  }
+
+  private selectAnimationYear(year: number): void {
+    this.selectedMin.set(year);
+    this.selectedMax.set(year);
   }
 
   private availableYearsFrom(value: unknown): number[] {

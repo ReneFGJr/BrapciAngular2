@@ -14,7 +14,26 @@
         <span>Ano final: <strong>{{ selectedMax() }}</strong></span>
       </div>
 
-      ## Player Animation Controls
+      <div class="player-controls" aria-label="Controles da animação temporal">
+        <button type="button" class="btn btn-sm btn-primary" (click)="play()" [disabled]="playing()">
+          <i class="bi bi-play-fill" aria-hidden="true"></i> Play
+        </button>
+        <button type="button" class="btn btn-sm btn-outline-secondary" (click)="pause()" [disabled]="!playing()">
+          <i class="bi bi-pause-fill" aria-hidden="true"></i> Pause
+        </button>
+        <label class="animation-speed">
+          <span>Duração por ano</span>
+          <input
+            type="number"
+            min="1"
+            max="60"
+            step="1"
+            [value]="animationSeconds()"
+            (change)="updateAnimationSeconds($event)"
+          />
+          <span>s</span>
+        </label>
+      </div>
       <div class="dual-range" aria-label="Intervalo de anos">
         <div class="dual-range-track"></div>
         <div
