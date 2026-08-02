@@ -55,7 +55,8 @@
             ></app-author-gadget>
         } @else if (isIssue()) {
              <ng-container *ngComponentOutlet="issueViewComponent; inputs: { data: response() }"></ng-container>
-
+        } @else if (isCorporateBody()) {
+          <app-view-corporate-body class="mb-4 d-block" [data]="response()"></app-view-corporate-body>
         } @else {
           @switch (publicationView()) {
             @case ('enancib') {

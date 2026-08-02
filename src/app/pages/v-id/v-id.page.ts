@@ -20,6 +20,7 @@ import { BarChartPoint } from '../../components/bar-chart/bar-chart.component';
 import type { Coauthor } from '../../core/models/coauthor.model';
 import type { NetworkGraph } from '../../core/models/network.model';
 import { BookPanelComponent } from '../../components/book-panel/book-panel.component';
+import { ViewCorporateBodyComponent } from '../../components/view-corporate-body/view-corporate-body.component';
 
 type AuthorLink = {
   type: 'lattes' | 'orcid' | 'openalex' | 'googlescholar';
@@ -41,6 +42,7 @@ type AuthorLink = {
     ViewJournalComponent,
     ViewEventComponent,
     BookPanelComponent,
+    ViewCorporateBodyComponent,
   ],
   templateUrl: './v-id.page.html',
   styleUrl: './v-id.page.scss',
@@ -88,6 +90,7 @@ export class VIdPage {
   readonly isJournal = computed(() => this.classe().toLowerCase() === 'journal');
   readonly isBookChapter = computed(() => this.classe().toLowerCase() === 'bookchapter');
   readonly isSubject = computed(() => this.classe().toLowerCase() === 'subject');
+  readonly isCorporateBody = computed(() => this.classe().toLowerCase() === 'corporatebody');
 
   readonly breadcrumbLabels = computed<Record<string, string>>(() => {
     const classe = this.classe();

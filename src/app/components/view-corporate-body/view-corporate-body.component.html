@@ -1,0 +1,83 @@
+<article class="corporate-card p-3 p-md-4">
+  <header class="corporate-hero mb-4">
+    <div class="corporate-mark">
+      @if (logotype()) {
+        <img [src]="logotype()" [alt]="'Logotipo de ' + name()" />
+      } @else {
+        <i class="bi bi-building" aria-hidden="true"></i>
+      }
+    </div>
+    <div>
+      <p class="corporate-kicker mb-1">Entidade coletiva</p>
+      <h2 class="corporate-title mb-2">{{ name() }}</h2>
+      <div class="corporate-badges">
+        @if (acronym() !== '-') { <span>{{ acronym() }}</span> }
+        <span>ID: {{ corporateBodyId() }}</span>
+        @if (location() !== '-') { <span><i class="bi bi-geo-alt"></i> {{ location() }}</span> }
+      </div>
+    </div>
+  </header>
+
+  <nav class="tab-nav mb-3" role="tablist" aria-label="Seções da entidade coletiva">
+    <button type="button" [class.active]="activeTab() === 'summary'" (click)="setTab('summary')">Visão geral</button>
+    <button type="button" [class.active]="activeTab() === 'works'" (click)="setTab('works')">Produções <span class="count">{{ works().length }}</span></button>
+    @if (metadata().length) { <button type="button" [class.active]="activeTab() === 'metadata'" (click)="setTab('metadata')">Metadados</button> }
+    <button type="button" [class.active]="activeTab() === 'json'" (click)="setTab('json')">JSON</button>
+  </nav>
+
+  <div class="tab-panel">
+    @switch (activeTab()) {
+      @case ('summary') {
+        <div class="summary-grid">
+          <section class="panel">
+            <h3>Sobre a entidade</h3>
+            @if (description() !== '-') { <p class="description">{{ description() }}</p> }
+            <dl class="details mb-0">
+              <div class="full"><dt>Nome</dt><dd>{{ name() }}</dd></div>
+              <div><dt>Classe</dt><dd>{{ className() }}</dd></div>
+              @if (acronym() !== '-') { <div><dt>Sigla</dt><dd>{{ acronym() }}</dd></div> }
+              @if (location() !== '-') { <div><dt>Localização</dt><dd>{{ location() }}</dd></div> }
+              @if (rorId()) { <div><dt>ROR</dt><dd><a [href]="rorUrl()" target="_blank" rel="noopener noreferrer">{{ rorId() }} <i class="bi bi-box-arrow-up-right"></i></a></dd></div> }
+              @if (website()) { <div><dt>Website</dt><dd><a [href]="website()" target="_blank" rel="noopener noreferrer">Acessar site <i class="bi bi-box-arrow-up-right"></i></a></dd></div> }
+            </dl>
+          </section>
+          <aside class="panel metrics">
+            <h3>Indicadores</h3>
+            <div class="metric-list">
+              <div><strong>{{ works().length }}</strong><span>Produções</span></div>
+              <div><strong>{{ views() }}</strong><span>Visualizações</span></div>
+              <div><strong>{{ downloads() }}</strong><span>Downloads</span></div>
+              <div><strong>{{ likes() }}</strong><span>Curtidas</span></div>
+            </div>
+          </aside>
+        </div>
+        @if (people().length) {
+          <section class="panel people-panel mt-3">
+            <div class="panel-heading"><h3 class="mb-0">Pessoas vinculadas à instituição</h3><span class="count">{{ people().length }}</span></div>
+            <ul class="people-list mb-0">
+              @for (person of people(); track person.id) {
+                <li><i class="bi bi-person" aria-hidden="true"></i><a [href]="'/v/' + person.id">{{ person.name }}</a></li>
+              }
+            </ul>
+          </section>
+        }
+      }
+      @case ('works') {
+        <section class="panel">
+          <h3>Produções relacionadas</h3>
+          @if (works().length) {
+            <ol class="work-list mb-0">
+              @for (work of works(); track work.id; let index = $index) {
+                <li><span class="work-number">{{ index + 1 }}</span><div [innerHTML]="work.html"></div></li>
+              }
+            </ol>
+          } @else { <p class="empty mb-0">Nenhuma produção relacionada foi encontrada.</p> }
+        </section>
+      }
+      @case ('metadata') {
+        <section class="panel"><h3>Metadados</h3><dl class="metadata-list mb-0">@for (item of metadata(); track item.label + item.value) { <div><dt>{{ item.label }}</dt><dd>{{ item.value }}</dd></div> }</dl></section>
+      }
+      @case ('json') { <pre class="json-block mb-0">{{ jsonContent() }}</pre> }
+    }
+  </div>
+</article>
