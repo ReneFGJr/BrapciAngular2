@@ -78,10 +78,9 @@
       @case ('theme') {
         <section class="journal-themes" aria-labelledby="journal-themes-title">
           <h3 id="journal-themes-title" class="h6 mb-3">Temas da revista</h3>
+          <app-time-cloud-tag [subject]="subjectData()"></app-time-cloud-tag>
           @if (themeItems().length) {
-            <div class="journal-theme-list">
-              ### CloudTags
-              ###
+            <div class="journal-theme-list mt-3">
               @for (theme of themeItems(); track theme.label) {
                 @if (theme.url) {
                   <a class="journal-theme-chip link" [href]="theme.url">{{ theme.label }}</a>

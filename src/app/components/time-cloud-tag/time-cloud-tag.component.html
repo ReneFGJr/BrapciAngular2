@@ -1,0 +1,35 @@
+@if (hasData()) {
+  <section class="time-cloud" aria-labelledby="time-cloud-title">
+    <div class="time-cloud-head">
+      <div>
+        <h3 id="time-cloud-title" class="h6 mb-1">Evolução temporal dos temas</h3>
+        <p class="mb-0">Termos publicados entre <strong>{{ selectedMin() }}</strong> e <strong>{{ selectedMax() }}</strong></p>
+      </div>
+      <span class="period-badge">{{ selectedMax() - selectedMin() + 1 }} anos</span>
+    </div>
+
+    <div class="range-controls">
+      <div class="range-values">
+        <span>Ano inicial: <strong>{{ selectedMin() }}</strong></span>
+        <span>Ano final: <strong>{{ selectedMax() }}</strong></span>
+      </div>
+      <div class="dual-range" aria-label="Intervalo de anos">
+        <div class="dual-range-track"></div>
+        <div
+          class="dual-range-selection"
+          [style.left.%]="((selectedMin() - yearMin()) / (yearMax() - yearMin() || 1)) * 100"
+          [style.right.%]="100 - ((selectedMax() - yearMin()) / (yearMax() - yearMin() || 1)) * 100"
+        ></div>
+        <input aria-label="Ano inicial" type="range" [min]="yearMin()" [max]="yearMax()" [value]="selectedMin()" (input)="updateMin($event)" />
+        <input aria-label="Ano final" type="range" [min]="yearMin()" [max]="yearMax()" [value]="selectedMax()" (input)="updateMax($event)" />
+      </div>
+      <div class="range-scale" aria-hidden="true"><span>{{ yearMin() }}</span><span>{{ yearMax() }}</span></div>
+    </div>
+
+    <app-tag-cloud
+      [dataTag]="dataTag()"
+      titleKey="Temas no período selecionado"
+      noDataKey="Sem temas no período selecionado"
+    ></app-tag-cloud>
+  </section>
+}

@@ -2,6 +2,7 @@ import { CommonModule } from '@angular/common';
 import { AfterViewInit, Component, ElementRef, Input, OnDestroy, ViewChild, computed, signal } from '@angular/core';
 import { ViewType01Component } from '../issue/view-type-01/view-type-01.component';
 import { JournalMetaGridComponent } from './journal-hero-info/journal-meta-grid/journal-meta-grid.component';
+import { TimeCloudTagComponent } from '../time-cloud-tag/time-cloud-tag.component';
 
 type JsonRecord = Record<string, unknown>;
 type TabId = 'summary' | 'issues' | 'location' | 'theme' | 'json';
@@ -30,7 +31,7 @@ type GeoPoint = {
 @Component({
   selector: 'app-view-journal',
   standalone: true,
-  imports: [CommonModule, ViewType01Component, JournalMetaGridComponent],
+  imports: [CommonModule, ViewType01Component, JournalMetaGridComponent, TimeCloudTagComponent],
   templateUrl: './view-journal.component.html',
   styleUrl: './view-journal.component.scss'
 })
@@ -122,6 +123,16 @@ export class ViewJournalComponent {
     return [...unique.values()].sort((left, right) =>
       left.label.localeCompare(right.label, 'pt-BR', { sensitivity: 'base' }),
     );
+  });
+  readonly subjectData = computed(() => {
+    const record = this.asRecord(this.data);
+    const subject = this.asRecord(record?.['subject']);
+    if (!subject) return null;
+    return {
+      ...subject,
+      'subject.year_min': subject['subject.year_min'] ?? record?.['subject.year_min'],
+      'subject.year_max': subject['subject.year_max'] ?? record?.['subject.year_max'],
+    };
   });
 
   readonly jsonContent = computed(() => JSON.stringify(this.data, null, 2));

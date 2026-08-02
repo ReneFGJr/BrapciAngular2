@@ -1,0 +1,17 @@
+:host { display: block; width: 100%; }
+.time-cloud { background: var(--theme-card-bg); border: 1px solid var(--theme-line); border-radius: .8rem; padding: 1rem; width: 100%; }
+.time-cloud-head { align-items: center; display: flex; gap: 1rem; justify-content: space-between; }
+.time-cloud-head p { color: var(--theme-hint); font-size: .85rem; }
+.period-badge { background: var(--theme-sand); border-radius: 999px; flex-shrink: 0; font-size: .8rem; font-weight: 600; padding: .35rem .7rem; }
+.range-controls { background: var(--theme-sand); border-radius: .7rem; display: grid; gap: .65rem; margin-top: 1rem; padding: .8rem; }
+.range-values { display: flex; font-size: .8rem; justify-content: space-between; }
+.dual-range { height: 1.5rem; position: relative; }
+.dual-range-track, .dual-range-selection { border-radius: 999px; height: .35rem; left: 0; position: absolute; right: 0; top: .58rem; }
+.dual-range-track { background: var(--theme-line); }
+.dual-range-selection { background: #385a7c; }
+.dual-range input { appearance: none; background: transparent; height: 1.5rem; left: 0; margin: 0; pointer-events: none; position: absolute; top: 0; width: 100%; }
+.dual-range input::-webkit-slider-thumb { appearance: none; background: #385a7c; border: 2px solid #fff; border-radius: 50%; box-shadow: 0 0 0 1px #385a7c; cursor: grab; height: 1rem; pointer-events: auto; width: 1rem; }
+.dual-range input::-moz-range-thumb { background: #385a7c; border: 2px solid #fff; border-radius: 50%; box-shadow: 0 0 0 1px #385a7c; cursor: grab; height: .8rem; pointer-events: auto; width: .8rem; }
+.dual-range input::-moz-range-track { background: transparent; }
+.range-scale { display: flex; font-size: .72rem; justify-content: space-between; }
+app-tag-cloud { margin-top: 1rem; }
