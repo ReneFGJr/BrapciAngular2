@@ -56,7 +56,7 @@
             <div class="panel-heading"><h3 class="mb-0">Pessoas vinculadas à instituição</h3><span class="count">{{ people().length }}</span></div>
             <ul class="people-list mb-0">
               @for (person of people(); track person.id) {
-                <li><i class="bi bi-person" aria-hidden="true"></i><a [href]="'/v/' + person.id">{{ person.name }}</a></li>
+                <li><i class="bi bi-person" aria-hidden="true"></i><a class="link" [href]="'/v/' + person.id">{{ person.name }}</a></li>
               }
             </ul>
           </section>

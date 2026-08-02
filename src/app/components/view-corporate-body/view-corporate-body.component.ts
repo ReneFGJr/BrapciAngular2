@@ -35,7 +35,10 @@ export class ViewCorporateBodyComponent {
   );
   readonly corporateBodyId = computed(() => this.field(['ID', 'id']));
   readonly className = computed(() => this.field(['Classe', 'classe', 'Class', 'class']));
-  readonly acronym = computed(() => this.field(['acronym', 'Acronym', 'sigla', 'abbreviation']));
+  readonly acronym = computed(() =>
+    this.extractRelation('hasInstitutionAcronym') ||
+    this.field(['acronym', 'Acronym', 'sigla', 'abbreviation']),
+  );
   readonly location = computed(() =>
     this.field(['place', 'Place', 'location', 'Location', 'city', 'Cidade', 'country', 'Country']),
   );
@@ -43,7 +46,8 @@ export class ViewCorporateBodyComponent {
     this.field(['description', 'Description', 'summary', 'resume', 'about', 'note']),
   );
   readonly website = computed(() => this.urlField(['url', 'URL', 'website', 'Website', 'site']));
-  readonly logotype = computed(() => this.extractRelation('hasLogotype', true));
+  readonly logotype = computed(() => this.urlField(['hasLogotype', 'logotype', 'logo', 'image']));
+  //readonly logotype = computed(() => this.extractRelation('hasLogotype', true));
   readonly rorId = computed(() =>
     this.normalizeRorId(this.extractRelation('hasCorporateBodyRORID')),
   );
@@ -106,7 +110,7 @@ export class ViewCorporateBodyComponent {
       const value = this.stringValue(
         item['Caption'] ?? item['caption'] ?? item['value'] ?? item['Value'],
       );
-      if (['hasLogotype', 'hasCorporateBodyRORID', 'altLabel'].includes(label)) return [];
+      if (['hasLogotype', 'hasCorporateBodyRORID', 'hasInstitutionAcronym', 'altLabel'].includes(label)) return [];
       return label && value ? [{ label, value }] : [];
     });
   }
