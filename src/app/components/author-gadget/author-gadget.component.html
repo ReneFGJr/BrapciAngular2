@@ -4,20 +4,26 @@
       <h1 class="h1">{{ name}}</h1>
       <p class="mb-1"><strong>{{ 'author.nameAbnt' | translate }}:</strong> {{ nameAbnt }}</p>
       <p class="mb-1">
-        ## Genero
-        <strong>{{ 'author.id' | translate }}:</strong> {{ authorId }}
+        @if (gender) {
+          <app-author-gender [gender]="gender" class="me-3"></app-author-gender>
+        }
       </p>
     </div>
-    <div class="author-links flex-shrink-0">
-      @for (link of authorLinks; track link.type) {
-        <a [href]="link.url" target="_blank" rel="noopener noreferrer" [title]="link.label" class="author-link"  style="border-radius: 5px; padding: 2px; color: #fff; background-color: rgb(248, 244, 244);">
-          @if (link.iconImage) {
-            <img [src]="link.iconImage" [alt]="link.label" class="author-link-image" loading="lazy" decoding="async" />
-          } @else {
-            {{ link.icon }}
-          }
-        </a>
-      }
+    <div class="author-actions flex-shrink-0">
+      <div class="author-links flex-shrink-0">
+        @for (link of authorLinks; track link.type) {
+          <a [href]="link.url" target="_blank" rel="noopener noreferrer" [title]="link.label" class="author-link"  style="border-radius: 5px; padding: 2px; color: #fff; background-color: rgb(248, 244, 244);">
+            @if (link.iconImage) {
+              <img [src]="link.iconImage" [alt]="link.label" class="author-link-image" loading="lazy" decoding="async" />
+            } @else {
+              {{ link.icon }}
+            }
+          </a>
+        }
+      </div>
+      <div class="afiliations-links flex-shrink-0">
+        ## Instituições de afiliação do autor
+      </div>
     </div>
     @if (photoUrl) {
       <img [src]="photoUrl" alt="Foto do autor" class="author-photo flex-shrink-0" width="80" height="80" loading="lazy" decoding="async" />

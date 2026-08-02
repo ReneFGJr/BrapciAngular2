@@ -15,10 +15,23 @@
   flex: 1;
 }
 
+.author-actions {
+  align-items: flex-end;
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  text-align: right;
+}
+
 .author-links {
   align-items: center;
   display: flex;
   gap: 0.5rem;
+  justify-content: flex-end;
+}
+
+.afiliations-links {
+  text-align: right;
 }
 
 .author-link {

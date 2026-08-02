@@ -513,6 +513,27 @@ export class VIdPage {
     return { nodes, edges };
   });
 
+  readonly authorGender = computed(() => {
+    const value = this.response();
+    if (!value || typeof value !== 'object' || Array.isArray(value)) {
+      return '';
+    }
+    const ids = (value as Record<string, unknown>)['IDs'];
+    if (!Array.isArray(ids)) {
+      return '';
+    }
+    for (const entry of ids) {
+      if (!entry || typeof entry !== 'object' || Array.isArray(entry)) {
+        continue;
+      }
+      const gender = (entry as Record<string, unknown>)['gender'];
+      if (typeof gender === 'string' && gender.trim()) {
+        return gender.trim();
+      }
+    }
+    return '';
+  });
+
   private extractCoauthorCandidatesFromWorkItem(
     item: string,
   ): Array<{ name: string; link?: string }> {

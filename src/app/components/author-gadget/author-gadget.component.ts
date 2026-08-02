@@ -4,6 +4,7 @@ import { TranslateModule } from '@ngx-translate/core';
 import { AuthorWorksComponent, AuthorWorksGroup } from '../author-works/author-works.component';
 import { BarChartComponent, BarChartPoint } from '../bar-chart/bar-chart.component';
 import { TagCloudComponent } from '../tag-cloud/tag-cloud.component';
+import { AuthorGenderComponent } from '../author-gender/author-gender.component';
 
 import type { Coauthor } from '../../core/models/coauthor.model';
 import type { NetworkGraph } from '../../core/models/network.model';
@@ -23,7 +24,7 @@ type AuthorLink = {
 
 @Component({
   selector: 'app-author-gadget',
-  imports: [CommonModule, TranslateModule, BarChartComponent, TagCloudComponent, AuthorWorksComponent],
+  imports: [CommonModule, TranslateModule, BarChartComponent, TagCloudComponent, AuthorWorksComponent, AuthorGenderComponent],
   templateUrl: './author-gadget.component.html',
   styleUrl: './author-gadget.component.scss'
 })
@@ -34,6 +35,7 @@ export class AuthorGadgetComponent {
   @Input({ required: true }) name = '-';
   @Input({ required: true }) nameAbnt = '-';
   @Input({ required: true }) authorId = '-';
+  @Input() gender = '';
   @Input({ required: true }) metrics: AuthorMetric[] = [];
   @Input() chartPoints: BarChartPoint[] = [];
   @Input() worksGroups: AuthorWorksGroup[] = [];
