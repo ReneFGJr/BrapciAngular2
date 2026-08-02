@@ -534,6 +534,15 @@ export class VIdPage {
     return '';
   });
 
+  readonly authorAffiliations = computed(() => {
+    const value = this.response();
+    if (!value || typeof value !== 'object' || Array.isArray(value)) {
+      return [];
+    }
+    const affiliations = (value as Record<string, unknown>)['Affiliations'];
+    return Array.isArray(affiliations) ? affiliations : [];
+  });
+
   private extractCoauthorCandidatesFromWorkItem(
     item: string,
   ): Array<{ name: string; link?: string }> {

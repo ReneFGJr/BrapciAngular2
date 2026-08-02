@@ -11,6 +11,9 @@
     <button type="button" class="tab-btn" [class.active]="activeTab() === 'location'" (click)="setTab('location')">
       Localização
     </button>
+    <button type="button" class="tab-btn" [class.active]="activeTab() === 'theme'" (click)="setTab('theme')">
+      Tema
+    </button>
     <button type="button" class="tab-btn" [class.active]="activeTab() === 'json'" (click)="setTab('json')">
       JSON
     </button>
@@ -70,6 +73,27 @@
         } @else {
           <p class="mb-0">Sem localização disponível.</p>
         }
+      }
+
+      @case ('theme') {
+        <section class="journal-themes" aria-labelledby="journal-themes-title">
+          <h3 id="journal-themes-title" class="h6 mb-3">Temas da revista</h3>
+          @if (themeItems().length) {
+            <div class="journal-theme-list">
+              ### CloudTags
+              ###
+              @for (theme of themeItems(); track theme.label) {
+                @if (theme.url) {
+                  <a class="journal-theme-chip link" [href]="theme.url">{{ theme.label }}</a>
+                } @else {
+                  <span class="journal-theme-chip">{{ theme.label }}</span>
+                }
+              }
+            </div>
+          } @else {
+            <p class="mb-0">Sem temas disponíveis.</p>
+          }
+        </section>
       }
 
       @case ('json') {

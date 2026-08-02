@@ -1,0 +1,25 @@
+@if (affiliations().length) {
+  <section class="affiliations" aria-label="Instituições de afiliação do autor">
+    <p class="affiliations-title mb-1">Instituições de afiliação</p>
+    <div class="affiliations-list">
+      @for (affiliation of affiliations(); track affiliation.id) {
+        <a
+          class="affiliation-link link"
+          [href]="'/v/' + affiliation.id"
+          [title]="affiliation.name"
+        >
+          @if (affiliation.logo) {
+            <img
+              [src]="affiliation.logo"
+              [alt]="'Afiliation ' + affiliation.name"
+              loading="lazy"
+              decoding="async"
+            />
+          } @else {
+            <i class="bi bi-building" aria-hidden="true"></i>
+          }
+        </a>
+      }
+    </div>
+  </section>
+}

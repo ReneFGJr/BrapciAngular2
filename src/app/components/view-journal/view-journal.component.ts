@@ -4,7 +4,12 @@ import { ViewType01Component } from '../issue/view-type-01/view-type-01.componen
 import { JournalMetaGridComponent } from './journal-hero-info/journal-meta-grid/journal-meta-grid.component';
 
 type JsonRecord = Record<string, unknown>;
-type TabId = 'summary' | 'issues' | 'location' | 'json';
+type TabId = 'summary' | 'issues' | 'location' | 'theme' | 'json';
+
+type ThemeItem = {
+  label: string;
+  url: string;
+};
 
 type GeoPlace = {
   name: string;
@@ -99,6 +104,26 @@ export class ViewJournalComponent {
     return unique;
   });
 
+  readonly themeItems = computed(() => {
+    const record = this.asRecord(this.data);
+    if (!record) {
+      return [] as ThemeItem[];
+    }
+
+    const items = ['theme', 'themes', 'subjects', 'tags', 'dataTAG']
+      .flatMap((key) => this.extractThemeItems(record[key]));
+    const unique = new Map<string, ThemeItem>();
+    for (const item of items) {
+      const key = item.label.toLocaleLowerCase('pt-BR');
+      if (!unique.has(key)) {
+        unique.set(key, item);
+      }
+    }
+    return [...unique.values()].sort((left, right) =>
+      left.label.localeCompare(right.label, 'pt-BR', { sensitivity: 'base' }),
+    );
+  });
+
   readonly jsonContent = computed(() => JSON.stringify(this.data, null, 2));
 
   setTab(tab: TabId): void {
@@ -145,6 +170,34 @@ export class ViewJournalComponent {
     }
 
     return collected;
+  }
+
+  private extractThemeItems(value: unknown): ThemeItem[] {
+    if (typeof value === 'string' && value.trim()) {
+      return value
+        .split(/[;|]/)
+        .map((label) => label.trim())
+        .filter(Boolean)
+        .map((label) => ({ label, url: '' }));
+    }
+    if (Array.isArray(value)) {
+      return value.flatMap((entry) => this.extractThemeItems(entry));
+    }
+    const record = this.asRecord(value);
+    if (!record) {
+      return [];
+    }
+
+    const label = this.stringFromRecord(record, ['name', 'label', 'title', 'term', 'Caption', 'caption']);
+    const id = this.stringFromRecord(record, ['ID', 'id']);
+    const externalUrl = this.stringFromRecord(record, ['url', 'URL']);
+    if (label !== '-') {
+      return [{
+        label,
+        url: externalUrl !== '-' ? externalUrl : id !== '-' ? `/v/${encodeURIComponent(id)}` : '',
+      }];
+    }
+    return Object.values(record).flatMap((entry) => this.extractThemeItems(entry));
   }
 
   private issueKey(item: unknown): string {

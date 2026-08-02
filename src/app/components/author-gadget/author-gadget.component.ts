@@ -5,6 +5,7 @@ import { AuthorWorksComponent, AuthorWorksGroup } from '../author-works/author-w
 import { BarChartComponent, BarChartPoint } from '../bar-chart/bar-chart.component';
 import { TagCloudComponent } from '../tag-cloud/tag-cloud.component';
 import { AuthorGenderComponent } from '../author-gender/author-gender.component';
+import { AuthorAffiliationsComponent } from '../author-affiliations/author-affiliations.component';
 
 import type { Coauthor } from '../../core/models/coauthor.model';
 import type { NetworkGraph } from '../../core/models/network.model';
@@ -24,7 +25,7 @@ type AuthorLink = {
 
 @Component({
   selector: 'app-author-gadget',
-  imports: [CommonModule, TranslateModule, BarChartComponent, TagCloudComponent, AuthorWorksComponent, AuthorGenderComponent],
+  imports: [CommonModule, TranslateModule, BarChartComponent, TagCloudComponent, AuthorWorksComponent, AuthorGenderComponent, AuthorAffiliationsComponent],
   templateUrl: './author-gadget.component.html',
   styleUrl: './author-gadget.component.scss'
 })
@@ -36,6 +37,7 @@ export class AuthorGadgetComponent {
   @Input({ required: true }) nameAbnt = '-';
   @Input({ required: true }) authorId = '-';
   @Input() gender = '';
+  @Input() affiliations: unknown = null;
   @Input({ required: true }) metrics: AuthorMetric[] = [];
   @Input() chartPoints: BarChartPoint[] = [];
   @Input() worksGroups: AuthorWorksGroup[] = [];

@@ -136,3 +136,21 @@
     min-height: 640px;
   }
 }
+.journal-themes {
+  min-height: 8rem;
+}
+
+.journal-theme-list {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.55rem;
+}
+
+.journal-theme-chip {
+  background: var(--theme-sand, #eef3f8);
+  border: 1px solid var(--theme-line, #d8dee4);
+  border-radius: 999px;
+  color: var(--theme-ink, #20415f);
+  display: inline-flex;
+  padding: 0.35rem 0.75rem;
+}
