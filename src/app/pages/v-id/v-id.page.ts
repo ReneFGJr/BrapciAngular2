@@ -433,85 +433,85 @@ export class VIdPage {
       return { nodes: [], edges: [] };
     }
 
-    const rawRelations = (network as Record<string, unknown>)['data'];
-    if (!Array.isArray(rawRelations)) {
+    const networkRecord = network as Record<string, unknown>;
+    const center = networkRecord['center'];
+    const centerNode = center && typeof center === 'object' && !Array.isArray(center)
+      ? center
+      : null;
+    const networkNodes = networkRecord['nodes'];
+    const rawNodes = [
+      ...(centerNode ? [centerNode] : []),
+      ...(Array.isArray(networkNodes) ? networkNodes : []),
+    ];
+    if (rawNodes.length === 0) {
       return { nodes: [], edges: [] };
     }
 
-    const mainId = this.authorId() || this.id() || 'main';
-    const mainName = this.authorName() !== '-' ? this.authorName() : 'Autor';
-    const mainNames = new Set(
-      [mainName, this.authorNameAbnt()]
-        .map((name) => this.normalizeAuthorName(name))
-        .filter(Boolean),
-    );
-    const knownIds = new Map<string, string>();
-    for (const coauthor of this.coauthorsList()) {
-      knownIds.set(this.normalizeAuthorName(coauthor.name), coauthor.id);
+    const nodeIdByName = new Map<string, string>();
+    const nodeIds = new Set<string>();
+    const nodes: NetworkGraph['nodes'] = [];
+
+    for (const rawNode of rawNodes) {
+      if (!rawNode || typeof rawNode !== 'object' || Array.isArray(rawNode)) {
+        continue;
+      }
+      const node = rawNode as Record<string, unknown>;
+      const name = typeof node['name'] === 'string' ? node['name'].trim() : '';
+      const idValue = node['ID'] ?? node['id'];
+      const id = typeof idValue === 'string' || typeof idValue === 'number'
+        ? String(idValue).trim()
+        : '';
+      const key = this.normalizeAuthorName(name);
+      if (!name || !id || !key || nodeIdByName.has(key) || nodeIds.has(id)) {
+        continue;
+      }
+
+      const marker = node['marker'];
+      const markerRecord = marker && typeof marker === 'object' && !Array.isArray(marker)
+        ? marker as Record<string, unknown>
+        : null;
+      const parsedRadius = Number(markerRecord?.['radius']);
+      const radius = Number.isFinite(parsedRadius) && parsedRadius > 0 ? parsedRadius : 2;
+      const color = typeof node['color'] === 'string' && node['color'].trim()
+        ? node['color'].trim()
+        : '#5EA9FF';
+
+      nodeIdByName.set(key, id);
+      nodeIds.add(id);
+      nodes.push({ id, label: name, size: radius, color, type: 'author' });
     }
 
-    const nodeNames = new Map<string, string>();
-    const nodeWeights = new Map<string, number>();
-    const relations: Array<{ from: string; to: string; width: number }> = [];
+    const relationSource = networkRecord['data'] ?? networkRecord['arcs'] ?? networkRecord['edges'];
+    const rawRelations = Array.isArray(relationSource) ? relationSource : [];
+    const edges: NetworkGraph['edges'] = [];
 
     for (const rawRelation of rawRelations) {
       if (!rawRelation || typeof rawRelation !== 'object' || Array.isArray(rawRelation)) {
         continue;
       }
       const relation = rawRelation as Record<string, unknown>;
-      const from = typeof relation['from'] === 'string' ? relation['from'].trim() : '';
-      const to = typeof relation['to'] === 'string' ? relation['to'].trim() : '';
+      const from = typeof relation['from'] === 'string' || typeof relation['from'] === 'number'
+        ? String(relation['from']).trim()
+        : '';
+      const to = typeof relation['to'] === 'string' || typeof relation['to'] === 'number'
+        ? String(relation['to']).trim()
+        : '';
       const parsedWidth = Number(relation['width']);
       const width = Number.isFinite(parsedWidth) && parsedWidth > 0 ? parsedWidth : 1;
       if (!from || !to) {
         continue;
       }
 
-      const fromKey = this.normalizeAuthorName(from);
-      const toKey = this.normalizeAuthorName(to);
-      if (!fromKey || !toKey || fromKey === toKey) {
+      const source = nodeIds.has(from) ? from : nodeIdByName.get(this.normalizeAuthorName(from));
+      const target = nodeIds.has(to) ? to : nodeIdByName.get(this.normalizeAuthorName(to));
+      if (!source || !target || source === target) {
         continue;
       }
-      nodeNames.set(fromKey, from);
-      nodeNames.set(toKey, to);
-      nodeWeights.set(fromKey, (nodeWeights.get(fromKey) ?? 0) + width);
-      nodeWeights.set(toKey, (nodeWeights.get(toKey) ?? 0) + width);
-      relations.push({ from: fromKey, to: toKey, width });
+      edges.push({ source, target, weight: width, label: String(width) });
     }
-
-    const nodeIds = new Map<string, string>();
-    const nodes: NetworkGraph['nodes'] = [...nodeNames.entries()].map(([key, label], index) => {
-      const id = mainNames.has(key)
-        ? mainId
-        : knownIds.get(key) || `network_${index + 1}_${this.networkKey(key)}`;
-      nodeIds.set(key, id);
-      const isMain = mainNames.has(key);
-      return {
-        id,
-        label,
-        size: isMain ? 3 : 1.4 + Math.min(Math.sqrt(nodeWeights.get(key) ?? 1) / 4, 2.8),
-        color: isMain ? '#483d8b' : '#5EA9FF',
-        type: 'author' as const,
-      };
-    });
-
-    const edges: NetworkGraph['edges'] = relations.map((relation) => ({
-      source: nodeIds.get(relation.from)!,
-      target: nodeIds.get(relation.to)!,
-      weight: relation.width,
-      label: String(relation.width),
-    }));
 
     return { nodes, edges };
   });
-
-  private networkKey(value: string): string {
-    let hash = 0;
-    for (let index = 0; index < value.length; index += 1) {
-      hash = (hash * 31 + value.charCodeAt(index)) >>> 0;
-    }
-    return hash.toString(36);
-  }
 
   private extractCoauthorCandidatesFromWorkItem(
     item: string,

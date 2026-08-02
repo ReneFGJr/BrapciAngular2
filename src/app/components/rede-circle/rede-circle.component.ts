@@ -4,6 +4,7 @@ import type { NetworkEdge, NetworkGraph, NetworkNode } from '../../core/models/n
 
 type ArcNode = {
   id: string;
+  ID: string;
   label: string;
   url: string;
   color: string;
@@ -96,6 +97,7 @@ export class RedeCircleComponent {
 
       return {
         id: node.id,
+        ID: node.id,
         label: node.label,
         url: this.authorUrl(node.id),
         color: this.colorFromId(node.id),

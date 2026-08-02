@@ -30,9 +30,9 @@
               </path>
               <g class="labels">
                 <a
-                  [attr.href]="node.url"
+                  [attr.href]="'/v/' + node.ID"
                   [attr.aria-label]="'Abrir perfil de ' + node.label"
-                  (focus)="setHoveredNode(node.id)"
+                  (focus)="setHoveredNode(node.ID)"
                   (blur)="setHoveredNode(null)"
                 >
                   <text
