@@ -37,7 +37,7 @@ export class BrapciApiService {
       }
     }
     console.log('Search params:', params);
-    return this.get<T>('brapci/search/v3', params);
+    return this.get<T>('brapci/search/v4', params);
   }
 
   citedSearch<T>(term: string): Observable<T> {

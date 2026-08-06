@@ -93,7 +93,7 @@ export class SearchArticlesComponent {
   readonly filterAuthors = signal<unknown[]>([]);
   readonly filterKeywords = signal<unknown[]>([]);
   readonly rawSearchResponse = signal<unknown>(null);
-  readonly query = signal('"Indexação Automática"');
+  readonly query = signal('"Indexação Automática" OR "Indexação Manual"');
   readonly hasResults = computed(() => this.apiResults().length > 0);
   readonly searchResponseJson = computed(() => {
     const response = this.rawSearchResponse();
