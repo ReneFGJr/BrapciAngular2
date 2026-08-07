@@ -25,21 +25,20 @@
           <button type="submit" class="btn btn-primary" [disabled]="loading()">
             <span *ngIf="!loading()">{{ 'search.button' | translate }}</span>
             <span *ngIf="loading()" class="d-inline-flex align-items-center gap-2">
-              <span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>
+              <span
+                class="spinner-border spinner-border-sm"
+                role="status"
+                aria-hidden="true"
+              ></span>
               <span>{{ 'search.button' | translate }}</span>
             </span>
           </button>
-
         </div>
       </form>
 
       <!-- Filtros da Pesquisa -->
       <div class="search-actions">
-        <span
-          type="button"
-          (click)="showFilters = !showFilters"
-          class="link search-action-link"
-        >
+        <span type="button" (click)="showFilters = !showFilters" class="link search-action-link">
           {{ 'search.filters.title' | translate }}
         </span>
 
@@ -50,7 +49,8 @@
           [routerLink]="'/basket/selected'"
         >
           | {{ 'search.selected' | translate }} ({{ markedCount }})
-        </span> |
+        </span>
+        |
         <span
           *ngIf="hasMarked"
           type="button"
@@ -60,21 +60,74 @@
           {{ 'search.clear_selected' | translate }}
         </span>
 
-          <span
-            *ngIf="works.length > 0"
-            type="button"
-            class="link search-action-link"
-            (click)="selectAllWorks()"
-          >
-            Selecionar Todos
-          </span>
+        <span
+          *ngIf="works.length > 0"
+          type="button"
+          class="link search-action-link"
+          (click)="selectAllWorks()"
+        >
+          Selecionar Todos
+        </span>
+      </div>
 
+      <div *ngIf="showFilters" class="search-filters">
+        <form [formGroup]="filtersForm" class="search-filters-form">
+          <!-- Coluna 1: Anos -->
+          <div class="search-filter-col-year">
+            <label for="year_start">{{ 'search.filters.year_start' | translate }}</label>
+            <select id="year_start" formControlName="year_start" class="form-control">
+              <option *ngFor="let y of yearsStart" [value]="y">{{ y }}</option>
+            </select>
+          </div>
+          <div class="search-filter-col-year">
+            <label for="year_end">{{ 'search.filters.year_end' | translate }}</label>
+            <select id="year_end" formControlName="year_end" class="form-control">
+              <option *ngFor="let y of yearsEnd" [value]="y">{{ y }}</option>
+            </select>
+          </div>
+          <!-- Coluna 2: Tipo de publicação -->
+          <div class="search-filter-col-wide">
+            <label class="search-filter-title">{{
+              'search.filters.publication_type' | translate
+            }}</label>
+            <div *ngFor="let pub of publicationTypes">
+              <input
+                type="checkbox"
+                [value]="pub.value"
+                (change)="onCollectionChange($event)"
+                [checked]="filtersForm.value.collection.includes(pub.value)"
+                id="col-{{ pub.value }}"
+              />
+              <label for="col-{{ pub.value }}"
+                >&nbsp;{{ 'search.filters.types.' + pub.value | translate }}</label
+              >
+            </div>
+          </div>
+          <!-- Coluna 3: Local de pesquisa -->
+          <div class="search-filter-col-wide">
+            <label class="search-filter-title">{{
+              'search.filters.search_field' | translate
+            }}</label>
+            <div *ngFor="let field of searchFields">
+              <input
+                type="radio"
+                name="fields"
+                [value]="field.value"
+                formControlName="fields"
+                id="field-{{ field.value }}"
+                [checked]="filtersForm.value.fields === field.value"
+              />
+              <label for="field-{{ field.value }}" class="ms-1">{{
+                'search.filters.fields.' + field.value | translate
+              }}</label>
+            </div>
+          </div>
+        </form>
       </div>
 
       @if (search) {
         <div class="search-results-grid mt-4">
           <div class="search-results-main">
-
             <ng-container *ngIf="hasResults()">
               <app-search-result
                 [results]="apiResults()"
@@ -93,10 +146,20 @@
 
           <aside class="search-json-sidebar" aria-label="Menu lateral da consulta">
             <div class="search-json-toolbar">
-              <button type="button" class="search-json-tab" [class.active]="!showJsonPanel()" (click)="showResultsPanel()">
+              <button
+                type="button"
+                class="search-json-tab"
+                [class.active]="!showJsonPanel()"
+                (click)="showResultsPanel()"
+              >
                 Resultados
               </button>
-              <button type="button" class="search-json-tab" [class.active]="showJsonPanel()" (click)="showJsonResponsePanel()">
+              <button
+                type="button"
+                class="search-json-tab"
+                [class.active]="showJsonPanel()"
+                (click)="showJsonResponsePanel()"
+              >
                 JSON
               </button>
             </div>
@@ -117,67 +180,15 @@
             } @else {
               <div class="search-json-card search-json-card-help">
                 <h3 class="search-json-title">Menu lateral</h3>
-                <p class="search-json-subtitle">Clique em JSON para ver a resposta completa da consulta.</p>
+                <p class="search-json-subtitle">
+                  Clique em JSON para ver a resposta completa da consulta.
+                </p>
               </div>
             }
           </aside>
         </div>
       }
     </div>
-  </div>
-
-  <div
-    *ngIf="showFilters"
-    class="search-filters"
-  >
-    <form [formGroup]="filtersForm" class="search-filters-form">
-      <!-- Coluna 1: Anos -->
-      <div class="search-filter-col-year">
-        <label for="year_start">{{ 'search.filters.year_start' | translate }}</label>
-        <select id="year_start" formControlName="year_start" class="form-control">
-          <option *ngFor="let y of yearsStart" [value]="y">{{ y }}</option>
-        </select>
-      </div>
-      <div class="search-filter-col-year">
-        <label for="year_end">{{ 'search.filters.year_end' | translate }}</label>
-        <select id="year_end" formControlName="year_end" class="form-control">
-          <option *ngFor="let y of yearsEnd" [value]="y">{{ y }}</option>
-        </select>
-      </div>
-      <!-- Coluna 2: Tipo de publicação -->
-      <div class="search-filter-col-wide">
-        <label class="search-filter-title">{{ 'search.filters.publication_type' | translate }}</label>
-        <div *ngFor="let pub of publicationTypes">
-          <input
-            type="checkbox"
-            [value]="pub.value"
-            (change)="onCollectionChange($event)"
-            [checked]="filtersForm.value.collection.includes(pub.value)"
-            id="col-{{ pub.value }}"
-          />
-          <label for="col-{{ pub.value }}"
-            >&nbsp;{{ 'search.filters.types.' + pub.value | translate }}</label
-          >
-        </div>
-      </div>
-      <!-- Coluna 3: Local de pesquisa -->
-      <div class="search-filter-col-wide">
-        <label class="search-filter-title">{{ 'search.filters.search_field' | translate }}</label>
-        <div *ngFor="let field of searchFields">
-          <input
-            type="radio"
-            name="fields"
-            [value]="field.value"
-            formControlName="fields"
-            id="field-{{ field.value }}"
-            [checked]="filtersForm.value.fields === field.value"
-          />
-          <label for="field-{{ field.value }}" class="ms-1">{{
-            'search.filters.fields.' + field.value | translate
-          }}</label>
-        </div>
-      </div>
-    </form>
   </div>
 
   <div *ngIf="!search" class="idle-layout mt-5">
