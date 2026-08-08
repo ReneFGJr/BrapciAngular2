@@ -83,6 +83,11 @@ export const routes: Routes = [
     loadComponent: () => import('./pages/cited/cited.page').then((m) => m.CitedPage),
   },
   {
+    path: 'small_world',
+    loadComponent: () =>
+      import('./pages/small-world/small-world.page').then((m) => m.SmallWorldPage),
+  },
+  {
     path: '',
     loadComponent: () => import('./pages/home/home.page').then((m) => m.HomePage),
   },

@@ -1,0 +1,109 @@
+<main class="small-world-page py-4" aria-labelledby="small-world-title">
+  <div class="container">
+    <app-breadcrumbs></app-breadcrumbs>
+
+    <section class="search-card">
+      <header class="mb-4">
+        <p class="eyebrow mb-1">Rede de colaboração</p>
+        <h1 id="small-world-title" class="h2 mb-2">Small World</h1>
+        <p class="lead mb-0">Descubra o caminho de colaboração entre dois autores.</p>
+      </header>
+
+      <form [formGroup]="contactForm" (ngSubmit)="search()" novalidate>
+        <div class="search-grid">
+          <div class="author-field">
+            <label for="author">Primeiro autor</label>
+            <input
+              id="author"
+              type="text"
+              class="form-control"
+              formControlName="author"
+              autocomplete="off"
+              placeholder="Digite ao menos 4 caracteres"
+              role="combobox"
+              aria-autocomplete="list"
+              aria-controls="author-options"
+              [attr.aria-expanded]="suggestions.author().length > 0"
+              [attr.aria-activedescendant]="activeOption.author() >= 0 ? 'author-option-' + activeOption.author() : null"
+              [attr.aria-invalid]="contactForm.controls.author.invalid && contactForm.controls.author.touched"
+              aria-describedby="author-help author-error"
+              (keydown)="onKeydown($event, 'author')"
+            />
+            <span id="author-help" class="form-text">Escolha um nome da lista.</span>
+            @if (loadingSuggestions.author()) { <span class="status-text" role="status">Buscando autores…</span> }
+            @if (contactForm.controls.author.invalid && contactForm.controls.author.touched) {
+              <span id="author-error" class="invalid-message" role="alert">Selecione um autor válido.</span>
+            }
+            @if (suggestions.author().length) {
+              <ul id="author-options" class="suggestions" role="listbox" aria-label="Sugestões para o primeiro autor">
+                @for (item of suggestions.author(); track item.id; let index = $index) {
+                  <li
+                    [id]="'author-option-' + index"
+                    role="option"
+                    [attr.aria-selected]="activeOption.author() === index"
+                    [class.active]="activeOption.author() === index"
+                    (mousedown)="$event.preventDefault(); selectAuthor('author', item)"
+                  >{{ item.name }}</li>
+                }
+              </ul>
+            }
+          </div>
+
+          <div class="author-field">
+            <label for="coauthor">Segundo autor</label>
+            <input
+              id="coauthor"
+              type="text"
+              class="form-control"
+              formControlName="coauthor"
+              autocomplete="off"
+              placeholder="Digite ao menos 4 caracteres"
+              role="combobox"
+              aria-autocomplete="list"
+              aria-controls="coauthor-options"
+              [attr.aria-expanded]="suggestions.coauthor().length > 0"
+              [attr.aria-activedescendant]="activeOption.coauthor() >= 0 ? 'coauthor-option-' + activeOption.coauthor() : null"
+              [attr.aria-invalid]="contactForm.controls.coauthor.invalid && contactForm.controls.coauthor.touched"
+              aria-describedby="coauthor-help coauthor-error"
+              (keydown)="onKeydown($event, 'coauthor')"
+            />
+            <span id="coauthor-help" class="form-text">Escolha um nome da lista.</span>
+            @if (loadingSuggestions.coauthor()) { <span class="status-text" role="status">Buscando autores…</span> }
+            @if (contactForm.controls.coauthor.invalid && contactForm.controls.coauthor.touched) {
+              <span id="coauthor-error" class="invalid-message" role="alert">Selecione um autor válido.</span>
+            }
+            @if (suggestions.coauthor().length) {
+              <ul id="coauthor-options" class="suggestions" role="listbox" aria-label="Sugestões para o segundo autor">
+                @for (item of suggestions.coauthor(); track item.id; let index = $index) {
+                  <li
+                    [id]="'coauthor-option-' + index"
+                    role="option"
+                    [attr.aria-selected]="activeOption.coauthor() === index"
+                    [class.active]="activeOption.coauthor() === index"
+                    (mousedown)="$event.preventDefault(); selectAuthor('coauthor', item)"
+                  >{{ item.name }}</li>
+                }
+              </ul>
+            }
+          </div>
+
+          <div class="button-field">
+            <button class="btn btn-primary" type="submit" [disabled]="searching()">
+              @if (searching()) { Buscando… } @else { Buscar }
+            </button>
+          </div>
+        </div>
+      </form>
+
+      <div class="feedback" aria-live="polite">
+        @if (error()) { <p class="alert alert-danger mb-0 mt-4" role="alert">{{ error() }}</p> }
+        @if (data !== null) {
+          <section class="result mt-4" aria-labelledby="result-title">
+            <h2 id="result-title" class="h5">Resultado</h2>
+            <pre class="mb-0">{{ data | json }}</pre>
+          </section>
+        }
+      </div>
+    </section>
+  </div>
+</main>
