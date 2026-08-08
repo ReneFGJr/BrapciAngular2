@@ -30,6 +30,18 @@
   object-fit: contain;
 }
 
+.small-world-references {
+  padding: clamp(1rem, 2.5vw, 1.5rem);
+  color: #344254;
+  background: rgb(255 255 255 / 82%);
+  border: 1px solid #d7dee8;
+  border-radius: .75rem;
+}
+
+.small-world-references p {
+  overflow-wrap: anywhere;
+}
+
 .search-grid {
   display: grid;
   grid-template-columns: minmax(0, 1fr) minmax(0, 1fr) minmax(9rem, .45fr);
@@ -94,9 +106,14 @@ input:focus-visible, button:focus-visible, .suggestions li:focus-visible {
 }
 
 :host-context(body.theme-master.theme-dark) .search-card,
-:host-context(body.theme-master.theme-dark) .suggestions {
+:host-context(body.theme-master.theme-dark) .suggestions,
+:host-context(body.theme-master.theme-dark) .small-world-references {
   background: #202834;
   border-color: #46556a;
+}
+
+:host-context(body.theme-master.theme-dark) .small-world-references {
+  color: #dce5ef;
 }
 
 :host-context(body.theme-master.theme-dark) .lead,

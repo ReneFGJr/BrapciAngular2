@@ -107,12 +107,21 @@
       <div class="feedback" aria-live="polite">
         @if (error()) { <p class="alert alert-danger mb-0 mt-4" role="alert">{{ error() }}</p> }
         @if (data !== null) {
-          <section class="result mt-4" aria-labelledby="result-title">
-            <h2 id="result-title" class="h5">Resultado</h2>
-            <pre class="mb-0">{{ data | json }}</pre>
-          </section>
+          <app-small-world-connection class="mt-4" [data]="data"></app-small-world-connection>
         }
       </div>
+    </section>
+
+    <section class="small-world-references mt-4" aria-labelledby="references-title">
+      <h2 id="references-title" class="h5 mb-3">Referências</h2>
+      <p>
+        KARINTHY, Frigyes. <strong>CHAINS</strong>. In: <em>Everything is different</em>.
+        Budapeste: Officina, 1929.
+      </p>
+      <p class="mb-0">
+        MILGRAM, Stanley. <strong>The small-world problem</strong>.
+        <em>Psychology Today</em>, 1967.
+      </p>
     </section>
   </div>
 </main>

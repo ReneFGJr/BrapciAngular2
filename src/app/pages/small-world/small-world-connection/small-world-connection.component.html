@@ -1,0 +1,57 @@
+<section class="connection" aria-labelledby="connection-title">
+  <header class="connection__header">
+    <div>
+      <p class="connection__eyebrow mb-1">Caminho encontrado</p>
+      <h2 id="connection-title" class="h4 mb-1">Rede de colaboração</h2>
+      <p class="connection__summary mb-0">
+        {{ data.distance }} {{ data.distance === 1 ? 'conexão' : 'conexões' }} entre origem e destino
+      </p>
+    </div>
+    <span class="connection__distance" [attr.aria-label]="data.distance + ' conexões'">
+      {{ data.distance }}
+      <small>distância</small>
+    </span>
+  </header>
+
+  @if (data.path.length) {
+    <div
+      class="connection__path"
+      role="img"
+      [attr.aria-label]="'Caminho de ' + data.origin + ' até ' + data.target + ', com ' + data.distance + ' conexões.'"
+    >
+      @for (item of data.path; track item.step; let index = $index; let last = $last) {
+        <div
+          class="connection__node-wrap"
+          [class.is-origin]="index === 0"
+          [class.is-target]="last"
+          [style.--node-delay.ms]="index * 180"
+        >
+          <div class="connection__node">
+            <span class="connection__step" aria-hidden="true">{{ item.step }}</span>
+            <span class="connection__role">{{ nodeRole(index) }}</span>
+            <strong>{{ item.node }}</strong>
+          </div>
+        </div>
+
+        @if (!last) {
+          <div
+            class="connection__link"
+            aria-hidden="true"
+            [style.--link-delay.ms]="index * 180 + 100"
+          >
+            <span></span>
+            <i class="bi bi-chevron-right"></i>
+          </div>
+        }
+      }
+    </div>
+
+    <ol class="visually-hidden">
+      @for (item of data.path; track item.step; let index = $index) {
+        <li>Etapa {{ item.step }}: {{ item.node }}, {{ nodeRole(index) }}.</li>
+      }
+    </ol>
+  } @else {
+    <p class="connection__empty mb-0" role="status">Nenhum caminho de colaboração foi encontrado.</p>
+  }
+</section>

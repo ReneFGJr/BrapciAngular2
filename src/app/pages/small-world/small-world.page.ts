@@ -5,6 +5,10 @@ import { catchError, debounceTime, distinctUntilChanged, map, of, switchMap, tap
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { BrapciApiService } from '../../core/services/brapci-api.service';
 import { BreadcrumbsComponent } from '../../components/breadcrumbs/breadcrumbs.component';
+import {
+  SmallWorldConnectionComponent,
+  SmallWorldResult,
+} from './small-world-connection/small-world-connection.component';
 
 type Author = { id: string; name: string };
 type AuthorResponse = { value?: Author[]; Count?: number };
@@ -14,7 +18,7 @@ type FieldName = 'author' | 'coauthor';
 @Component({
   selector: 'app-small-world-page',
   standalone: true,
-  imports: [CommonModule, ReactiveFormsModule, BreadcrumbsComponent],
+  imports: [CommonModule, ReactiveFormsModule, BreadcrumbsComponent, SmallWorldConnectionComponent],
   templateUrl: './small-world.page.html',
   styleUrl: './small-world.page.scss',
 })
@@ -46,7 +50,7 @@ export class SmallWorldPage {
 
   readonly searching = signal(false);
   readonly error = signal('');
-  data: unknown = null;
+  data: SmallWorldResult | null = null;
 
   constructor() {
     this.configureAutocomplete('author');
@@ -90,7 +94,7 @@ export class SmallWorldPage {
     this.searching.set(true);
     this.data = null;
     this.api
-      .get<unknown>('tools/dijkstra', {
+      .get<SmallWorldResult>('tools/dijkstra', {
         source: this.contactForm.value.author ?? '',
         target: this.contactForm.value.coauthor ?? '',
       })
