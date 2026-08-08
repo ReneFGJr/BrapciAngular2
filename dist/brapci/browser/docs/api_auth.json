@@ -1,0 +1,283 @@
+{
+  "nome_grupo_api": "Autenticação",
+  "descricao": "Endpoints utilizados pelo AuthService para sessão, cadastro, login, OAuth, recuperação de senha e contato.",
+  "versao_documento": "1.0",
+  "observacoes": [
+    "As URLs iniciadas por /auth usam o servidor configurado em app.server ou, na ausência dele, o mesmo host da aplicação.",
+    "As chamadas para /auth enviam credenciais de sessão por cookie.",
+    "Os endpoints em /api/socials são integrações legadas e recebem multipart/form-data.",
+    "Nenhum dos endpoints utilizados atualmente envia APIKEY."
+  ],
+  "endpoints": [
+    {
+      "nome": "Consultar sessão",
+      "metodo_servico": "checkSession()",
+      "endpoint_api": {
+        "metodo": "GET",
+        "url": "/auth/me",
+        "endpoint_relativo": "/auth/me",
+        "content_type_requisicao": null,
+        "content_type_resposta": "application/json"
+      },
+      "precisa_apikey": false,
+      "autenticacao": "Cookie de sessão enviado com withCredentials.",
+      "variaveis_api": [],
+      "resultado_api": {
+        "descricao": "Informa se existe uma sessão autenticada e retorna o usuário associado.",
+        "exemplo": {
+          "authenticated": true,
+          "user": {
+            "id": 1,
+            "username": "usuario@exemplo.br",
+            "name": "Nome do Usuário",
+            "role": "user"
+          }
+        }
+      },
+      "variaveis_retorno_api": [
+        { "nome": "authenticated", "tipo": "boolean", "descricao": "Indica se a sessão está autenticada." },
+        { "nome": "user", "tipo": "object|null", "descricao": "Usuário autenticado ou null quando não há sessão." },
+        { "nome": "user.id", "tipo": "number", "descricao": "Identificador do usuário." },
+        { "nome": "user.username", "tipo": "string", "descricao": "Nome de usuário ou e-mail de acesso." },
+        { "nome": "user.name", "tipo": "string", "descricao": "Nome de exibição do usuário." },
+        { "nome": "user.role", "tipo": "admin|user", "descricao": "Papel de autorização do usuário." },
+        { "nome": "user.token", "tipo": "string|undefined", "descricao": "Token opcional retornado por fluxos legados." },
+        { "nome": "user.themePreference", "tipo": "light|dark|undefined", "descricao": "Preferência visual opcional armazenada no cliente." }
+      ]
+    },
+    {
+      "nome": "Cadastrar usuário",
+      "metodo_servico": "register(payload)",
+      "endpoint_api": {
+        "metodo": "POST",
+        "url": "/auth/register",
+        "endpoint_relativo": "/auth/register",
+        "content_type_requisicao": "application/json",
+        "content_type_resposta": "application/json"
+      },
+      "precisa_apikey": false,
+      "autenticacao": "Não requer sessão prévia; cookies são enviados por se tratar de uma rota /auth.",
+      "variaveis_api": [
+        { "nome": "name", "local": "body", "tipo": "string", "obrigatoria": true, "descricao": "Nome completo do usuário.", "exemplo": "Nome do Usuário" },
+        { "nome": "username", "local": "body", "tipo": "string", "obrigatoria": true, "descricao": "Nome de usuário para autenticação.", "exemplo": "usuario" },
+        { "nome": "email", "local": "body", "tipo": "string", "obrigatoria": true, "descricao": "E-mail do usuário.", "exemplo": "usuario@exemplo.br" },
+        { "nome": "password", "local": "body", "tipo": "string", "obrigatoria": true, "descricao": "Senha definida pelo usuário.", "exemplo": "********" }
+      ],
+      "resultado_api": {
+        "descricao": "Retorna o estado de autenticação e o usuário criado quando o cadastro é concluído.",
+        "exemplo": {
+          "authenticated": true,
+          "user": {
+            "id": 1,
+            "username": "usuario",
+            "name": "Nome do Usuário",
+            "role": "user"
+          }
+        }
+      },
+      "variaveis_retorno_api": [
+        { "nome": "authenticated", "tipo": "boolean", "descricao": "Indica se o usuário ficou autenticado após o cadastro." },
+        { "nome": "user", "tipo": "object|null", "descricao": "Usuário criado ou null quando o cadastro não resulta em autenticação." }
+      ]
+    },
+    {
+      "nome": "Encerrar sessão",
+      "metodo_servico": "logout()",
+      "endpoint_api": {
+        "metodo": "POST",
+        "url": "/auth/logout",
+        "endpoint_relativo": "/auth/logout",
+        "content_type_requisicao": "application/json",
+        "content_type_resposta": "sem conteúdo"
+      },
+      "precisa_apikey": false,
+      "autenticacao": "Cookie da sessão enviado com withCredentials.",
+      "variaveis_api": [],
+      "resultado_api": {
+        "descricao": "Encerra a sessão no servidor. O cliente também limpa a sessão local mesmo se a chamada falhar.",
+        "exemplo": null
+      },
+      "variaveis_retorno_api": []
+    },
+    {
+      "nome": "Solicitar recuperação de senha",
+      "metodo_servico": "resendPassword(payload)",
+      "endpoint_api": {
+        "metodo": "GET",
+        "url": "https://cip.brapci.inf.br/auth/forgot-password",
+        "endpoint_relativo": "/auth/forgot-password",
+        "content_type_requisicao": null,
+        "content_type_resposta": "application/json"
+      },
+      "precisa_apikey": false,
+      "autenticacao": "Não requer autenticação.",
+      "variaveis_api": [
+        { "nome": "email", "local": "query_string", "tipo": "string", "obrigatoria": true, "descricao": "E-mail associado à conta.", "exemplo": "usuario@exemplo.br" }
+      ],
+      "resultado_api": {
+        "descricao": "Indica se a solicitação de recuperação foi aceita. Na ausência do campo success, o cliente considera a chamada bem-sucedida.",
+        "exemplo": { "success": true }
+      },
+      "variaveis_retorno_api": [
+        { "nome": "success", "tipo": "boolean|undefined", "descricao": "Resultado opcional da solicitação de recuperação." }
+      ]
+    },
+    {
+      "nome": "Login legado",
+      "metodo_servico": "loginSubmitHttp(login, pass) / login(payload)",
+      "endpoint_api": {
+        "metodo": "POST",
+        "url": "https://cip.brapci.inf.br/api/socials/signin",
+        "endpoint_relativo": "/api/socials/signin",
+        "content_type_requisicao": "multipart/form-data",
+        "content_type_resposta": "application/json"
+      },
+      "precisa_apikey": false,
+      "autenticacao": "Não requer autenticação prévia.",
+      "variaveis_api": [
+        { "nome": "user", "local": "body", "tipo": "string", "obrigatoria": true, "descricao": "Login ou e-mail do usuário.", "exemplo": "usuario@exemplo.br" },
+        { "nome": "pwd", "local": "body", "tipo": "string", "obrigatoria": true, "descricao": "Senha do usuário.", "exemplo": "********" }
+      ],
+      "resultado_api": {
+        "descricao": "Retorno legado de autenticação. O AuthService aceita um objeto user ou uma resposta com status igual a 200 e normaliza os dados para User.",
+        "exemplo": {
+          "status": "200",
+          "id": 1,
+          "email": "usuario@exemplo.br",
+          "displayName": "Nome do Usuário",
+          "admin": false,
+          "token": "token-opcional"
+        }
+      },
+      "variaveis_retorno_api": [
+        { "nome": "status", "tipo": "string|number", "descricao": "Código de situação usado pelo formato legado." },
+        { "nome": "user", "tipo": "object|undefined", "descricao": "Usuário quando a API retorna o formato AuthResponse." },
+        { "nome": "id", "tipo": "number|undefined", "descricao": "Identificador no formato legado." },
+        { "nome": "email", "tipo": "string|undefined", "descricao": "E-mail usado para normalizar username." },
+        { "nome": "displayName", "tipo": "string|undefined", "descricao": "Nome de exibição no formato legado." },
+        { "nome": "givenName", "tipo": "string|undefined", "descricao": "Nome alternativo usado na normalização." },
+        { "nome": "persistent-id", "tipo": "string|undefined", "descricao": "Identificador alternativo usado na normalização." },
+        { "nome": "admin", "tipo": "boolean|undefined", "descricao": "Indica se o perfil deve ser normalizado como administrador." },
+        { "nome": "token", "tipo": "string|undefined", "descricao": "Token opcional de autenticação." }
+      ]
+    },
+    {
+      "nome": "Callback OAuth legado",
+      "metodo_servico": "callbackOauthHttp(token)",
+      "endpoint_api": {
+        "metodo": "POST",
+        "url": "https://cip.brapci.inf.br/api/socials/callback2",
+        "endpoint_relativo": "/api/socials/callback2",
+        "content_type_requisicao": "multipart/form-data",
+        "content_type_resposta": "application/json"
+      },
+      "precisa_apikey": false,
+      "autenticacao": "Token OAuth enviado no corpo.",
+      "variaveis_api": [
+        { "nome": "token", "local": "body", "tipo": "string", "obrigatoria": true, "descricao": "Token recebido do provedor OAuth.", "exemplo": "token-oauth" }
+      ],
+      "resultado_api": {
+        "descricao": "Resposta legada do callback OAuth, repassada pelo serviço sem transformação.",
+        "exemplo": {}
+      },
+      "variaveis_retorno_api": [
+        { "nome": "response", "tipo": "object", "descricao": "Objeto de resposta definido pela API legada." }
+      ]
+    },
+    {
+      "nome": "Cadastro social legado",
+      "metodo_servico": "signUp(name, email, institution)",
+      "endpoint_api": {
+        "metodo": "POST",
+        "url": "https://cip.brapci.inf.br/api/socials/signup",
+        "endpoint_relativo": "/api/socials/signup",
+        "content_type_requisicao": "multipart/form-data",
+        "content_type_resposta": "application/json"
+      },
+      "precisa_apikey": false,
+      "autenticacao": "Não requer autenticação prévia.",
+      "variaveis_api": [
+        { "nome": "signup_name", "local": "body", "tipo": "string", "obrigatoria": true, "descricao": "Nome da pessoa.", "exemplo": "Nome do Usuário" },
+        { "nome": "signup_email", "local": "body", "tipo": "string", "obrigatoria": true, "descricao": "E-mail para cadastro.", "exemplo": "usuario@exemplo.br" },
+        { "nome": "signup_institution", "local": "body", "tipo": "string", "obrigatoria": true, "descricao": "Instituição informada no cadastro.", "exemplo": "Universidade Exemplo" }
+      ],
+      "resultado_api": {
+        "descricao": "Resposta do cadastro social, repassada pelo serviço sem transformação.",
+        "exemplo": {}
+      },
+      "variaveis_retorno_api": [
+        { "nome": "response", "tipo": "object", "descricao": "Objeto de resposta definido pela API legada." }
+      ]
+    },
+    {
+      "nome": "Contato social legado",
+      "metodo_servico": "questionHttp(email, text)",
+      "endpoint_api": {
+        "metodo": "POST",
+        "url": "https://cip.brapci.inf.br/api/socials/contact",
+        "endpoint_relativo": "/api/socials/contact",
+        "content_type_requisicao": "multipart/form-data",
+        "content_type_resposta": "application/json"
+      },
+      "precisa_apikey": false,
+      "autenticacao": "Não requer autenticação prévia.",
+      "variaveis_api": [
+        { "nome": "email", "local": "body", "tipo": "string", "obrigatoria": true, "descricao": "E-mail para contato.", "exemplo": "usuario@exemplo.br" },
+        { "nome": "text", "local": "body", "tipo": "string", "obrigatoria": true, "descricao": "Texto da mensagem.", "exemplo": "Mensagem enviada pelo formulário de contato." }
+      ],
+      "resultado_api": {
+        "descricao": "Resposta do envio de contato, repassada pelo serviço sem transformação.",
+        "exemplo": {}
+      },
+      "variaveis_retorno_api": [
+        { "nome": "response", "tipo": "object", "descricao": "Objeto de resposta definido pela API legada." }
+      ]
+    },
+    {
+      "nome": "Recuperação de senha legada",
+      "metodo_servico": "forgotHttp(email)",
+      "endpoint_api": {
+        "metodo": "POST",
+        "url": "https://cip.brapci.inf.br/api/socials/forgot",
+        "endpoint_relativo": "/api/socials/forgot",
+        "content_type_requisicao": "multipart/form-data",
+        "content_type_resposta": "application/json"
+      },
+      "precisa_apikey": false,
+      "autenticacao": "Não requer autenticação prévia.",
+      "variaveis_api": [
+        { "nome": "email", "local": "body", "tipo": "string", "obrigatoria": true, "descricao": "E-mail associado à conta.", "exemplo": "usuario@exemplo.br" }
+      ],
+      "resultado_api": {
+        "descricao": "Resposta legada de recuperação de senha, repassada pelo serviço sem transformação.",
+        "exemplo": {}
+      },
+      "variaveis_retorno_api": [
+        { "nome": "response", "tipo": "object", "descricao": "Objeto de resposta definido pela API legada." }
+      ]
+    },
+    {
+      "nome": "Login OAuth legado",
+      "metodo_servico": "loginOauthHttp(token)",
+      "endpoint_api": {
+        "metodo": "POST",
+        "url": "https://cip.brapci.inf.br/api/socials/oauth2",
+        "endpoint_relativo": "/api/socials/oauth2",
+        "content_type_requisicao": "multipart/form-data",
+        "content_type_resposta": "application/json"
+      },
+      "precisa_apikey": false,
+      "autenticacao": "Token OAuth enviado no corpo.",
+      "variaveis_api": [
+        { "nome": "token", "local": "body", "tipo": "string", "obrigatoria": true, "descricao": "Token emitido pelo provedor OAuth.", "exemplo": "token-oauth" }
+      ],
+      "resultado_api": {
+        "descricao": "Resposta legada de autenticação OAuth, repassada pelo serviço sem transformação.",
+        "exemplo": {}
+      },
+      "variaveis_retorno_api": [
+        { "nome": "response", "tipo": "object", "descricao": "Objeto de resposta definido pela API legada." }
+      ]
+    }
+  ]
+}

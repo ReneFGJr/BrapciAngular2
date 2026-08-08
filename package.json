@@ -3,9 +3,9 @@
   "version": "0.0.0",
   "scripts": {
     "ng": "ng",
-    "prestart": "node scripts/generate-env.mjs",
-    "prebuild": "node scripts/generate-env.mjs",
-    "prewatch": "node scripts/generate-env.mjs",
+    "prestart": "node scripts/generate-env.mjs && node scripts/generate-api-docs-index.mjs",
+    "prebuild": "node scripts/generate-env.mjs && node scripts/generate-api-docs-index.mjs",
+    "prewatch": "node scripts/generate-env.mjs && node scripts/generate-api-docs-index.mjs",
     "preserve:ssr:brapci": "node scripts/generate-env.mjs",
     "start": "ng serve",
     "build": "ng build",

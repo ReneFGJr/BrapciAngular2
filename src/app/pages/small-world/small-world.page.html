@@ -3,10 +3,19 @@
     <app-breadcrumbs></app-breadcrumbs>
 
     <section class="search-card">
-      <header class="mb-4">
-        <p class="eyebrow mb-1">Rede de colaboração</p>
-        <h1 id="small-world-title" class="h2 mb-2">Small World</h1>
-        <p class="lead mb-0">Descubra o caminho de colaboração entre dois autores.</p>
+      <header class="small-world-header mb-4">
+        <div>
+          <p class="eyebrow mb-1">Rede de colaboração</p>
+          <h1 id="small-world-title" class="h2 mb-2">Pequeno Mundo</h1>
+          <h2 class="h4 mb-3">Projeto Brapci - Conectando pesquisadores, gerando colaborações.</h2>
+          <p class="mb-0">Descubra a rede de colaboração entre pesquisadores com base em suas publicações. Digite os nomes dos autores para explorar as conexões e identificar potenciais colaborações.</p>
+
+        </div>
+        <img
+          class="small-world-logo"
+          src="/assets/logos/brapci_small_world.png"
+          alt="Brapci Small World"
+        />
       </header>
 
       <form [formGroup]="contactForm" (ngSubmit)="search()" novalidate>

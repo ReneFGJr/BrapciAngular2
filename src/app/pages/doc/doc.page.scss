@@ -16,8 +16,61 @@
 }
 
 .doc-subtitle,
-.doc-note {
+.doc-note,
+.doc-status {
   color: var(--theme-hint);
+}
+
+.doc-filters {
+  display: grid;
+  grid-template-columns: minmax(12rem, 0.7fr) minmax(16rem, 1fr) auto;
+  gap: 1rem;
+  align-items: end;
+}
+
+.filter-action .btn {
+  white-space: nowrap;
+}
+
+.endpoint-card {
+  padding: clamp(1rem, 2.5vw, 1.5rem);
+  border: 1px solid var(--theme-line);
+  border-radius: 0.8rem;
+}
+
+.endpoint-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 1rem;
+}
+
+.endpoint-grid > div {
+  min-width: 0;
+  padding: 1rem;
+  background: color-mix(in srgb, var(--theme-card-bg) 86%, var(--theme-line));
+  border: 1px solid var(--theme-line);
+  border-radius: 0.65rem;
+}
+
+.endpoint-grid dt {
+  margin-bottom: 0.35rem;
+  color: var(--theme-hint);
+  font-size: 0.82rem;
+  text-transform: uppercase;
+}
+
+.endpoint-grid dd {
+  margin: 0;
+  overflow-wrap: anywhere;
+}
+
+.method-badge {
+  display: inline-block;
+  padding: 0.2rem 0.55rem;
+  color: #fff;
+  background: #157347;
+  border-radius: 0.35rem;
+  font-weight: 700;
 }
 
 .doc-table {
@@ -28,4 +81,27 @@
 
 .doc-table code {
   color: var(--theme-ink);
+}
+
+.code-block {
+  margin: 0;
+  padding: 1rem;
+  overflow: auto;
+  color: var(--theme-ink);
+  background: color-mix(in srgb, var(--theme-card-bg) 82%, var(--theme-line));
+  border: 1px solid var(--theme-line);
+  border-radius: 0.65rem;
+  white-space: pre-wrap;
+  overflow-wrap: anywhere;
+}
+
+@media (max-width: 767.98px) {
+  .doc-filters,
+  .endpoint-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .filter-action .btn {
+    width: 100%;
+  }
 }

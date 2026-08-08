@@ -1,105 +1,127 @@
-<section class="doc-wrap py-4" aria-labelledby="doc-title">
+<main class="doc-wrap py-4" aria-labelledby="doc-title">
   <div class="container">
     <app-breadcrumbs></app-breadcrumbs>
 
-    <div class="doc-card p-4 p-md-5">
-      <p class="doc-eyebrow mb-2">Documentacao</p>
-      <h1 id="doc-title" class="h2 mb-2">Documentacao API</h1>
-      <p class="doc-subtitle mb-4">
-        Referencia das chamadas utilizadas pelos servicos <code>auth.service</code> e
-        <code>brapci-api.service</code>.
-      </p>
+    <section class="doc-card p-4 p-md-5">
+      <p class="doc-eyebrow mb-2">Documentação</p>
+      <h1 id="doc-title" class="h2 mb-2">Documentação da API</h1>
+      <p class="doc-subtitle mb-4">Consulte os grupos e endpoints utilizados pela Brapci.</p>
 
-      <h2 class="h4 mt-4 mb-3">AuthService</h2>
-      <div class="table-responsive mb-4">
-        <table class="table doc-table align-middle mb-0">
-          <thead>
-            <tr>
-              <th>Metodo</th>
-              <th>HTTP</th>
-              <th>Endpoint</th>
-              <th>Parametros</th>
-              <th>Resultado Esperado</th>
-            </tr>
-          </thead>
-          <tbody>
-            <tr>
-              <td><code>checkSession()</code></td>
-              <td><code>GET</code></td>
-              <td><code>/auth/me</code></td>
-              <td>Sem body.</td>
-              <td><code>&#123; authenticated: boolean, user: User | null &#125;</code></td>
-            </tr>
-            <tr>
-              <td><code>login(payload)</code></td>
-              <td><code>POST</code></td>
-              <td><code>/auth/login</code> ou <code>/auth/login-email</code></td>
-              <td><code>&#123; username: string, password: string &#125;</code></td>
-              <td><code>&#123; authenticated: boolean, user: User | null &#125;</code></td>
-            </tr>
-            <tr>
-              <td><code>register(payload)</code></td>
-              <td><code>POST</code></td>
-              <td><code>/auth/register</code></td>
-              <td><code>&#123; name: string, username: string, email: string, password: string &#125;</code></td>
-              <td><code>&#123; authenticated: boolean, user: User | null &#125;</code></td>
-            </tr>
-            <tr>
-              <td><code>resendPassword(payload)</code></td>
-              <td><code>POST</code></td>
-              <td><code>/api/social/forgot</code></td>
-              <td><code>&#123; email: string &#125;</code></td>
-              <td><code>&#123; success?: boolean &#125;</code> (service converte para <code>boolean</code>)</td>
-            </tr>
-            <tr>
-              <td><code>logout()</code></td>
-              <td><code>POST</code></td>
-              <td><code>/auth/logout</code></td>
-              <td><code>&#123;&#125;</code></td>
-              <td><code>204 No Content</code></td>
-            </tr>
-          </tbody>
-        </table>
-      </div>
+      @if (loading()) {
+        <p class="doc-status mb-0" role="status">Carregando documentação…</p>
+      } @else if (error()) {
+        <div class="alert alert-danger mb-0" role="alert">
+          <p class="mb-3">{{ error() }}</p>
+          <button type="button" class="btn btn-outline-danger" (click)="loadDocumentation()">Tentar novamente</button>
+        </div>
+      } @else {
+        <section class="doc-filters mb-4" aria-labelledby="filters-title">
+          <h2 id="filters-title" class="visually-hidden">Filtros da documentação</h2>
+          <div>
+            <label for="api-group" class="form-label">Grupo da API</label>
+            <select
+              id="api-group"
+              class="form-select"
+              [value]="selectedGroup()"
+              (change)="setSelectedGroup($any($event.target).value)"
+            >
+              <option value="">Todos os grupos</option>
+              @for (group of groups(); track group.arquivo) {
+                <option [value]="group.nome">{{ group.nome }}</option>
+              }
+            </select>
+          </div>
+          <div>
+            <label for="api-search" class="form-label">Buscar na documentação</label>
+            <input
+              id="api-search"
+              type="search"
+              class="form-control"
+              placeholder="Endpoint, variável ou descrição"
+              [value]="searchQuery()"
+              (input)="setSearchQuery($any($event.target).value)"
+            />
+          </div>
+          <div class="filter-action">
+            <button type="button" class="btn btn-outline-secondary" (click)="clearFilters()">Limpar filtros</button>
+          </div>
+        </section>
 
-      <h2 class="h4 mt-4 mb-3">BrapciApiService</h2>
-      <div class="table-responsive">
-        <table class="table doc-table align-middle mb-0">
-          <thead>
-            <tr>
-              <th>Metodo</th>
-              <th>HTTP</th>
-              <th>Endpoint</th>
-              <th>Parametros</th>
-              <th>Resultado Esperado</th>
-            </tr>
-          </thead>
-          <tbody>
-            <tr>
-              <td><code>get(endpoint, params)</code></td>
-              <td><code>GET</code></td>
-              <td><code>&#123;brapciApiBaseUrl&#125;/&#123;endpoint&#125;</code></td>
-              <td>
-                <code>endpoint?: string</code><br />
-                <code>params?: Record&lt;string, string | number | boolean&gt;</code>
-              </td>
-              <td><code>T</code> generico (retorno da API Brapci)</td>
-            </tr>
-            <tr>
-              <td><code>search(query)</code></td>
-              <td><code>GET</code></td>
-              <td><code>&#123;brapciApiBaseUrl&#125;?q=&#123;query&#125;</code></td>
-              <td><code>&#123; query: string &#125;</code></td>
-              <td><code>T</code> generico (resultado de busca)</td>
-            </tr>
-          </tbody>
-        </table>
-      </div>
+        <p class="doc-status mb-4" role="status" aria-live="polite">
+          {{ visibleEndpointCount() }} {{ visibleEndpointCount() === 1 ? 'endpoint encontrado' : 'endpoints encontrados' }}.
+        </p>
 
-      <p class="doc-note mt-4 mb-0">
-        Base de auth definida por <code>buildAuthUrl()</code> em <code>auth.service</code>.
-        Base Brapci definida em <code>API_CONFIG.brapciApiBaseUrl</code>.
-      </p>
-    </div>
+        @for (group of visibleGroups(); track group.arquivo) {
+          <section class="api-group mb-5" [attr.aria-labelledby]="'group-' + $index">
+            <header class="group-header mb-3">
+              <h2 [id]="'group-' + $index" class="h3 mb-2">{{ group.nome }}</h2>
+              <p class="doc-subtitle mb-0">{{ group.descricao }}</p>
+            </header>
+
+            @for (endpoint of group.endpoints; track endpoint.endpoint_api.metodo + endpoint.endpoint_api.url) {
+              <article class="endpoint-card mb-4">
+                <h3 class="h5 mb-3">
+                  <span class="method-badge">{{ endpoint.endpoint_api.metodo }}</span>
+                  {{ endpoint.nome || endpoint.endpoint_api.endpoint_relativo }}
+                </h3>
+
+                <dl class="endpoint-grid mb-4">
+                  <div><dt>Endpoint da API</dt><dd><code>{{ endpoint.endpoint_api.url }}</code></dd></div>
+                  <div><dt>Endpoint relativo</dt><dd><code>{{ endpoint.endpoint_api.endpoint_relativo }}</code></dd></div>
+                  <div><dt>Content-Type</dt><dd><code>{{ endpoint.endpoint_api.content_type_resposta }}</code></dd></div>
+                  <div>
+                    <dt>Precisa de APIKEY?</dt>
+                    <dd>{{ endpoint.precisa_apikey ? 'Sim' : 'Não' }}@if (endpoint.apikey?.descricao) { — {{ endpoint.apikey?.descricao }} }</dd>
+                  </div>
+                  @if (endpoint.autenticacao) { <div><dt>Autenticação</dt><dd>{{ endpoint.autenticacao }}</dd></div> }
+                  @if (endpoint.metodo_servico) { <div><dt>Método no serviço</dt><dd><code>{{ endpoint.metodo_servico }}</code></dd></div> }
+                </dl>
+
+                <h4 class="h6 mt-4">Variáveis da API</h4>
+                @if (endpoint.variaveis_api.length) {
+                  <div class="table-responsive">
+                    <table class="table doc-table align-middle mb-0">
+                      <caption class="visually-hidden">Parâmetros de {{ endpoint.endpoint_api.endpoint_relativo }}</caption>
+                      <thead><tr><th scope="col">Nome</th><th scope="col">Local</th><th scope="col">Tipo</th><th scope="col">Obrigatória</th><th scope="col">Descrição</th><th scope="col">Exemplo</th></tr></thead>
+                      <tbody>
+                        @for (variable of endpoint.variaveis_api; track variable.nome) {
+                          <tr><th scope="row"><code>{{ variable.nome }}</code></th><td><code>{{ variable.local || '—' }}</code></td><td><code>{{ variable.tipo }}</code></td><td>{{ variable.obrigatoria ? 'Sim' : 'Não' }}</td><td>{{ variable.descricao }}</td><td><code>{{ variable.exemplo || '—' }}</code></td></tr>
+                        }
+                      </tbody>
+                    </table>
+                  </div>
+                } @else { <p class="doc-status">Este endpoint não recebe variáveis.</p> }
+
+                @if (endpoint.exemplo_requisicao) {
+                  <h4 class="h6 mt-4">Exemplo de requisição</h4>
+                  <pre class="code-block"><code>{{ endpoint.exemplo_requisicao }}</code></pre>
+                }
+
+                <h4 class="h6 mt-4">Resultado da API</h4>
+                <p>{{ endpoint.resultado_api.descricao }}</p>
+                <pre class="code-block"><code>{{ endpoint.resultado_api.exemplo | json }}</code></pre>
+
+                <h4 class="h6 mt-4">Variáveis de retorno</h4>
+                @if (endpoint.variaveis_retorno_api.length) {
+                  <div class="table-responsive">
+                    <table class="table doc-table align-middle mb-0">
+                      <caption class="visually-hidden">Campos retornados por {{ endpoint.endpoint_api.endpoint_relativo }}</caption>
+                      <thead><tr><th scope="col">Nome</th><th scope="col">Tipo</th><th scope="col">Descrição</th></tr></thead>
+                      <tbody>
+                        @for (variable of endpoint.variaveis_retorno_api; track variable.nome) {
+                          <tr><th scope="row"><code>{{ variable.nome }}</code></th><td><code>{{ variable.tipo }}</code></td><td>{{ variable.descricao }}</td></tr>
+                        }
+                      </tbody>
+                    </table>
+                  </div>
+                } @else { <p class="doc-status mb-0">Este endpoint não retorna conteúdo documentado.</p> }
+              </article>
+            }
+          </section>
+        } @empty {
+          <div class="alert alert-info mb-0" role="status">Nenhuma documentação corresponde aos filtros informados.</div>
+        }
+      }
+    </section>
   </div>
-</section>
+</main>
