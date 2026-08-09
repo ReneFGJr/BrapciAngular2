@@ -39,29 +39,6 @@
   }
 }
 
-.upload-head {
-  margin-bottom: 0;
-  padding: 0.6rem 0.8rem;
-  border-radius: 0.45rem 0.45rem 0 0;
-  border: 1px solid #6b5aa3;
-  border-bottom: 0;
-  background-color: #483d8b;
-  color: #fff;
-  font-weight: 700;
-}
-
-.upload-body {
-  border: 1px solid rgba(124, 86, 46, 0.25);
-  border-radius: 0 0 0.45rem 0.45rem;
-  padding: 0.8rem;
-  background: rgba(255, 255, 255, 0.72);
-}
-
-.upload-note {
-  font-size: 0.88rem;
-  color: #6a5542;
-}
-
 :host-context(body.theme-master.theme-dark) .livros-submit-wrap {
   background:
     radial-gradient(circle at top left, rgba(89, 117, 168, 0.18), transparent 34%),
@@ -86,12 +63,3 @@
   }
 }
 
-:host-context(body.theme-master.theme-dark) .upload-head {
-  border-color: #8f7bc8;
-  background-color: #5d4fb0;
-}
-
-:host-context(body.theme-master.theme-dark) .upload-body {
-  border-color: rgba(232, 213, 190, 0.22);
-  background: rgba(23, 20, 17, 0.55);
-}

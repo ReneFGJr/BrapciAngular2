@@ -26,6 +26,12 @@ export class BrapciApiService {
     return this.http.get<T>(url, { params: httpParams });
   }
 
+  post<T>(endpoint: string, body: unknown): Observable<T> {
+    const cleanEndpoint = endpoint.startsWith('/') ? endpoint.substring(1) : endpoint;
+    const url = `${this.apiConfig.brapciApiBaseUrl}/${cleanEndpoint}`;
+    return this.http.post<T>(url, body);
+  }
+
   search<T>(query: string, filters?: Array<{ name: string, value: any }>): Observable<T> {
     const params: Record<string, string | number | boolean> = { term: query, offset: 1000 };
     if (filters && Array.isArray(filters)) {

@@ -1,0 +1,87 @@
+<div class="col-lg-6 col-12">
+  <section class="livros-submit-card h-100" aria-labelledby="upload-title">
+    <h3 id="upload-title" class="mb-2">{{ toolsName }}</h3>
+    <p>{{ toolsNameDescription }}</p>
+
+    @if (status === 0) {
+      <app-form-file-input
+        [action]="action"
+        message="Anexe o arquivo do livro"
+        (dataset)="updateDataset($event)"
+      />
+    }
+
+    @if (errorMessage) {
+      <div class="alert alert-danger mt-3" role="alert">{{ errorMessage }}</div>
+    }
+
+    @if (dataset) {
+      <div class="upload-head mt-3">{{ toolsName }}</div>
+    }
+
+    @if (status === 1 && dataset) {
+      <div class="upload-process">
+        <div>
+          <span class="field-hint">Nome do arquivo:</span><br />
+          <span class="big" [title]="dataset['file']">{{ displayFileName(dataset['file']) }}</span>
+        </div>
+
+        @if (emailSend) {
+          <div class="pt-3 pb-2">
+            <span class="field-hint">Confirmação de autoria</span>
+            <form class="mt-2" [formGroup]="emailForm" (ngSubmit)="onSubmitEmail()">
+              <div class="mb-3">
+                <label for="name" class="form-label">Nome completo do autor</label>
+                <input id="name" type="text" class="form-control" formControlName="name" />
+
+                <label for="email" class="form-label mt-3">Informe seu e-mail</label>
+                <input id="email" type="email" class="form-control" formControlName="email" />
+                @if (emailForm.controls.email.invalid && emailForm.controls.email.touched) {
+                  <div class="text-danger">Por favor, insira um e-mail válido.</div>
+                }
+
+                <label for="agree" class="form-check-label mt-3">
+                  <input id="agree" type="checkbox" class="form-check-input me-2" formControlName="agree" />
+                  Concordo com os termos
+                </label>
+              </div>
+              <button type="submit" class="btn btn-primary full" [disabled]="emailForm.invalid">
+                Enviar
+              </button>
+            </form>
+          </div>
+        } @else {
+          <button type="button" class="btn btn-primary full mt-3" (click)="process()">
+            {{ buttonName }}
+          </button>
+        }
+      </div>
+    }
+
+    @if (status === 2) {
+      <div class="upload-process"><app-loading-spinner /></div>
+    }
+
+    @if (status === 3 && dataset) {
+      <div class="upload-process">
+        <p>Prezado(a), <strong>{{ dataset['name'] }}</strong>,</p>
+        <p>
+          A submissão de seu livro
+          <span [title]="dataset['file']">{{ displayFileName(dataset['file']) }}</span>
+          foi realizada com sucesso!
+        </p>
+        <p>Um e-mail foi enviado para sua conta, autorizando a publicação.</p>
+        <div class="alert alert-success mt-2">
+          <strong>Sucesso:</strong> Seu livro foi enviado com êxito. Assim que recebermos o retorno
+          do e-mail (<strong>{{ dataset['email'] }}</strong>) de confirmação, iniciaremos o processo
+          de indexação.
+        </div>
+        <div class="alert alert-warning mt-2">
+          <strong>Atenção:</strong> Caso não encontre o e-mail em sua caixa de entrada, verifique a
+          caixa de spam.
+        </div>
+        <button type="button" class="btn btn-secondary full mt-2" (click)="restart()">REINICIAR</button>
+      </div>
+    }
+  </section>
+</div>
