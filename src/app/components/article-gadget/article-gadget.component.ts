@@ -7,6 +7,7 @@ import { ArticleAuthorsComponent } from '../article-authors/article-authors.comp
 import { ArticleKeywordsComponent } from '../article-keywords/article-keywords.component';
 import { ArticleDataComponent } from '../article-data/article-data.component';
 import { ArticlePdfLinkComponent } from '../article-pdf-link/article-pdf-link.component';
+import { AdminAreaComponent } from '../admin-area/admin-area.component';
 
 type JsonRecord = Record<string, unknown>;
 
@@ -34,7 +35,7 @@ type CreatorAuthor = {
 
 @Component({
   selector: 'app-article-gadget',
-  imports: [CommonModule, TranslateModule, CitationTabsComponent, ArticleAuthorsComponent, ArticleKeywordsComponent, ArticleDataComponent, ArticlePdfLinkComponent],
+  imports: [CommonModule, TranslateModule, CitationTabsComponent, ArticleAuthorsComponent, ArticleKeywordsComponent, ArticleDataComponent, ArticlePdfLinkComponent, AdminAreaComponent],
   templateUrl: './article-gadget.component.html',
   styleUrl: './article-gadget.component.scss'
 })
@@ -46,6 +47,10 @@ export class ArticleGadgetComponent implements OnInit, OnChanges {
   @Input() dataTag: unknown = null;
 
   readonly preferredLanguageOrder: Array<LocalizedTitle['language']> = ['pt', 'es', 'en', 'fr'];
+
+  isProceeding(): boolean {
+    return this.field(['Class', 'class', 'Classe', 'classe']).toLowerCase() === 'proceeding';
+  }
 
   field(keys: string[]): string {
     const record = this.asRecord(this.data);

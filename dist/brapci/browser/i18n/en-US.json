@@ -249,7 +249,18 @@
     "noLocalUser": "No local session data found.",
     "openExternal": "Open external profile"
   },
+  "adminArea": {
+    "eyebrow": "Administration area",
+    "title": "Record actions",
+    "actions": {
+      "delete": "Delete",
+      "edit": "Edit",
+      "translate": "Translate",
+      "process": "Process"
+    }
+  },
   "article": {
+    "proceedingKicker": "Event Proceedings",
     "data": {
       "title": "Data",
       "copy": "Copy",

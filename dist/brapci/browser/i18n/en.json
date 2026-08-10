@@ -432,8 +432,19 @@
       "prefLabel": "Preferred label"
     }
   },
+  "adminArea": {
+    "eyebrow": "Administration area",
+    "title": "Record actions",
+    "actions": {
+      "delete": "Delete",
+      "edit": "Edit",
+      "translate": "Translate",
+      "process": "Process"
+    }
+  },
   "article": {
     "kicker": "Scientific Article",
+    "proceedingKicker": "Event Proceedings",
     "noCover": "Image not available",
     "sections": {
       "label": "Section",

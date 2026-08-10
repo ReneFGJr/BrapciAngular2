@@ -15,7 +15,9 @@
     }
 
     <div class="article-hero-content">
-      <div class="article-kicker">{{ 'article.kicker' | translate }}</div>
+      <div class="article-kicker">
+        {{ (isProceeding() ? 'article.proceedingKicker' : 'article.kicker') | translate }}
+      </div>
       <h2 class="article-main-title">{{ primaryTitle() }}</h2>
 
       @if (titleVariants().length > 1) {
@@ -44,7 +46,7 @@
           <strong>{{ 'article.meta.language' | translate }}:</strong> {{ metaField(['language', 'idioma']) }}
         </div>
         @if (sectionNames().length > 0) {
-          <div>
+          <div class="article-sections">
             <strong>{{ 'article.sections.label' | translate }}:</strong> {{ sectionNames().join(', ') }}
           </div>
         }
@@ -80,6 +82,8 @@
           [articleKeywords]="articleKeywordsForShare()"
         ></app-article-pdf-link>
       }
+
+      <app-admin-area [recordId]="articleId()"></app-admin-area>
     </div>
   </header>
 

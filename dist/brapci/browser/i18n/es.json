@@ -432,8 +432,19 @@
       "prefLabel": "Etiqueta preferente"
     }
   },
+  "adminArea": {
+    "eyebrow": "Área de administración",
+    "title": "Acciones del registro",
+    "actions": {
+      "delete": "Eliminar",
+      "edit": "Editar",
+      "translate": "Traducir",
+      "process": "Procesar"
+    }
+  },
   "article": {
     "kicker": "Articulo Cientifico",
+    "proceedingKicker": "Actas de eventos",
     "noCover": "Imagen no disponible",
     "sections": {
       "label": "Seccion",

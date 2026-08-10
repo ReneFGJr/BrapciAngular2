@@ -320,6 +320,11 @@
   }
 }
 
+.article-sections {
+  grid-column: 1 / -1;
+  width: 100%;
+}
+
 .article-legend {
   margin: 0.65rem 0 0;
   font-size: 0.88rem;

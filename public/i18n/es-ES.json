@@ -246,7 +246,18 @@
     "noLocalUser": "No se encontraron datos de sesion local.",
     "openExternal": "Abrir perfil externo"
   },
+  "adminArea": {
+    "eyebrow": "Área de administración",
+    "title": "Acciones del registro",
+    "actions": {
+      "delete": "Eliminar",
+      "edit": "Editar",
+      "translate": "Traducir",
+      "process": "Procesar"
+    }
+  },
   "article": {
+    "proceedingKicker": "Actas de eventos",
     "data": {
       "title": "Datos",
       "copy": "Copiar",
