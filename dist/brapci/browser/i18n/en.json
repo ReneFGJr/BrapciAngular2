@@ -108,8 +108,10 @@
     "title": "What are you looking for?",
     "input": "Type a term",
     "button": "Search",
+    "selected": "Selected",
     "empty": "No results found for this query.",
     "idle": "Type a term to query the Brapci API.",
+    "clear_selected": "Clear selection",
     "filters": {
       "title": "Search filters",
       "year_start": "Start year",

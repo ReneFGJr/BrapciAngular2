@@ -36,7 +36,8 @@ export const appConfig: ApplicationConfig = {
       provide: API_CONFIG,
       useValue: {
         brapciApiBaseUrl: 'https://cip.brapci.inf.br/api',
-        authApiBaseUrl: '/auth'
+        authApiBaseUrl: '/auth',
+        aiApiBaseUrl: '/api/ai'
       }
     }
   ],

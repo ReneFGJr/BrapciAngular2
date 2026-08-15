@@ -83,6 +83,8 @@
     "title": "¿Qué estás buscando?",
     "input": "Escriba un termino",
     "button": "Buscar",
+    "selected": "Seleccionados",
+    "clear_selected": "Limpiar selección",
     "empty": "No se encontraron resultados para la consulta.",
     "idle": "Escriba un termino para consultar la API Brapci."
   },

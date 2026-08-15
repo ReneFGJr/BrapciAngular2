@@ -1,0 +1,11 @@
+import { Component, input, output } from '@angular/core';
+import { FormsModule } from '@angular/forms';
+import { ProjectPayload } from '../../models/chat.models';
+
+@Component({
+ selector:'app-project-dialog',standalone:true,imports:[FormsModule],
+ template:`@if(open()){<div class="shade" role="presentation" (click)="close.emit()"><section class="dialog" role="dialog" aria-modal="true" aria-labelledby="project-title" (click)="$event.stopPropagation()"><header><h2 id="project-title">Novo projeto</h2><button type="button" (click)="close.emit()" aria-label="Fechar"><i class="bi bi-x-lg"></i></button></header><label>Nome<input class="form-control" maxlength="150" [(ngModel)]="name" /></label><label>Descrição<textarea class="form-control" rows="2" [(ngModel)]="description"></textarea></label><label>Contexto do projeto<textarea class="form-control" rows="5" [(ngModel)]="context" placeholder="Informações usadas automaticamente nas conversas"></textarea></label><footer><button class="btn btn-light" type="button" (click)="close.emit()">Cancelar</button><button class="btn btn-primary" type="button" [disabled]="!name.trim()||saving()" (click)="submit()">{{saving()?'Criando...':'Criar projeto'}}</button></footer></section></div>}`,
+ styles:[`.shade{position:fixed;inset:0;display:grid;place-items:center;padding:1rem;background:rgb(0 0 0/.5);z-index:50}.dialog{width:min(34rem,100%);background:var(--theme-card-bg);color:var(--theme-ink);border-radius:1rem;padding:1.25rem;box-shadow:0 1rem 4rem rgb(0 0 0/.25)}header,footer{display:flex;align-items:center;justify-content:space-between;gap:.7rem}h2{font-size:1.2rem;margin:0}header button{border:0;background:transparent;color:inherit}label{display:grid;gap:.3rem;margin-top:1rem;font-size:.8rem;font-weight:600}input,textarea{background:var(--theme-bg);color:var(--theme-ink);border-color:var(--theme-line)}footer{justify-content:flex-end;margin-top:1.2rem}`]
+})
+export class ProjectDialogComponent{readonly open=input(false);readonly saving=input(false);readonly close=output<void>();readonly save=output<ProjectPayload>();name='';description='';context='';submit():void{if(!this.name.trim())return;this.save.emit({name:this.name.trim(),description:this.description.trim(),context:this.context.trim()});}}
+

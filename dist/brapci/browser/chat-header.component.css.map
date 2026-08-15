@@ -1,0 +1,7 @@
+{
+  "version": 3,
+  "sources": ["src/app/chat/components/chat-header/chat-header.component.ts"],
+  "sourcesContent": [".chat-header{min-height:4.5rem;padding:.7rem 1.25rem;border-bottom:1px solid var(--theme-line);display:flex;align-items:center;justify-content:space-between;gap:1rem;background:var(--theme-card-bg)}.title-row{display:flex;align-items:center;gap:.65rem;min-width:0}.title-block{min-width:0}.title-block span{font-size:.72rem;color:var(--theme-hint)}h1{font:600 1.05rem/1.25 'Raleway',sans-serif;margin:0;color:var(--theme-ink);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}.icon-btn{border:0;background:transparent;color:var(--theme-ink);font-size:1.35rem}.menu-btn{display:none}@media(max-width:850px){.menu-btn{display:inline-flex}.chat-header{padding:.65rem}.title-block{max-width:42vw}}"],
+  "mappings": ";AAAA,CAAA;AAAa,cAAA;AAAkB,WAAA,OAAA;AAAsB,iBAAA,IAAA,MAAA,IAAA;AAA0C,WAAA;AAAa,eAAA;AAAmB,mBAAA;AAA8B,OAAA;AAAS,cAAA,IAAA;;AAAgC,CAAA;AAAW,WAAA;AAAa,eAAA;AAAmB,OAAA;AAAW,aAAA;;AAAY,CAAA;AAAa,aAAA;;AAAY,CAAzB,YAAyB;AAAkB,aAAA;AAAiB,SAAA,IAAA;;AAAwB;AAAG,QAAA,IAAA,OAAA,CAAA,KAAA,SAAA,EAAA;AAA2C,UAAA;AAAS,SAAA,IAAA;AAAuB,eAAA;AAAmB,YAAA;AAAgB,iBAAA;;AAAuB,CAAA;AAAU,UAAA;AAAS,cAAA;AAAuB,SAAA,IAAA;AAAuB,aAAA;;AAAkB,CAAA;AAAU,WAAA;;AAAa,OAAA,CAAA,SAAA,EAAA;AAAwB,GAA/C;AAAyD,aAAA;;AAAoB,GAApoB;AAAipB,aAAA;;AAAe,GAAxZ;AAAqa,eAAA;;;",
+  "names": []
+}

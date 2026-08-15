@@ -126,6 +126,7 @@ export class App {
       url.startsWith('/search-boolean') ||
       url.startsWith('/tools_') ||
       url.startsWith('/basket/')
+      || url.startsWith('/chat')
     );
   });
 

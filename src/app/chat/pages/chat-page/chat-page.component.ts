@@ -1,0 +1,33 @@
+import { Component, DestroyRef, computed, inject, signal } from '@angular/core';
+import { finalize, forkJoin } from 'rxjs';
+import { Chat, ChatUiState, Message, OllamaModel, Project, ProjectPayload, StreamingEvent } from '../../models/chat.models';
+import { ChatApiService } from '../../services/chat-api.service';
+import { StreamingService } from '../../services/streaming.service';
+import { ChatSidebarComponent } from '../../components/chat-sidebar/chat-sidebar.component';
+import { ChatHeaderComponent } from '../../components/chat-header/chat-header.component';
+import { ChatInputComponent } from '../../components/chat-input/chat-input.component';
+import { ChatMessageComponent } from '../../components/chat-message/chat-message.component';
+import { ProjectDialogComponent } from '../../components/project-dialog/project-dialog.component';
+
+@Component({
+ selector:'app-chat-page',standalone:true,imports:[ChatSidebarComponent,ChatHeaderComponent,ChatInputComponent,ChatMessageComponent,ProjectDialogComponent],
+ templateUrl:'./chat-page.component.html',styleUrl:'./chat-page.component.scss'
+})
+export class ChatPageComponent {
+ private readonly api=inject(ChatApiService);private readonly streamingService=inject(StreamingService);private controller:AbortController|null=null;
+ readonly projects=signal<Project[]>([]);readonly chats=signal<Chat[]>([]);readonly messages=signal<Message[]>([]);readonly models=signal<OllamaModel[]>([]);
+ readonly activeProject=signal<Project|null>(null);readonly activeChat=signal<Chat|null>(null);readonly selectedModel=signal('');readonly state=signal<ChatUiState>('loading');readonly error=signal<string|null>(null);readonly sidebarOpen=signal(false);readonly sidebarCollapsed=signal(false);readonly projectDialogOpen=signal(false);readonly projectSaving=signal(false);
+ readonly visibleMessages=computed(()=>this.messages().filter(m=>m.role==='user'||m.role==='assistant'));
+ constructor(){this.loadWorkspace();}
+ toggleSidebar():void{this.sidebarCollapsed.update(value=>!value);}
+ loadWorkspace():void{this.state.set('loading');this.error.set(null);forkJoin({models:this.api.getModels(),projects:this.api.getProjects(),chats:this.api.getChats()}).subscribe({next:({models,projects,chats})=>{this.models.set(models);this.projects.set(projects);this.chats.set(chats.filter(c=>c.status==='active'));this.selectedModel.set(models[0]?.name??'');this.state.set('idle');},error:()=>{this.state.set('error');this.error.set('Não foi possível carregar o chat. Verifique a API e tente novamente.');}});}
+ selectProject(project:Project):void{this.activeProject.set(project);if(project.defaultModel&&this.models().some(m=>m.name===project.defaultModel))this.selectedModel.set(project.defaultModel);this.sidebarOpen.set(false);}
+ selectChat(chat:Chat):void{if(this.state()==='streaming')return;this.activeChat.set(chat);this.activeProject.set(this.projects().find(p=>p.id===chat.projectId)??null);this.selectedModel.set(chat.model);this.messages.set([]);this.state.set('loading');this.sidebarOpen.set(false);this.api.getMessages(chat.id).subscribe({next:m=>{this.messages.set(m);this.state.set('idle');},error:()=>{this.state.set('error');this.error.set('Não foi possível abrir esta conversa.');}});}
+ newChat():void{if(this.state()==='streaming')return;this.activeChat.set(null);this.messages.set([]);this.error.set(null);this.state.set('idle');this.sidebarOpen.set(false);}
+ changeModel(model:string):void{this.selectedModel.set(model);const chat=this.activeChat();if(chat)this.api.updateChat(chat.id,{model}).subscribe({next:updated=>{this.activeChat.set(updated);this.chats.update(items=>items.map(c=>c.id===updated.id?updated:c));}});}
+ send(content:string):void{if(this.state()==='streaming'||!this.selectedModel())return;const chat=this.activeChat();if(chat){this.streamMessage(chat,content);return;}this.state.set('loading');this.api.createChat({title:'Nova conversa',model:this.selectedModel(),projectId:this.activeProject()?.id??null}).subscribe({next:created=>{this.activeChat.set(created);this.chats.update(items=>[created,...items]);this.streamMessage(created,content);},error:()=>{this.state.set('error');this.error.set('Não foi possível criar a conversa.');}});}
+ private streamMessage(chat:Chat,content:string):void{const stamp=new Date().toISOString();const clientId=crypto.randomUUID();const user:Message={id:clientId,chatId:chat.id,role:'user',content,model:null,status:'completed',createdAt:stamp};const assistantId=`assistant-${clientId}`;const assistant:Message={id:assistantId,chatId:chat.id,role:'assistant',content:'',model:this.selectedModel(),status:'streaming',createdAt:stamp};this.messages.update(items=>[...items,user,assistant]);this.state.set('streaming');this.error.set(null);this.controller=new AbortController();this.streamingService.send(chat.id,{content,model:this.selectedModel(),clientMessageId:clientId},this.controller.signal).pipe(finalize(()=>{this.controller=null;})).subscribe({next:event=>this.applyStreamEvent(assistantId,event),error:(error:unknown)=>{if(this.state()==='cancelled'||this.state()==='error')return;this.messages.update(items=>items.map(m=>m.id===assistantId?{...m,status:'error'}:m));this.state.set('error');this.error.set(error instanceof Error?error.message:'A resposta foi interrompida por uma falha.');},complete:()=>{if(this.state()==='streaming'){this.messages.update(items=>items.map(m=>m.id===assistantId?{...m,status:'completed'}:m));this.state.set('completed');}}});}
+ private applyStreamEvent(id:string,event:StreamingEvent):void{if(event.type==='error'){this.messages.update(items=>items.map(m=>m.id===id?{...m,status:'error'}:m));this.state.set('error');this.error.set(event.error||'Falha durante a geração.');this.controller?.abort();return;}if(event.type==='token'&&event.content)this.messages.update(items=>items.map(m=>m.id===id?{...m,content:m.content+event.content}:m));if(event.type==='message'&&event.message)this.messages.update(items=>items.map(m=>m.id===id?event.message!:m));if(event.type==='done'){this.messages.update(items=>items.map(m=>m.id===id?{...m,status:'completed'}:m));this.state.set('completed');}}
+ cancel():void{if(!this.controller)return;this.state.set('cancelled');this.controller.abort();this.messages.update(items=>items.map(m=>m.status==='streaming'?{...m,status:'cancelled'}:m));}
+ createProject(payload:ProjectPayload):void{this.projectSaving.set(true);this.api.createProject({...payload,defaultModel:this.selectedModel()}).pipe(finalize(()=>this.projectSaving.set(false))).subscribe({next:p=>{this.projects.update(items=>[p,...items]);this.activeProject.set(p);this.projectDialogOpen.set(false);},error:()=>this.error.set('Não foi possível criar o projeto.')});}
+}

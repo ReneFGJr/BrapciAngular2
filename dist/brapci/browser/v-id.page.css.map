@@ -1,0 +1,7 @@
+{
+  "version": 3,
+  "sources": ["src/app/pages/v-id/v-id.page.scss"],
+  "sourcesContent": [".v-wrap {\r\n  color: var(--theme-ink);\r\n}\r\n\r\n.v-card {\r\n  background: var(--theme-card-bg);\r\n  border: 1px solid var(--theme-line);\r\n  border-radius: 0.9rem;\r\n}\r\n\r\n.v-header {\r\n  margin-bottom: 1rem;\r\n}\r\n\r\n.v-error {\r\n  color: var(--theme-error);\r\n}\r\n\r\npre {\r\n  background: var(--theme-sand);\r\n  border-radius: 0.45rem;\r\n  max-height: 480px;\r\n  overflow: auto;\r\n  padding: 0.8rem;\r\n}\r\n\r\n.full {\r\n  width: 100%;\r\n}\r\n"],
+  "mappings": ";AAAA,CAAA;AACE,SAAA,IAAA;;AAGF,CAAA;AACE,cAAA,IAAA;AACA,UAAA,IAAA,MAAA,IAAA;AACA,iBAAA;;AAGF,CAAA;AACE,iBAAA;;AAGF,CAAA;AACE,SAAA,IAAA;;AAGF;AACE,cAAA,IAAA;AACA,iBAAA;AACA,cAAA;AACA,YAAA;AACA,WAAA;;AAGF,CAAA;AACE,SAAA;;",
+  "names": []
+}

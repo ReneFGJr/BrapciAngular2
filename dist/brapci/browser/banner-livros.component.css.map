@@ -1,0 +1,7 @@
+{
+  "version": 3,
+  "sources": ["src/app/components/banner-livros/banner-livros.component.scss"],
+  "sourcesContent": [".image-div {\r\n  display: grid;\r\n  place-items: center;\r\n  width: 100vw;\r\n  margin-left: calc(50% - 50vw);\r\n  margin-right: calc(50% - 50vw);\r\n  padding: 1.2rem 1rem;\r\n  border-radius: 0;\r\n  background: url('/assets/img/background_library.webp') center center / cover no-repeat;\r\n  border: none;\r\n  box-shadow: none;\r\n}\r\n\r\n.logo {\r\n  display: block;\r\n  width: min(640px, 92%);\r\n  max-height: 160px;\r\n  object-fit: contain;\r\n  filter: drop-shadow(0 8px 20px rgba(39, 25, 14, 0.2));\r\n}\r\n\r\n:host-context(body.theme-master.theme-dark) .image-div {\r\n  background: url('/assets/img/background_library.webp') center center / cover no-repeat;\r\n}\r\n"],
+  "mappings": ";AAAA,CAAA;AACE,WAAA;AACA,eAAA;AACA,SAAA;AACA,eAAA,KAAA,IAAA,EAAA;AACA,gBAAA,KAAA,IAAA,EAAA;AACA,WAAA,OAAA;AACA,iBAAA;AACA,cAAA,yCAAA,OAAA,MAAA,CAAA,MAAA;AACA,UAAA;AACA,cAAA;;AAGF,CAAA;AACE,WAAA;AACA,SAAA,IAAA,KAAA,EAAA;AACA,cAAA;AACA,cAAA;AACA,UAAA,YAAA,EAAA,IAAA,KAAA,KAAA,EAAA,EAAA,EAAA,EAAA,EAAA,EAAA;;AAGF,cAAA,IAAA,CAAA,YAAA,CAAA,YAAA,CArBA;AAsBE,cAAA,yCAAA,OAAA,MAAA,CAAA,MAAA;;",
+  "names": []
+}

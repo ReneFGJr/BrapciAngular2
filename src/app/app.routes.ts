@@ -2,6 +2,10 @@ import { Routes } from '@angular/router';
 
 export const routes: Routes = [
   {
+    path: 'chat',
+    loadChildren: () => import('./chat/chat.routes').then((m) => m.CHAT_ROUTES),
+  },
+  {
     path: 'autoridade',
     loadComponent: () => import('./pages/autoridade/autoridade.page').then((m) => m.AutoridadePage),
   },

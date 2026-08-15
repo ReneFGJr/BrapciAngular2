@@ -1,0 +1,26 @@
+import { Component, input, output } from '@angular/core';
+import { FormsModule } from '@angular/forms';
+import { Chat, Project } from '../../models/chat.models';
+
+@Component({
+  selector: 'app-chat-sidebar', standalone: true, imports: [FormsModule],
+  template: `<aside class="sidebar" [class.open]="open()" [class.collapsed]="collapsed()" aria-label="Conversas">
+    <div class="brand"><i class="bi bi-stars"></i><strong>BRAPCI IA</strong><button type="button" (click)="collapse.emit()" aria-label="Recolher barra lateral"><i class="bi bi-layout-sidebar"></i></button></div>
+    <button class="new-chat" type="button" (click)="newChat.emit()"><i class="bi bi-plus-lg"></i><span>Nova conversa</span></button>
+    <label class="search"><i class="bi bi-search"></i><span class="visually-hidden">Buscar conversas</span><input type="search" [(ngModel)]="query" placeholder="Buscar" /></label>
+    <nav>
+      <div class="section-title"><span>Projetos</span><button type="button" (click)="newProject.emit()" aria-label="Criar projeto"><i class="bi bi-plus"></i></button></div>
+      @for(project of projects();track project.id){<button class="item" type="button" [class.active]="project.id===activeProjectId()" (click)="selectProject.emit(project)"><i class="bi bi-folder"></i><span>{{project.name}}</span></button>}
+      <div class="section-title recent">Recentes</div>
+      @for(chat of filteredChats();track chat.id){<button class="item" type="button" [class.active]="chat.id===activeChatId()" (click)="selectChat.emit(chat)"><i class="bi bi-chat-left-text"></i><span>{{chat.title}}</span></button>}
+    </nav>
+    <a class="back" href="/"><i class="bi bi-arrow-left"></i><span>Voltar à BRAPCI</span></a>
+  </aside>@if(open()){<button class="backdrop" type="button" (click)="close.emit()" aria-label="Fechar menu"></button>}`,
+  styles: [`.sidebar{width:17rem;flex:0 0 17rem;background:#242238;color:#eeedf7;padding:.75rem;display:flex;flex-direction:column;gap:.7rem;min-height:0;z-index:20;transition:width .2s,transform .2s}.brand{height:2.6rem;display:flex;align-items:center;gap:.55rem;padding:0 .4rem}.brand>i{color:#b8afea}.brand button{margin-left:auto;border:0;background:transparent;color:#cfcbdf}.new-chat{display:flex;align-items:center;gap:.6rem;border:1px solid #55506d;border-radius:.65rem;background:#312e49;color:#fff;padding:.65rem .75rem;text-align:left}.search{display:flex;align-items:center;gap:.5rem;background:#1d1b2d;border-radius:.55rem;padding:.5rem .65rem}.search input{min-width:0;width:100%;border:0;outline:0;background:transparent;color:#fff}.section-title{display:flex;justify-content:space-between;color:#aaa5bd;font-size:.7rem;font-weight:700;text-transform:uppercase;letter-spacing:.08em;padding:.7rem .55rem .3rem}.section-title button{border:0;background:transparent;color:#aaa5bd}.recent{margin-top:.55rem}.item{width:100%;display:flex;align-items:center;gap:.55rem;border:0;border-radius:.5rem;background:transparent;color:#d9d7e3;padding:.55rem;text-align:left}.item span{overflow:hidden;text-overflow:ellipsis;white-space:nowrap}.item:hover,.item.active{background:#3b3755;color:#fff}nav{overflow:auto;flex:1}.back{color:#c8c4d7;text-decoration:none;padding:.55rem;display:flex;gap:.55rem}.collapsed{width:4.2rem;flex-basis:4.2rem}.collapsed strong,.collapsed span,.collapsed .search,.collapsed .section-title{display:none}.collapsed .brand button{margin-left:0}.collapsed .new-chat,.collapsed .item{justify-content:center}.backdrop{display:none}@media(max-width:850px){.sidebar{position:fixed;inset:0 auto 0 0;transform:translateX(-105%);width:min(18rem,86vw)!important}.sidebar.open{transform:translateX(0)}.backdrop{display:block;position:fixed;inset:0;border:0;background:rgb(0 0 0/.45);z-index:15}}`],
+})
+export class ChatSidebarComponent {
+  readonly projects=input.required<Project[]>(); readonly chats=input.required<Chat[]>(); readonly activeProjectId=input<number|null>(null); readonly activeChatId=input<number|null>(null); readonly open=input(false); readonly collapsed=input(false);
+  readonly newChat=output<void>(); readonly newProject=output<void>(); readonly selectProject=output<Project>(); readonly selectChat=output<Chat>(); readonly close=output<void>(); readonly collapse=output<void>(); query='';
+  filteredChats():Chat[]{const q=this.query.trim().toLocaleLowerCase(); return q?this.chats().filter(c=>c.title.toLocaleLowerCase().includes(q)):this.chats();}
+}
+

@@ -122,9 +122,6 @@
               "public/bootstrap-icons/bootstrap-icons.min.css",
               "src/styles.scss"
             ],
-            "allowedCommonJsDependencies": [
-              "leaflet"
-            ],
             "scripts": [
               "node_modules/bootstrap/dist/js/bootstrap.bundle.min.js"
             ]

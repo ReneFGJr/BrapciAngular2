@@ -1,7 +1,7 @@
 import { CommonModule } from '@angular/common';
 import { Component, computed, inject, signal } from '@angular/core';
 import { FormsModule } from '@angular/forms';
-import { Router } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { toSignal } from '@angular/core/rxjs-interop';
 import { TranslateModule, TranslateService } from '@ngx-translate/core';
 import { AuthService } from '../../core/services/auth.service';
@@ -19,6 +19,7 @@ export class AuthPanelComponent {
   private readonly authService = inject(AuthService);
   private readonly translate = inject(TranslateService);
   private readonly router = inject(Router);
+  private readonly route = inject(ActivatedRoute);
 
   readonly currentUser = toSignal(this.authService.currentUser$, { initialValue: null });
   readonly mode = signal<AuthMode>('login');
@@ -72,7 +73,8 @@ export class AuthPanelComponent {
       }
 
       this.loginPayload.pwd = '';
-      this.router.navigate(['/perfil']);
+      const returnUrl = this.route.snapshot.queryParamMap.get('returnUrl');
+      void this.router.navigateByUrl(returnUrl?.startsWith('/') && !returnUrl.startsWith('//') ? returnUrl : '/perfil');
     });
   }
 

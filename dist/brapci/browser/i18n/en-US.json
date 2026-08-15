@@ -86,6 +86,8 @@
     "title": "What are you looking for?",
     "input": "Type a term",
     "button": "Search",
+    "selected": "Selected",
+    "clear_selected": "Clear selection",
     "empty": "No results found for this query.",
     "idle": "Type a term to query the Brapci API."
   },
