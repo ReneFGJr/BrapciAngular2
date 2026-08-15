@@ -106,8 +106,10 @@
     "title": "O que está procurando?",
     "input": "Digite um termo",
     "button": "Buscar",
+    "selected": "Selecionados",
     "empty": "Nenhum resultado encontrado para a consulta.",
     "idle": "Digite um termo para consultar a API Brapci.",
+    "clear_selected": "Limpar seleção",
     "filters": {
       "title": "Filtros da pesquisa",
       "year_start": "Ano inicial",
