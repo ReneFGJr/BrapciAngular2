@@ -793,3 +793,14 @@ conversa fica persistida no MySQL
 ```
 
 A arquitetura deve permitir que o sistema evolua posteriormente para um ambiente de projetos com documentos, RAG e recuperação de informação sem exigir reescrita completa do módulo de chat.
+
+
+$env:BRAPCI_APIKEY = "ff63a314d1ddd425517550f446e4175e"
+
+curl.exe --no-buffer --include `
+  --request POST `
+  "https://cip.brapci.inf.br/api/ai/chats/9/message?APIKEY=$env:BRAPCI_APIKEY" `
+  --header "APIKEY: $env:BRAPCI_APIKEY" `
+  --header "Content-Type: application/json" `
+  --header "Accept: text/event-stream, application/x-ndjson" `
+  --data-raw '{\"content\":\"Olá\",\"model\":\"qwen3.5:2b\",\"clientMessageId\":\"teste-curl-001\"}'
