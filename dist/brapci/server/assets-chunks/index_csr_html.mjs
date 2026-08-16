@@ -14,6 +14,6 @@ export default `<!doctype html>
 <link rel="stylesheet" href="styles.css"><link rel="preload" href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@400;500;700&amp;family=Bitter:wght@500;700&amp;family=Raleway:wght@400;500;600;700&amp;family=Source+Sans+3:wght@400;600;700&amp;display=swap" as="style"></head>
 <body ngcm="">
   <app-root></app-root>
-<link rel="modulepreload" href="chunk-ZNHZ3OZM.js"><link rel="modulepreload" href="chunk-5PH66TCU.js"><link rel="modulepreload" href="chunk-FVCOQ7LK.js"><link rel="modulepreload" href="chunk-JBXEJVBW.js"><link rel="modulepreload" href="chunk-LEUPCSYM.js"><link rel="modulepreload" href="chunk-NJGCINW2.js"><link rel="modulepreload" href="chunk-OYM44MPZ.js"><link rel="modulepreload" href="chunk-FWZKW7K5.js"><link rel="modulepreload" href="chunk-3OV72XIM.js"><script src="polyfills.js" type="module"></script><script src="scripts.js" defer=""></script><script src="main.js" type="module"></script></body>
+<link rel="modulepreload" href="chunk-KPJQR57O.js"><link rel="modulepreload" href="chunk-H3IWRHIK.js"><link rel="modulepreload" href="chunk-DKSORO5X.js"><link rel="modulepreload" href="chunk-PHIXLPJT.js"><link rel="modulepreload" href="chunk-SERRY7FI.js"><link rel="modulepreload" href="chunk-DD5AALCM.js"><link rel="modulepreload" href="chunk-IGL3YMRP.js"><link rel="modulepreload" href="chunk-3OV72XIM.js"><script src="polyfills.js" type="module"></script><script src="scripts.js" defer=""></script><script src="main.js" type="module"></script></body>
 </html>
 `;

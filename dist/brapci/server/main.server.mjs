@@ -2,10 +2,10 @@ import './polyfills.server.mjs';
 import {
   AuthService,
   SessionService
-} from "./chunk-JNNHJCVH.mjs";
+} from "./chunk-XROFRSZQ.mjs";
 import {
   toSignal
-} from "./chunk-DZQKGNLQ.mjs";
+} from "./chunk-B75V37RH.mjs";
 import {
   FormsModule,
   NgControlStatus,
@@ -13,41 +13,26 @@ import {
   NgSelectOption,
   SelectControlValueAccessor,
   ɵNgSelectMultipleOption
-} from "./chunk-5EX3RKYK.mjs";
+} from "./chunk-WIMNDPIY.mjs";
 import {
   API_CONFIG
-} from "./chunk-MLMAXTOA.mjs";
+} from "./chunk-CAKRQXY5.mjs";
 import {
   BasketService
-} from "./chunk-WE5ZTU5W.mjs";
+} from "./chunk-Q535RDDK.mjs";
 import {
   TranslateLoader,
   TranslateModule,
   TranslatePipe,
   TranslateService
-} from "./chunk-4CQ56SFV.mjs";
-import {
-  ActivatedRoute,
-  BrowserDomAdapter,
-  BrowserModule,
-  EVENT_MANAGER_PLUGINS,
-  EventManagerPlugin,
-  Meta,
-  NavigationEnd,
-  Router,
-  RouterLink,
-  RouterOutlet,
-  Title,
-  bootstrapApplication,
-  loadChildren,
-  provideClientHydration,
-  provideRouter,
-  withEventReplay
-} from "./chunk-NWKFZVVO.mjs";
+} from "./chunk-ROSQ7UD6.mjs";
 import {
   APP_BASE_HREF,
   APP_ID,
+  ActivatedRoute,
   ApplicationRef,
+  BrowserDomAdapter,
+  BrowserModule,
   CSP_NONCE,
   ChangeDetectionStrategy,
   CommonModule,
@@ -57,8 +42,10 @@ import {
   DOCUMENT,
   DecimalPipe,
   ENABLE_ROOT_COMPONENT_BOOTSTRAP,
+  EVENT_MANAGER_PLUGINS,
   EnvironmentInjector,
   EventEmitter,
+  EventManagerPlugin,
   HTTP_ROOT_INTERCEPTOR_FNS,
   HttpBackend,
   HttpClient,
@@ -69,6 +56,8 @@ import {
   Injector,
   Input,
   LOCALE_ID,
+  Meta,
+  NavigationEnd,
   NgIf,
   NgModule,
   NullViewportScroller,
@@ -83,14 +72,19 @@ import {
   RESPONSE_INIT,
   Renderer2,
   RendererFactory2,
+  Router,
+  RouterLink,
+  RouterOutlet,
   SSR_CONTENT_INTEGRITY_MARKER,
   Subject,
   TESTABILITY,
   Testability,
+  Title,
   TransferState,
   ViewportScroller,
   XhrFactory,
   annotateForHydration,
+  bootstrapApplication,
   computed,
   createEnvironmentInjector,
   createPlatformFactory,
@@ -99,12 +93,15 @@ import {
   importProvidersFrom,
   inject,
   isPlatformBrowser,
+  loadChildren,
   makeEnvironmentProviders,
   map,
   mergeApplicationConfig,
   platformCore,
   provideBrowserGlobalErrorListeners,
+  provideClientHydration,
   provideHttpClient,
+  provideRouter,
   provideZoneChangeDetection,
   resetCompiledComponents,
   runInInjectionContext,
@@ -115,6 +112,7 @@ import {
   startMeasuring,
   startWith,
   stopMeasuring,
+  withEventReplay,
   withFetch,
   withInterceptors,
   ɵsetClassDebugInfo,
@@ -155,7 +153,7 @@ import {
   ɵɵtextInterpolate,
   ɵɵtextInterpolate1,
   ɵɵtextInterpolate2
-} from "./chunk-I4K3GZHF.mjs";
+} from "./chunk-WX7YRWV7.mjs";
 import {
   __async,
   __asyncGenerator,
@@ -30859,15 +30857,15 @@ var TranslateHttpLoader = class _TranslateHttpLoader {
 var routes = [
   __spreadValues({
     path: "chat",
-    loadChildren: () => import("./chunk-WEK6HBVR.mjs").then((m) => m.CHAT_ROUTES)
+    loadChildren: () => import("./chunk-PDXNEAKM.mjs").then((m) => m.CHAT_ROUTES)
   }, true ? { \u0275entryName: "src/app/chat/chat.routes.ts" } : {}),
   __spreadValues({
     path: "autoridade",
-    loadComponent: () => import("./chunk-GMN2TKKU.mjs").then((m) => m.AutoridadePage)
+    loadComponent: () => import("./chunk-NBGF2NVE.mjs").then((m) => m.AutoridadePage)
   }, true ? { \u0275entryName: "src/app/pages/autoridade/autoridade.page.ts" } : {}),
   __spreadValues({
     path: "v/:id",
-    loadComponent: () => import("./chunk-GCLHKA5L.mjs").then((m) => m.VIdPage)
+    loadComponent: () => import("./chunk-IYR5WD4X.mjs").then((m) => m.VIdPage)
   }, true ? { \u0275entryName: "src/app/pages/v-id/v-id.page.ts" } : {}),
   {
     path: "sobre/brapci",
@@ -30876,71 +30874,71 @@ var routes = [
   },
   __spreadValues({
     path: "basket/selected",
-    loadComponent: () => import("./chunk-YJDPD44F.mjs").then((m) => m.BasketSelectedPage)
+    loadComponent: () => import("./chunk-EP3MHS7A.mjs").then((m) => m.BasketSelectedPage)
   }, true ? { \u0275entryName: "src/app/pages/basket-selected/basket-selected.page.ts" } : {}),
   __spreadValues({
     path: "painel",
-    loadComponent: () => import("./chunk-A3GCOH5V.mjs").then((m) => m.PainelPage)
+    loadComponent: () => import("./chunk-QGS4EGER.mjs").then((m) => m.PainelPage)
   }, true ? { \u0275entryName: "src/app/pages/painel/painel.page.ts" } : {}),
   __spreadValues({
     path: "about/:page",
-    loadComponent: () => import("./chunk-IR3FZ562.mjs").then((m) => m.SobreBrapciPage)
+    loadComponent: () => import("./chunk-JEUYPLHH.mjs").then((m) => m.SobreBrapciPage)
   }, true ? { \u0275entryName: "src/app/pages/sobre-brapci/sobre-brapci.page.ts" } : {}),
   __spreadValues({
     path: "doc",
-    loadComponent: () => import("./chunk-2MZDXFWH.mjs").then((m) => m.DocPage)
+    loadComponent: () => import("./chunk-XTU54F4M.mjs").then((m) => m.DocPage)
   }, true ? { \u0275entryName: "src/app/pages/doc/doc.page.ts" } : {}),
   __spreadValues({
     path: "revistas",
-    loadComponent: () => import("./chunk-JPRDFR7L.mjs").then((m) => m.RevistasPage)
+    loadComponent: () => import("./chunk-IWTXKCIQ.mjs").then((m) => m.RevistasPage)
   }, true ? { \u0275entryName: "src/app/pages/revistas/revistas.page.ts" } : {}),
   __spreadValues({
     path: "revistas/timeline",
-    loadComponent: () => import("./chunk-BIP73RUR.mjs").then((m) => m.RevistaTimelinePage)
+    loadComponent: () => import("./chunk-O6A3YYEI.mjs").then((m) => m.RevistaTimelinePage)
   }, true ? { \u0275entryName: "src/app/pages/revista-timeline/revista-timeline.page.ts" } : {}),
   __spreadValues({
     path: "eventos",
-    loadComponent: () => import("./chunk-7N2Y75S2.mjs").then((m) => m.EventosPage)
+    loadComponent: () => import("./chunk-RTXYWSTG.mjs").then((m) => m.EventosPage)
   }, true ? { \u0275entryName: "src/app/pages/eventos/eventos.page.ts" } : {}),
   __spreadValues({
     path: "livros",
-    loadComponent: () => import("./chunk-IRMDUQHE.mjs").then((m) => m.LivrosPage)
+    loadComponent: () => import("./chunk-CH3PNZWY.mjs").then((m) => m.LivrosPage)
   }, true ? { \u0275entryName: "src/app/pages/livros/livros.page.ts" } : {}),
   __spreadValues({
     path: "livros/submit",
-    loadComponent: () => import("./chunk-EMCCC676.mjs").then((m) => m.LivrosSubmitPage)
+    loadComponent: () => import("./chunk-5ROOPDTX.mjs").then((m) => m.LivrosSubmitPage)
   }, true ? { \u0275entryName: "src/app/pages/livros-submit/livros-submit.page.ts" } : {}),
   __spreadValues({
     path: "signin",
-    loadComponent: () => import("./chunk-AGP5AT7A.mjs").then((m) => m.SigninPage)
+    loadComponent: () => import("./chunk-X2WRUM7R.mjs").then((m) => m.SigninPage)
   }, true ? { \u0275entryName: "src/app/pages/signin/signin.page.ts" } : {}),
   __spreadValues({
     path: "perfil",
-    loadComponent: () => import("./chunk-UXAFCNAP.mjs").then((m) => m.PerfilPage)
+    loadComponent: () => import("./chunk-YYGJVGRC.mjs").then((m) => m.PerfilPage)
   }, true ? { \u0275entryName: "src/app/pages/perfil/perfil.page.ts" } : {}),
   __spreadValues({
     path: "tools_bibliografics",
-    loadComponent: () => import("./chunk-5UN2HDHZ.mjs").then((m) => m.ToolsBibliograficsPage)
+    loadComponent: () => import("./chunk-C6TVLBZP.mjs").then((m) => m.ToolsBibliograficsPage)
   }, true ? { \u0275entryName: "src/app/pages/tools-bibliografics/tools-bibliografics.page.ts" } : {}),
   __spreadValues({
     path: "tools_bibliometric",
-    loadComponent: () => import("./chunk-UDGK654V.mjs").then((m) => m.ToolsBibliometricPage)
+    loadComponent: () => import("./chunk-NRZES4VQ.mjs").then((m) => m.ToolsBibliometricPage)
   }, true ? { \u0275entryName: "src/app/pages/tools-bibliometric/tools-bibliometric.page.ts" } : {}),
   __spreadValues({
     path: "tools_text",
-    loadComponent: () => import("./chunk-4CUMM2HF.mjs").then((m) => m.ToolsTextPage)
+    loadComponent: () => import("./chunk-XLGUIVYE.mjs").then((m) => m.ToolsTextPage)
   }, true ? { \u0275entryName: "src/app/pages/tools-text/tools-text.page.ts" } : {}),
   __spreadValues({
     path: "cited",
-    loadComponent: () => import("./chunk-AEL5ENWT.mjs").then((m) => m.CitedPage)
+    loadComponent: () => import("./chunk-GA75LDVZ.mjs").then((m) => m.CitedPage)
   }, true ? { \u0275entryName: "src/app/pages/cited/cited.page.ts" } : {}),
   __spreadValues({
     path: "small_world",
-    loadComponent: () => import("./chunk-DG44DBGY.mjs").then((m) => m.SmallWorldPage)
+    loadComponent: () => import("./chunk-SHKIFVQ3.mjs").then((m) => m.SmallWorldPage)
   }, true ? { \u0275entryName: "src/app/pages/small-world/small-world.page.ts" } : {}),
   __spreadValues({
     path: "",
-    loadComponent: () => import("./chunk-M337HBB4.mjs").then((m) => m.HomePage)
+    loadComponent: () => import("./chunk-O66WHU4S.mjs").then((m) => m.HomePage)
   }, true ? { \u0275entryName: "src/app/pages/home/home.page.ts" } : {})
 ];
 
@@ -30980,7 +30978,7 @@ var appConfig = {
       useValue: {
         brapciApiBaseUrl: "https://cip.brapci.inf.br/api",
         authApiBaseUrl: "/auth",
-        aiApiBaseUrl: "/api/ai"
+        aiApiBaseUrl: "https://cip.brapci.inf.br/api/ai"
       }
     }
   ]

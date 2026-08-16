@@ -11,4 +11,3 @@ export const chatAuthGuard: CanActivateFn = () => {
     map((user) => user ? true : router.createUrlTree(['/signin'], { queryParams: { returnUrl: '/chat' } })),
   );
 };
-

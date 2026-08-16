@@ -1,13 +1,13 @@
 import {
   AuthService,
   SessionService
-} from "./chunk-ZNHZ3OZM.js";
+} from "./chunk-KPJQR57O.js";
 import {
   toSignal
-} from "./chunk-5PH66TCU.js";
+} from "./chunk-H3IWRHIK.js";
 import {
   API_CONFIG
-} from "./chunk-FVCOQ7LK.js";
+} from "./chunk-DKSORO5X.js";
 import {
   FormsModule,
   NgControlStatus,
@@ -15,28 +15,16 @@ import {
   NgSelectOption,
   SelectControlValueAccessor,
   ɵNgSelectMultipleOption
-} from "./chunk-JBXEJVBW.js";
+} from "./chunk-PHIXLPJT.js";
 import {
   BasketService
-} from "./chunk-LEUPCSYM.js";
+} from "./chunk-SERRY7FI.js";
 import {
   TranslateLoader,
   TranslateModule,
   TranslatePipe,
   TranslateService
-} from "./chunk-NJGCINW2.js";
-import {
-  Meta,
-  NavigationEnd,
-  Router,
-  RouterLink,
-  RouterOutlet,
-  Title,
-  bootstrapApplication,
-  provideClientHydration,
-  provideRouter,
-  withEventReplay
-} from "./chunk-OYM44MPZ.js";
+} from "./chunk-DD5AALCM.js";
 import {
   ChangeDetectionStrategy,
   CommonModule,
@@ -49,10 +37,17 @@ import {
   Injectable,
   InjectionToken,
   Input,
+  Meta,
+  NavigationEnd,
   NgIf,
   Output,
   PLATFORM_ID,
   RendererFactory2,
+  Router,
+  RouterLink,
+  RouterOutlet,
+  Title,
+  bootstrapApplication,
   computed,
   filter,
   importProvidersFrom,
@@ -60,11 +55,14 @@ import {
   isPlatformBrowser,
   map,
   provideBrowserGlobalErrorListeners,
+  provideClientHydration,
   provideHttpClient,
+  provideRouter,
   provideZoneChangeDetection,
   setClassMetadata,
   signal,
   startWith,
+  withEventReplay,
   withFetch,
   withInterceptors,
   ɵsetClassDebugInfo,
@@ -102,7 +100,7 @@ import {
   ɵɵtextInterpolate,
   ɵɵtextInterpolate1,
   ɵɵtextInterpolate2
-} from "./chunk-FWZKW7K5.js";
+} from "./chunk-IGL3YMRP.js";
 import {
   __spreadValues
 } from "./chunk-3OV72XIM.js";
@@ -146,15 +144,15 @@ var TranslateHttpLoader = class _TranslateHttpLoader {
 var routes = [
   __spreadValues({
     path: "chat",
-    loadChildren: () => import("./chunk-2QQ5VS2V.js").then((m) => m.CHAT_ROUTES)
+    loadChildren: () => import("./chunk-UPEH3TXN.js").then((m) => m.CHAT_ROUTES)
   }, false ? { \u0275entryName: "src/app/chat/chat.routes.ts" } : {}),
   __spreadValues({
     path: "autoridade",
-    loadComponent: () => import("./chunk-AS4IU2BO.js").then((m) => m.AutoridadePage)
+    loadComponent: () => import("./chunk-PXBMPQ4E.js").then((m) => m.AutoridadePage)
   }, false ? { \u0275entryName: "src/app/pages/autoridade/autoridade.page.ts" } : {}),
   __spreadValues({
     path: "v/:id",
-    loadComponent: () => import("./chunk-635MIMJ4.js").then((m) => m.VIdPage)
+    loadComponent: () => import("./chunk-JROSXSJO.js").then((m) => m.VIdPage)
   }, false ? { \u0275entryName: "src/app/pages/v-id/v-id.page.ts" } : {}),
   {
     path: "sobre/brapci",
@@ -163,71 +161,71 @@ var routes = [
   },
   __spreadValues({
     path: "basket/selected",
-    loadComponent: () => import("./chunk-SARZLTIG.js").then((m) => m.BasketSelectedPage)
+    loadComponent: () => import("./chunk-UWCGJRDS.js").then((m) => m.BasketSelectedPage)
   }, false ? { \u0275entryName: "src/app/pages/basket-selected/basket-selected.page.ts" } : {}),
   __spreadValues({
     path: "painel",
-    loadComponent: () => import("./chunk-RAG5IBSU.js").then((m) => m.PainelPage)
+    loadComponent: () => import("./chunk-GNWGJ3LX.js").then((m) => m.PainelPage)
   }, false ? { \u0275entryName: "src/app/pages/painel/painel.page.ts" } : {}),
   __spreadValues({
     path: "about/:page",
-    loadComponent: () => import("./chunk-6XXVJZA5.js").then((m) => m.SobreBrapciPage)
+    loadComponent: () => import("./chunk-DXPJQWLQ.js").then((m) => m.SobreBrapciPage)
   }, false ? { \u0275entryName: "src/app/pages/sobre-brapci/sobre-brapci.page.ts" } : {}),
   __spreadValues({
     path: "doc",
-    loadComponent: () => import("./chunk-A42AKJVD.js").then((m) => m.DocPage)
+    loadComponent: () => import("./chunk-IKPXX67G.js").then((m) => m.DocPage)
   }, false ? { \u0275entryName: "src/app/pages/doc/doc.page.ts" } : {}),
   __spreadValues({
     path: "revistas",
-    loadComponent: () => import("./chunk-D5V4VGKN.js").then((m) => m.RevistasPage)
+    loadComponent: () => import("./chunk-IOGPMRAL.js").then((m) => m.RevistasPage)
   }, false ? { \u0275entryName: "src/app/pages/revistas/revistas.page.ts" } : {}),
   __spreadValues({
     path: "revistas/timeline",
-    loadComponent: () => import("./chunk-763SMARJ.js").then((m) => m.RevistaTimelinePage)
+    loadComponent: () => import("./chunk-AXCMKHOJ.js").then((m) => m.RevistaTimelinePage)
   }, false ? { \u0275entryName: "src/app/pages/revista-timeline/revista-timeline.page.ts" } : {}),
   __spreadValues({
     path: "eventos",
-    loadComponent: () => import("./chunk-O2DHCIFI.js").then((m) => m.EventosPage)
+    loadComponent: () => import("./chunk-S43T3LAC.js").then((m) => m.EventosPage)
   }, false ? { \u0275entryName: "src/app/pages/eventos/eventos.page.ts" } : {}),
   __spreadValues({
     path: "livros",
-    loadComponent: () => import("./chunk-ZY6TM2NT.js").then((m) => m.LivrosPage)
+    loadComponent: () => import("./chunk-XV4GLEDI.js").then((m) => m.LivrosPage)
   }, false ? { \u0275entryName: "src/app/pages/livros/livros.page.ts" } : {}),
   __spreadValues({
     path: "livros/submit",
-    loadComponent: () => import("./chunk-4TK2J7VN.js").then((m) => m.LivrosSubmitPage)
+    loadComponent: () => import("./chunk-DPBKIUCQ.js").then((m) => m.LivrosSubmitPage)
   }, false ? { \u0275entryName: "src/app/pages/livros-submit/livros-submit.page.ts" } : {}),
   __spreadValues({
     path: "signin",
-    loadComponent: () => import("./chunk-ZWCMJUO4.js").then((m) => m.SigninPage)
+    loadComponent: () => import("./chunk-VMFQD7BL.js").then((m) => m.SigninPage)
   }, false ? { \u0275entryName: "src/app/pages/signin/signin.page.ts" } : {}),
   __spreadValues({
     path: "perfil",
-    loadComponent: () => import("./chunk-G3KCFAEF.js").then((m) => m.PerfilPage)
+    loadComponent: () => import("./chunk-5IH3HTTZ.js").then((m) => m.PerfilPage)
   }, false ? { \u0275entryName: "src/app/pages/perfil/perfil.page.ts" } : {}),
   __spreadValues({
     path: "tools_bibliografics",
-    loadComponent: () => import("./chunk-PXPG3OFL.js").then((m) => m.ToolsBibliograficsPage)
+    loadComponent: () => import("./chunk-CXLELL2H.js").then((m) => m.ToolsBibliograficsPage)
   }, false ? { \u0275entryName: "src/app/pages/tools-bibliografics/tools-bibliografics.page.ts" } : {}),
   __spreadValues({
     path: "tools_bibliometric",
-    loadComponent: () => import("./chunk-JDZ6TP77.js").then((m) => m.ToolsBibliometricPage)
+    loadComponent: () => import("./chunk-BGIIOK5X.js").then((m) => m.ToolsBibliometricPage)
   }, false ? { \u0275entryName: "src/app/pages/tools-bibliometric/tools-bibliometric.page.ts" } : {}),
   __spreadValues({
     path: "tools_text",
-    loadComponent: () => import("./chunk-75ZHYGL3.js").then((m) => m.ToolsTextPage)
+    loadComponent: () => import("./chunk-TU4JWXYL.js").then((m) => m.ToolsTextPage)
   }, false ? { \u0275entryName: "src/app/pages/tools-text/tools-text.page.ts" } : {}),
   __spreadValues({
     path: "cited",
-    loadComponent: () => import("./chunk-ZK264TW7.js").then((m) => m.CitedPage)
+    loadComponent: () => import("./chunk-T3GJSJ63.js").then((m) => m.CitedPage)
   }, false ? { \u0275entryName: "src/app/pages/cited/cited.page.ts" } : {}),
   __spreadValues({
     path: "small_world",
-    loadComponent: () => import("./chunk-RCDVLWKX.js").then((m) => m.SmallWorldPage)
+    loadComponent: () => import("./chunk-EHCUC6TR.js").then((m) => m.SmallWorldPage)
   }, false ? { \u0275entryName: "src/app/pages/small-world/small-world.page.ts" } : {}),
   __spreadValues({
     path: "",
-    loadComponent: () => import("./chunk-GP7E5JC2.js").then((m) => m.HomePage)
+    loadComponent: () => import("./chunk-BLZZG7BE.js").then((m) => m.HomePage)
   }, false ? { \u0275entryName: "src/app/pages/home/home.page.ts" } : {})
 ];
 
@@ -267,7 +265,7 @@ var appConfig = {
       useValue: {
         brapciApiBaseUrl: "https://cip.brapci.inf.br/api",
         authApiBaseUrl: "/auth",
-        aiApiBaseUrl: "/api/ai"
+        aiApiBaseUrl: "https://cip.brapci.inf.br/api/ai"
       }
     }
   ]
