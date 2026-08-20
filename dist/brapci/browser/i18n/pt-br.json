@@ -368,15 +368,15 @@
     "bibliometric": {
       "title": "Ferramentas bibliometricas",
       "subtitle": "Area para analises bibliometricas, indicadores de producao e exploracao de redes de citacao.",
-      "card1Title": "Indicadores de impacto",
+      "card1Title": "Converter TXT para .NET (Autor)",
       "card1Text": "Visualize metricas de citacao, producao por periodo e distribuicao por periodicos.",
-      "card2Title": "Analise de coautoria",
-      "card2Text": "Mapeie colaboracoes entre autores e descubra comunidades de pesquisa."
+      "card2Title": "Converter TXT para .NET (Assunto)",
+      "card2Text": "Converta uma lista de assuntos em um arquivo de rede no formato .NET."
     },
     "text": {
       "title": "Ferramentas textuais",
       "subtitle": "Recursos para analise, revisao e preparacao textual de conteudos cientificos.",
-      "card1Title": "Revisor de linguagem",
+      "card1Title": "Busca por especialista",
       "card1Text": "Apoie a revisao ortografica e a clareza de textos academicos.",
       "card2Title": "Extracao de palavras-chave",
       "card2Text": "Identifique termos centrais para indexacao e recuperacao da informacao."

@@ -1,0 +1,59 @@
+<section class="term4net-wrap py-4" aria-labelledby="term4net-title">
+  <div class="container">
+    <app-breadcrumbs
+      [labels]="{ tools: 'Ferramentas', term4net: 'Converter TXT para .NET (Assunto)' }"
+    ></app-breadcrumbs>
+
+    <div class="term4net-card p-4 p-md-5">
+      <h1 id="term4net-title" class="h2 mb-2">Converter TXT para .NET (Assunto)</h1>
+      <p class="term4net-subtitle mb-4">
+        Insira os assuntos separados por ponto e vírgula (;), ou selecione um arquivo de texto.
+      </p>
+
+      <form (ngSubmit)="convert()">
+        <div class="mb-3">
+          <label for="terms-text" class="form-label fw-semibold">Assuntos</label>
+          <textarea
+            id="terms-text"
+            name="terms"
+            class="form-control"
+            rows="8"
+            [(ngModel)]="text"
+            [disabled]="loading"
+            placeholder="Exemplo: Ciência da informação; Bibliometria; Gestão do conhecimento"
+            required
+          ></textarea>
+          <div class="form-text">Separe cada assunto usando ponto e vírgula (;).</div>
+        </div>
+
+        <div class="mb-3">
+          <label for="terms-file" class="form-label fw-semibold">Carregar arquivo TXT</label>
+          <input
+            id="terms-file"
+            class="form-control"
+            type="file"
+            accept=".txt,text/plain"
+            [disabled]="loading"
+            (change)="loadFile($event)"
+          />
+          @if (selectedFileName) {
+            <div class="form-text">Arquivo carregado: {{ selectedFileName }}</div>
+          }
+        </div>
+
+        @if (error) {
+          <div class="alert alert-danger" role="alert">{{ error }}</div>
+        }
+
+        <button type="submit" class="btn btn-primary" [disabled]="!text.trim() || loading">
+          @if (loading) {
+            <span class="spinner-border spinner-border-sm me-2" aria-hidden="true"></span>
+            Convertendo...
+          } @else {
+            Converter e baixar .NET
+          }
+        </button>
+      </form>
+    </div>
+  </div>
+</section>

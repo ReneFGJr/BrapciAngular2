@@ -1,0 +1,77 @@
+<section class="txt4net-wrap py-4" aria-labelledby="txt4net-title">
+  <div class="container">
+    <app-breadcrumbs
+      [labels]="{ tools: 'Ferramentas', txt4net: 'Converter TXT para .NET (Autor)' }"
+    ></app-breadcrumbs>
+
+    <div class="txt4net-card p-4 p-md-5">
+      <h1 id="txt4net-title" class="h2 mb-2">Converter TXT para .NET (Autor)</h1>
+      <p class="txt4net-subtitle mb-4">
+        Insira os nomes dos autores separados por ponto e vírgula (;), ou selecione um arquivo de texto.
+      </p>
+
+      <div class="row g-4 align-items-start">
+        <div class="col-12 col-lg-7">
+          <form (ngSubmit)="convert()">
+        <div class="mb-3">
+          <label for="authors-text" class="form-label fw-semibold">Nomes dos autores</label>
+          <textarea
+            id="authors-text"
+            name="authors"
+            class="form-control"
+            rows="8"
+            [(ngModel)]="text"
+            [disabled]="loading"
+            placeholder="Exemplo: Maria da Silva; João dos Santos; Ana Oliveira"
+            required
+          ></textarea>
+          <div class="form-text">Separe cada nome de autor usando ponto e vírgula (;).</div>
+        </div>
+
+        <div class="mb-3">
+          <label for="authors-file" class="form-label fw-semibold">Carregar arquivo TXT</label>
+          <input
+            id="authors-file"
+            class="form-control"
+            type="file"
+            accept=".txt,text/plain"
+            [disabled]="loading"
+            (change)="loadFile($event)"
+          />
+          @if (selectedFileName) {
+            <div class="form-text">Arquivo carregado: {{ selectedFileName }}</div>
+          }
+        </div>
+
+        @if (error) {
+          <div class="alert alert-danger" role="alert">{{ error }}</div>
+        }
+
+        <button type="submit" class="btn btn-primary" [disabled]="!text.trim() || loading">
+          @if (loading) {
+            <span class="spinner-border spinner-border-sm me-2" aria-hidden="true"></span>
+            Convertendo...
+          } @else {
+            Converter e baixar .NET
+          }
+        </button>
+          </form>
+        </div>
+
+        <aside class="col-12 col-lg-5" aria-labelledby="instructions-video-title">
+          <h2 id="instructions-video-title" class="h5 mb-3">Vídeo com instruções</h2>
+          <div class="ratio ratio-16x9 video-frame">
+            <iframe
+              src="https://www.youtube-nocookie.com/embed/qOUddBznpRU"
+              title="Instruções para converter TXT para .NET"
+              loading="lazy"
+              referrerpolicy="strict-origin-when-cross-origin"
+              allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+              allowfullscreen
+            ></iframe>
+          </div>
+        </aside>
+      </div>
+    </div>
+  </div>
+</section>

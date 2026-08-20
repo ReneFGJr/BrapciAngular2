@@ -65,6 +65,16 @@ export const routes: Routes = [
     loadComponent: () => import('./pages/perfil/perfil.page').then((m) => m.PerfilPage),
   },
   {
+    path: 'tools/txt4net',
+    loadComponent: () =>
+      import('./pages/tools-txt4net/tools-txt4net.page').then((m) => m.ToolsTxt4netPage),
+  },
+  {
+    path: 'tools/term4net',
+    loadComponent: () =>
+      import('./pages/tools-term4net/tools-term4net.page').then((m) => m.ToolsTerm4netPage),
+  },
+  {
     path: 'tools_bibliografics',
     loadComponent: () =>
       import('./pages/tools-bibliografics/tools-bibliografics.page').then(
@@ -76,6 +86,13 @@ export const routes: Routes = [
     loadComponent: () =>
       import('./pages/tools-bibliometric/tools-bibliometric.page').then(
         (m) => m.ToolsBibliometricPage,
+      ),
+  },
+  {
+    path: 'tools_text/specialist',
+    loadComponent: () =>
+      import('./pages/tools-text-specialist/tools-text-specialist.page').then(
+        (m) => m.ToolsTextSpecialistPage,
       ),
   },
   {

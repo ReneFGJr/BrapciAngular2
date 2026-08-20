@@ -1,0 +1,7 @@
+{
+  "version": 3,
+  "sources": ["src/app/pages/tools-bibliografics/tools-bibliografics.page.scss"],
+  "sourcesContent": [".tools-wrap {\r\n  color: var(--theme-ink);\r\n}\r\n\r\n.tools-card {\r\n  background: var(--theme-card-bg);\r\n  border: 1px solid var(--theme-line);\r\n  border-radius: 0.9rem;\r\n}\r\n\r\n.tools-eyebrow {\r\n  font-size: 0.78rem;\r\n  letter-spacing: 0.16rem;\r\n  margin: 0;\r\n  text-transform: uppercase;\r\n}\r\n\r\n.tools-subtitle {\r\n  color: var(--theme-hint);\r\n}\r\n\r\n.tool-item {\r\n  background: var(--theme-sand);\r\n  border: 1px solid var(--theme-line);\r\n  border-radius: 0.65rem;\r\n}\r\n\r\n.tool-item p {\r\n  color: var(--theme-hint);\r\n}\r\n"],
+  "mappings": ";AAAA,CAAA;AACE,SAAA,IAAA;;AAGF,CAAA;AACE,cAAA,IAAA;AACA,UAAA,IAAA,MAAA,IAAA;AACA,iBAAA;;AAGF,CAAA;AACE,aAAA;AACA,kBAAA;AACA,UAAA;AACA,kBAAA;;AAGF,CAAA;AACE,SAAA,IAAA;;AAGF,CAAA;AACE,cAAA,IAAA;AACA,UAAA,IAAA,MAAA,IAAA;AACA,iBAAA;;AAGF,CANA,UAMA;AACE,SAAA,IAAA;;",
+  "names": []
+}
