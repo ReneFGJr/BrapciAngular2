@@ -1,0 +1,77 @@
+<section class="revista-avaliation-wrap py-4" aria-labelledby="avaliation-title">
+  <div class="container">
+    <app-breadcrumbs></app-breadcrumbs>
+    <header class="avaliation-header mt-3 mb-4">
+      <p class="avaliation-kicker mb-1">Indicadores de periódicos</p>
+      <h1 id="avaliation-title" class="h2 mb-2">Avaliações de periódicos</h1>
+      <p class="mb-0">Consulte a evolução dos estratos Qualis CAPES e dos quartis SJR Scopus.</p>
+    </header>
+
+    @if (loading()) {
+      <div class="state-card" role="status"><span class="spinner-border spinner-border-sm" aria-hidden="true"></span> Carregando avaliações…</div>
+    } @else if (error()) {
+      <div class="state-card state-card--error" role="alert"><p class="mb-3">{{ error() }}</p><button type="button" class="btn btn-outline-danger btn-sm" (click)="retry()">Tentar novamente</button></div>
+    } @else {
+      <nav class="avaliation-tabs" role="tablist" aria-label="Sistemas de avaliação">
+        <button type="button" role="tab" [attr.aria-selected]="activeTab() === 'overview'" [class.active]="activeTab() === 'overview'" (click)="setTab('overview')">Visão geral</button>
+        @for (name of evaluationNames(); track name) {
+          <button type="button" role="tab" [attr.aria-selected]="activeTab() === name" [class.active]="activeTab() === name" (click)="setTab(name)">{{ name }}</button>
+        }
+      </nav>
+
+      @if (activeTab() === 'overview') {
+        <div class="summary-grid mt-4">
+          <article class="summary-card"><strong>{{ summary().journals }}</strong><span>periódicos</span></article>
+          <article class="summary-card"><strong>{{ summary().records }}</strong><span>avaliações</span></article>
+          <article class="summary-card"><strong>{{ summary().systems }}</strong><span>sistemas</span></article>
+          <article class="summary-card"><strong>{{ summary().periods }}</strong><span>períodos</span></article>
+        </div>
+        <article class="content-card mt-4"><app-bar-chart title="Periódicos por sistema de avaliação" [points]="sourceChart()"></app-bar-chart></article>
+      } @else {
+        <section class="content-card mt-4" [attr.aria-label]="activeTab()">
+          <div class="filter-grid">
+            <label><span>Área de avaliação</span><select class="form-select" [value]="areaFilter()" (change)="setArea($any($event.target).value)"><option value="ALL">Todas as áreas</option>@for (area of areas(); track area) { <option [value]="area">{{ area }}</option> }</select></label>
+            <label><span>Período</span><select class="form-select" [value]="periodFilter()" (change)="setPeriod($any($event.target).value)"><option value="ALL">Todos os períodos</option>@for (period of periods(); track period) { <option [value]="period">{{ period }}</option> }</select></label>
+            <label><span>Buscar periódico</span><input type="search" class="form-control" placeholder="Título ou estrato" [value]="searchTerm()" (input)="setSearch($any($event.target).value)"></label>
+          </div>
+        </section>
+        <section class="charts-grid mt-4" aria-label="Gráficos de estratos por ano">
+          @for (chart of strataChartsByArea(); track chart.area) {
+            <article class="content-card">
+              <app-bar-chart
+                [title]="'Estratos por ano — ' + chart.area"
+                [points]="chart.points"
+              ></app-bar-chart>
+            </article>
+          }
+        </section>
+        <article class="content-card mt-4">
+          <div class="results-heading"><h2 class="h5 mb-0">Periódicos avaliados</h2><span>{{ groupedItems().length }} periódicos · {{ filteredItems().length }} avaliações</span></div>
+          @if (visibleGroups().length) {
+            <div class="journal-groups mt-3">
+              @for (group of visibleGroups(); track group.title) {
+                <section class="journal-group">
+                  <h3 class="journal-group__title">
+                    @if (group.rdfId) { <a [href]="'/v/' + group.rdfId">{{ group.title }}</a> }
+                    @else { {{ group.title }} }
+                  </h3>
+                  <div class="table-responsive">
+                    <table class="avaliation-table avaliation-table--grouped">
+                      <thead><tr><th>Ano/período</th><th>Estrato</th><th>Área</th><th>Valor</th></tr></thead>
+                      <tbody>
+                        @for (item of group.evaluations; track item.periodStart + '-' + item.periodEnd + '-' + item.evaluationArea + '-' + item.stratum) {
+                          <tr><td class="nowrap">{{ periodLabel(item) }}</td><td><span class="stratum-pill">{{ item.stratum }}</span></td><td>{{ item.evaluationArea }}</td><td>{{ item.numericValue === null ? '—' : (item.numericValue | number:'1.3-4') }}</td></tr>
+                        }
+                      </tbody>
+                    </table>
+                  </div>
+                </section>
+              }
+            </div>
+            @if (visibleGroups().length < groupedItems().length) { <div class="text-center mt-3"><button type="button" class="btn btn-outline-primary" (click)="showMore()">Mostrar mais 100 periódicos</button></div> }
+          } @else { <p class="text-secondary mb-0 mt-3">Nenhum periódico corresponde aos filtros selecionados.</p> }
+        </article>
+      }
+    }
+  </div>
+</section>
