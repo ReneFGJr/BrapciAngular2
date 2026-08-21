@@ -32,6 +32,7 @@ export class RevistaAvaliationPage {
   readonly activeTab = signal('overview');
   readonly areaFilter = signal('ALL');
   readonly periodFilter = signal('ALL');
+  readonly stratumFilter = signal('ALL');
   readonly searchTerm = signal('');
   readonly visibleLimit = signal(this.pageSize);
 
@@ -39,11 +40,13 @@ export class RevistaAvaliationPage {
   readonly selectedItems = computed(() => this.activeTab() === 'overview' ? this.items() : this.items().filter(i => i.name === this.activeTab()));
   readonly areas = computed(() => [...new Set(this.selectedItems().map(i => i.evaluationArea))].sort((a, b) => a.localeCompare(b, 'pt-BR')));
   readonly periods = computed(() => [...new Set(this.selectedItems().map(i => this.periodLabel(i)))].sort((a, b) => this.periodStart(b) - this.periodStart(a)));
+  readonly strata = computed(() => [...new Set(this.selectedItems().map(i => i.stratum))].sort((a, b) => this.stratumOrder(a) - this.stratumOrder(b) || a.localeCompare(b, 'pt-BR')));
   readonly filteredItems = computed(() => {
     const term = this.searchTerm().trim().toLocaleLowerCase('pt-BR');
     return this.selectedItems()
       .filter(i => this.areaFilter() === 'ALL' || i.evaluationArea === this.areaFilter())
       .filter(i => this.periodFilter() === 'ALL' || this.periodLabel(i) === this.periodFilter())
+      .filter(i => this.stratumFilter() === 'ALL' || i.stratum === this.stratumFilter())
       .filter(i => !term || `${i.title} ${i.stratum}`.toLocaleLowerCase('pt-BR').includes(term))
       .sort((a, b) => this.year(b.periodStart) - this.year(a.periodStart) || a.title.localeCompare(b.title, 'pt-BR'));
   });
@@ -81,9 +84,11 @@ export class RevistaAvaliationPage {
   readonly strataChartsByArea = computed(() => {
     const selectedArea = this.areaFilter();
     const selectedPeriod = this.periodFilter();
+    const selectedStratum = this.stratumFilter();
     const source = this.selectedItems()
       .filter(item => selectedArea === 'ALL' || item.evaluationArea === selectedArea)
-      .filter(item => selectedPeriod === 'ALL' || this.periodLabel(item) === selectedPeriod);
+      .filter(item => selectedPeriod === 'ALL' || this.periodLabel(item) === selectedPeriod)
+      .filter(item => selectedStratum === 'ALL' || item.stratum === selectedStratum);
     const areas = new Map<string, AvaliationItem[]>();
 
     for (const item of source) {
@@ -101,6 +106,7 @@ export class RevistaAvaliationPage {
   setTab(tab: string): void { this.activeTab.set(tab); this.resetFilters(); }
   setArea(value: string): void { this.areaFilter.set(value); this.visibleLimit.set(this.pageSize); }
   setPeriod(value: string): void { this.periodFilter.set(value); this.visibleLimit.set(this.pageSize); }
+  setStratum(value: string): void { this.stratumFilter.set(value); this.visibleLimit.set(this.pageSize); }
   setSearch(value: string): void { this.searchTerm.set(value); this.visibleLimit.set(this.pageSize); }
   showMore(): void { this.visibleLimit.update(value => value + this.pageSize); }
   retry(): void { this.loadAvaliations(); }
@@ -130,7 +136,7 @@ export class RevistaAvaliationPage {
     const number = Number.parseFloat(String(r['numeric_value'] ?? ''));
     return { periodStart: this.text(r['period_start']), periodEnd: this.text(r['period_end']), name, evaluationArea: this.text(r['evaluation_area']), rdfId: this.text(r['rdf_id']) === '-' ? '' : this.text(r['rdf_id']), title, stratum: this.text(r['stratum']), numericValue: Number.isFinite(number) ? number : null };
   }
-  private resetFilters(): void { this.areaFilter.set('ALL'); this.periodFilter.set('ALL'); this.searchTerm.set(''); this.visibleLimit.set(this.pageSize); }
+  private resetFilters(): void { this.areaFilter.set('ALL'); this.periodFilter.set('ALL'); this.stratumFilter.set('ALL'); this.searchTerm.set(''); this.visibleLimit.set(this.pageSize); }
   private buildYearChart(items: AvaliationItem[]): BarChartPoint[] {
     const years = new Map<string, Map<string, number>>();
     for (const item of items) {
