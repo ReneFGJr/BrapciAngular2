@@ -37,8 +37,16 @@ export const routes: Routes = [
     loadComponent: () => import('./pages/doc/doc.page').then((m) => m.DocPage),
   },
   {
+    path: 'pq',
+    loadComponent: () => import('./pages/pq/pq.page').then((m) => m.PqPage),
+  },
+  {
     path: 'revistas',
     loadComponent: () => import('./pages/revistas/revistas.page').then((m) => m.RevistasPage),
+  },
+  {
+    path: 'revistas/avaliation',
+    loadComponent: () => import('./pages/revista-avaliation/revista-avaliation.page').then((m) => m.RevistaAvaliationPage),
   },
   {
     path: 'revistas/timeline',

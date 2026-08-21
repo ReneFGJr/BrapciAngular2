@@ -315,6 +315,14 @@
     "inactive": "Inactiva",
     "noData": "No hay datos de linea de tiempo disponibles para los filtros seleccionados."
   },
+  "avaliation": {
+    "title": "Estratificación de las Revistas",
+    "menuItem": "Estratificación"
+  },
+  "pq": {
+    "title": "Becarios de Productividad PQ del CNPq",
+    "menuItem": "Becarios PQ del CNPq"
+  },
   "profile": {
     "title": "Perfil del Usuario",
     "notLogged": "Necesita iniciar sesion para ver su perfil.",

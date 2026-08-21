@@ -3,9 +3,10 @@ import { AfterViewInit, Component, ElementRef, Input, OnDestroy, ViewChild, comp
 import { ViewType01Component } from '../issue/view-type-01/view-type-01.component';
 import { JournalMetaGridComponent } from './journal-hero-info/journal-meta-grid/journal-meta-grid.component';
 import { TimeCloudTagComponent } from '../time-cloud-tag/time-cloud-tag.component';
+import { JournalStrataComponent } from './journal-strata/journal-strata.component';
 
 type JsonRecord = Record<string, unknown>;
-type TabId = 'summary' | 'issues' | 'location' | 'theme' | 'json';
+type TabId = 'summary' | 'issues' | 'location' | 'theme' | 'strata' | 'json';
 
 type ThemeItem = {
   label: string;
@@ -31,7 +32,7 @@ type GeoPoint = {
 @Component({
   selector: 'app-view-journal',
   standalone: true,
-  imports: [CommonModule, ViewType01Component, JournalMetaGridComponent, TimeCloudTagComponent],
+  imports: [CommonModule, ViewType01Component, JournalMetaGridComponent, TimeCloudTagComponent, JournalStrataComponent],
   templateUrl: './view-journal.component.html',
   styleUrl: './view-journal.component.scss'
 })
@@ -136,6 +137,11 @@ export class ViewJournalComponent {
   });
 
   readonly jsonContent = computed(() => JSON.stringify(this.data, null, 2));
+
+  readonly avaliations = computed(() => {
+    const record = this.asRecord(this.data);
+    return record?.['avaliations'] ?? record?.['evaluations'] ?? [];
+  });
 
   setTab(tab: TabId): void {
     this.activeTab.set(tab);

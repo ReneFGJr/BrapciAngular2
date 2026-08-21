@@ -121,6 +121,7 @@ export class App {
       url.startsWith('/eventos') ||
       url.startsWith('/v/') ||
       url.startsWith('/revistas') ||
+      url.startsWith('/pq') ||
       url.startsWith('/signin') ||
       url.startsWith('/perfil') ||
       url.startsWith('/search-boolean') ||

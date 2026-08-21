@@ -313,6 +313,14 @@
     "inactive": "Inativa",
     "noData": "Nenhum dado de timeline disponivel para os filtros selecionados."
   },
+  "avaliation": {
+    "title": "Estratificação das Revistas",
+    "menuItem": "Estratificação"
+  },
+  "pq": {
+    "title": "Bolsistas Produtividade PQ do CNPq",
+    "menuItem": "Bolsistas PQ do CNPq"
+  },
   "profile": {
     "title": "Perfil do Usuario",
     "notLogged": "Voce precisa estar logado para visualizar seu perfil.",

@@ -315,6 +315,14 @@
     "inactive": "Inactive",
     "noData": "No timeline data available for the selected filters."
   },
+  "avaliation": {
+    "title": "Journals Stratification",
+    "menuItem": "Stratification"
+  },
+  "pq": {
+    "title": "CNPq Research Productivity Fellows (PQ)",
+    "menuItem": "CNPq PQ Fellows"
+  },
   "profile": {
     "title": "User Profile",
     "notLogged": "You need to be logged in to view your profile.",

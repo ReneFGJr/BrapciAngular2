@@ -14,6 +14,9 @@
     <button type="button" class="tab-btn" [class.active]="activeTab() === 'theme'" (click)="setTab('theme')">
       Tema
     </button>
+    <button type="button" class="tab-btn" [class.active]="activeTab() === 'strata'" (click)="setTab('strata')">
+      Estratos
+    </button>
     <button type="button" class="tab-btn" [class.active]="activeTab() === 'json'" (click)="setTab('json')">
       JSON
     </button>
@@ -93,6 +96,10 @@
             <p class="mb-0">Sem temas disponíveis.</p>
           }
         </section>
+      }
+
+      @case ('strata') {
+        <app-journal-strata [avaliations]="avaliations()"></app-journal-strata>
       }
 
       @case ('json') {

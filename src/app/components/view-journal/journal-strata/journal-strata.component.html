@@ -1,0 +1,36 @@
+<section class="journal-strata" aria-labelledby="journal-strata-title">
+  <h3 id="journal-strata-title" class="h6 mb-3">Estratos da revista</h3>
+
+  @if (groups().length) {
+    <div class="strata-groups">
+      @for (group of groups(); track group.name) {
+        <section class="strata-group" [attr.aria-labelledby]="'strata-' + $index">
+          <h4 class="strata-group__title" [id]="'strata-' + $index">{{ group.name }}</h4>
+
+          <div class="table-responsive">
+            <table class="strata-table">
+              <thead>
+                <tr>
+                  <th scope="col">Período</th>
+                  <th scope="col">Área de avaliação</th>
+                  <th scope="col">Estrato</th>
+                </tr>
+              </thead>
+              <tbody>
+                @for (item of group.items; track item.periodStart + '-' + item.periodEnd + '-' + item.evaluationArea) {
+                  <tr>
+                    <td class="strata-table__period">{{ periodLabel(item) }}</td>
+                    <td>{{ item.evaluationArea }}</td>
+                    <td><span class="strata-badge">{{ item.stratum }}</span></td>
+                  </tr>
+                }
+              </tbody>
+            </table>
+          </div>
+        </section>
+      }
+    </div>
+  } @else {
+    <p class="mb-0">Sem informações de estratos disponíveis.</p>
+  }
+</section>

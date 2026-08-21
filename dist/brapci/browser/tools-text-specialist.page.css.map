@@ -1,7 +1,0 @@
-{
-  "version": 3,
-  "sources": ["src/app/pages/tools-text-specialist/tools-text-specialist.page.scss"],
-  "sourcesContent": [".specialist-wrap {\n  color: var(--theme-ink);\n}\n\n.specialist-card {\n  background: var(--theme-card-bg);\n  border: 1px solid var(--theme-line);\n  border-radius: 0.9rem;\n}\n\n.specialist-subtitle {\n  color: var(--theme-hint);\n}\n\ntextarea {\n  resize: vertical;\n}\n\n.result {\n  background: var(--theme-sand);\n  border: 1px solid var(--theme-line);\n  border-radius: 0.65rem;\n  min-height: 8rem;\n  padding: 1rem;\n}\n\n.result-content {\n  margin: 0;\n  overflow-wrap: anywhere;\n  white-space: pre-wrap;\n}\n"],
-  "mappings": ";AAAA,CAAA;AACE,SAAA,IAAA;;AAGF,CAAA;AACE,cAAA,IAAA;AACA,UAAA,IAAA,MAAA,IAAA;AACA,iBAAA;;AAGF,CAAA;AACE,SAAA,IAAA;;AAGF;AACE,UAAA;;AAGF,CAAA;AACE,cAAA,IAAA;AACA,UAAA,IAAA,MAAA,IAAA;AACA,iBAAA;AACA,cAAA;AACA,WAAA;;AAGF,CAAA;AACE,UAAA;AACA,iBAAA;AACA,eAAA;;",
-  "names": []
-}

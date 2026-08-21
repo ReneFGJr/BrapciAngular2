@@ -1,7 +1,0 @@
-{
-  "version": 3,
-  "sources": ["src/app/components/tag-cloud/tag-cloud.component.ts"],
-  "sourcesContent": ["\n      :host {\n        display: block;\n        width: 100%;\n      }\n\n      .tag-cloud {\n        background: var(--theme-card-bg);\n        border: 1px solid var(--theme-line);\n        border-radius: 0.7rem;\n        box-sizing: border-box;\n        width: 100%;\n        padding: 0.75rem;\n      }\n\n      .tag-cloud__chart-wrap {\n        background: transparent;\n        border: 1px solid var(--theme-line);\n        border-radius: 0.7rem;\n        height: 300px;\n        overflow: hidden;\n        padding: 0.2rem;\n        width: 100%;\n      }\n\n      .tag-cloud__chart {\n        height: 100%;\n        width: 100%;\n      }\n    "],
-  "mappings": ";AACM;AACE,WAAA;AACA,SAAA;;AAGF,CAAA;AACE,cAAA,IAAA;AACA,UAAA,IAAA,MAAA,IAAA;AACA,iBAAA;AACA,cAAA;AACA,SAAA;AACA,WAAA;;AAGF,CAAA;AACE,cAAA;AACA,UAAA,IAAA,MAAA,IAAA;AACA,iBAAA;AACA,UAAA;AACA,YAAA;AACA,WAAA;AACA,SAAA;;AAGF,CAAA;AACE,UAAA;AACA,SAAA;;",
-  "names": []
-}
