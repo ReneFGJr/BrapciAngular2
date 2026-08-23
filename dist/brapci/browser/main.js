@@ -177,7 +177,7 @@ var routes = [
   }, false ? { \u0275entryName: "src/app/pages/doc/doc.page.ts" } : {}),
   __spreadValues({
     path: "pq",
-    loadComponent: () => import("./chunk-32NYNO3Y.js").then((m) => m.PqPage)
+    loadComponent: () => import("./chunk-ZYUKWKL6.js").then((m) => m.PqPage)
   }, false ? { \u0275entryName: "src/app/pages/pq/pq.page.ts" } : {}),
   __spreadValues({
     path: "revistas",

@@ -30914,7 +30914,7 @@ var routes = [
   }, true ? { \u0275entryName: "src/app/pages/doc/doc.page.ts" } : {}),
   __spreadValues({
     path: "pq",
-    loadComponent: () => import("./chunk-PFTBDRK6.mjs").then((m) => m.PqPage)
+    loadComponent: () => import("./chunk-FBI6OU6I.mjs").then((m) => m.PqPage)
   }, true ? { \u0275entryName: "src/app/pages/pq/pq.page.ts" } : {}),
   __spreadValues({
     path: "revistas",

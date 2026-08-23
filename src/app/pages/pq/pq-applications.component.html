@@ -1,0 +1,59 @@
+<section aria-labelledby="applications-title">
+  <div class="applications-heading">
+    <div><span class="applications-eyebrow">Série histórica</span><h2 id="applications-title">Concessões por ano</h2></div>
+    @if (selected(); as current) {<div class="selected-total" aria-live="polite"><strong>{{ current.total }}</strong><span>concessões em {{ current.year }}</span></div>}
+  </div>
+
+  <div class="summary-cards">
+    <article><i class="dot new"></i><div><strong>{{ totals().novas }}</strong><span>Novas</span></div></article>
+    <article><i class="dot renewed"></i><div><strong>{{ totals().reconcedidas }}</strong><span>Reconcedidas</span></div></article>
+    <article><i class="dot returned"></i><div><strong>{{ totals().novas_apos_interrupcao }}</strong><span>Novas após interrupção</span></div></article>
+    <article><div><strong>{{ totals().total }}</strong><span>Total histórico</span></div></article>
+  </div>
+
+  <article class="chart-panel">
+    <div class="chart-scroll"><div class="applications-chart" [style.grid-template-columns]="'repeat(' + years().length + ', minmax(14px, 1fr))'" role="group" aria-label="Concessões anuais por tipo">
+      @for (item of years(); track item.year; let index = $index) {
+        <button type="button" class="year-column" [class.selected]="selectedYear() === item.year" [attr.aria-pressed]="selectedYear() === item.year" [attr.aria-label]="item.year + ': ' + item.total + ' concessões'" (click)="selectYear(item.year)">
+          <span class="bar-slot"><span class="bar-group" [style.height.%]="barHeight(item.total)"><span class="bar-value">{{ item.total }}</span><span class="year-bar">
+            <span class="segment new" [style.height.%]="share(item.novas, item.total)" [attr.title]="'Novas: ' + item.novas"></span>
+            <span class="segment renewed" [style.height.%]="share(item.reconcedidas, item.total)" [attr.title]="'Reconcedidas: ' + item.reconcedidas"></span>
+            <span class="segment returned" [style.height.%]="share(item.novas_apos_interrupcao, item.total)" [attr.title]="'Novas após interrupção: ' + item.novas_apos_interrupcao"></span>
+          </span></span></span><span class="year-label">{{ item.year }}</span>
+        </button>
+      }
+    </div></div>
+    <div class="legend"><span><i class="dot new"></i>Novas</span><span><i class="dot renewed"></i>Reconcedidas</span><span><i class="dot returned"></i>Novas após interrupção</span></div>
+  </article>
+
+  @if (selected(); as current) {
+    <div class="selected-detail"><strong>{{ current.year }}</strong><span><i class="dot new"></i>Novas <b>{{ current.novas }}</b></span><span><i class="dot renewed"></i>Reconcedidas <b>{{ current.reconcedidas }}</b></span><span><i class="dot returned"></i>Após interrupção <b>{{ current.novas_apos_interrupcao }}</b></span><span>Total <b>{{ current.total }}</b></span></div>
+  }
+
+  <section class="year-table-section" aria-labelledby="year-table-title">
+    <div class="table-heading"><div><span class="applications-eyebrow">Dados detalhados</span><h2 id="year-table-title">Concessões por ano</h2></div><div class="table-actions"><span>Clique no ano para visualizar os registros</span><button type="button" class="export-button" (click)="exportCsv()"><i class="bi bi-file-earmark-spreadsheet" aria-hidden="true"></i> Exportar para CSV</button></div></div>
+    <div class="table-responsive year-table-wrap">
+      <table class="table year-table">
+        <thead><tr><th>Ano</th><th class="text-center">Novas</th><th class="text-center">Reconcedidas</th><th class="text-center">Após interrupção</th><th class="text-center">Total</th><th><span class="visually-hidden">Expandir</span></th></tr></thead>
+        <tbody>
+          @for (item of yearsDescending(); track item.year) {
+            <tr class="year-summary" [class.expanded]="isExpanded(item.year)">
+              <td><button type="button" class="year-toggle" [attr.aria-expanded]="isExpanded(item.year)" [attr.aria-controls]="'applications-' + item.year" (click)="toggleYear(item.year)"><i class="bi" [class.bi-chevron-down]="!isExpanded(item.year)" [class.bi-chevron-up]="isExpanded(item.year)" aria-hidden="true"></i><strong>{{ item.year }}</strong></button></td>
+              <td class="text-center">{{ item.novas }}</td><td class="text-center">{{ item.reconcedidas }}</td><td class="text-center">{{ item.novas_apos_interrupcao }}</td><td class="text-center"><strong>{{ item.total }}</strong></td>
+              <td class="text-end"><button type="button" class="details-button" [attr.aria-label]="(isExpanded(item.year) ? 'Ocultar' : 'Mostrar') + ' concessões de ' + item.year" (click)="toggleYear(item.year)">{{ isExpanded(item.year) ? 'Ocultar' : 'Mostrar' }}</button></td>
+            </tr>
+            @if (isExpanded(item.year)) {
+              <tr class="details-row" [id]="'applications-' + item.year"><td colspan="6">
+                <div class="record-table-wrap"><table class="table table-sm record-table"><thead><tr><th>Bolsista</th><th>Tipo</th><th>Nível</th><th>Instituição</th><th>Vigência</th><th>Interrupção</th></tr></thead><tbody>
+                  @for (record of item.records; track record.id_bb + record.inicio) {
+                    <tr><td><a class="researcher-link" [href]="'/v/' + record.id_bb" target="_blank" rel="noopener noreferrer"><strong>{{ record.nome }}</strong></a></td><td><span class="type-badge" [class.renewed-badge]="record.tipo === 'reconcedida'" [class.returned-badge]="record.tipo === 'nova_apos_interrupcao'">{{ typeLabel(record.tipo) }}</span></td><td>PQ {{ record.nivel }}</td><td>{{ record.ies }}</td><td class="text-nowrap">{{ record.inicio | date:'MM/yyyy':'UTC' }} — {{ record.fim | date:'MM/yyyy':'UTC' }}</td><td>{{ record.dias_interrupcao ? record.dias_interrupcao + ' dias' : '—' }}</td></tr>
+                  } @empty {<tr><td colspan="6" class="empty-records">Nenhum registro neste ano.</td></tr>}
+                </tbody></table></div>
+              </td></tr>
+            }
+          }
+        </tbody>
+      </table>
+    </div>
+  </section>
+</section>

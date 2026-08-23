@@ -1,0 +1,59 @@
+:host {
+  --pq-history-orange-1: #7f3518;
+  --pq-history-orange-2: #96421b;
+  --pq-history-orange-3: #ad501e;
+  --pq-history-orange-4: #c35e22;
+  --pq-history-orange-5: #d66c27;
+  --pq-history-orange-6: #e47b30;
+  --pq-history-orange-7: #ed8b3d;
+  --pq-history-orange-8: #f19b4d;
+  --pq-history-orange-9: #f4aa60;
+  --pq-history-orange-10: #f6ba76;
+  --pq-history-orange-11: #f8c98e;
+  --pq-history-orange-12: #f9d8aa;
+  display: block;
+  margin-bottom: 1rem;
+}
+:host-context(body.theme-master.theme-dark) {
+  --pq-history-orange-1: #a94c22;
+  --pq-history-orange-2: #bc5927;
+  --pq-history-orange-3: #ce672c;
+  --pq-history-orange-4: #dc7532;
+  --pq-history-orange-5: #e7843b;
+  --pq-history-orange-6: #ee9347;
+  --pq-history-orange-7: #f2a255;
+  --pq-history-orange-8: #f5b166;
+  --pq-history-orange-9: #f7bf79;
+  --pq-history-orange-10: #f9cc8e;
+  --pq-history-orange-11: #fbd9a5;
+  --pq-history-orange-12: #fce5bf;
+}
+.history-panel { padding: 1.5rem; border: 1px solid var(--theme-line); border-radius: 1rem; color: var(--theme-ink); background: var(--theme-card-bg); box-shadow: 0 8px 24px rgb(16 37 66 / 5%); }
+.history-heading { display: flex; align-items: center; justify-content: space-between; gap: 1rem; }
+.history-eyebrow { display: block; margin-bottom: .45rem; color: var(--pq-accent, #9a654d); font-family: 'Raleway', sans-serif; font-size: .75rem; font-weight: 700; letter-spacing: .14em; text-transform: uppercase; }
+h2 { margin: 0; font-family: 'Bitter', serif; font-size: 1.35rem; }
+.selected-total { text-align: right; }
+.selected-total strong { display: block; font-family: 'Bitter', serif; font-size: 1.65rem; line-height: 1; }
+.selected-total span { color: var(--theme-muted); font-size: .78rem; }
+.chart-scroll { margin-top: 1.5rem; overflow-x: auto; }
+.year-chart { display: grid; min-width: 850px; height: 230px; grid-template-columns: repeat(var(--year-count, 37), minmax(14px, 1fr)); align-items: stretch; border-bottom: 1px solid var(--theme-line); }
+.year-column { display: grid; min-width: 0; height: 100%; padding: 0 2px; grid-template-rows: 1fr 1.6rem; border: 0; color: var(--theme-muted); background: transparent; text-align: center; }
+.year-column:focus-visible { outline: 2px solid var(--theme-hint); outline-offset: -2px; }
+.bar-slot { display: flex; min-height: 0; padding-top: 1rem; align-items: flex-end; }
+.bar-group { display: grid; width: 100%; min-height: 1.65rem; grid-template-rows: 1.2rem 1fr; transition: height .2s ease; }
+.bar-value { align-self: center; overflow: visible; color: var(--theme-ink); font-size: .68rem; font-weight: 700; line-height: 1; opacity: 1; }
+.year-bar { display: flex; width: 100%; min-height: 3px; overflow: hidden; flex-direction: column-reverse; border-radius: .25rem .25rem 0 0; background: var(--theme-sand); }
+.bar-segment { display: block; width: 100%; min-height: 1px; transition: filter .15s ease; }
+.bar-segment:hover { filter: brightness(1.18); }
+.year-column.selected .bar-value { color: var(--pq-accent, #9a654d); }
+.year-label { padding-top: .35rem; font-size: .65rem; }
+.year-column.selected .year-label { color: var(--theme-ink); font-weight: 700; }
+.chart-legend { display: flex; padding-top: .85rem; flex-wrap: wrap; justify-content: center; gap: .4rem .8rem; color: var(--theme-muted); font-size: .72rem; }
+.chart-legend span, .modality-chips span { display: inline-flex; align-items: center; gap: .32rem; }
+.chart-legend i, .modality-chips i { display: inline-block; width: .62rem; height: .62rem; flex: 0 0 .62rem; border-radius: .18rem; }
+.modality-detail { display: flex; margin-top: 1rem; align-items: center; gap: 1rem; }
+.modality-detail > strong { flex: 0 0 auto; font-size: .82rem; }
+.modality-chips { display: flex; flex-wrap: wrap; gap: .4rem; }
+.modality-chips span { padding: .25rem .55rem; border-radius: 999px; color: var(--theme-ink); background: var(--theme-sand); font-size: .76rem; }
+.modality-chips b { color: var(--pq-accent, #9a654d); }
+@media (max-width: 575.98px) { .history-panel { padding: 1.1rem; } .history-heading, .modality-detail { align-items: flex-start; } .modality-detail { flex-direction: column; gap: .55rem; } }

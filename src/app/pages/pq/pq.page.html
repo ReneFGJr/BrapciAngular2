@@ -2,7 +2,7 @@
   <div class="container">
     <app-breadcrumbs></app-breadcrumbs>
     <header class="pq-hero">
-      <div class="pq-hero-copy"><span class="eyebrow">Panorama da Ciência da Informação</span><h1 id="pq-title">Bolsistas de Produtividade CNPq</h1><p>Conheça a distribuição dos pesquisadores por modalidade, instituição e região do Brasil.</p></div>
+      <div class="pq-hero-copy"><span class="eyebrow">Panorama da Ciência da Informação</span><h1 id="pq-title">Bolsistas de Produtividade CNPq em Ciência da Informação</h1></div>
       <img src="assets/logos/logo_pq.png" alt="Base de dados dos bolsistas PQ" class="pq-logo" />
     </header>
 
@@ -17,6 +17,7 @@
         <button type="button" role="tab" [attr.aria-selected]="activeTab() === 'instituicoes'" [class.active]="activeTab() === 'instituicoes'" (click)="setTab('instituicoes')"><i class="bi bi-building" aria-hidden="true"></i><span>Instituições</span></button>
         <button type="button" role="tab" [attr.aria-selected]="activeTab() === 'regioes'" [class.active]="activeTab() === 'regioes'" (click)="setTab('regioes')"><i class="bi bi-geo-alt" aria-hidden="true"></i><span>Regiões</span></button>
         <button type="button" role="tab" [attr.aria-selected]="activeTab() === 'mapa'" [class.active]="activeTab() === 'mapa'" (click)="setTab('mapa')"><i class="bi bi-map" aria-hidden="true"></i><span>Mapa</span></button>
+        <button type="button" role="tab" [attr.aria-selected]="activeTab() === 'concessoes'" [class.active]="activeTab() === 'concessoes'" (click)="setTab('concessoes')"><i class="bi bi-award" aria-hidden="true"></i><span>Concessões</span></button>
       </nav>
 
       <div class="tab-content" role="tabpanel">
@@ -26,6 +27,9 @@
             <article class="metric-card"><span class="metric-icon"><i class="bi bi-bank" aria-hidden="true"></i></span><div><strong>{{ response()?.institutions || institutionCounts().length }}</strong><span>Instituições</span></div></article>
             <article class="metric-card"><span class="metric-icon"><i class="bi bi-map" aria-hidden="true"></i></span><div><strong>{{ regionCounts().length }}</strong><span>Regiões representadas</span></div></article>
           </div>
+          @if (response()?.actives_by_year; as history) {
+            <app-pq-active-by-year [data]="history"></app-pq-active-by-year>
+          }
           <div class="content-grid">
             <article class="panel"><div class="panel-heading"><div><span class="eyebrow">Perfil das bolsas</span><h2>Modalidades</h2></div><span class="total-label">{{ scholars().length }} bolsistas</span></div><div class="level-list">
               @for (item of levelCounts(); track item.label) {<div class="level-row"><span class="level-badge">{{ item.label }}</span><div class="level-progress" role="img" [attr.aria-label]="'Nível ' + item.label + ': ' + item.count + ' bolsistas'"><span [style.width.%]="item.percentage"></span></div><strong>{{ item.count }}</strong></div>}
@@ -60,15 +64,23 @@
           <div class="map-layout">
             <div class="map-panel">
               <app-pq-brazil-map [data]="stateCounts()"></app-pq-brazil-map>
-              <div class="map-legend" aria-label="Legenda de intensidade"><span>Menor concentração</span><i class="legend-step level-1"></i><i class="legend-step level-2"></i><i class="legend-step level-3"></i><span>Maior concentração</span></div>
+              <div class="map-legend" aria-label="Legenda de intensidade"><span>Menor concentração</span><i class="legend-step level-1"></i><i class="legend-step level-2"></i><i class="legend-step level-3"></i><i class="legend-step level-4"></i><i class="legend-step level-5"></i><span>Maior concentração</span></div>
             </div>
             <aside class="state-ranking" aria-labelledby="state-ranking-title">
-              <div class="panel-heading"><div><span class="eyebrow">Ranking estadual</span><h2 id="state-ranking-title">Bolsistas por UF</h2></div></div>
+              <div class="panel-heading"><div><span class="eyebrow">Ranking estadual</span><h2 id="state-ranking-title">Bolsistas por UF</h2></div><button type="button" class="csv-button" (click)="exportStateCsv()" aria-label="Exportar ranking estadual para CSV"><i class="bi bi-file-earmark-spreadsheet" aria-hidden="true"></i><span>Exportar CSV</span></button></div>
               @for (state of stateCounts(); track state.code; let index = $index) {
                 @if (state.count > 0) {<div class="state-row"><span class="state-position">{{ index + 1 }}</span><span class="state-code">{{ state.code }}</span><div><strong>{{ state.label }}</strong><small>{{ state.percentage | number:'1.1-1' }}% do total</small></div><strong class="state-value">{{ state.count }}</strong></div>}
               }
             </aside>
           </div>
+        }
+
+        @if (activeTab() === 'concessoes') {
+          @if (response()?.applications; as applications) {
+            <app-pq-applications [data]="applications"></app-pq-applications>
+          } @else {
+            <div class="empty-state">Não há dados de concessões disponíveis.</div>
+          }
         }
       </div>
     }

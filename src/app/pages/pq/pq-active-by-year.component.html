@@ -1,0 +1,61 @@
+<article class="history-panel" aria-labelledby="pq-history-title">
+  <div class="history-heading">
+    <div>
+      <span class="history-eyebrow">Série histórica</span>
+      <h2 id="pq-history-title">Bolsas ativas por ano</h2>
+    </div>
+    @if (selected(); as current) {
+      <div class="selected-total" aria-live="polite"><strong>{{ current.total }}</strong><span>bolsas em {{ current.year }}</span></div>
+    }
+  </div>
+
+  <div class="chart-scroll">
+    <div class="year-chart" [style.grid-template-columns]="'repeat(' + years().length + ', minmax(14px, 1fr))'" role="group" aria-label="Selecione um ano para ver as modalidades">
+      @for (item of years(); track item.year; let index = $index) {
+        <button
+          type="button"
+          class="year-column"
+          [class.selected]="selectedYear() === item.year"
+          [attr.aria-label]="item.year + ': ' + item.total + ' bolsas ativas'"
+          [attr.aria-pressed]="selectedYear() === item.year"
+          (click)="selectYear(item.year)"
+        >
+          <span class="bar-slot">
+            <span class="bar-group" [style.height.%]="barHeight(item.total)">
+              <span class="bar-value">{{ item.total }}</span>
+              <span class="year-bar">
+                @for (modality of item.modalities; track modality.label) {
+                  <span
+                    class="bar-segment"
+                    [style.height.%]="modalityShare(modality.count, item.total)"
+                    [style.background-color]="modalityColor(modality.label)"
+                    [attr.aria-label]="modality.label + ': ' + modality.count"
+                    [attr.title]="modality.label + ': ' + modality.count"
+                  ></span>
+                }
+              </span>
+            </span>
+          </span>
+          <span class="year-label">{{ showYearLabel(index) ? item.year : '' }}</span>
+        </button>
+      }
+    </div>
+  </div>
+
+  <div class="chart-legend" aria-label="Legenda das modalidades">
+    @for (label of modalityLabels(); track label) {
+      <span><i [style.background-color]="modalityColor(label)"></i>{{ label }}</span>
+    }
+  </div>
+
+  @if (selected(); as current) {
+    <div class="modality-detail">
+      <strong>Modalidades em {{ current.year }}</strong>
+      <div class="modality-chips">
+        @for (item of current.modalities; track item.label) {
+          <span><i [style.background-color]="modalityColor(item.label)"></i><b>{{ item.label }}</b> {{ item.count }}</span>
+        }
+      </div>
+    </div>
+  }
+</article>

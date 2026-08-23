@@ -5,10 +5,12 @@ import { FormsModule } from '@angular/forms';
 import { TranslateModule } from '@ngx-translate/core';
 import { geoIdentity, geoPath } from 'd3';
 import { BreadcrumbsComponent } from '../../components/breadcrumbs/breadcrumbs.component';
+import { PqActiveByYearComponent, PqActivesByYear } from './pq-active-by-year.component';
+import { PqApplications, PqApplicationsComponent } from './pq-applications.component';
 
-type PqTab = 'resumo' | 'bolsistas' | 'instituicoes' | 'regioes' | 'mapa';
+type PqTab = 'resumo' | 'bolsistas' | 'instituicoes' | 'regioes' | 'mapa' | 'concessoes';
 interface PqScholar { id_bb: string; bs_nome: string; bs_nivel: string; bs_start: string; bs_finish: string; BS_IES: string; bs_lattes: string; bs_rdf_id: string; bd_brapci: string; mod_sigla: string; mod_descricao: string; }
-interface PqResponse { status: string; message: string; actives: number; institutions: number; data: PqScholar[]; }
+interface PqResponse { status: string; message: string; actives: number; institutions: number; actives_by_year?: PqActivesByYear; applications?: PqApplications; data: PqScholar[]; }
 interface CountItem { label: string; count: number; percentage: number; }
 interface StateCount extends CountItem { code: string; ibgeCode: string; }
 interface MapShape extends StateCount { name: string; path: string; x: number; y: number; intensity: number; }
@@ -71,9 +73,11 @@ const STATE_INFO: Record<string, { name: string; ibgeCode: string }> = {
     .brazil-map { display:block; width:100%; max-height:570px; }
     .state-shape { stroke:var(--theme-card-bg); stroke-width:1.5; vector-effect:non-scaling-stroke; transition:fill .2s ease; }
     .intensity-0 { fill:var(--theme-sand); }
-    .intensity-1 { fill:color-mix(in srgb, var(--pq-map-color, #9a654d) 28%, var(--theme-sand)); }
-    .intensity-2 { fill:color-mix(in srgb, var(--pq-map-color, #9a654d) 55%, var(--theme-sand)); }
-    .intensity-3 { fill:var(--pq-map-color, #9a654d); }
+    .intensity-1 { fill:color-mix(in srgb, var(--pq-map-color, #9a654d) 18%, var(--theme-sand)); }
+    .intensity-2 { fill:color-mix(in srgb, var(--pq-map-color, #9a654d) 38%, var(--theme-sand)); }
+    .intensity-3 { fill:color-mix(in srgb, var(--pq-map-color, #9a654d) 58%, var(--theme-sand)); }
+    .intensity-4 { fill:color-mix(in srgb, var(--pq-map-color, #9a654d) 78%, var(--theme-sand)); }
+    .intensity-5 { fill:var(--pq-map-color, #9a654d); }
     .state-shape:hover { filter:brightness(.92); stroke:var(--theme-ink); }
     .state-label { fill:#fff; font:700 12px 'Raleway',sans-serif; text-anchor:middle; pointer-events:none; paint-order:stroke; stroke:rgb(0 0 0 / 28%); stroke-width:2px; }
   `],
@@ -105,14 +109,15 @@ export class PqBrazilMapComponent implements OnInit {
       const state = byIbge.get(String(feature.properties?.codarea)) || { code: '', ibgeCode: '', label: '', count: 0, percentage: 0 };
       const [x, y] = pathGenerator.centroid(feature);
       const ratio = state.count / max;
-      return { ...state, name: state.label, path: pathGenerator(feature) || '', x, y, intensity: state.count === 0 ? 0 : ratio <= .34 ? 1 : ratio <= .67 ? 2 : 3 };
+      return { ...state, name: state.label, path: pathGenerator(feature) || '', x, y,
+        intensity: state.count === 0 ? 0 : ratio <= .15 ? 1 : ratio <= .3 ? 2 : ratio <= .5 ? 3 : ratio <= .75 ? 4 : 5 };
     }));
   }
 }
 
 @Component({
   selector: 'app-pq-page', standalone: true,
-  imports: [CommonModule, FormsModule, TranslateModule, BreadcrumbsComponent, PqBrazilMapComponent],
+  imports: [CommonModule, FormsModule, TranslateModule, BreadcrumbsComponent, PqBrazilMapComponent, PqActiveByYearComponent, PqApplicationsComponent],
   templateUrl: './pq.page.html', styleUrl: './pq.page.scss',
 })
 export class PqPage implements OnInit {
@@ -166,6 +171,25 @@ export class PqPage implements OnInit {
   lattesUrl(item: PqScholar): string | null { return item.bs_lattes && item.bs_lattes !== 'NI' ? `https://lattes.cnpq.br/${item.bs_lattes}` : null; }
   brapciUrl(item: PqScholar): string | null { return item.bs_rdf_id && item.bs_rdf_id !== '0' ? `/v/${item.bs_rdf_id}` : null; }
   trackScholar(_: number, item: PqScholar): string { return item.id_bb; }
+  exportStateCsv(): void {
+    const populatedStates = this.stateCounts().filter((state) => state.count > 0);
+    const rows = populatedStates.map((state, index) => [
+      index + 1,
+      state.code,
+      state.label,
+      state.count,
+      state.percentage.toLocaleString('pt-BR', { minimumFractionDigits: 1, maximumFractionDigits: 1 }),
+    ]);
+    const csv = [['Posição', 'UF', 'Estado', 'Bolsistas', 'Percentual do total'], ...rows]
+      .map((row) => row.map((value) => `"${String(value).replaceAll('"', '""')}"`).join(';'))
+      .join('\r\n');
+    const url = URL.createObjectURL(new Blob(['\uFEFF', csv], { type: 'text/csv;charset=utf-8' }));
+    const anchor = document.createElement('a');
+    anchor.href = url;
+    anchor.download = 'bolsistas-pq-por-estado.csv';
+    anchor.click();
+    URL.revokeObjectURL(url);
+  }
   private countBy(items: PqScholar[], label: (item: PqScholar) => string, sortLabels?: (a: string, b: string) => number): CountItem[] {
     const counts = new Map<string, number>();
     items.forEach((item) => counts.set(label(item), (counts.get(label(item)) || 0) + 1));
