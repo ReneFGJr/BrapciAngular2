@@ -103,6 +103,31 @@
   padding: 0.5rem 0;
 }
 
+.scholarship-tab-content {
+  color: var(--theme-ink);
+}
+
+.scholarship-history-table {
+  --bs-table-bg: transparent;
+  --bs-table-border-color: var(--theme-line);
+  --bs-table-color: var(--theme-ink);
+  --bs-table-striped-bg: color-mix(in srgb, var(--theme-sand) 45%, transparent);
+  --bs-table-striped-color: var(--theme-ink);
+  --bs-table-hover-bg: color-mix(in srgb, var(--theme-sand) 65%, transparent);
+  --bs-table-hover-color: var(--theme-ink);
+
+  color: var(--theme-ink);
+
+  th {
+    background: color-mix(in srgb, var(--theme-sand) 65%, transparent);
+    color: var(--theme-ink);
+  }
+
+  td {
+    color: var(--theme-ink);
+  }
+}
+
 .summary-panel {
   display: grid;
   gap: 0.7rem;
