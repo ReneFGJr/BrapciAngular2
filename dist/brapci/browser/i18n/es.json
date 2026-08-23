@@ -192,6 +192,13 @@
     "citationsGranted": {
       "label": "Citaciones concedidas"
     },
+    "scholarship": {
+      "label": "Becario",
+      "modality": "Modalidad / nivel",
+      "institution": "Institucion",
+      "period": "Periodo",
+      "history": "Historial"
+    },
     "workTypes": {
       "Article": "Articulos",
       "Book": "Libros",

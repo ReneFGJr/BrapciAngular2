@@ -23,6 +23,8 @@
           <span class="badge badge-menu-outline ms-1">{{ networkData.nodes.length }}</span>
         } @else if (tab.type === 'citationsGranted') {
           <span class="badge badge-menu-outline ms-1">{{ citationsGrantedItems().length }}</span>
+        } @else if (tab.type === 'scholarship') {
+          <span class="badge badge-menu-outline ms-1">{{ scholarshipHistoryCount() }}</span>
         }
       </button>
     }
@@ -214,6 +216,47 @@
               <li [innerHTML]="item"></li>
             }
           </ol>
+        }
+      </div>
+    }
+
+    <!-- Scholarship Tab Content -->
+    @if (selectedTab() === 'scholarship') {
+      <div class="scholarship-tab-content mt-2">
+        @for (scholarship of scholarships(); track scholarship.agency) {
+          <section class="mb-4" [attr.aria-label]="scholarship.agency">
+            <h4 class="h6 mb-3">{{ scholarship.agency }}</h4>
+            <dl class="row mb-3">
+              <dt class="col-sm-3">{{ 'author.scholarship.modality' | translate }}</dt>
+              <dd class="col-sm-9">{{ scholarship.modality }} {{ scholarship.level }}</dd>
+              <dt class="col-sm-3">{{ 'author.scholarship.institution' | translate }}</dt>
+              <dd class="col-sm-9">{{ scholarship.ies }}</dd>
+              <dt class="col-sm-3">{{ 'author.scholarship.period' | translate }}</dt>
+              <dd class="col-sm-9">{{ scholarship.start | date:'dd/MM/yyyy':'UTC' }} — {{ scholarship.finish | date:'dd/MM/yyyy':'UTC' }}</dd>
+            </dl>
+
+            @if (scholarship.history.length > 0) {
+              <h5 class="h6">{{ 'author.scholarship.history' | translate }}</h5>
+              <div class="table-responsive">
+                <table class="table table-sm align-middle">
+                  <thead><tr>
+                    <th>{{ 'author.scholarship.period' | translate }}</th>
+                    <th>{{ 'author.scholarship.institution' | translate }}</th>
+                    <th>{{ 'author.scholarship.modality' | translate }}</th>
+                  </tr></thead>
+                  <tbody>
+                    @for (item of scholarship.history; track $index) {
+                      <tr>
+                        <td>{{ item.start | date:'dd/MM/yyyy':'UTC' }} — {{ item.finish | date:'dd/MM/yyyy':'UTC' }}</td>
+                        <td>{{ item.ies }}</td>
+                        <td>{{ item.modality }} {{ item.level }}</td>
+                      </tr>
+                    }
+                  </tbody>
+                </table>
+              </div>
+            }
+          </section>
         }
       </div>
     }

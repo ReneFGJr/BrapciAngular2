@@ -48,6 +48,26 @@ export class AuthorGadgetComponent {
   @Input() coauthors: Coauthor[] = [];
   @Input() networkData: NetworkGraph = { nodes: [], edges: [] };
   @Input() citationsGranted: string[] = [];
+  @Input() bolsista: unknown = null;
+
+  readonly scholarshipLabels = computed(() => {
+    if (!this.bolsista || typeof this.bolsista !== 'object' || Array.isArray(this.bolsista)) {
+      return [] as string[];
+    }
+
+    return Object.entries(this.bolsista as Record<string, unknown>).flatMap(([agency, raw]) => {
+      if (!raw || typeof raw !== 'object' || Array.isArray(raw)) {
+        return [];
+      }
+
+      const scholarship = raw as Record<string, unknown>;
+      const modality = String(scholarship['mod'] ?? '').trim();
+      const level = String(scholarship['nivel'] ?? '').trim();
+      const details = [agency.trim(), modality, level].filter(Boolean);
+
+      return details.length > 1 ? [details.join(' ')] : [];
+    });
+  });
 
   readonly filteredChartPoints = computed(() => {
     const range = this.selectedRange();

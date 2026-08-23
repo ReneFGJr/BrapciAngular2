@@ -15,6 +15,19 @@ export type AuthorWorksGroup = {
 
 type WorkSubTabKey = AuthorWorksGroup['key'] | 'summary';
 
+type ScholarshipHistory = {
+  start: string;
+  finish: string;
+  ies: string;
+  modality: string;
+  level: string;
+};
+
+type Scholarship = ScholarshipHistory & {
+  agency: string;
+  history: ScholarshipHistory[];
+};
+
 type DispersionPoint = {
   x: number;
   y: number;
@@ -37,10 +50,10 @@ type PieArc = PieSlice & {
 };
 
 export type AuthorContentTab = {
-  id: 'works' | 'coauthors' | 'network' | 'citationsGranted';
+  id: 'works' | 'coauthors' | 'network' | 'citationsGranted' | 'scholarship';
   label: string;
-  type: 'works' | 'coauthors' | 'network' | 'citationsGranted';
-  data?: AuthorWorksGroup[] | Coauthor[] | NetworkGraph | string[];
+  type: 'works' | 'coauthors' | 'network' | 'citationsGranted' | 'scholarship';
+  data?: AuthorWorksGroup[] | Coauthor[] | NetworkGraph | string[] | Scholarship[];
 };
 
 @Component({
@@ -55,8 +68,15 @@ export class AuthorWorksComponent {
   @Input() coauthors: Coauthor[] = [];
   @Input() networkData: NetworkGraph = { nodes: [], edges: [] };
   @Input() citationsGranted: string[] = [];
+  @Input() bolsista: unknown = null;
 
-  readonly selectedTab = signal<'works' | 'coauthors' | 'network' | 'citationsGranted'>('works');
+  readonly selectedTab = signal<AuthorContentTab['id']>('works');
+
+  readonly scholarships = computed(() => this.parseScholarships(this.bolsista));
+
+  readonly scholarshipHistoryCount = computed(() =>
+    this.scholarships().reduce((total, scholarship) => total + scholarship.history.length, 0)
+  );
 
   readonly contentTabs = computed(() => {
     const tabs: AuthorContentTab[] = [
@@ -85,6 +105,15 @@ export class AuthorWorksComponent {
         data: this.citationsGranted
       }
     ];
+
+    if (this.scholarships().length > 0) {
+      tabs.push({
+        id: 'scholarship',
+        label: 'author.scholarship.label',
+        type: 'scholarship',
+        data: this.scholarships()
+      });
+    }
 
     return tabs;
   });
@@ -306,10 +335,50 @@ export class AuthorWorksComponent {
       tabId === 'works' ||
       tabId === 'coauthors' ||
       tabId === 'network' ||
-      tabId === 'citationsGranted'
+      tabId === 'citationsGranted' ||
+      tabId === 'scholarship'
     ) {
       this.selectedTab.set(tabId);
     }
+  }
+
+  private parseScholarships(value: unknown): Scholarship[] {
+    if (!value || typeof value !== 'object' || Array.isArray(value)) {
+      return [];
+    }
+
+    return Object.entries(value as Record<string, unknown>).flatMap(([agency, raw]) => {
+      if (!raw || typeof raw !== 'object' || Array.isArray(raw)) {
+        return [];
+      }
+
+      const item = raw as Record<string, unknown>;
+      const history = Array.isArray(item['history'])
+        ? item['history'].flatMap((entry): ScholarshipHistory[] => {
+            if (!entry || typeof entry !== 'object' || Array.isArray(entry)) {
+              return [];
+            }
+            const record = entry as Record<string, unknown>;
+            return [{
+              start: String(record['bs_start'] ?? ''),
+              finish: String(record['bs_finish'] ?? ''),
+              ies: String(record['BS_IES'] ?? ''),
+              modality: String(record['mod_sigla'] ?? ''),
+              level: String(record['bs_nivel'] ?? '')
+            }];
+          })
+        : [];
+
+      return [{
+        agency,
+        start: String(item['start'] ?? ''),
+        finish: String(item['finish'] ?? ''),
+        ies: String(item['ies'] ?? ''),
+        modality: String(item['mod'] ?? ''),
+        level: String(item['nivel'] ?? ''),
+        history
+      }];
+    });
   }
 
   setWorkTab(key: WorkSubTabKey): void {

@@ -751,6 +751,15 @@ export class VIdPage {
     return data['dataTAG'] ?? data['dataTag'] ?? data['data_tag'] ?? null;
   });
 
+  readonly bolsistaData = computed(() => {
+    const value = this.response();
+    if (!value || typeof value !== 'object') {
+      return null;
+    }
+
+    return (value as Record<string, unknown>)['bolsista'] ?? null;
+  });
+
   readonly citationsGrantedList = computed(() => {
     const value = this.response();
     if (!value || typeof value !== 'object') {

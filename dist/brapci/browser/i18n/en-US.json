@@ -122,6 +122,13 @@
       "citationsGranted": {
         "label": "Granted Citations"
       },
+      "scholarship": {
+        "label": "Scholarship",
+        "modality": "Type / level",
+        "institution": "Institution",
+        "period": "Period",
+        "history": "History"
+      },
       "workTypes": {
         "Article": "Articles",
         "Book": "Books",

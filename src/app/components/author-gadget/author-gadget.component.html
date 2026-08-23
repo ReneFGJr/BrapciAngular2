@@ -3,9 +3,12 @@
     <div class="author-info flex-grow-1">
       <h1 class="h1">{{ name}}</h1>
       <p class="mb-1"><strong>{{ 'author.nameAbnt' | translate }}:</strong> {{ nameAbnt }}</p>
-      <p class="mb-1">
+      <p class="author-profile-badges mb-1">
         @if (gender) {
-          <app-author-gender [gender]="gender" class="me-3"></app-author-gender>
+          <app-author-gender [gender]="gender"></app-author-gender>
+        }
+        @for (scholarshipLabel of scholarshipLabels(); track scholarshipLabel) {
+          <span class="author-scholarship-badge">{{ scholarshipLabel }}</span>
         }
       </p>
     </div>
@@ -72,6 +75,7 @@
     [dataJour]="dataJour"
     [coauthors]="coauthors"
     [citationsGranted]="citationsGranted"
+    [bolsista]="bolsista"
     [networkData]="networkData">
   </app-author-works>
 </section>

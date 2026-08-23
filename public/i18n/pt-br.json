@@ -190,6 +190,13 @@
       "citationsGranted": {
         "label": "Citacoes concedidas"
       },
+      "scholarship": {
+        "label": "Bolsista",
+        "modality": "Modalidade / nivel",
+        "institution": "Instituicao",
+        "period": "Periodo",
+        "history": "Historico"
+      },
       "workTypes": {
         "Article": "Artigos",
         "Book": "Livros",
