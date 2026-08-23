@@ -1,0 +1,7 @@
+{
+  "version": 3,
+  "sources": ["src/app/components/home-search/home-search.component.scss"],
+  "sourcesContent": [".hero {\r\n  border-bottom: 1px solid var(--theme-line);\r\n}\r\n\r\n.hero-logo {\r\n  display: inline-block;\r\n  height: auto;\r\n  max-width: min(520px, 82vw);\r\n  width: 100%;\r\n}\r\n\r\n.layout {\r\n  flex: 1;\r\n}\r\n"],
+  "mappings": ";AAAA,CAAA;AACE,iBAAA,IAAA,MAAA,IAAA;;AAGF,CAAA;AACE,WAAA;AACA,UAAA;AACA,aAAA,IAAA,KAAA,EAAA;AACA,SAAA;;AAGF,CAAA;AACE,QAAA;;",
+  "names": []
+}

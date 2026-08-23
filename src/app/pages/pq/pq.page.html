@@ -1,15 +1,76 @@
-<section class="pq-wrap py-4" aria-labelledby="pq-title">
+<section class="pq-page py-4" aria-labelledby="pq-title">
   <div class="container">
     <app-breadcrumbs></app-breadcrumbs>
-  </div>
+    <header class="pq-hero">
+      <div class="pq-hero-copy"><span class="eyebrow">Panorama da Ciência da Informação</span><h1 id="pq-title">Bolsistas de Produtividade CNPq</h1><p>Conheça a distribuição dos pesquisadores por modalidade, instituição e região do Brasil.</p></div>
+      <img src="assets/logos/logo_pq.png" alt="Base de dados dos bolsistas PQ" class="pq-logo" />
+    </header>
 
-  <div class="container mt-0 mb-4">
-    <div class="col-12">
-      <h2 id="pq-title" class="eventos-title mb-0">{{ 'pq.title' | translate }}</h2>
-    </div>
-  </div>
+    @if (loading()) {
+      <div class="status-panel" role="status" aria-live="polite"><span class="spinner-border spinner-border-sm" aria-hidden="true"></span> Carregando dados dos bolsistas…</div>
+    } @else if (error()) {
+      <div class="alert alert-warning d-flex flex-wrap align-items-center justify-content-between gap-3" role="alert"><span>{{ error() }}</span><button type="button" class="btn btn-outline-dark btn-sm" (click)="loadData()">Tentar novamente</button></div>
+    } @else {
+      <nav class="pq-tabs" aria-label="Visualizações dos bolsistas" role="tablist">
+        <button type="button" role="tab" [attr.aria-selected]="activeTab() === 'resumo'" [class.active]="activeTab() === 'resumo'" (click)="setTab('resumo')"><i class="bi bi-grid-1x2" aria-hidden="true"></i><span>Resumo</span></button>
+        <button type="button" role="tab" [attr.aria-selected]="activeTab() === 'bolsistas'" [class.active]="activeTab() === 'bolsistas'" (click)="setTab('bolsistas')"><i class="bi bi-people" aria-hidden="true"></i><span>Bolsistas</span></button>
+        <button type="button" role="tab" [attr.aria-selected]="activeTab() === 'instituicoes'" [class.active]="activeTab() === 'instituicoes'" (click)="setTab('instituicoes')"><i class="bi bi-building" aria-hidden="true"></i><span>Instituições</span></button>
+        <button type="button" role="tab" [attr.aria-selected]="activeTab() === 'regioes'" [class.active]="activeTab() === 'regioes'" (click)="setTab('regioes')"><i class="bi bi-geo-alt" aria-hidden="true"></i><span>Regiões</span></button>
+        <button type="button" role="tab" [attr.aria-selected]="activeTab() === 'mapa'" [class.active]="activeTab() === 'mapa'" (click)="setTab('mapa')"><i class="bi bi-map" aria-hidden="true"></i><span>Mapa</span></button>
+      </nav>
 
-  <div class="container">
-    <p class="text-secondary mb-0">Conteudo em desenvolvimento.</p>
+      <div class="tab-content" role="tabpanel">
+        @if (activeTab() === 'resumo') {
+          <div class="summary-grid">
+            <article class="metric-card metric-primary"><span class="metric-icon"><i class="bi bi-person-check" aria-hidden="true"></i></span><div><strong>{{ response()?.actives || scholars().length }}</strong><span>Bolsistas ativos</span></div></article>
+            <article class="metric-card"><span class="metric-icon"><i class="bi bi-bank" aria-hidden="true"></i></span><div><strong>{{ response()?.institutions || institutionCounts().length }}</strong><span>Instituições</span></div></article>
+            <article class="metric-card"><span class="metric-icon"><i class="bi bi-map" aria-hidden="true"></i></span><div><strong>{{ regionCounts().length }}</strong><span>Regiões representadas</span></div></article>
+          </div>
+          <div class="content-grid">
+            <article class="panel"><div class="panel-heading"><div><span class="eyebrow">Perfil das bolsas</span><h2>Modalidades</h2></div><span class="total-label">{{ scholars().length }} bolsistas</span></div><div class="level-list">
+              @for (item of levelCounts(); track item.label) {<div class="level-row"><span class="level-badge">{{ item.label }}</span><div class="level-progress" role="img" [attr.aria-label]="'Nível ' + item.label + ': ' + item.count + ' bolsistas'"><span [style.width.%]="item.percentage"></span></div><strong>{{ item.count }}</strong></div>}
+            </div></article>
+            <article class="panel"><div class="panel-heading"><div><span class="eyebrow">Maior concentração</span><h2>Principais instituições</h2></div><button class="text-action" type="button" (click)="setTab('instituicoes')">Ver todas <i class="bi bi-arrow-right" aria-hidden="true"></i></button></div><div class="ranking-list">
+              @for (item of institutionCounts().slice(0, 6); track item.label; let index = $index) {<div class="ranking-row"><span class="rank">{{ index + 1 }}</span><strong>{{ item.label }}</strong><span>{{ item.count }} bolsistas</span></div>}
+            </div></article>
+          </div>
+        }
+
+        @if (activeTab() === 'bolsistas') {
+          <div class="section-heading"><div><span class="eyebrow">Relação nominal</span><h2>Bolsistas e modalidades</h2></div><span class="result-count">{{ filteredScholars().length }} resultado(s)</span></div>
+          <div class="filters"><label class="search-field"><span class="visually-hidden">Buscar bolsista</span><i class="bi bi-search" aria-hidden="true"></i><input type="search" class="form-control" placeholder="Buscar por nome ou instituição" [ngModel]="searchTerm()" (ngModelChange)="updateSearch($event)" /></label><label><span class="visually-hidden">Filtrar por nível</span><select class="form-select" [ngModel]="levelFilter()" (ngModelChange)="updateLevel($event)"><option value="todos">Todos os níveis</option>@for (item of levels(); track item) {<option [value]="item">Nível {{ item }}</option>}</select></label></div>
+          <div class="table-responsive scholar-table-wrap"><table class="table align-middle scholar-table"><thead><tr><th>Bolsista</th><th>Modalidade</th><th>Instituição</th><th>Vigência</th><th><span class="visually-hidden">Perfis</span></th></tr></thead><tbody>
+            @for (item of filteredScholars(); track trackScholar($index, item)) {<tr><td><strong>{{ item.bs_nome }}</strong></td><td><span class="level-badge">{{ item.mod_sigla }} {{ level(item) }}</span></td><td>{{ item.BS_IES }}</td><td class="text-nowrap">{{ item.bs_start | date:'MM/yyyy':'UTC' }} — {{ item.bs_finish | date:'MM/yyyy':'UTC' }}</td><td class="profile-links"><a *ngIf="brapciUrl(item) as url" [href]="url" aria-label="Ver perfil na Brapci"><i class="bi bi-journal-text" aria-hidden="true"></i></a><a *ngIf="lattesUrl(item) as url" [href]="url" target="_blank" rel="noopener" aria-label="Abrir currículo Lattes"><i class="bi bi-box-arrow-up-right" aria-hidden="true"></i></a></td></tr>} @empty {<tr><td colspan="5" class="empty-state">Nenhum bolsista encontrado com estes filtros.</td></tr>}
+          </tbody></table></div>
+        }
+
+        @if (activeTab() === 'instituicoes') {
+          <div class="section-heading"><div><span class="eyebrow">Vínculo institucional</span><h2>Instituições dos bolsistas</h2></div><span class="result-count">{{ institutionCounts().length }} instituições</span></div>
+          <div class="bar-list">@for (item of institutionCounts(); track item.label; let index = $index) {<div class="bar-row"><span class="bar-rank">{{ index + 1 }}</span><div class="bar-main"><div class="bar-label"><strong>{{ item.label }}</strong><span>{{ regionFor(item.label) }}</span></div><div class="bar-track"><span [style.width.%]="item.count / maxInstitutionCount() * 100"></span></div></div><strong class="bar-value">{{ item.count }}</strong></div>}</div>
+        }
+
+        @if (activeTab() === 'regioes') {
+          <div class="section-heading"><div><span class="eyebrow">Distribuição territorial</span><h2>Regiões dos bolsistas</h2></div><span class="result-count">Brasil</span></div>
+          <div class="region-grid">@for (item of regionCounts(); track item.label) {<article class="region-card"><div class="region-top"><span class="region-pin"><i class="bi bi-geo-alt-fill" aria-hidden="true"></i></span><div><span>{{ item.label }}</span><strong>{{ item.count }}</strong><small>bolsistas</small></div></div><div class="region-share"><span [style.width.%]="item.count / maxRegionCount() * 100"></span></div><p>{{ item.percentage | number:'1.1-1' }}% do total</p></article>}</div>
+          <article class="panel mt-4"><div class="panel-heading"><div><span class="eyebrow">Composição regional</span><h2>Instituições por região</h2></div></div><div class="region-institutions">@for (region of regionCounts(); track region.label) {<div><strong>{{ region.label }}</strong><p>@for (institution of institutionCounts(); track institution.label) {@if (regionFor(institution.label) === region.label) {<span>{{ institution.label }}</span>}}</p></div>}</div></article>
+        }
+
+        @if (activeTab() === 'mapa') {
+          <div class="section-heading"><div><span class="eyebrow">Distribuição estadual</span><h2>Mapa dos bolsistas por estado</h2></div><span class="result-count">{{ scholars().length }} bolsistas</span></div>
+          <div class="map-layout">
+            <div class="map-panel">
+              <app-pq-brazil-map [data]="stateCounts()"></app-pq-brazil-map>
+              <div class="map-legend" aria-label="Legenda de intensidade"><span>Menor concentração</span><i class="legend-step level-1"></i><i class="legend-step level-2"></i><i class="legend-step level-3"></i><span>Maior concentração</span></div>
+            </div>
+            <aside class="state-ranking" aria-labelledby="state-ranking-title">
+              <div class="panel-heading"><div><span class="eyebrow">Ranking estadual</span><h2 id="state-ranking-title">Bolsistas por UF</h2></div></div>
+              @for (state of stateCounts(); track state.code; let index = $index) {
+                @if (state.count > 0) {<div class="state-row"><span class="state-position">{{ index + 1 }}</span><span class="state-code">{{ state.code }}</span><div><strong>{{ state.label }}</strong><small>{{ state.percentage | number:'1.1-1' }}% do total</small></div><strong class="state-value">{{ state.count }}</strong></div>}
+              }
+            </aside>
+          </div>
+        }
+      </div>
+    }
   </div>
 </section>

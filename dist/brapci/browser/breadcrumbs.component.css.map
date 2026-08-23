@@ -1,0 +1,7 @@
+{
+  "version": 3,
+  "sources": ["src/app/components/breadcrumbs/breadcrumbs.component.scss"],
+  "sourcesContent": [".bc-wrap {\r\n  padding-top: 0.25rem;\r\n}\r\n\r\n.breadcrumb {\r\n  margin-bottom: 0;\r\n}\r\n\r\n.breadcrumb-item,\r\n.breadcrumb-item a,\r\n.breadcrumb-item span {\r\n  color: var(--theme-hint, #6c757d);\r\n  font-size: 0.9rem;\r\n  text-decoration: none;\r\n}\r\n\r\n.breadcrumb-item a:hover,\r\n.breadcrumb-item a:focus-visible {\r\n  color: var(--theme-ink, #212529);\r\n  text-decoration: underline;\r\n}\r\n\r\n.breadcrumb-item.active,\r\n.breadcrumb-item.active span {\r\n  color: var(--theme-ink, #212529);\r\n  font-weight: 600;\r\n}\r\n"],
+  "mappings": ";AAAA,CAAA;AACE,eAAA;;AAGF,CAAA;AACE,iBAAA;;AAGF,CAAA;AAAA,CAAA,gBAAA;AAAA,CAAA,gBAAA;AAGE,SAAA,IAAA,YAAA,EAAA;AACA,aAAA;AACA,mBAAA;;AAGF,CARA,gBAQA,CAAA;AAAA,CARA,gBAQA,CAAA;AAEE,SAAA,IAAA,WAAA,EAAA;AACA,mBAAA;;AAGF,CAdA,eAcA,CAAA;AAAA,CAdA,eAcA,CAAA,OAAA;AAEE,SAAA,IAAA,WAAA,EAAA;AACA,eAAA;;",
+  "names": []
+}
