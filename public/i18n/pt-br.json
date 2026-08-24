@@ -190,6 +190,10 @@
       "citationsGranted": {
         "label": "Citacoes concedidas"
       },
+      "variants": {
+        "label": "Variações do nome"
+      },
+      "researcherProfileTitle": "Acessar dados do pesquisador",
       "scholarship": {
         "label": "Bolsista",
         "modality": "Modalidade / nivel",

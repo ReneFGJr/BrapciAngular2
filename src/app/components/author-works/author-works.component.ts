@@ -50,9 +50,9 @@ type PieArc = PieSlice & {
 };
 
 export type AuthorContentTab = {
-  id: 'works' | 'coauthors' | 'network' | 'citationsGranted' | 'scholarship';
+  id: 'works' | 'coauthors' | 'network' | 'citationsGranted' | 'variants' | 'scholarship';
   label: string;
-  type: 'works' | 'coauthors' | 'network' | 'citationsGranted' | 'scholarship';
+  type: 'works' | 'coauthors' | 'network' | 'citationsGranted' | 'variants' | 'scholarship';
   data?: AuthorWorksGroup[] | Coauthor[] | NetworkGraph | string[] | Scholarship[];
 };
 
@@ -69,6 +69,7 @@ export class AuthorWorksComponent {
   @Input() networkData: NetworkGraph = { nodes: [], edges: [] };
   @Input() citationsGranted: string[] = [];
   @Input() bolsista: unknown = null;
+  @Input() variants: string[] = [];
 
   readonly selectedTab = signal<AuthorContentTab['id']>('works');
 
@@ -105,6 +106,15 @@ export class AuthorWorksComponent {
         data: this.citationsGranted
       }
     ];
+
+    if (this.variants.length > 0) {
+      tabs.push({
+        id: 'variants',
+        label: 'author.variants.label',
+        type: 'variants',
+        data: this.variants
+      });
+    }
 
     if (this.scholarships().length > 0) {
       tabs.push({
@@ -336,6 +346,7 @@ export class AuthorWorksComponent {
       tabId === 'coauthors' ||
       tabId === 'network' ||
       tabId === 'citationsGranted' ||
+      tabId === 'variants' ||
       tabId === 'scholarship'
     ) {
       this.selectedTab.set(tabId);

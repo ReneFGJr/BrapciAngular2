@@ -119,6 +119,10 @@
       "citationsGranted": {
         "label": "Citaciones concedidas"
       },
+      "variants": {
+        "label": "Variaciones del nombre"
+      },
+      "researcherProfileTitle": "Acceder a los datos del investigador",
       "scholarship": {
         "label": "Becario",
         "modality": "Modalidad / nivel",

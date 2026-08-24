@@ -23,6 +23,8 @@
           <span class="badge badge-menu-outline ms-1">{{ networkData.nodes.length }}</span>
         } @else if (tab.type === 'citationsGranted') {
           <span class="badge badge-menu-outline ms-1">{{ citationsGrantedItems().length }}</span>
+        } @else if (tab.type === 'variants') {
+          <span class="badge badge-menu-outline ms-1">{{ variants.length }}</span>
         } @else if (tab.type === 'scholarship') {
           <span class="badge badge-menu-outline ms-1">{{ scholarshipHistoryCount() }}</span>
         }
@@ -217,6 +219,17 @@
             }
           </ol>
         }
+      </div>
+    }
+
+    <!-- Author Name Variants Tab Content -->
+    @if (selectedTab() === 'variants') {
+      <div class="variants-tab-content mt-2">
+        <ul class="works-list mb-0">
+          @for (variant of variants; track variant) {
+            <li>{{ variant }}</li>
+          }
+        </ul>
       </div>
     }
 

@@ -760,6 +760,26 @@ export class VIdPage {
     return (value as Record<string, unknown>)['bolsista'] ?? null;
   });
 
+  readonly authorVariants = computed(() => {
+    const value = this.response();
+    if (!value || typeof value !== 'object') {
+      return [] as string[];
+    }
+
+    const variants = (value as Record<string, unknown>)['variants'];
+    if (!Array.isArray(variants)) {
+      return [] as string[];
+    }
+
+    return [...new Set(variants.flatMap((variant): string[] => {
+      if (!variant || typeof variant !== 'object' || Array.isArray(variant)) {
+        return [];
+      }
+      const name = String((variant as Record<string, unknown>)['name'] ?? '').trim();
+      return name ? [name] : [];
+    }))];
+  });
+
   readonly citationsGrantedList = computed(() => {
     const value = this.response();
     if (!value || typeof value !== 'object') {

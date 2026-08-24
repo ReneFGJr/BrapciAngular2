@@ -49,6 +49,7 @@ export class AuthorGadgetComponent {
   @Input() networkData: NetworkGraph = { nodes: [], edges: [] };
   @Input() citationsGranted: string[] = [];
   @Input() bolsista: unknown = null;
+  @Input() variants: string[] = [];
 
   readonly scholarshipLabels = computed(() => {
     if (!this.bolsista || typeof this.bolsista !== 'object' || Array.isArray(this.bolsista)) {

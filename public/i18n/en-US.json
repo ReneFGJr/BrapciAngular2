@@ -122,6 +122,10 @@
       "citationsGranted": {
         "label": "Granted Citations"
       },
+      "variants": {
+        "label": "Name variants"
+      },
+      "researcherProfileTitle": "Access researcher data",
       "scholarship": {
         "label": "Scholarship",
         "modality": "Type / level",

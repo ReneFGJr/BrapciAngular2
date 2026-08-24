@@ -26,6 +26,30 @@
     <div class="legend"><span><i class="dot new"></i>Novas</span><span><i class="dot renewed"></i>Reconcedidas</span><span><i class="dot returned"></i>Novas após interrupção</span></div>
   </article>
 
+  <div class="applications-heading active-heading">
+    <div><span class="applications-eyebrow">Série histórica</span><h2 id="active-scholarships-title">Bolsas vigentes acumuladas por ano</h2></div>
+  </div>
+
+  <article class="chart-panel" aria-labelledby="active-scholarships-title">
+    <div class="chart-scroll"><div class="applications-chart active-scholarships-chart" [style.grid-template-columns]="'repeat(' + activeScholarships().length + ', minmax(14px, 1fr))'" role="img" aria-label="Quantidade de bolsas vigentes acumuladas em cada ano">
+      @for (item of activeScholarships(); track item.year) {
+        <div class="year-column" [attr.aria-label]="item.year + ': ' + item.total + ' bolsas vigentes'">
+          <span class="bar-slot"><span class="bar-group" [style.height.%]="activeBarHeight(item.total)"><span class="bar-value">{{ item.total }}</span><span class="year-bar active-bar">
+            @for (modality of item.modalities; track modality.label) {
+              <span class="segment" [style.height.%]="share(modality.total, item.total)" [style.background]="modalityColor(modality.label)" [attr.title]="modality.label + ': ' + modality.total"></span>
+            }
+          </span></span></span>
+          <span class="year-label">{{ item.year }}</span>
+        </div>
+      }
+    </div></div>
+    <div class="legend">
+      @for (modality of activeModalities(); track modality) {
+        <span><i class="dot" [style.background]="modalityColor(modality)"></i>{{ modality }}</span>
+      }
+    </div>
+  </article>
+
   @if (selected(); as current) {
     <div class="selected-detail"><strong>{{ current.year }}</strong><span><i class="dot new"></i>Novas <b>{{ current.novas }}</b></span><span><i class="dot renewed"></i>Reconcedidas <b>{{ current.reconcedidas }}</b></span><span><i class="dot returned"></i>Após interrupção <b>{{ current.novas_apos_interrupcao }}</b></span><span>Total <b>{{ current.total }}</b></span></div>
   }
@@ -34,16 +58,18 @@
     <div class="table-heading"><div><span class="applications-eyebrow">Dados detalhados</span><h2 id="year-table-title">Concessões por ano</h2></div><div class="table-actions"><span>Clique no ano para visualizar os registros</span><button type="button" class="export-button" (click)="exportCsv()"><i class="bi bi-file-earmark-spreadsheet" aria-hidden="true"></i> Exportar para CSV</button></div></div>
     <div class="table-responsive year-table-wrap">
       <table class="table year-table">
-        <thead><tr><th>Ano</th><th class="text-center">Novas</th><th class="text-center">Reconcedidas</th><th class="text-center">Após interrupção</th><th class="text-center">Total</th><th><span class="visually-hidden">Expandir</span></th></tr></thead>
+        <thead><tr><th>Ano</th><th class="text-center">Novas</th><th class="text-center">Reconcedidas</th><th class="text-center">Após interrupção</th><th class="text-center">Bolsas encerradas</th><th class="text-center">Diferença</th><th class="text-center">Total</th><th><span class="visually-hidden">Expandir</span></th></tr></thead>
         <tbody>
           @for (item of yearsDescending(); track item.year) {
             <tr class="year-summary" [class.expanded]="isExpanded(item.year)">
               <td><button type="button" class="year-toggle" [attr.aria-expanded]="isExpanded(item.year)" [attr.aria-controls]="'applications-' + item.year" (click)="toggleYear(item.year)"><i class="bi" [class.bi-chevron-down]="!isExpanded(item.year)" [class.bi-chevron-up]="isExpanded(item.year)" aria-hidden="true"></i><strong>{{ item.year }}</strong></button></td>
-              <td class="text-center">{{ item.novas }}</td><td class="text-center">{{ item.reconcedidas }}</td><td class="text-center">{{ item.novas_apos_interrupcao }}</td><td class="text-center"><strong>{{ item.total }}</strong></td>
+              <td class="text-center">{{ item.novas }}</td><td class="text-center">{{ item.reconcedidas }}</td><td class="text-center">{{ item.novas_apos_interrupcao }}</td><td class="text-center">{{ item.encerradas }}</td>
+              <td class="text-center"><span class="difference" [class.positive]="difference(item) > 0" [class.negative]="difference(item) < 0" [class.stable]="difference(item) === 0" [attr.aria-label]="differenceLabel(item)" [title]="differenceLabel(item)"><i class="bi" [class.bi-arrow-up]="difference(item) > 0" [class.bi-arrow-down]="difference(item) < 0" [class.bi-dash]="difference(item) === 0" aria-hidden="true"></i>{{ difference(item) > 0 ? '+' : '' }}{{ difference(item) }}</span></td>
+              <td class="text-center"><strong>{{ item.total }}</strong></td>
               <td class="text-end"><button type="button" class="details-button" [attr.aria-label]="(isExpanded(item.year) ? 'Ocultar' : 'Mostrar') + ' concessões de ' + item.year" (click)="toggleYear(item.year)">{{ isExpanded(item.year) ? 'Ocultar' : 'Mostrar' }}</button></td>
             </tr>
             @if (isExpanded(item.year)) {
-              <tr class="details-row" [id]="'applications-' + item.year"><td colspan="6">
+              <tr class="details-row" [id]="'applications-' + item.year"><td colspan="8">
                 <div class="record-table-wrap"><table class="table table-sm record-table"><thead><tr><th>Bolsista</th><th>Tipo</th><th>Nível</th><th>Instituição</th><th>Vigência</th><th>Interrupção</th></tr></thead><tbody>
                   @for (record of item.records; track record.id_bb + record.inicio) {
                     <tr><td><a class="researcher-link" [href]="'/v/' + record.id_bb" target="_blank" rel="noopener noreferrer"><strong>{{ record.nome }}</strong></a></td><td><span class="type-badge" [class.renewed-badge]="record.tipo === 'reconcedida'" [class.returned-badge]="record.tipo === 'nova_apos_interrupcao'">{{ typeLabel(record.tipo) }}</span></td><td>PQ {{ record.nivel }}</td><td>{{ record.ies }}</td><td class="text-nowrap">{{ record.inicio | date:'MM/yyyy':'UTC' }} — {{ record.fim | date:'MM/yyyy':'UTC' }}</td><td>{{ record.dias_interrupcao ? record.dias_interrupcao + ' dias' : '—' }}</td></tr>
