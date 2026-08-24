@@ -50,10 +50,10 @@ type PieArc = PieSlice & {
 };
 
 export type AuthorContentTab = {
-  id: 'works' | 'coauthors' | 'network' | 'citationsGranted' | 'variants' | 'scholarship';
+  id: 'works' | 'coauthors' | 'network' | 'citationsGranted' | 'variants' | 'scholarship' | 'json';
   label: string;
-  type: 'works' | 'coauthors' | 'network' | 'citationsGranted' | 'variants' | 'scholarship';
-  data?: AuthorWorksGroup[] | Coauthor[] | NetworkGraph | string[] | Scholarship[];
+  type: 'works' | 'coauthors' | 'network' | 'citationsGranted' | 'variants' | 'scholarship' | 'json';
+  data?: AuthorWorksGroup[] | Coauthor[] | NetworkGraph | string[] | Scholarship[] | unknown;
 };
 
 @Component({
@@ -68,12 +68,15 @@ export class AuthorWorksComponent {
   @Input() coauthors: Coauthor[] = [];
   @Input() networkData: NetworkGraph = { nodes: [], edges: [] };
   @Input() citationsGranted: string[] = [];
+  @Input() entityData: unknown = null;
   @Input() bolsista: unknown = null;
   @Input() variants: string[] = [];
 
   readonly selectedTab = signal<AuthorContentTab['id']>('works');
 
   readonly scholarships = computed(() => this.parseScholarships(this.bolsista));
+
+  readonly entityJson = computed(() => JSON.stringify(this.entityData, null, 2));
 
   readonly scholarshipHistoryCount = computed(() =>
     this.scholarships().reduce((total, scholarship) => total + scholarship.history.length, 0)
@@ -123,7 +126,15 @@ export class AuthorWorksComponent {
         type: 'scholarship',
         data: this.scholarships()
       });
+
     }
+
+    tabs.push({
+      id: 'json',
+      label: 'JSON',
+      type: 'json',
+      data: this.entityData
+    });
 
     return tabs;
   });
@@ -347,7 +358,8 @@ export class AuthorWorksComponent {
       tabId === 'network' ||
       tabId === 'citationsGranted' ||
       tabId === 'variants' ||
-      tabId === 'scholarship'
+      tabId === 'scholarship' ||
+      tabId === 'json'
     ) {
       this.selectedTab.set(tabId);
     }

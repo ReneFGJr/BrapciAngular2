@@ -107,6 +107,19 @@
   color: var(--theme-ink);
 }
 
+.json-viewer {
+  background: color-mix(in srgb, var(--theme-sand) 35%, var(--theme-card-bg));
+  border: 1px solid var(--theme-line);
+  border-radius: 0.45rem;
+  color: var(--theme-ink);
+  font-size: 0.82rem;
+  max-height: 32rem;
+  overflow: auto;
+  padding: 0.75rem;
+  white-space: pre-wrap;
+  word-break: break-word;
+}
+
 .scholarship-history-table {
   --bs-table-bg: transparent;
   --bs-table-border-color: var(--theme-line);

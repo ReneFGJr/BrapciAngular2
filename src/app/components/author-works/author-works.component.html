@@ -273,5 +273,12 @@
         }
       </div>
     }
+
+    <!-- Entity JSON Tab Content -->
+    @if (selectedTab() === 'json') {
+      <div class="json-tab-content mt-2">
+        <pre class="json-viewer mb-0"><code>{{ entityJson() }}</code></pre>
+      </div>
+    }
   </div>
 </section>

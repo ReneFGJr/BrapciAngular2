@@ -58,6 +58,7 @@ export class AuthorGadgetComponent {
   @Input() coauthors: Coauthor[] = [];
   @Input() networkData: NetworkGraph = { nodes: [], edges: [] };
   @Input() citationsGranted: string[] = [];
+  @Input() entityData: unknown = null;
   @Input() bolsista: unknown = null;
   @Input() variants: string[] = [];
 
