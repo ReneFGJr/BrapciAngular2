@@ -1,26 +1,26 @@
 <section class="area-statistics" aria-labelledby="area-statistics-title">
   <header class="area-statistics-header">
     <div class="area-statistics-header__text">
-      <p class="area-statistics-kicker">Indicadores</p>
-      <h3 id="area-statistics-title" class="area-statistics-title">Estatísticas da base</h3>
+      <p class="area-statistics-kicker">{{ 'home.statistics.kicker' | translate }}</p>
+      <h3 id="area-statistics-title" class="area-statistics-title">{{ 'home.statistics.title' | translate }}</h3>
     </div>
   </header>
 
-  <p *ngIf="loading()" class="area-statistics-state">Carregando estatisticas...</p>
-  <p *ngIf="error()" class="area-statistics-state area-statistics-state-error">{{ error() }}</p>
+  <p *ngIf="loading()" class="area-statistics-state">{{ 'home.statistics.loading' | translate }}</p>
+  <p *ngIf="error()" class="area-statistics-state area-statistics-state-error">{{ error() | translate }}</p>
 
   <ul *ngIf="!loading() && !error() && stats().length" class="area-statistics-list">
     <li *ngFor="let item of stats(); trackBy: trackByName" class="area-statistics-item">
-      <span class="area-statistics-name">{{ item.name }}</span>
+      <span class="area-statistics-name">{{ item.translationKey ? (item.translationKey | translate) : item.name }}</span>
       <strong class="area-statistics-total">{{ item.total }}</strong>
     </li>
   </ul>
 
   <p *ngIf="!loading() && !error() && !stats().length" class="area-statistics-state">
-    Nenhuma estatistica encontrada.
+    {{ 'home.statistics.empty' | translate }}
   </p>
 
   <small *ngIf="!loading() && !error() && updateDate()" class="area-statistics-update">
-    Atualizado em {{ updateDate() }}
+    {{ 'home.statistics.updatedAt' | translate: { date: updateDate() } }}
   </small>
 </section>

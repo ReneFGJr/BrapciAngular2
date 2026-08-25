@@ -1,17 +1,19 @@
 import { CommonModule } from '@angular/common';
 import { Component, inject, signal } from '@angular/core';
 import { BrapciApiService } from '../../core/services/brapci-api.service';
+import { TranslateModule } from '@ngx-translate/core';
 
 type JsonRecord = Record<string, unknown>;
 
 interface BaseStatistic {
   name: string;
   total: string;
+  translationKey: string | null;
 }
 
 @Component({
   selector: 'app-area-statistics',
-  imports: [CommonModule],
+  imports: [CommonModule, TranslateModule],
   templateUrl: './area-statistics.component.html',
   styleUrl: './area-statistics.component.scss'
 })
@@ -39,7 +41,7 @@ export class AreaStatisticsComponent {
         this.loading.set(false);
       },
       error: () => {
-        this.error.set('Nao foi possivel carregar as estatisticas no momento.');
+        this.error.set('home.statistics.error');
         this.stats.set([]);
         this.updateDate.set('');
         this.loading.set(false);
@@ -76,7 +78,28 @@ export class AreaStatisticsComponent {
       return null;
     }
 
-    return { name, total };
+    return { name, total, translationKey: this.statisticTranslationKey(name) };
+  }
+
+  private statisticTranslationKey(name: string): string | null {
+    const normalizedName = name
+      .normalize('NFD')
+      .replace(/[\u0300-\u036f]/g, '')
+      .toLowerCase()
+      .trim();
+
+    const keys: Record<string, string> = {
+      'total de artigos': 'home.statistics.items.articles',
+      'total de livros': 'home.statistics.items.books',
+      'total de capitulos de livros': 'home.statistics.items.bookChapters',
+      'total de trabalhos em eventos': 'home.statistics.items.proceedings',
+      'total de autores': 'home.statistics.items.authors',
+      'total de instituicoes': 'home.statistics.items.institutions',
+      'total de fontes': 'home.statistics.items.sources',
+      'total de arquivos': 'home.statistics.items.files'
+    };
+
+    return keys[normalizedName] ?? null;
   }
 
   private pickText(record: JsonRecord, keys: string[]): string {

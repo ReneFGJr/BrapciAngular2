@@ -79,7 +79,14 @@
         "Articles": "Articles",
         "Books": "Books",
         "BooksChapter": "Book Chapters",
-        "Proceedings": "Conference Proceedings"
+        "Proceedings": "Conference Proceedings",
+        "export": "Export",
+        "export_format": "Export as {{format}}",
+        "panel_title": "Dashboard (Analysis)",
+        "panel_link": "Go to dashboard",
+        "fetch_error": "Unable to retrieve data from the API.",
+        "download_error": "Unable to retrieve the download link.",
+        "export_error": "Unable to export the basket data."
       }
     },
   "cited": {
@@ -566,5 +573,113 @@
     "linkedIn": "Brapci LinkedIn",
     "instagram": "Brapci Instagram",
     "socialMedia": "Brapci social media"
+  },
+  "home": {
+    "news": {
+      "kicker": "News",
+      "title": "Latest updates",
+      "loading": "Loading updates...",
+      "error": "Unable to load updates at this time.",
+      "empty": "No updates found.",
+      "view": "view"
+    },
+    "statistics": {
+      "kicker": "Indicators",
+      "title": "Database statistics",
+      "loading": "Loading statistics...",
+      "error": "Unable to load statistics at this time.",
+      "empty": "No statistics found.",
+      "updatedAt": "Updated on {{date}}",
+      "items": {
+        "articles": "Total articles",
+        "books": "Total books",
+        "bookChapters": "Total book chapters",
+        "proceedings": "Total conference papers",
+        "authors": "Total authors",
+        "institutions": "Total institutions",
+        "sources": "Total sources",
+        "files": "Total files"
+      }
+    },
+    "events": {
+      "title": "Events in the field",
+      "loading": "Loading events...",
+      "error": "Unable to load events at this time.",
+      "empty": "No events found.",
+      "openDetails": "Open details for event {{title}}",
+      "logoAlt": "Logo for event {{title}}",
+      "logoFallback": "EVENT",
+      "date": "Date",
+      "moreDetails": "More details"
+    }
+  },
+  "adminEdit": {
+    "kicker": "Administration",
+    "title": "Edit content",
+    "record": "Record #{{id}}",
+    "back": "Back to record",
+    "unauthorized": "You must sign in with an administrator account to edit this record.",
+    "loading": "Loading record...",
+    "content": "JSON content",
+    "save": "Save changes",
+    "saving": "Saving...",
+    "success": "Changes saved successfully.",
+    "errors": {
+      "load": "Unable to load the record.",
+      "invalidJson": "The provided content is not valid JSON.",
+      "save": "Unable to save changes.",
+      "upload": "Unable to upload the file.",
+      "delete": "Unable to delete the data."
+    },
+    "mainData": "Main data",
+    "add": "Add value",
+    "remove": "Remove value",
+    "noValues": "No value provided.",
+    "groups": {
+      "CONCEPT": "Identification",
+      "GENDER": "Gender",
+      "AFFILIATIO": "Affiliation",
+      "DATE": "Dates",
+      "ID": "Identifiers",
+      "IMAGE": "Image"
+    },
+    "fields": {
+      "n_name": "Name or value",
+      "n_lang": "Language",
+      "c_class": "Class",
+      "cc_status": "Status",
+      "ID": "Related ID"
+    },
+    "properties": {
+      "hasGender": "Gender",
+      "hasAffiliation": "Institutional affiliation",
+      "hasBorn": "Date of birth",
+      "hasDead": "Date of death",
+      "hasOpenAlexID": "OpenAlex ID",
+      "hasGoogleScholar": "Google Scholar",
+      "hasISNI": "ISNI",
+      "hasEmail": "Email",
+      "hasOrcID": "ORCID",
+      "hasLattes": "Lattes CV",
+      "hasExitID": "External identifier",
+      "hasLinkedin": "LinkedIn",
+      "hasPhoto": "Photo"
+    },
+    "unnamed": "Unnamed",
+    "edit": "Edit",
+    "delete": "Delete",
+    "modalTitle": "RDF data editor",
+    "addTitle": "Add data",
+    "editTitle": "Edit content",
+    "close": "Close",
+    "selectImage": "Select an image",
+    "selectFile": "Select a file",
+    "currentFile": "Current file",
+    "cancel": "Cancel",
+    "confirm": "Confirm submission",
+    "uploading": "Uploading...",
+    "deleteTitle": "Delete data",
+    "deleteConfirm": "Do you want to delete {{name}}?",
+    "deleting": "Deleting..."
   }
 }

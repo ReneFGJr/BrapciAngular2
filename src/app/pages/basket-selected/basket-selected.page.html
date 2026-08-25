@@ -6,8 +6,8 @@
       class="btn btn-outline-danger basket-clear-btn"
       (click)="clearSelection()"
       [disabled]="markedIds().length === 0 || loading()"
-      aria-label="Limpar selecao"
-      title="Limpar selecao"
+      [attr.aria-label]="'basket.selected.clear' | translate"
+      [attr.title]="'basket.selected.clear' | translate"
     >
       <svg viewBox="0 0 24 24" aria-hidden="true" focusable="false">
         <path
@@ -19,7 +19,7 @@
   </div>
 
   <div class="mt-2 mb-2 export-actions" *ngIf="markedIds().length > 0">
-    <span class="export-label">Exportar:</span>
+    <span class="export-label">{{ 'basket.selected.export' | translate }}:</span>
 
     <button
       *ngFor="let option of exportOptions"
@@ -27,7 +27,8 @@
       (click)="export(option.type)"
       class="btn btn-outline-primary btn-sm me-2 small"
       [disabled]="loading()"
-      [attr.aria-label]="'Exportar em ' + option.label"
+      [attr.aria-label]="'basket.selected.export_format' | translate: { format: option.label }"
+      [attr.title]="'basket.selected.export_format' | translate: { format: option.label }"
     >
       {{ option.label }}
     </button>
@@ -42,14 +43,14 @@
   </div>
 
   <div *ngIf="error()" class="alert alert-danger mt-3">
-    {{ error() }}
+    {{ error() | translate }}
   </div>
 
   <ng-container *ngIf="!loading() && !error() && results()">
     <div class="container">
       <!-- Resumo totalizador no topo -->
       <div class="row mb-3 g-2" *ngIf="data?.ABNT">
-        <div class="col-6 col-md-3" *ngFor="let label of abntLabels; let i = index">
+        <div class="col-6 col-md-3" *ngFor="let category of abntCategories; let i = index">
           <div class="card text-center h-100">
             <div class="card-body py-2">
               <div class="display-6 fw-bold">{{ abntCounts[i] }}</div>
@@ -67,6 +68,8 @@
                 class="nav-link"
                 [class.active]="activeTab() === categoria"
                 (click)="activeTab.set(categoria)"
+                [attr.aria-label]="'basket.selected.' + categoria | translate"
+                [attr.title]="'basket.selected.' + categoria | translate"
               >
                 {{ 'basket.selected.' + categoria | translate }}
                 <span class="badge bg-secondary ms-1">{{ abntCounts[i] }}</span>
@@ -95,10 +98,15 @@
           </div>
         </div>
         <div class="col-12 col-lg-3">
-          <strong>Painel (Análise)</strong>
+          <strong>{{ 'basket.selected.panel_title' | translate }}</strong>
           <div class="mt-2">
-            <a class="btn btn-sm btn-primary full" routerLink="/painel">
-              Ir para o painel
+            <a
+              class="btn btn-sm btn-primary full"
+              routerLink="/painel"
+              [attr.aria-label]="'basket.selected.panel_link' | translate"
+              [attr.title]="'basket.selected.panel_link' | translate"
+            >
+              {{ 'basket.selected.panel_link' | translate }}
             </a>
           </div>
         </div>

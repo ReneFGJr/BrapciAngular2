@@ -1,6 +1,7 @@
 import { CommonModule } from '@angular/common';
 import { Component, inject, signal } from '@angular/core';
 import { BrapciApiService } from '../../core/services/brapci-api.service';
+import { TranslateModule } from '@ngx-translate/core';
 
 type JsonRecord = Record<string, unknown>;
 
@@ -18,7 +19,7 @@ interface NewsBlock {
 
 @Component({
   selector: 'app-area-news',
-  imports: [CommonModule],
+  imports: [CommonModule, TranslateModule],
   templateUrl: './area-news.component.html',
   styleUrl: './area-news.component.scss'
 })
@@ -47,7 +48,7 @@ export class AreaNewsComponent {
         this.loading.set(false);
       },
       error: () => {
-        this.error.set('Nao foi possivel carregar as atualizacoes no momento.');
+        this.error.set('home.news.error');
         this.updates.set([]);
         this.loading.set(false);
       }

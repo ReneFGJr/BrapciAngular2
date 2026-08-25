@@ -1,10 +1,10 @@
 <section class="area-events" aria-labelledby="area-events-title">
   <header class="area-events-header">
-    <h3 id="area-events-title" class="area-events-title">Eventos da area</h3>
+    <h3 id="area-events-title" class="area-events-title">{{ 'home.events.title' | translate }}</h3>
   </header>
 
-  <p *ngIf="loading()" class="area-events-state">Carregando eventos...</p>
-  <p *ngIf="error()" class="area-events-state area-events-state-error">{{ error() }}</p>
+  <p *ngIf="loading()" class="area-events-state">{{ 'home.events.loading' | translate }}</p>
+  <p *ngIf="error()" class="area-events-state area-events-state-error">{{ error() | translate }}</p>
 
   <ul *ngIf="!loading() && !error() && events().length" class="area-events-list">
     <li
@@ -15,14 +15,14 @@
       (click)="goToEvent(event)"
       (keydown.enter)="goToEvent(event)"
       (keydown.space)="goToEvent(event)"
-      [attr.aria-label]="'Abrir detalhes do evento ' + event.title"
+      [attr.aria-label]="'home.events.openDetails' | translate: { title: event.title }"
     >
       <div class="area-events-logo-wrap">
         <img
           *ngIf="event.logo"
           class="area-events-logo"
           [src]="event.logo"
-          [alt]="'Logo do evento ' + event.title"
+          [alt]="'home.events.logoAlt' | translate: { title: event.title }"
           width="200"
           height="200"
           loading="lazy"
@@ -31,18 +31,18 @@
           (error)="event.logo = null"
         />
         <div *ngIf="!event.logo" class="area-events-logo-fallback" aria-hidden="true">
-          EVENTO
+          {{ 'home.events.logoFallback' | translate }}
         </div>
       </div>
       <h4 class="area-events-item-title">{{ event.title }}</h4>
-      <p class="area-events-item-meta">Data: {{ event.date }} - {{ event.location }}</p>
+      <p class="area-events-item-meta">{{ 'home.events.date' | translate }}: {{ event.date }} - {{ event.location }}</p>
       <a [href]="event.redirectUrl" target="_blank" rel="noreferrer" class="area-events-link" (click)="$event.stopPropagation()">
-        Mais detalhes
+        {{ 'home.events.moreDetails' | translate }}
       </a>
     </li>
   </ul>
 
   <p *ngIf="!loading() && !error() && !events().length" class="area-events-state">
-    Nenhum evento encontrado.
+    {{ 'home.events.empty' | translate }}
   </p>
 </section>

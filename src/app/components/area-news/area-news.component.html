@@ -1,13 +1,13 @@
 <section class="area-news" aria-labelledby="area-news-title">
   <header class="area-news-header">
     <div class="area-news-header__text">
-      <p class="area-news-kicker">Novidades</p>
-      <h3 id="area-news-title" class="area-news-title">Principais atualizações</h3>
+      <p class="area-news-kicker">{{ 'home.news.kicker' | translate }}</p>
+      <h3 id="area-news-title" class="area-news-title">{{ 'home.news.title' | translate }}</h3>
     </div>
   </header>
 
-  <p *ngIf="loading()" class="area-news-state">Carregando atualizacoes...</p>
-  <p *ngIf="error()" class="area-news-state area-news-state-error">{{ error() }}</p>
+  <p *ngIf="loading()" class="area-news-state">{{ 'home.news.loading' | translate }}</p>
+  <p *ngIf="error()" class="area-news-state area-news-state-error">{{ error() | translate }}</p>
 
   <div *ngIf="!loading() && !error() && updates().length" class="area-news-list">
     <article *ngFor="let block of updates(); trackBy: trackByVersion" class="area-news-block">
@@ -21,7 +21,7 @@
             <ng-container *ngIf="item.link; else legacyLinkItem">
               <strong class="area-news-item__title">{{ item.title }}</strong>
               <span *ngIf="item.description" class="area-news-item__description">{{ item.description }}</span>
-              <a class="area-news-item__action" [href]="item.link" target="_blank" rel="noopener noreferrer">ver</a>
+              <a class="area-news-item__action" [href]="item.link" target="_blank" rel="noopener noreferrer">{{ 'home.news.view' | translate }}</a>
             </ng-container>
 
             <ng-template #legacyLinkItem>
@@ -49,6 +49,6 @@
   </div>
 
   <p *ngIf="!loading() && !error() && !updates().length" class="area-news-state">
-    Nenhuma atualização encontrada.
+    {{ 'home.news.empty' | translate }}
   </p>
 </section>

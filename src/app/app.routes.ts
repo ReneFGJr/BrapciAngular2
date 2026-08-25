@@ -14,6 +14,10 @@ export const routes: Routes = [
     loadComponent: () => import('./pages/v-id/v-id.page').then((m) => m.VIdPage),
   },
   {
+    path: 'admin/a/:id',
+    loadComponent: () => import('./pages/admin-edit/admin-edit.page').then((m) => m.AdminEditPage),
+  },
+  {
     path: 'sobre/brapci',
     redirectTo: 'about/brapci',
     pathMatch: 'full',

@@ -10,6 +10,10 @@ export const serverRoutes: ServerRoute[] = [
     renderMode: RenderMode.Server
   },
   {
+    path: 'admin/a/:id',
+    renderMode: RenderMode.Client
+  },
+  {
     path: 'about/:page',
     renderMode: RenderMode.Server
   },

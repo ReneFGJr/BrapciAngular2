@@ -1,6 +1,7 @@
 import { CommonModule } from '@angular/common';
 import { Component, inject, signal } from '@angular/core';
 import { BrapciApiService } from '../../core/services/brapci-api.service';
+import { TranslateModule } from '@ngx-translate/core';
 
 type JsonRecord = Record<string, unknown>;
 
@@ -16,7 +17,7 @@ interface AreaEvent {
 
 @Component({
   selector: 'app-area-events',
-  imports: [CommonModule],
+  imports: [CommonModule, TranslateModule],
   templateUrl: './area-events.component.html',
   styleUrl: './area-events.component.scss'
 })
@@ -43,7 +44,7 @@ export class AreaEventsComponent {
         this.loading.set(false);
       },
       error: () => {
-        this.error.set('Nao foi possivel carregar os eventos no momento.');
+        this.error.set('home.events.error');
         this.events.set([]);
         this.loading.set(false);
       }

@@ -9,6 +9,7 @@ import { TranslateModule } from '@ngx-translate/core';
 @Component({
   selector: 'app-basket-selected',
   templateUrl: './basket-selected.page.html',
+  styleUrl: './basket-selected.page.scss',
   standalone: true,
   imports: [CommonModule, HttpClientModule, TranslateModule, RouterLink],
 })
@@ -24,14 +25,6 @@ export class BasketSelectedPage implements OnInit {
     { type: 'ID', label: 'TT' },
   ] as const;
 
-  public get abntLabels() {
-    return [
-      'Artigos',
-      'Trabalhos em Eventos',
-      'Livros',
-      'Capítulos de Livros'
-    ];
-  }
 
   public get abntCounts() {
     const data = this.data?.ABNT;
@@ -66,7 +59,7 @@ export class BasketSelectedPage implements OnInit {
         this.loading.set(false);
       },
       error: () => {
-        this.error.set('Erro ao buscar dados da API');
+        this.error.set('basket.selected.fetch_error');
         this.loading.set(false);
       },
     });
@@ -118,14 +111,14 @@ export class BasketSelectedPage implements OnInit {
           const downloadLink = typeof payload['download'] === 'string' ? payload['download'].trim() : '';
 
           if (!downloadLink) {
-            this.error.set('Nao foi possivel obter o link de download.');
+            this.error.set('basket.selected.download_error');
             return;
           }
 
           window.open(downloadLink, '_blank', 'noopener,noreferrer');
         },
         error: () => {
-          this.error.set('Erro ao exportar os dados do Basket.');
+          this.error.set('basket.selected.export_error');
         },
       });
   }

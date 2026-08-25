@@ -75,11 +75,18 @@
       "none": "No hay documentos seleccionados.",
       "loading": "Cargando seleccion...",
       "none_category": "No hay elementos en esta categoria.",
-      "clear": "Limpiar seleccion",
-      "Articles": "Artigos",
-      "Books": "Livros",
-      "BooksChapter": "Capitulos",
-      "Proceedings": "Trabalhos de eventos"
+      "clear": "Limpiar selección",
+      "Articles": "Artículos",
+      "Books": "Libros",
+      "BooksChapter": "Capítulos de libros",
+      "Proceedings": "Trabajos en eventos",
+      "export": "Exportar",
+      "export_format": "Exportar en {{format}}",
+      "panel_title": "Panel (Análisis)",
+      "panel_link": "Ir al panel",
+      "fetch_error": "Error al obtener los datos de la API.",
+      "download_error": "No se pudo obtener el enlace de descarga.",
+      "export_error": "Error al exportar los datos de la cesta."
     }
   },
   "cited": {
@@ -566,5 +573,113 @@
     "linkedIn": "LinkedIn de Brapci",
     "instagram": "Instagram de Brapci",
     "socialMedia": "Redes sociales de Brapci"
+  },
+  "home": {
+    "news": {
+      "kicker": "Novedades",
+      "title": "Principales actualizaciones",
+      "loading": "Cargando actualizaciones...",
+      "error": "No se pudieron cargar las actualizaciones en este momento.",
+      "empty": "No se encontraron actualizaciones.",
+      "view": "ver"
+    },
+    "statistics": {
+      "kicker": "Indicadores",
+      "title": "Estadísticas de la base",
+      "loading": "Cargando estadísticas...",
+      "error": "No se pudieron cargar las estadísticas en este momento.",
+      "empty": "No se encontraron estadísticas.",
+      "updatedAt": "Actualizado el {{date}}",
+      "items": {
+        "articles": "Total de artículos",
+        "books": "Total de libros",
+        "bookChapters": "Total de capítulos de libros",
+        "proceedings": "Total de trabajos en eventos",
+        "authors": "Total de autores",
+        "institutions": "Total de instituciones",
+        "sources": "Total de fuentes",
+        "files": "Total de archivos"
+      }
+    },
+    "events": {
+      "title": "Eventos del área",
+      "loading": "Cargando eventos...",
+      "error": "No se pudieron cargar los eventos en este momento.",
+      "empty": "No se encontraron eventos.",
+      "openDetails": "Abrir detalles del evento {{title}}",
+      "logoAlt": "Logo del evento {{title}}",
+      "logoFallback": "EVENTO",
+      "date": "Fecha",
+      "moreDetails": "Más detalles"
+    }
+  },
+  "adminEdit": {
+    "kicker": "Administración",
+    "title": "Editar contenido",
+    "record": "Registro #{{id}}",
+    "back": "Volver al registro",
+    "unauthorized": "Debes iniciar sesión con una cuenta de administrador para editar este registro.",
+    "loading": "Cargando registro...",
+    "content": "Contenido JSON",
+    "save": "Guardar cambios",
+    "saving": "Guardando...",
+    "success": "Cambios guardados correctamente.",
+    "errors": {
+      "load": "No se pudo cargar el registro.",
+      "invalidJson": "El contenido proporcionado no es un JSON válido.",
+      "save": "No se pudieron guardar los cambios.",
+      "upload": "No se pudo enviar el archivo.",
+      "delete": "No se pudo eliminar el dato."
+    },
+    "mainData": "Datos principales",
+    "add": "Añadir valor",
+    "remove": "Eliminar valor",
+    "noValues": "No se informó ningún valor.",
+    "groups": {
+      "CONCEPT": "Identificación",
+      "GENDER": "Género",
+      "AFFILIATIO": "Afiliación",
+      "DATE": "Fechas",
+      "ID": "Identificadores",
+      "IMAGE": "Imagen"
+    },
+    "fields": {
+      "n_name": "Nombre o valor",
+      "n_lang": "Idioma",
+      "c_class": "Clase",
+      "cc_status": "Estado",
+      "ID": "ID relacionado"
+    },
+    "properties": {
+      "hasGender": "Género",
+      "hasAffiliation": "Afiliación institucional",
+      "hasBorn": "Fecha de nacimiento",
+      "hasDead": "Fecha de fallecimiento",
+      "hasOpenAlexID": "OpenAlex ID",
+      "hasGoogleScholar": "Google Scholar",
+      "hasISNI": "ISNI",
+      "hasEmail": "Correo electrónico",
+      "hasOrcID": "ORCID",
+      "hasLattes": "Currículo Lattes",
+      "hasExitID": "Identificador externo",
+      "hasLinkedin": "LinkedIn",
+      "hasPhoto": "Fotografía"
+    },
+    "unnamed": "Sin nombre",
+    "edit": "Editar",
+    "delete": "Eliminar",
+    "modalTitle": "Editor de datos RDF",
+    "addTitle": "Añadir dato",
+    "editTitle": "Modificar contenido",
+    "close": "Cerrar",
+    "selectImage": "Seleccione una imagen",
+    "selectFile": "Seleccione un archivo",
+    "currentFile": "Archivo actual",
+    "cancel": "Cancelar",
+    "confirm": "Confirmar envío",
+    "uploading": "Enviando...",
+    "deleteTitle": "Eliminar dato",
+    "deleteConfirm": "¿Confirma la eliminación de {{name}}?",
+    "deleting": "Eliminando..."
   }
 }

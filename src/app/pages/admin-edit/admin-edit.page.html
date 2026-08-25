@@ -1,0 +1,59 @@
+<main class="container py-4 admin-edit">
+  <header class="admin-edit__header">
+    <div><p class="text-uppercase text-secondary small mb-1">{{ 'adminEdit.kicker' | translate }}</p><h1 class="h3 mb-1">{{ 'adminEdit.title' | translate }}</h1><p class="text-secondary mb-0">{{ 'adminEdit.record' | translate: { id: id() } }}</p></div>
+    <a class="btn btn-outline-secondary" [routerLink]="['/v', id()]">{{ 'adminEdit.back' | translate }}</a>
+  </header>
+
+  <div *ngIf="loading()" class="alert alert-secondary mt-4">{{ 'adminEdit.loading' | translate }}</div>
+  <div *ngIf="error()" class="alert alert-danger mt-4">{{ error() | translate }}</div>
+  <div *ngIf="success()" class="alert alert-success mt-4">{{ 'adminEdit.success' | translate }}</div>
+
+  <div *ngIf="!loading()" class="admin-edit__form">
+    <section *ngFor="let group of groups(); let groupIndex = index" class="admin-edit__group">
+      <div class="admin-edit__group-title"><div><span class="admin-edit__eyebrow">{{ group.key }}</span><h2>{{ 'adminEdit.groups.' + group.key | translate }}</h2></div></div>
+      <div *ngFor="let property of group.properties; let propertyIndex = index" class="admin-edit__property">
+        <div class="admin-edit__property-header">
+          <div><h3>{{ 'adminEdit.properties.' + property.property | translate }}</h3><small>{{ property.property }} · ID {{ property.IDp }}</small></div>
+          <button type="button" class="btn btn-sm btn-outline-primary" (click)="openNew(groupIndex, propertyIndex)">{{ 'adminEdit.add' | translate }}</button>
+        </div>
+        <p *ngIf="!property.Data.length" class="text-secondary mb-0">{{ 'adminEdit.noValues' | translate }}</p>
+        <div *ngFor="let data of property.Data; let dataIndex = index" class="admin-edit__data-card">
+          <div class="admin-edit__data-main"><strong>{{ data.n_name || ('adminEdit.unnamed' | translate) }}</strong><span>ID {{ data.ID || '—' }} · {{ data.n_lang || 'nn' }}</span></div>
+          <div class="admin-edit__data-actions">
+            <button type="button" class="btn btn-sm btn-outline-secondary" (click)="openEdit(groupIndex, propertyIndex, dataIndex)">{{ 'adminEdit.edit' | translate }}</button>
+            <button type="button" class="btn btn-sm btn-outline-danger" (click)="requestDelete(groupIndex, propertyIndex, dataIndex)">{{ 'adminEdit.delete' | translate }}</button>
+          </div>
+        </div>
+      </div>
+    </section>
+  </div>
+</main>
+
+<div *ngIf="editor() as state" class="admin-modal" role="dialog" aria-modal="true" [attr.aria-label]="'adminEdit.modalTitle' | translate">
+  <div class="admin-modal__backdrop" (click)="closeEditor()"></div>
+  <section class="admin-modal__panel">
+    <header><div><span class="admin-edit__eyebrow">{{ state.draft.c_class }}</span><h2>{{ (state.dataIndex === null ? 'adminEdit.addTitle' : 'adminEdit.editTitle') | translate }}</h2></div><button type="button" class="btn-close" [attr.aria-label]="'adminEdit.close' | translate" (click)="closeEditor()"></button></header>
+    <div class="admin-modal__body">
+      <ng-container *ngIf="state.mode === 'image' || state.mode === 'file'; else valueEditor">
+        <label for="rdf-file" class="form-label">{{ (state.mode === 'image' ? 'adminEdit.selectImage' : 'adminEdit.selectFile') | translate }}</label>
+        <input id="rdf-file" class="form-control" type="file" [accept]="state.mode === 'image' ? 'image/*' : undefined" (change)="selectFile($event)" />
+        <p *ngIf="state.draft.n_name" class="small text-secondary mt-2">{{ 'adminEdit.currentFile' | translate }}: {{ state.draft.n_name }}</p>
+      </ng-container>
+      <ng-template #valueEditor>
+        <div *ngIf="state.mode === 'concept'" class="mb-3"><label for="rdf-id" class="form-label">{{ 'adminEdit.fields.ID' | translate }}</label><input id="rdf-id" class="form-control" [ngModel]="state.draft.ID" [ngModelOptions]="{ standalone: true }" (ngModelChange)="updateDraft('ID', $event)" /></div>
+        <div class="mb-3"><label for="rdf-name" class="form-label">{{ 'adminEdit.fields.n_name' | translate }}</label><textarea id="rdf-name" class="form-control border border-secondary" rows="7" [ngModel]="state.draft.n_name" [ngModelOptions]="{ standalone: true }" (ngModelChange)="updateDraft('n_name', $event)"></textarea></div>
+        <div><label for="rdf-lang" class="form-label">{{ 'adminEdit.fields.n_lang' | translate }}</label><input id="rdf-lang" class="form-control" [ngModel]="state.draft.n_lang" [ngModelOptions]="{ standalone: true }" (ngModelChange)="updateDraft('n_lang', $event)" /></div>
+      </ng-template>
+    </div>
+    <footer><button type="button" class="btn btn-outline-secondary" (click)="closeEditor()">{{ 'adminEdit.cancel' | translate }}</button><button type="button" class="btn btn-warning" [disabled]="uploading()" (click)="confirmEditor()">{{ (uploading() ? 'adminEdit.uploading' : 'adminEdit.confirm') | translate }}</button></footer>
+  </section>
+</div>
+
+<div *ngIf="deleteTarget() as target" class="admin-modal" role="alertdialog" aria-modal="true">
+  <div class="admin-modal__backdrop" (click)="cancelDelete()"></div>
+  <section class="admin-modal__panel admin-modal__panel--small">
+    <header><h2>{{ 'adminEdit.deleteTitle' | translate }}</h2><button type="button" class="btn-close" (click)="cancelDelete()"></button></header>
+    <div class="admin-modal__body"><p>{{ 'adminEdit.deleteConfirm' | translate: { name: target.data.n_name } }}</p></div>
+    <footer><button type="button" class="btn btn-outline-secondary" (click)="cancelDelete()">{{ 'adminEdit.cancel' | translate }}</button><button type="button" class="btn btn-danger" [disabled]="deleting()" (click)="confirmDelete()">{{ (deleting() ? 'adminEdit.deleting' : 'adminEdit.delete') | translate }}</button></footer>
+  </section>
+</div>
