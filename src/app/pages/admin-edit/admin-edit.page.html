@@ -1,6 +1,10 @@
-<main class="container py-4 admin-edit">
+<main class="container-fluid admin-edit">
   <header class="admin-edit__header">
-    <div><p class="text-uppercase text-secondary small mb-1">{{ 'adminEdit.kicker' | translate }}</p><h1 class="h3 mb-1">{{ 'adminEdit.title' | translate }}</h1><p class="text-secondary mb-0">{{ 'adminEdit.record' | translate: { id: id() } }}</p></div>
+    <div>
+      <p class="admin-edit__kicker">{{ 'adminEdit.kicker' | translate }}</p>
+      <h1>{{ 'adminEdit.title' | translate }}</h1>
+      <p class="admin-edit__record">{{ 'adminEdit.record' | translate: { id: id() } }}</p>
+    </div>
     <a class="btn btn-outline-secondary" [routerLink]="['/v', id()]">{{ 'adminEdit.back' | translate }}</a>
   </header>
 
@@ -8,27 +12,44 @@
   <div *ngIf="error()" class="alert alert-danger mt-4">{{ error() | translate }}</div>
   <div *ngIf="success()" class="alert alert-success mt-4">{{ 'adminEdit.success' | translate }}</div>
 
-  <div *ngIf="!loading()" class="admin-edit__form">
-    <section *ngFor="let group of groups(); let groupIndex = index" class="admin-edit__group">
-      <div class="admin-edit__group-title"><div><span class="admin-edit__eyebrow">{{ group.key }}</span><h2>{{ 'adminEdit.groups.' + group.key | translate }}</h2></div></div>
-      <div *ngFor="let property of group.properties; let propertyIndex = index" class="admin-edit__property">
-        <div class="admin-edit__property-header">
-          <div><h3>{{ 'adminEdit.properties.' + property.property | translate }}</h3><small>{{ property.property }} · ID {{ property.IDp }}</small></div>
-          <button type="button" class="btn btn-sm btn-outline-primary" (click)="openNew(groupIndex, propertyIndex)">{{ 'adminEdit.add' | translate }}</button>
+  <div *ngIf="!loading()" class="rdf-groups">
+    <section *ngFor="let group of groups(); let groupIndex = index" class="rdf-group">
+      <h2 class="rdf-group__title">{{ 'adminEdit.groups.' + group.key | translate }}</h2>
+
+      <div *ngFor="let property of group.properties; let propertyIndex = index" class="rdf-property">
+        <div class="rdf-property__label">
+          <span>{{ property.property }}</span>
+          <button
+            type="button"
+            class="rdf-property__add"
+            [attr.aria-label]="'adminEdit.add' | translate"
+            [attr.title]="'adminEdit.add' | translate"
+            (click)="openNew(groupIndex, propertyIndex)"
+          >+</button>
         </div>
-        <p *ngIf="!property.Data.length" class="text-secondary mb-0">{{ 'adminEdit.noValues' | translate }}</p>
-        <div *ngFor="let data of property.Data; let dataIndex = index" class="admin-edit__data-card">
-          <div class="admin-edit__data-main"><strong>{{ data.n_name || ('adminEdit.unnamed' | translate) }}</strong><span>ID {{ data.ID || '—' }} · {{ data.n_lang || 'nn' }}</span></div>
-          <div class="admin-edit__data-actions">
-            <button type="button" class="btn btn-sm btn-outline-secondary" (click)="openEdit(groupIndex, propertyIndex, dataIndex)">{{ 'adminEdit.edit' | translate }}</button>
-            <button type="button" class="btn btn-sm btn-outline-danger" (click)="requestDelete(groupIndex, propertyIndex, dataIndex)">{{ 'adminEdit.delete' | translate }}</button>
-          </div>
+
+        <div class="rdf-property__values" [class.rdf-property__values--empty]="!property.Data.length">
+          <span *ngIf="!property.Data.length" class="rdf-property__empty">{{ 'adminEdit.noValues' | translate }}</span>
+
+          <article *ngFor="let data of property.Data; let dataIndex = index" class="rdf-value">
+            <div class="rdf-value__actions">
+              <button type="button" class="rdf-icon rdf-icon--delete" [attr.aria-label]="'adminEdit.delete' | translate" [attr.title]="'adminEdit.delete' | translate" (click)="requestDelete(groupIndex, propertyIndex, dataIndex)">
+                <i class="bi bi-trash" aria-hidden="true"></i>
+              </button>
+              <button type="button" class="rdf-icon rdf-icon--edit" [attr.aria-label]="'adminEdit.edit' | translate" [attr.title]="'adminEdit.edit' | translate" (click)="openEdit(groupIndex, propertyIndex, dataIndex)">
+                <i class="bi bi-pencil" aria-hidden="true"></i>
+              </button>
+            </div>
+            <div class="rdf-value__content">
+              <span>{{ data.n_name || ('adminEdit.unnamed' | translate) }}</span>
+              <sup *ngIf="data.n_lang">{{ data.n_lang }}</sup>
+            </div>
+          </article>
         </div>
       </div>
     </section>
   </div>
 </main>
-
 <div *ngIf="editor() as state" class="admin-modal" role="dialog" aria-modal="true" [attr.aria-label]="'adminEdit.modalTitle' | translate">
   <div class="admin-modal__backdrop" (click)="closeEditor()"></div>
   <section class="admin-modal__panel">
