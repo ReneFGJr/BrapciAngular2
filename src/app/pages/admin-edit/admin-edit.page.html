@@ -36,7 +36,7 @@
               <button type="button" class="rdf-icon rdf-icon--delete" [attr.aria-label]="'adminEdit.delete' | translate" [attr.title]="'adminEdit.delete' | translate" (click)="requestDelete(groupIndex, propertyIndex, dataIndex)">
                 <i class="bi bi-trash" aria-hidden="true"></i>
               </button>
-              <button type="button" class="rdf-icon rdf-icon--edit" [attr.aria-label]="'adminEdit.edit' | translate" [attr.title]="'adminEdit.edit' | translate" (click)="openEdit(groupIndex, propertyIndex, dataIndex)">
+              <button *ngIf="canEditData(property, data)" type="button" class="rdf-icon rdf-icon--edit" [attr.aria-label]="'adminEdit.edit' | translate" [attr.title]="'adminEdit.edit' | translate" (click)="openEdit(groupIndex, propertyIndex, dataIndex)">
                 <i class="bi bi-pencil" aria-hidden="true"></i>
               </button>
             </div>
@@ -55,18 +55,32 @@
   <section class="admin-modal__panel">
     <header><div><span class="admin-edit__eyebrow">{{ state.draft.c_class }}</span><h2>{{ (state.dataIndex === null ? 'adminEdit.addTitle' : 'adminEdit.editTitle') | translate }}</h2></div><button type="button" class="btn-close" [attr.aria-label]="'adminEdit.close' | translate" (click)="closeEditor()"></button></header>
     <div class="admin-modal__body">
-      <ng-container *ngIf="state.mode === 'image' || state.mode === 'file'; else valueEditor">
-        <label for="rdf-file" class="form-label">{{ (state.mode === 'image' ? 'adminEdit.selectImage' : 'adminEdit.selectFile') | translate }}</label>
-        <input id="rdf-file" class="form-control" type="file" [accept]="state.mode === 'image' ? 'image/*' : undefined" (change)="selectFile($event)" />
-        <p *ngIf="state.draft.n_name" class="small text-secondary mt-2">{{ 'adminEdit.currentFile' | translate }}: {{ state.draft.n_name }}</p>
-      </ng-container>
+      <app-admin-image-editor *ngIf="state.mode === 'image' || state.mode === 'file'; else valueEditor" [mode]="state.mode === 'image' ? 'image' : 'file'" [draft]="state.draft" (fileChange)="selectFile($event)" />
       <ng-template #valueEditor>
-        <div *ngIf="state.mode === 'concept'" class="mb-3"><label for="rdf-id" class="form-label">{{ 'adminEdit.fields.ID' | translate }}</label><input id="rdf-id" class="form-control" [ngModel]="state.draft.ID" [ngModelOptions]="{ standalone: true }" (ngModelChange)="updateDraft('ID', $event)" /></div>
-        <div class="mb-3"><label for="rdf-name" class="form-label">{{ 'adminEdit.fields.n_name' | translate }}</label><textarea id="rdf-name" class="form-control border border-secondary" rows="7" [ngModel]="state.draft.n_name" [ngModelOptions]="{ standalone: true }" (ngModelChange)="updateDraft('n_name', $event)"></textarea></div>
-        <div><label for="rdf-lang" class="form-label">{{ 'adminEdit.fields.n_lang' | translate }}</label><input id="rdf-lang" class="form-control" [ngModel]="state.draft.n_lang" [ngModelOptions]="{ standalone: true }" (ngModelChange)="updateDraft('n_lang', $event)" /></div>
+        <app-admin-literal-editor *ngIf="isLiteralDraft(state.draft); else conceptEditor" [draft]="state.draft" (change)="updateDraft($event.field, $event.value)" />
+        <ng-template #conceptEditor>
+          <app-admin-concept-editor
+            [draft]="state.draft"
+            [query]="autocompleteQuery()"
+            [options]="autocompleteOptions()"
+            [loading]="autocompleteLoading()"
+            [payloadJson]="autocompletePayloadJson()"
+            (queryChange)="updateAutocompleteQuery($event)"
+            (selectionChange)="selectAutocomplete($event)"
+            (classChange)="updateDraft('c_class', $event)"
+          />
+        </ng-template>
       </ng-template>
+      <div class="admin-modal__parameters">
+        <label class="form-label" for="rdf-parameters">JSON</label>
+        <pre id="rdf-parameters" aria-live="polite">{{ editorParameters(state.draft) }}</pre>
+      </div>
+      <div *ngIf="saveResponse() !== null" class="admin-modal__parameters">
+        <label class="form-label" for="rdf-save-response">Retorno do endpoint</label>
+        <pre id="rdf-save-response" aria-live="polite">{{ saveResponseJson() }}</pre>
+      </div>
     </div>
-    <footer><button type="button" class="btn btn-outline-secondary" (click)="closeEditor()">{{ 'adminEdit.cancel' | translate }}</button><button type="button" class="btn btn-warning" [disabled]="uploading()" (click)="confirmEditor()">{{ (uploading() ? 'adminEdit.uploading' : 'adminEdit.confirm') | translate }}</button></footer>
+    <footer><button type="button" class="btn btn-outline-secondary" (click)="closeEditor()">{{ 'adminEdit.cancel' | translate }}</button><button type="button" class="btn btn-warning" [disabled]="uploading()" (click)="confirmEditor()">{{ (saveResponse() !== null ? 'adminEdit.close' : (uploading() ? 'adminEdit.uploading' : 'adminEdit.confirm')) | translate }}</button></footer>
   </section>
 </div>
 

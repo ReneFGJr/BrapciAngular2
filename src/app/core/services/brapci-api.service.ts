@@ -32,6 +32,18 @@ export class BrapciApiService {
     return this.http.post<T>(url, body);
   }
 
+  postForm<T>(endpoint: string, body: Record<string, string | number | boolean>): Observable<T> {
+    const cleanEndpoint = endpoint.startsWith('/') ? endpoint.substring(1) : endpoint;
+    const url = `${this.apiConfig.brapciApiBaseUrl}/${cleanEndpoint}`;
+    let form = new HttpParams();
+    for (const [key, value] of Object.entries(body)) {
+      form = form.set(key, String(value));
+    }
+    return this.http.post<T>(url, form.toString(), {
+      headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+    });
+  }
+
   search<T>(query: string, filters?: Array<{ name: string, value: any }>): Observable<T> {
     const params: Record<string, string | number | boolean> = { term: query, offset: 1000 };
     if (filters && Array.isArray(filters)) {

@@ -4,9 +4,12 @@ import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { FormsModule } from '@angular/forms';
 import { ActivatedRoute, RouterLink } from '@angular/router';
 import { TranslateModule } from '@ngx-translate/core';
-import { distinctUntilChanged, filter, map, switchMap, tap } from 'rxjs';
+import { catchError, debounceTime, distinctUntilChanged, filter, map, of, Subject, switchMap, tap } from 'rxjs';
 import { AuthService } from '../../core/services/auth.service';
 import { BrapciApiService } from '../../core/services/brapci-api.service';
+import { AdminConceptEditorComponent } from './admin-concept-editor.component';
+import { AdminImageEditorComponent } from './admin-image-editor.component';
+import { AdminLiteralEditorComponent } from './admin-literal-editor.component';
 
 type JsonRecord = Record<string, unknown>;
 
@@ -16,6 +19,8 @@ interface RdfData extends JsonRecord {
   ID2: string;
   id_c: string;
   id_n: string;
+  property: string;
+  propertyAllow: JsonRecord;
   c_class: string;
   n_name: string;
   n_lang: string;
@@ -57,10 +62,17 @@ interface RdfEditorResponse {
   status?: string;
 }
 
+interface AutocompleteOption {
+  ID: string;
+  name: string;
+  lang: string;
+  use: string;
+}
+
 @Component({
   selector: 'app-admin-edit-page',
   standalone: true,
-  imports: [CommonModule, FormsModule, RouterLink, TranslateModule],
+  imports: [CommonModule, FormsModule, RouterLink, TranslateModule, AdminConceptEditorComponent, AdminImageEditorComponent, AdminLiteralEditorComponent],
   templateUrl: './admin-edit.page.html',
   styleUrl: './admin-edit.page.scss',
 })
@@ -82,10 +94,31 @@ export class AdminEditPage {
   readonly deleting = signal(false);
   readonly uploading = signal(false);
   readonly selectedFile = signal<File | null>(null);
+  readonly autocompleteQuery = signal('');
+  readonly autocompleteOptions = signal<AutocompleteOption[]>([]);
+  readonly autocompleteLoading = signal(false);
+  readonly autocompletePayload = signal<{ q: string; prop: string; ID: string }>({ q: '', prop: '', ID: '' });
+  readonly saveResponse = signal<unknown | null>(null);
+  private readonly autocompleteRequests = new Subject<{ q: string; prop: string; ID: string }>();
 
   readonly conceptFields = ['n_name', 'n_lang', 'c_class', 'cc_status'] as const;
 
   constructor() {
+    this.autocompleteRequests.pipe(
+      debounceTime(300),
+      distinctUntilChanged((previous, current) => previous.q === current.q && previous.prop === current.prop && previous.ID === current.ID),
+      tap((payload) => this.autocompleteLoading.set(payload.q.length > 3)),
+      switchMap((payload) => payload.q.length > 3
+        ? this.api.postForm<AutocompleteOption[]>('rdf/searchSelect', payload).pipe(
+          catchError(() => of([] as AutocompleteOption[])),
+        )
+        : of([] as AutocompleteOption[])),
+      takeUntilDestroyed(this.destroyRef),
+    ).subscribe((options) => {
+      this.autocompleteOptions.set(Array.isArray(options) ? options : []);
+      this.autocompleteLoading.set(false);
+    });
+
     this.route.paramMap.pipe(
       map((params) => params.get('id')?.trim() ?? ''),
       distinctUntilChanged(),
@@ -145,6 +178,10 @@ export class AdminEditPage {
   openNew(groupIndex: number, propertyIndex: number): void {
     const property = this.groups()[groupIndex].properties[propertyIndex];
     const allow = property.Allow ?? {};
+    const allowedTypes = Array.isArray(allow['type']) ? allow['type'] : [];
+    const allowedClass = allowedTypes.find((type): type is JsonRecord => (
+      typeof type === 'object' && type !== null && typeof type['c_class'] === 'string'
+    ))?.['c_class'];
     const mode: EditorMode = allow['imagem'] || allow['cover']
       ? 'image'
       : allow['pdf']
@@ -157,26 +194,132 @@ export class AdminEditPage {
       propertyIndex,
       dataIndex: null,
       mode,
-      draft: { id_d: '', ID: this.id(), ID2: this.id(), id_c: property.IDp, id_n: '', c_class: property.property, n_name: '', n_lang: 'nn' },
+      draft: {
+        id_d: '',
+        ID: this.id(),
+        ID2: this.id(),
+        id_c: property.IDp,
+        id_n: '',
+        property: property.property,
+        propertyAllow: { ...allow },
+        c_class: String(allowedClass ?? property.property),
+        n_name: '',
+        n_lang: 'nn',
+      },
     });
     this.selectedFile.set(null);
+    this.autocompleteQuery.set('');
+    this.autocompleteOptions.set([]);
+    this.autocompletePayload.set({ q: '', prop: property.property, ID: this.id() });
+    this.saveResponse.set(null);
   }
 
   openEdit(groupIndex: number, propertyIndex: number, dataIndex: number): void {
     const property = this.groups()[groupIndex].properties[propertyIndex];
     const allow = property.Allow ?? {};
     const mode: EditorMode = allow['imagem'] || allow['cover'] ? 'image' : allow['pdf'] ? 'file' : allow['literal'] ? 'literal' : 'concept';
-    this.editor.set({ groupIndex, propertyIndex, dataIndex, mode, draft: { ...property.Data[dataIndex] } });
+    this.editor.set({
+      groupIndex,
+      propertyIndex,
+      dataIndex,
+      mode,
+      draft: {
+        ...property.Data[dataIndex],
+        property: property.property,
+        propertyAllow: { ...allow },
+      },
+    });
     this.selectedFile.set(null);
+    this.autocompleteQuery.set('');
+    this.autocompleteOptions.set([]);
+    this.autocompletePayload.set({ q: '', prop: property.property, ID: this.id() });
+    this.saveResponse.set(null);
   }
 
   closeEditor(): void {
     this.editor.set(null);
     this.selectedFile.set(null);
+    this.autocompleteQuery.set('');
+    this.autocompleteOptions.set([]);
+    this.autocompleteLoading.set(false);
+    this.autocompletePayload.set({ q: '', prop: '', ID: '' });
+    this.saveResponse.set(null);
   }
 
-  updateDraft(field: 'ID' | 'n_name' | 'n_lang', value: string): void {
+  updateDraft(field: 'ID' | 'n_name' | 'n_lang' | 'c_class', value: string): void {
     this.editor.update((state) => state ? { ...state, draft: { ...state.draft, [field]: value } } : null);
+  }
+
+  editorParameters(draft: RdfData): string {
+    return JSON.stringify(draft, null, 2);
+  }
+
+  canEditData(property: RdfProperty, data: RdfData): boolean {
+    const propertyAllow = data.propertyAllow ?? property.Allow;
+    const allowedTypes = Array.isArray(propertyAllow?.['type']) ? propertyAllow['type'] : [];
+    return allowedTypes.some((type) => (
+      typeof type === 'object' &&
+      type !== null &&
+      type['c_class'] === 'Literal'
+    ));
+  }
+
+  isLiteralDraft(draft: RdfData): boolean {
+    return this.allowedTypeOptions(draft).some((type) => type['c_class'] === 'Literal');
+  }
+
+  allowedTypeOptions(draft: RdfData): JsonRecord[] {
+    const types = draft.propertyAllow?.['type'];
+    return Array.isArray(types)
+      ? types.filter((type): type is JsonRecord => typeof type === 'object' && type !== null)
+      : [];
+  }
+
+  typeOptionValue(type: JsonRecord): string {
+    return String(type['n_name'] ?? type['name'] ?? type['c_class'] ?? '');
+  }
+
+  /** Compatibilidade temporária com templates mantidos pelo hot reload. */
+  filteredTypeOptions(draft: RdfData): JsonRecord[] {
+    if (this.autocompleteOptions().length) {
+      return this.autocompleteOptions().map((option) => ({ ...option }));
+    }
+    return this.allowedTypeOptions(draft);
+  }
+
+  updateAutocompleteQuery(value: string): void {
+    this.autocompleteQuery.set(value);
+    const state = this.editor();
+    if (!state) return;
+    const payload = {
+      q: value.trim(),
+      prop: state.draft.property,
+      ID: state.draft.ID2 || this.id(),
+    };
+    this.autocompletePayload.set(payload);
+    this.autocompleteRequests.next(payload);
+  }
+
+  autocompletePayloadJson(): string {
+    return JSON.stringify(this.autocompletePayload(), null, 2);
+  }
+
+  saveResponseJson(): string {
+    return JSON.stringify(this.saveResponse(), null, 2);
+  }
+
+  selectAutocomplete(use: string): void {
+    const option = this.autocompleteOptions().find((item) => item.use === use);
+    if (!option) return;
+    this.editor.update((state) => state ? {
+      ...state,
+      draft: {
+        ...state.draft,
+        ID: option.use,
+        n_name: option.name,
+        n_lang: option.lang,
+      },
+    } : null);
   }
 
   selectFile(event: Event): void {
@@ -187,17 +330,48 @@ export class AdminEditPage {
   confirmEditor(): void {
     const state = this.editor();
     if (!state) return;
+    if (this.saveResponse() !== null) {
+      this.closeEditor();
+      return;
+    }
     if (state.mode === 'literal') {
       const isNew = state.dataIndex === null;
       const endpoint = isNew ? 'rdf/dataAddLiteral' : `rdf/updateLiteral/${state.draft.id_n}`;
       const payload = isNew
-        ? { q: state.draft.n_name, prop: state.draft.c_class, ID: state.draft.ID || this.id() }
-        : { q: state.draft.n_name, prop: state.draft.c_class, ID: state.draft.ID };
+        ? { q: state.draft.n_name, prop: state.draft.property, ID: state.draft.ID || this.id(), c_class: state.draft.c_class, propertyAllow: state.draft.propertyAllow }
+        : { q: state.draft.n_name, prop: state.draft.property, ID: state.draft.ID, c_class: state.draft.c_class, propertyAllow: state.draft.propertyAllow };
       this.uploading.set(true);
       this.api.post(endpoint, payload).pipe(takeUntilDestroyed(this.destroyRef)).subscribe({
         next: () => { this.uploading.set(false); this.closeEditor(); this.refreshData(); },
         error: () => { this.uploading.set(false); this.error.set('adminEdit.errors.save'); },
       });
+      return;
+    }
+    if (state.mode === 'concept') {
+      const principalId = state.draft.ID2 || this.id();
+      const selectedId = state.draft.ID;
+      const payload = {
+        q: selectedId,
+        prop: state.draft.property,
+        ID: principalId,
+        source: principalId,
+        resource: selectedId,
+      };
+      this.uploading.set(true);
+      this.error.set('');
+      this.api.postForm<unknown>('rdf/dataAdd', payload)
+        .pipe(takeUntilDestroyed(this.destroyRef))
+        .subscribe({
+          next: (response) => {
+            this.uploading.set(false);
+            this.saveResponse.set(response);
+            this.refreshData();
+          },
+          error: () => {
+            this.uploading.set(false);
+            this.error.set('adminEdit.errors.save');
+          },
+        });
       return;
     }
     const file = this.selectedFile();

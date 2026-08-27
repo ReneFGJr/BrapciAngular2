@@ -217,6 +217,21 @@
 .admin-modal__panel header h2 { margin: 0; font-size: 1.2rem; }
 .admin-modal__panel footer { justify-content: flex-end; border-top: 1px solid var(--bs-border-color); border-bottom: 0; }
 .admin-modal__body { padding: 1.25rem; }
+.admin-modal__parameters { margin-top: 1.25rem; }
+.admin-modal__parameters pre {
+  max-height: 18rem;
+  margin: 0;
+  padding: 1rem;
+  overflow: auto;
+  border: 1px solid var(--bs-border-color);
+  border-radius: .5rem;
+  background: var(--bs-tertiary-bg);
+  color: var(--bs-body-color);
+  font-size: .85rem;
+  line-height: 1.5;
+  white-space: pre-wrap;
+  overflow-wrap: anywhere;
+}
 .admin-edit__eyebrow { color: #c21874; font-size: .72rem; font-weight: 800; letter-spacing: .12em; text-transform: uppercase; }
 
 :host-context(body.theme-master.theme-dark) {
