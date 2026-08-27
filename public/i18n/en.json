@@ -513,6 +513,7 @@
         "typology": "Typology",
         "sources": "Number of sources (%)",
         "halfLife": "Literature half-life",
+        "withDoi": "References with DOI",
         "general": "Overall",
         "untyped": "Untyped",
         "years": "years",

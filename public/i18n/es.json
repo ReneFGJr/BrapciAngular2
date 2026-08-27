@@ -513,6 +513,7 @@
         "typology": "Tipología",
         "sources": "Cantidad de fuentes (%)",
         "halfLife": "Vida media de la literatura",
+        "withDoi": "Referencias con DOI",
         "general": "General",
         "untyped": "Sin tipo",
         "years": "años",

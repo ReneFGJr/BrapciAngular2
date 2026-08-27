@@ -192,6 +192,15 @@
                   </strong>
                   <span class="citation-overview-detail">{{ 'article.data.citationSummary.general' | translate }}</span>
                 </article>
+
+                <article class="citation-overview-card citation-overview-card--doi">
+                  <span class="citation-overview-label">{{ 'article.data.citationSummary.withDoi' | translate }}</span>
+                  <strong class="citation-overview-value">{{ general.doiCount }}</strong>
+                  <span class="citation-overview-detail">
+                    <i class="bi bi-link-45deg" aria-hidden="true"></i>
+                    {{ formatPercentage(general.doiPercentage) }}%
+                  </span>
+                </article>
               </div>
             }
 

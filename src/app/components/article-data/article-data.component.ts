@@ -9,6 +9,8 @@ type CitationSummaryRow = {
   count: number;
   percentage: number;
   halfLife: number | null;
+  doiCount: number;
+  doiPercentage: number;
   isGeneral: boolean;
 };
 
@@ -318,6 +320,8 @@ export class ArticleDataComponent {
       count: entries.length,
       percentage: (entries.length / references.length) * 100,
       halfLife: this.calculateLiteratureHalfLife(entries, articleYear),
+      doiCount: this.countReferencesWithDoi(entries),
+      doiPercentage: (this.countReferencesWithDoi(entries) / entries.length) * 100,
       isGeneral,
     });
 
@@ -374,6 +378,14 @@ export class ArticleDataComponent {
     }
 
     return null;
+  }
+
+  private countReferencesWithDoi(references: Record<string, unknown>[]): number {
+    return references.filter((reference) => this.hasDoi(reference)).length;
+  }
+
+  private hasDoi(reference: Record<string, unknown>): boolean {
+    return Boolean(this.pickText(reference, ['ca_doi', 'doi', 'DOI']));
   }
 
   private calculateLiteratureHalfLife(

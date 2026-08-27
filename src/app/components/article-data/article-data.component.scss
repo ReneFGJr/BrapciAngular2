@@ -149,7 +149,7 @@
 
   .citation-overview {
     display: grid;
-    grid-template-columns: repeat(2, minmax(0, 1fr));
+    grid-template-columns: repeat(auto-fit, minmax(190px, 1fr));
     gap: 0.8rem;
     margin-bottom: 1.25rem;
   }
@@ -175,8 +175,14 @@
     content: '';
   }
 
+
+
   .citation-overview-card--half-life::after {
     background: var(--theme-hint);
+  }
+
+  .citation-overview-card--doi::after {
+    background: #198754;
   }
 
   .citation-overview-label {
