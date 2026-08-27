@@ -248,6 +248,9 @@
       "nr": "Núm.",
       "articles": "Artículos"
     },
+    "actions": {
+      "selectAll": "Seleccionar todo"
+    },
     "tabs": {
       "ariaLabel": "Pestañas del contenido del fascículo",
       "summary": "Resumen",
@@ -520,6 +523,8 @@
       }
     },
     "actions": {
+      "select": "Seleccionar",
+      "selected": "Seleccionado",
       "downloadPdf": "Descargar PDF",
       "copyLink": "Copiar enlace",
       "shareWhatsApp": "Compartir en WhatsApp",

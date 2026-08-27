@@ -246,6 +246,9 @@
       "nr": "N.",
       "articles": "Artigos"
     },
+    "actions": {
+      "selectAll": "Selecionar tudo"
+    },
     "tabs": {
       "ariaLabel": "Abas de conteúdo da issue",
       "summary": "Resumo",
@@ -518,6 +521,8 @@
       }
     },
     "actions": {
+      "select": "Selecionar",
+      "selected": "Selecionado",
       "downloadPdf": "Baixar PDF",
       "copyLink": "Copiar link",
       "shareWhatsApp": "Compartilhar WhatsApp",

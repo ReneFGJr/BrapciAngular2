@@ -55,6 +55,18 @@
 
     <!-- Imagem da revista -->
     <div class="article-cover-wrap">
+      <button
+        type="button"
+        class="btn w-100"
+        [class.btn-primary]="isSelected()"
+        [class.btn-outline-primary]="!isSelected()"
+        [attr.aria-pressed]="isSelected()"
+        [attr.aria-label]="(isSelected() ? 'article.actions.selected' : 'article.actions.select') | translate"
+        (click)="toggleSelection()"
+      >
+        <i class="bi bi-basket me-1" aria-hidden="true"></i>
+        {{ (isSelected() ? 'article.actions.selected' : 'article.actions.select') | translate }}
+      </button>
       @if (journalCoverUrl() && journalCoverUrl() !== '-') {
         <img
           class="article-cover"

@@ -13,6 +13,15 @@
       <span class="issue-badge">{{ 'issue.badges.volume' | translate }}: {{ issueVol() }}</span>
       <span class="issue-badge">{{ 'issue.badges.nr' | translate }}: {{ issueNumber() }}</span>
       <span class="issue-badge">{{ 'issue.badges.articles' | translate }} {{ worksTotal() }}</span>
+      <button
+        type="button"
+        class="btn btn-sm btn-outline-primary"
+        [disabled]="!workIds().length || allWorksSelected()"
+        (click)="selectAllWorks()"
+      >
+        <i class="bi bi-check2-all me-1" aria-hidden="true"></i>
+        {{ 'issue.actions.selectAll' | translate }}
+      </button>
     </div>
 
     <div class="issue-metrics" [attr.aria-label]="'issue.hero.metricsLabel' | translate">

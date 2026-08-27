@@ -1,5 +1,6 @@
 import { CommonModule } from '@angular/common';
-import { Component, Input, OnInit, OnChanges, SimpleChanges, inject } from '@angular/core';
+import { Component, Input, OnInit, OnChanges, SimpleChanges, inject, signal } from '@angular/core';
+import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { Meta, Title } from '@angular/platform-browser';
 import { TranslateModule } from '@ngx-translate/core';
 import { CitationTabsComponent } from '../citation-tabs/citation-tabs.component';
@@ -8,6 +9,7 @@ import { ArticleKeywordsComponent } from '../article-keywords/article-keywords.c
 import { ArticleDataComponent } from '../article-data/article-data.component';
 import { ArticlePdfLinkComponent } from '../article-pdf-link/article-pdf-link.component';
 import { AdminAreaComponent } from '../admin-area/admin-area.component';
+import { BasketService } from '../../core/services/basket.service';
 
 type JsonRecord = Record<string, unknown>;
 
@@ -42,9 +44,12 @@ type CreatorAuthor = {
 export class ArticleGadgetComponent implements OnInit, OnChanges {
   private metaService = inject(Meta);
   private titleService = inject(Title);
+  private readonly basketService = inject(BasketService);
   @Input({ required: true }) data: unknown = null;
   @Input() metrics: ArticleMetric[] = [];
   @Input() dataTag: unknown = null;
+
+  readonly basketVersion = signal(0);
 
   readonly preferredLanguageOrder: Array<LocalizedTitle['language']> = ['pt', 'es', 'en', 'fr'];
 
@@ -272,6 +277,26 @@ export class ArticleGadgetComponent implements OnInit, OnChanges {
 
   articleId(): string {
     return this.field(['ID', 'id']);
+  }
+
+  isSelected(): boolean {
+    this.basketVersion();
+    const id = Number(this.articleId());
+    return Number.isFinite(id) && id > 0 && this.basketService.isMarked(id);
+  }
+
+  toggleSelection(): void {
+    const id = Number(this.articleId());
+    if (!Number.isFinite(id) || id <= 0) {
+      return;
+    }
+
+    if (this.basketService.isMarked(id)) {
+      this.basketService.remove(id);
+      return;
+    }
+
+    this.basketService.add(id);
   }
 
   articleAuthorsForShare(): string {
@@ -540,6 +565,12 @@ export class ArticleGadgetComponent implements OnInit, OnChanges {
 
   private asRecord(value: unknown): JsonRecord | null {
     return value && typeof value === 'object' ? (value as JsonRecord) : null;
+  }
+
+  constructor() {
+    this.basketService.changed.pipe(takeUntilDestroyed()).subscribe(() => {
+      this.basketVersion.update((version) => version + 1);
+    });
   }
 
   ngOnInit(): void {

@@ -248,6 +248,9 @@
       "nr": "No.",
       "articles": "Articles"
     },
+    "actions": {
+      "selectAll": "Select all"
+    },
     "tabs": {
       "ariaLabel": "Issue content tabs",
       "summary": "Summary",
@@ -520,6 +523,8 @@
       }
     },
     "actions": {
+      "select": "Select",
+      "selected": "Selected",
       "downloadPdf": "Download PDF",
       "copyLink": "Copy link",
       "shareWhatsApp": "Share on WhatsApp",

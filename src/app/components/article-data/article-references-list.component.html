@@ -19,23 +19,38 @@
   @if (normalizedReferences().length === 0) {
     <p class="references-empty">Nenhuma referência disponível.</p>
   } @else {
-    <ol class="references-list" aria-label="Lista de referências">
-      @for (reference of normalizedReferences(); track reference.index) {
-        <li class="reference-card small">
-          <div class="reference-top">
-            <span class="reference-index">{{ reference.index }}</span>
+    <div class="reference-groups">
+      @for (group of groupedReferences(); track group.typeName) {
+        <section class="reference-group" [attr.aria-labelledby]="'reference-group-' + $index">
+          <h3 class="reference-group-title" [id]="'reference-group-' + $index">
+            {{ group.typeName }}
+            <span class="reference-group-count">{{ group.references.length }}</span>
+          </h3>
 
-            <div class="reference-content">
-              <p class="reference-citation">{{ reference.citation }}</p>
+          <ol class="references-list" [attr.aria-label]="'Referências: ' + group.typeName">
+            @for (reference of group.references; track reference.index) {
+              <li class="reference-card small">
+                <div class="reference-top">
+                  <span class="reference-index">{{ reference.index }}</span>
 
-              @if (reference.authors) {
-                <p class="reference-authors">{{ reference.authors }}</p>
-              }
-            </div>
-          </div>
-        </li>
+                  <div class="reference-content">
+                    <p class="reference-citation">{{ reference.citation }}</p>
+
+                    @if (reference.authors) {
+                      <p class="reference-authors">{{ reference.authors }}</p>
+                    }
+                  </div>
+
+                  @if (reference.year) {
+                    <time class="reference-year">{{ reference.year }}</time>
+                  }
+                </div>
+              </li>
+            }
+          </ol>
+        </section>
       }
-    </ol>
+    </div>
   }
 </div>
 

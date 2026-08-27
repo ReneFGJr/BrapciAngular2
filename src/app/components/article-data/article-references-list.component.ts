@@ -13,7 +13,14 @@ type ReferenceEntry = {
   index: number;
   citation: string;
   authors: string;
+  typeName: string;
+  year: string;
   meta: ReferenceMeta[];
+};
+
+type ReferenceGroup = {
+  typeName: string;
+  references: ReferenceEntry[];
 };
 
 @Component({
@@ -75,6 +82,20 @@ export class ArticleReferencesListComponent {
   readonly extractedId = computed(() => this.referenceId());
 
   readonly normalizedReferences = computed(() => this.normalizeReferences(this.rawReferences()));
+  readonly groupedReferences = computed<ReferenceGroup[]>(() => {
+    const groups = new Map<string, ReferenceEntry[]>();
+
+    for (const reference of this.normalizedReferences()) {
+      const typeName = reference.typeName || 'Sem tipo';
+      const entries = groups.get(typeName) ?? [];
+      entries.push(reference);
+      groups.set(typeName, entries);
+    }
+
+    return [...groups.entries()]
+      .map(([typeName, references]) => ({ typeName, references }))
+      .sort((a, b) => a.typeName.localeCompare(b.typeName, 'pt-BR', { sensitivity: 'base' }));
+  });
   readonly importFrameUrl = computed<SafeResourceUrl | null>(() => {
     const id = this.referenceId();
     if (!id) {
@@ -128,6 +149,8 @@ export class ArticleReferencesListComponent {
       index: index + 1,
       citation,
       authors: '',
+      typeName: 'Sem tipo',
+      year: '',
       meta: [],
     }));
   }
@@ -138,6 +161,8 @@ export class ArticleReferencesListComponent {
         index,
         citation: this.stripLeadingNumber(value.trim()),
         authors: '',
+        typeName: 'Sem tipo',
+        year: '',
         meta: [],
       };
     }
@@ -147,6 +172,8 @@ export class ArticleReferencesListComponent {
         index,
         citation: '',
         authors: '',
+        typeName: 'Sem tipo',
+        year: '',
         meta: [],
       };
     }
@@ -156,6 +183,8 @@ export class ArticleReferencesListComponent {
       this.pickText(record, ['ca_text', 'text', 'title', 'name', 'reference', 'citation']) ||
       this.buildFallbackCitation(record);
     const authors = this.pickText(record, ['AUTHORS', 'authors', 'author', 'creator']);
+    const typeName = this.pickText(record, ['ct_name', 'ca_tipo', 'type']) || 'Sem tipo';
+    const year = this.pickText(record, ['ca_year', 'year', 'ano']);
     const meta: ReferenceMeta[] = [];
 
     this.pushMeta(meta, 'ID', this.pickText(record, ['id_ca', 'ca_id']));
@@ -178,6 +207,8 @@ export class ArticleReferencesListComponent {
       index,
       citation,
       authors,
+      typeName,
+      year,
       meta,
     };
   }

@@ -1,7 +1,9 @@
 import { CommonModule } from '@angular/common';
-import { Component, Input, computed, signal } from '@angular/core';
+import { Component, Input, computed, inject, signal } from '@angular/core';
+import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { TranslateModule } from '@ngx-translate/core';
 import { TagCloudComponent } from '../tag-cloud/tag-cloud.component';
+import { BasketService } from '../../core/services/basket.service';
 
 type JsonRecord = Record<string, unknown>;
 type TabId = 'summary' | 'works' | 'authors' | 'keywords' | 'json';
@@ -55,8 +57,11 @@ type KeywordStat = {
   styleUrl: './view-issue.component.scss'
 })
 export class ViewIssueComponent {
+  private readonly basketService = inject(BasketService);
+
   @Input({ required: true }) data: unknown = null;
   readonly activeTab = signal<TabId>('summary');
+  readonly basketVersion = signal(0);
 
   readonly title = computed(() => this.field(['legend','title', 'titulo', 'name', 'jnl_name', 'journal']));
   readonly issueId = computed(() => this.field(['ID', 'id', 'issue_id']));
@@ -73,6 +78,20 @@ export class ViewIssueComponent {
   readonly workGroups = computed(() => this.buildWorkGroups());
 
   readonly works = computed(() => this.workGroups().flatMap((group) => group.items));
+
+  readonly workIds = computed(() =>
+    [...new Set(
+      this.works()
+        .map((work) => Number(work.id))
+        .filter((id) => Number.isFinite(id) && id > 0),
+    )],
+  );
+
+  readonly allWorksSelected = computed(() => {
+    this.basketVersion();
+    const ids = this.workIds();
+    return ids.length > 0 && ids.every((id) => this.basketService.isMarked(id));
+  });
 
   readonly authors = computed(() => {
     const record = this.asRecord(this.data);
@@ -153,6 +172,18 @@ export class ViewIssueComponent {
   readonly keywords = computed(() => this.buildKeywords());
   readonly keywordsForCloud = computed(() => this.keywords().map((keyword) => ({ label: keyword.name, value: keyword.total })));
   readonly jsonContent = computed(() => JSON.stringify(this.data, null, 2));
+
+  constructor() {
+    this.basketService.changed.pipe(takeUntilDestroyed()).subscribe(() => {
+      this.basketVersion.update((version) => version + 1);
+    });
+  }
+
+  selectAllWorks(): void {
+    for (const id of this.workIds()) {
+      this.basketService.add(id);
+    }
+  }
 
   setTab(tab: TabId): void {
     this.activeTab.set(tab);
