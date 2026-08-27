@@ -248,6 +248,9 @@
       "nr": "Núm.",
       "articles": "Artículos"
     },
+    "actions": {
+      "selectAll": "Seleccionar todo"
+    },
     "tabs": {
       "ariaLabel": "Pestañas del contenido del fascículo",
       "summary": "Resumen",
@@ -505,6 +508,18 @@
     "data": {
       "title": "Datos",
       "copy": "Copiar",
+      "citationSummary": {
+        "title": "Resumen de citas",
+        "typology": "Tipología",
+        "sources": "Cantidad de fuentes (%)",
+        "halfLife": "Vida media de la literatura",
+        "withDoi": "Referencias con DOI",
+        "general": "General",
+        "untyped": "Sin tipo",
+        "years": "años",
+        "note": "Vida media calculada mediante la mediana de la edad de las fuentes respecto al año del artículo.",
+        "empty": "No hay fuentes disponibles para calcular el resumen."
+      },
       "tabs": {
         "fulltext": "Texto Completo",
         "json": "JSON",
@@ -520,6 +535,8 @@
       }
     },
     "actions": {
+      "select": "Seleccionar",
+      "selected": "Seleccionado",
       "downloadPdf": "Descargar PDF",
       "copyLink": "Copiar enlace",
       "shareWhatsApp": "Compartir en WhatsApp",
