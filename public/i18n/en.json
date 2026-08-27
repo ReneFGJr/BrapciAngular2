@@ -508,6 +508,17 @@
     "data": {
       "title": "Data",
       "copy": "Copy",
+      "citationSummary": {
+        "title": "Citation summary",
+        "typology": "Typology",
+        "sources": "Number of sources (%)",
+        "halfLife": "Literature half-life",
+        "general": "Overall",
+        "untyped": "Untyped",
+        "years": "years",
+        "note": "Half-life calculated as the median age of the sources relative to the article year.",
+        "empty": "No sources are available to calculate the summary."
+      },
       "tabs": {
         "fulltext": "Full Text",
         "json": "JSON",

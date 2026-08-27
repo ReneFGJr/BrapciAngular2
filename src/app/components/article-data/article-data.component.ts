@@ -4,6 +4,14 @@ import { TranslateModule } from '@ngx-translate/core';
 import { ArticleMarkdownViewerComponent } from './article-markdown-viewer.component';
 import { ArticleReferencesListComponent } from './article-references-list.component';
 
+type CitationSummaryRow = {
+  typeName: string;
+  count: number;
+  percentage: number;
+  halfLife: number | null;
+  isGeneral: boolean;
+};
+
 @Component({
   selector: 'app-article-data',
   standalone: true,
@@ -283,6 +291,116 @@ export class ArticleDataComponent {
       'bibliography',
       'bibliografia',
     ]);
+  }
+
+  getCitationSummary(): CitationSummaryRow[] {
+    const references = this.getReferenceRecords();
+    if (!references.length) {
+      return [];
+    }
+
+    const articleYear = this.getArticleYear();
+    const groups = new Map<string, Record<string, unknown>[]>();
+
+    for (const reference of references) {
+      const typeName = this.pickText(reference, ['ct_name', 'ca_tipo', 'type']);
+      const entries = groups.get(typeName) ?? [];
+      entries.push(reference);
+      groups.set(typeName, entries);
+    }
+
+    const toRow = (
+      typeName: string,
+      entries: Record<string, unknown>[],
+      isGeneral: boolean,
+    ): CitationSummaryRow => ({
+      typeName,
+      count: entries.length,
+      percentage: (entries.length / references.length) * 100,
+      halfLife: this.calculateLiteratureHalfLife(entries, articleYear),
+      isGeneral,
+    });
+
+    const rows = [...groups.entries()]
+      .map(([typeName, entries]) => toRow(typeName, entries, false))
+      .sort((a, b) => (b.count - a.count) || a.typeName.localeCompare(b.typeName, 'pt-BR', { sensitivity: 'base' }));
+
+    return [toRow('', references, true), ...rows];
+  }
+
+  formatPercentage(value: number): string {
+    return value.toLocaleString('pt-BR', { minimumFractionDigits: 1, maximumFractionDigits: 1 });
+  }
+
+  formatHalfLife(value: number | null): string {
+    if (value === null) {
+      return '—';
+    }
+
+    return value.toLocaleString('pt-BR', { maximumFractionDigits: 1 });
+  }
+
+  private getReferenceRecords(): Record<string, unknown>[] {
+    const value = this.getReferencesValue();
+    if (Array.isArray(value)) {
+      return value.filter((item): item is Record<string, unknown> => Boolean(item) && typeof item === 'object');
+    }
+
+    if (typeof value === 'string') {
+      try {
+        const parsed: unknown = JSON.parse(value);
+        return Array.isArray(parsed)
+          ? parsed.filter((item): item is Record<string, unknown> => Boolean(item) && typeof item === 'object')
+          : [];
+      } catch {
+        return [];
+      }
+    }
+
+    return value && typeof value === 'object' ? [value as Record<string, unknown>] : [];
+  }
+
+  private getArticleYear(): number | null {
+    const record = this.asRecord(this.data);
+    if (!record) {
+      return null;
+    }
+
+    for (const value of [record['year'], record['ano'], record['datePublished']]) {
+      const year = this.parseYear(value);
+      if (year !== null) {
+        return year;
+      }
+    }
+
+    return null;
+  }
+
+  private calculateLiteratureHalfLife(
+    references: Record<string, unknown>[],
+    articleYear: number | null,
+  ): number | null {
+    if (articleYear === null) {
+      return null;
+    }
+
+    const ages = references
+      .map((reference) => this.parseYear(reference['ca_year'] ?? reference['year'] ?? reference['ano']))
+      .filter((year): year is number => year !== null && year <= articleYear)
+      .map((year) => articleYear - year)
+      .sort((a, b) => a - b);
+
+    if (!ages.length) {
+      return null;
+    }
+
+    const middle = Math.floor(ages.length / 2);
+    return ages.length % 2 === 0 ? (ages[middle - 1] + ages[middle]) / 2 : ages[middle];
+  }
+
+  private parseYear(value: unknown): number | null {
+    const match = String(value ?? '').match(/\b(1[5-9]\d{2}|20\d{2}|2100)\b/);
+    return match ? Number(match[1]) : null;
   }
 
   getCitationsData(): string {

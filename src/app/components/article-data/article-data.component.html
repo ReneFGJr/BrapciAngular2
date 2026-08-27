@@ -161,7 +161,93 @@
           {{ 'article.data.copy' | translate }}
         </button>
       </div>
-      <pre class="data-code"><code>{{ getCitationsData() }}</code></pre>
+      @if (getCitationSummary(); as summary) {
+        @if (summary.length) {
+          <section class="citation-summary" [attr.aria-label]="'article.data.citationSummary.title' | translate">
+            <header class="citation-summary-header">
+              <span class="citation-summary-icon" aria-hidden="true">
+                <i class="bi bi-bar-chart-line"></i>
+              </span>
+              <div>
+                <h3 class="citation-summary-title">{{ 'article.data.citationSummary.title' | translate }}</h3>
+                <p class="citation-summary-subtitle">{{ 'article.data.citationSummary.note' | translate }}</p>
+              </div>
+            </header>
+
+            @if (summary[0]; as general) {
+              <div class="citation-overview" [attr.aria-label]="'article.data.citationSummary.general' | translate">
+                <article class="citation-overview-card citation-overview-card--sources">
+                  <span class="citation-overview-label">{{ 'article.data.citationSummary.sources' | translate }}</span>
+                  <strong class="citation-overview-value">{{ general.count }}</strong>
+                  <span class="citation-overview-detail">{{ 'article.data.citationSummary.general' | translate }} · 100%</span>
+                </article>
+
+                <article class="citation-overview-card citation-overview-card--half-life">
+                  <span class="citation-overview-label">{{ 'article.data.citationSummary.halfLife' | translate }}</span>
+                  <strong class="citation-overview-value">
+                    {{ formatHalfLife(general.halfLife) }}
+                    @if (general.halfLife !== null) {
+                      <small>{{ 'article.data.citationSummary.years' | translate }}</small>
+                    }
+                  </strong>
+                  <span class="citation-overview-detail">{{ 'article.data.citationSummary.general' | translate }}</span>
+                </article>
+              </div>
+            }
+
+            @if (summary.slice(1); as typologies) {
+              @if (typologies.length) {
+                <div class="citation-types">
+                  <h4 class="citation-types-title">{{ 'article.data.citationSummary.typology' | translate }}</h4>
+
+                  <div class="citation-type-grid">
+                    @for (row of typologies; track row.typeName || 'untyped') {
+                      <article class="citation-type-card">
+                        <div class="citation-type-head">
+                          <strong class="citation-type-name">
+                            {{ row.typeName || ('article.data.citationSummary.untyped' | translate) }}
+                          </strong>
+                          <span class="citation-type-count">{{ row.count }}</span>
+                        </div>
+
+                        <div
+                          class="citation-progress"
+                          role="progressbar"
+                          [attr.aria-label]="row.typeName || ('article.data.citationSummary.untyped' | translate)"
+                          [attr.aria-valuenow]="row.percentage"
+                          aria-valuemin="0"
+                          aria-valuemax="100"
+                        >
+                          <span class="citation-progress-bar" [style.width.%]="row.percentage"></span>
+                        </div>
+
+                        <div class="citation-type-metrics">
+                          <span>
+                            <strong>{{ row.count }}</strong> · {{ formatPercentage(row.percentage) }}%
+                          </span>
+                          <span>
+                            <i class="bi bi-hourglass-split" aria-hidden="true"></i>
+                            <strong>{{ formatHalfLife(row.halfLife) }}</strong>
+                            @if (row.halfLife !== null) {
+                              {{ 'article.data.citationSummary.years' | translate }}
+                            }
+                          </span>
+                        </div>
+                      </article>
+                    }
+                  </div>
+                </div>
+              }
+            }
+          </section>
+        } @else {
+          <p class="citation-summary-empty">{{ 'article.data.citationSummary.empty' | translate }}</p>
+        }
+      }
+
+      @if (getCitationsData()) {
+        <pre class="data-code"><code>{{ getCitationsData() }}</code></pre>
+      }
     </div>
   }
 </div>

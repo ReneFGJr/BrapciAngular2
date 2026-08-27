@@ -508,6 +508,17 @@
     "data": {
       "title": "Datos",
       "copy": "Copiar",
+      "citationSummary": {
+        "title": "Resumen de citas",
+        "typology": "Tipología",
+        "sources": "Cantidad de fuentes (%)",
+        "halfLife": "Vida media de la literatura",
+        "general": "General",
+        "untyped": "Sin tipo",
+        "years": "años",
+        "note": "Vida media calculada mediante la mediana de la edad de las fuentes respecto al año del artículo.",
+        "empty": "No hay fuentes disponibles para calcular el resumen."
+      },
       "tabs": {
         "fulltext": "Texto Completo",
         "json": "JSON",
