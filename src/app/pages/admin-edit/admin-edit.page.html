@@ -31,20 +31,25 @@
         <div class="rdf-property__values" [class.rdf-property__values--empty]="!property.Data.length">
           <span *ngIf="!property.Data.length" class="rdf-property__empty">{{ 'adminEdit.noValues' | translate }}</span>
 
-          <article *ngFor="let data of property.Data; let dataIndex = index" class="rdf-value">
-            <div class="rdf-value__actions">
-              <button type="button" class="rdf-icon rdf-icon--delete" [attr.aria-label]="'adminEdit.delete' | translate" [attr.title]="'adminEdit.delete' | translate" (click)="requestDelete(groupIndex, propertyIndex, dataIndex)">
-                <i class="bi bi-trash" aria-hidden="true"></i>
-              </button>
-              <button *ngIf="canEditData(property, data)" type="button" class="rdf-icon rdf-icon--edit" [attr.aria-label]="'adminEdit.edit' | translate" [attr.title]="'adminEdit.edit' | translate" (click)="openEdit(groupIndex, propertyIndex, dataIndex)">
-                <i class="bi bi-pencil" aria-hidden="true"></i>
-              </button>
+          <ng-container *ngFor="let data of property.Data; let dataIndex = index">
+            <div *ngIf="dataIndex === 0 || property.Data[dataIndex - 1].n_lang !== data.n_lang" class="rdf-language-separator">
+              <span>{{ languageLabel(data.n_lang) }}</span>
             </div>
-            <div class="rdf-value__content">
-              <span>{{ data.n_name || ('adminEdit.unnamed' | translate) }}</span>
-              <sup *ngIf="data.n_lang">{{ data.n_lang }}</sup>
-            </div>
-          </article>
+            <article class="rdf-value">
+              <div class="rdf-value__actions">
+                <button type="button" class="rdf-icon rdf-icon--delete" [attr.aria-label]="'adminEdit.delete' | translate" [attr.title]="'adminEdit.delete' | translate" (click)="requestDelete(groupIndex, propertyIndex, dataIndex)">
+                  <i class="bi bi-trash" aria-hidden="true"></i>
+                </button>
+                <button *ngIf="canEditData(property, data)" type="button" class="rdf-icon rdf-icon--edit" [attr.aria-label]="'adminEdit.edit' | translate" [attr.title]="'adminEdit.edit' | translate" (click)="openEdit(groupIndex, propertyIndex, dataIndex)">
+                  <i class="bi bi-pencil" aria-hidden="true"></i>
+                </button>
+              </div>
+              <div class="rdf-value__content">
+                <span>{{ data.n_name || ('adminEdit.unnamed' | translate) }}</span>
+                <sup *ngIf="data.n_lang">{{ data.n_lang }}</sup>
+              </div>
+            </article>
+          </ng-container>
         </div>
       </div>
     </section>
@@ -64,20 +69,22 @@
             [query]="autocompleteQuery()"
             [options]="autocompleteOptions()"
             [loading]="autocompleteLoading()"
-            [payloadJson]="autocompletePayloadJson()"
+            [payloadJson]="state.dataIndex === null ? '' : autocompletePayloadJson()"
             (queryChange)="updateAutocompleteQuery($event)"
             (selectionChange)="selectAutocomplete($event)"
             (classChange)="updateDraft('c_class', $event)"
           />
         </ng-template>
       </ng-template>
-      <div class="admin-modal__parameters">
+      <div *ngIf="state.dataIndex !== null" class="admin-modal__parameters">
         <label class="form-label" for="rdf-parameters">JSON</label>
         <pre id="rdf-parameters" aria-live="polite">{{ editorParameters(state.draft) }}</pre>
       </div>
       <div *ngIf="saveResponse() !== null" class="admin-modal__parameters">
-        <label class="form-label" for="rdf-save-response">Retorno do endpoint</label>
-        <pre id="rdf-save-response" aria-live="polite">{{ saveResponseJson() }}</pre>
+        <div id="rdf-save-response" class="alert alert-secondary mb-0" aria-live="polite">
+          <p class="mb-1"><strong>Status:</strong> {{ saveResponseStatus() }}</p>
+          <p class="mb-0"><strong>Mensagem:</strong> {{ saveResponseMessage() }}</p>
+        </div>
       </div>
     </div>
     <footer><button type="button" class="btn btn-outline-secondary" (click)="closeEditor()">{{ 'adminEdit.cancel' | translate }}</button><button type="button" class="btn btn-warning" [disabled]="uploading()" (click)="confirmEditor()">{{ (saveResponse() !== null ? 'adminEdit.close' : (uploading() ? 'adminEdit.uploading' : 'adminEdit.confirm')) | translate }}</button></footer>
@@ -88,7 +95,9 @@
   <div class="admin-modal__backdrop" (click)="cancelDelete()"></div>
   <section class="admin-modal__panel admin-modal__panel--small">
     <header><h2>{{ 'adminEdit.deleteTitle' | translate }}</h2><button type="button" class="btn-close" (click)="cancelDelete()"></button></header>
-    <div class="admin-modal__body"><p>{{ 'adminEdit.deleteConfirm' | translate: { name: target.data.n_name } }}</p></div>
-    <footer><button type="button" class="btn btn-outline-secondary" (click)="cancelDelete()">{{ 'adminEdit.cancel' | translate }}</button><button type="button" class="btn btn-danger" [disabled]="deleting()" (click)="confirmDelete()">{{ (deleting() ? 'adminEdit.deleting' : 'adminEdit.delete') | translate }}</button></footer>
+    <div class="admin-modal__body">
+      <p>{{ 'adminEdit.deleteConfirm' | translate: { name: target.data.n_name } }}</p>
+    </div>
+    <footer><button type="button" class="btn btn-outline-secondary" (click)="cancelDelete()">Fechar</button><button type="button" class="btn btn-danger" [disabled]="deleting()" (click)="confirmDelete()">{{ deleting() ? 'Excluindo...' : 'Excluir' }}</button></footer>
   </section>
 </div>

@@ -131,6 +131,21 @@
   border-top: 1px solid #aab1b6;
 }
 
+.rdf-language-separator {
+  display: flex;
+  align-items: center;
+  gap: .75rem;
+  padding: .5rem 1rem;
+  border-top: 1px solid rgba(194, 24, 116, .32);
+  border-bottom: 1px solid rgba(194, 24, 116, .18);
+  background: rgba(194, 24, 116, .07);
+  color: #a71363;
+  font-size: .75rem;
+  font-weight: 700;
+  letter-spacing: .1em;
+  text-transform: uppercase;
+}
+
 .rdf-value__actions {
   display: flex;
   flex: 0 0 auto;
@@ -245,6 +260,12 @@
 
 :host-context(body.theme-master.theme-dark) .rdf-value + .rdf-value {
   border-color: #4d565c;
+}
+
+:host-context(body.theme-master.theme-dark) .rdf-language-separator {
+  border-color: rgba(241, 123, 185, .28);
+  background: rgba(211, 23, 123, .1);
+  color: #f17bb9;
 }
 
 :host-context(body.theme-master.theme-dark) .rdf-icon {

@@ -135,7 +135,7 @@ export class AuthService {
     const usernameCandidate = String(data['email'] ?? data['persistent-id'] ?? data['givenName'] ?? '').trim();
     const nameCandidate = String(data['displayName'] ?? data['givenName'] ?? '').trim();
     const adminFlag = Boolean(data['admin']);
-    const tokenCandidate = typeof data['token'] === 'string' ? data['token'].trim() : '';
+    const tokenCandidate = this.extractToken(data);
 
     return {
       id: Number.isFinite(idCandidate) ? idCandidate : 0,
@@ -153,7 +153,8 @@ export class AuthService {
 
     const authResponse = response as Partial<AuthResponse> & Record<string, unknown>;
     if (authResponse.user && typeof authResponse.user === 'object') {
-      return authResponse.user as User;
+      const user = authResponse.user as User;
+      return { ...user, token: user.token || this.extractToken(authResponse) || undefined };
     }
 
     if (String(authResponse['status'] ?? '') === '200') {
@@ -161,6 +162,11 @@ export class AuthService {
     }
 
     return null;
+  }
+
+  private extractToken(raw: Record<string, unknown>): string {
+    const candidate = raw['token'] ?? raw['access_token'] ?? raw['api_token'] ?? raw['apiToken'] ?? raw['apikey'];
+    return typeof candidate === 'string' ? candidate.trim() : '';
   }
 
   private buildFormData(fields: Record<string, string>): FormData {
@@ -237,7 +243,11 @@ export class AuthService {
 
   checkSession(): Observable<User | null> {
     return this.http.get<AuthResponse>(this.buildAuthUrl('/auth/me')).pipe(
-      map((response) => response.user),
+      map((response) => {
+        if (!response.user || response.user.token) return response.user;
+        const preservedToken = this.userSubject.value?.token || this.readUserFromLocalStorage()?.token;
+        return preservedToken ? { ...response.user, token: preservedToken } : response.user;
+      }),
       tap((user) => {
         this.persistUser(user);
       }),
@@ -308,6 +318,19 @@ export class AuthService {
 
   public getLocalUser(): User | null {
     return this.readStoredSessionFromLocalStorage()?.user ?? null;
+  }
+
+  public getApiToken(): string {
+    const currentToken = this.user?.token || this.userSubject.value?.token || this.getLocalUser()?.token;
+    if (currentToken) return currentToken;
+
+    const cached = this.sessionService.getSessionValue(this.storageKey);
+    if (!cached) return '';
+    try {
+      return this.extractToken(JSON.parse(cached) as Record<string, unknown>);
+    } catch {
+      return '';
+    }
   }
 
   public getLocalSessionExpiresAt(): number | null {

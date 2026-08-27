@@ -1,6 +1,6 @@
 import { CommonModule } from '@angular/common';
 import { Component, DestroyRef, inject, signal } from '@angular/core';
-import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
+import { takeUntilDestroyed, toSignal } from '@angular/core/rxjs-interop';
 import { FormsModule } from '@angular/forms';
 import { ActivatedRoute, RouterLink } from '@angular/router';
 import { TranslateModule } from '@ngx-translate/core';
@@ -83,6 +83,7 @@ export class AdminEditPage {
   private readonly auth = inject(AuthService);
 
   readonly id = signal('');
+  readonly currentUser = toSignal(this.auth.currentUser$, { initialValue: null });
   readonly concept = signal<JsonRecord>({});
   readonly groups = signal<RdfGroup[]>([]);
   readonly loading = signal(true);
@@ -140,10 +141,39 @@ export class AdminEditPage {
       properties: (response.form?.[key] ?? []).map((property) => ({
         ...property,
         Allow: { ...(property.Allow ?? {}) },
-        Data: (property.Data ?? []).map((data) => ({ ...data })),
-      })),
+        Data: (property.Data ?? [])
+          .map((data) => ({ ...data }))
+          .sort((left, right) => this.compareRdfData(left, right)),
+      })).sort((left, right) => this.compareText(left.property, right.property)),
     })));
     this.loading.set(false);
+  }
+
+  private compareRdfData(left: RdfData, right: RdfData): number {
+    return this.compareLanguage(left.n_lang, right.n_lang) || this.compareText(left.n_name, right.n_name);
+  }
+
+  private compareLanguage(left: string, right: string): number {
+    const leftCode = String(left ?? '').toLocaleLowerCase();
+    const rightCode = String(right ?? '').toLocaleLowerCase();
+    const leftPriority = leftCode === 'pt' || leftCode.startsWith('pt-') ? 0 : 1;
+    const rightPriority = rightCode === 'pt' || rightCode.startsWith('pt-') ? 0 : 1;
+    return leftPriority - rightPriority || this.compareText(leftCode, rightCode);
+  }
+
+  private compareText(left: string, right: string): number {
+    return String(left ?? '').localeCompare(String(right ?? ''), 'pt-BR', {
+      sensitivity: 'base',
+      numeric: true,
+    });
+  }
+
+  languageLabel(language: string): string {
+    const code = String(language ?? '').toLocaleLowerCase();
+    if (code === 'pt' || code.startsWith('pt-')) return `Português (${language})`;
+    if (code === 'en' || code.startsWith('en-')) return `Inglês (${language})`;
+    if (code === 'es' || code.startsWith('es-')) return `Espanhol (${language})`;
+    return language ? language : 'Sem idioma';
   }
 
   private refreshData(): void {
@@ -304,8 +334,18 @@ export class AdminEditPage {
     return JSON.stringify(this.autocompletePayload(), null, 2);
   }
 
-  saveResponseJson(): string {
-    return JSON.stringify(this.saveResponse(), null, 2);
+  saveResponseStatus(): string {
+    const response = this.saveResponse();
+    return response && typeof response === 'object'
+      ? String((response as JsonRecord)['status'] ?? '')
+      : '';
+  }
+
+  saveResponseMessage(): string {
+    const response = this.saveResponse();
+    return response && typeof response === 'object'
+      ? String((response as JsonRecord)['message'] ?? '')
+      : '';
   }
 
   selectAutocomplete(use: string): void {
@@ -403,6 +443,7 @@ export class AdminEditPage {
 
   cancelDelete(): void {
     this.deleteTarget.set(null);
+    this.refreshData();
   }
 
   confirmDelete(): void {
@@ -414,14 +455,21 @@ export class AdminEditPage {
       return;
     }
     this.deleting.set(true);
-    this.api.post(`rdf/delData/${target.data.id_d}`, {}).pipe(takeUntilDestroyed(this.destroyRef)).subscribe({
+    this.deleteTarget.set(null);
+    this.removeAt(target.groupIndex, target.propertyIndex, target.dataIndex);
+    const endpoint = `rdf/delData/${encodeURIComponent(target.data.id_d)}`;
+    const token = this.currentUser()?.token ?? '';
+    console.log('RDF delete endpoint:', `https://cip.brapci.inf.br/api/${endpoint}`);
+    this.api.postForm<unknown>(endpoint, { user: token }).pipe(takeUntilDestroyed(this.destroyRef)).subscribe({
       next: () => {
-        this.removeAt(target.groupIndex, target.propertyIndex, target.dataIndex);
         this.deleting.set(false);
-        this.deleteTarget.set(null);
+        setTimeout(() => this.refreshData(), 300);
+      },
+      error: () => {
+        this.deleting.set(false);
+        this.error.set('adminEdit.errors.delete');
         this.refreshData();
       },
-      error: () => { this.deleting.set(false); this.error.set('adminEdit.errors.delete'); },
     });
   }
 

@@ -14,7 +14,7 @@ interface SelectOption { name: string; use: string; }
     <div class="mb-3">
       <label for="rdf-name" class="form-label">{{ 'adminEdit.fields.n_name' | translate }}</label>
       <input type="search" class="form-control w-100 mb-2" placeholder="Buscar nome ou valor" autocomplete="off" [value]="query" (input)="queryChange.emit($any($event.target).value)" />
-      <pre class="autocomplete-query">{{ payloadJson }}</pre>
+      <pre *ngIf="payloadJson" class="autocomplete-query">{{ payloadJson }}</pre>
       <select id="rdf-name" class="form-select w-100" size="5" [ngModel]="draft['ID']" [ngModelOptions]="{ standalone: true }" (ngModelChange)="selectionChange.emit($event)">
         <option value="" disabled>{{ loading ? 'Buscando...' : 'Selecione' }}</option>
         <option *ngFor="let option of options" [value]="option.use">{{ option.name }}</option>
