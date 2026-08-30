@@ -1,0 +1,56 @@
+<main class="statistics-page">
+  <section class="statistics-hero" aria-labelledby="statistics-title">
+    <div class="container">
+      <a class="back-link" routerLink="/">
+        <i class="bi bi-arrow-left" aria-hidden="true"></i>
+        Brapci
+      </a>
+      <p class="statistics-kicker">{{ 'home.statistics.kicker' | translate }}</p>
+      <h1 id="statistics-title">{{ 'home.statistics.title' | translate }}</h1>
+      <p class="statistics-intro">
+        Uma visão atualizada da produção científica e dos conteúdos disponíveis na Brapci.
+      </p>
+      @if (updateDate()) {
+        <p class="update-date">
+          <i class="bi bi-clock-history" aria-hidden="true"></i>
+          {{ 'home.statistics.updatedAt' | translate: { date: updateDate() } }}
+        </p>
+      }
+    </div>
+  </section>
+
+  <section class="container statistics-content" aria-live="polite">
+    @if (loading()) {
+      <div class="statistics-grid" aria-label="Carregando estatísticas">
+        @for (placeholder of [1, 2, 3, 4, 5, 6, 7, 8]; track placeholder) {
+          <div class="stat-card stat-card--loading">
+            <span class="skeleton skeleton-icon"></span>
+            <span class="skeleton skeleton-number"></span>
+            <span class="skeleton skeleton-label"></span>
+          </div>
+        }
+      </div>
+    } @else if (error()) {
+      <div class="statistics-message statistics-message--error">
+        <i class="bi bi-exclamation-circle" aria-hidden="true"></i>
+        <h2>{{ 'home.statistics.error' | translate }}</h2>
+        <button type="button" class="btn btn-primary" (click)="loadStatistics()">Tentar novamente</button>
+      </div>
+    } @else if (!statistics().length) {
+      <div class="statistics-message">
+        <i class="bi bi-inbox" aria-hidden="true"></i>
+        <h2>{{ 'home.statistics.empty' | translate }}</h2>
+      </div>
+    } @else {
+      <div class="statistics-grid">
+        <article *ngFor="let item of statistics(); trackBy: trackByName" class="stat-card">
+          <span class="stat-card__icon"><i class="bi" [ngClass]="item.icon" aria-hidden="true"></i></span>
+          <strong class="stat-card__total">{{ item.total }}</strong>
+          <h2 class="stat-card__label">
+            {{ item.translationKey ? (item.translationKey | translate) : item.name }}
+          </h2>
+        </article>
+      </div>
+    }
+  </section>
+</main>

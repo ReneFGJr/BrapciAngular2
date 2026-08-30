@@ -334,7 +334,11 @@
         "authors": "Total authors",
         "institutions": "Total institutions",
         "sources": "Total sources",
-        "files": "Total files"
+        "files": "Total files",
+        "indexedEvents": "Indexed events",
+        "indexedBrazilianJournals": "Indexed Brazilian journals",
+        "indexedForeignJournals": "Indexed foreign journals",
+        "historicBrazilianJournals": "Historic Brazilian journals"
       }
     },
     "events": {

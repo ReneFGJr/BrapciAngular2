@@ -20,6 +20,22 @@
   gap: 0.15rem;
 }
 
+.area-statistics-link {
+  align-items: center;
+  color: var(--bs-primary);
+  display: inline-flex;
+  flex: 0 0 auto;
+  font-size: 0.78rem;
+  font-weight: 600;
+  gap: 0.35rem;
+  text-decoration: none;
+}
+
+.area-statistics-link:hover,
+.area-statistics-link:focus-visible {
+  text-decoration: underline;
+}
+
 .area-statistics-kicker {
   color: var(--theme-muted);
   font-size: 0.68rem;

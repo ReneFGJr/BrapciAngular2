@@ -128,6 +128,11 @@ export const routes: Routes = [
       import('./pages/small-world/small-world.page').then((m) => m.SmallWorldPage),
   },
   {
+    path: 'statistics',
+    loadComponent: () =>
+      import('./pages/statistics/statistics.page').then((m) => m.StatisticsPage),
+  },
+  {
     path: '',
     loadComponent: () => import('./pages/home/home.page').then((m) => m.HomePage),
   },

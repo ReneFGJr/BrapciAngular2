@@ -2,6 +2,7 @@ import { CommonModule } from '@angular/common';
 import { Component, inject, signal } from '@angular/core';
 import { BrapciApiService } from '../../core/services/brapci-api.service';
 import { TranslateModule } from '@ngx-translate/core';
+import { RouterLink } from '@angular/router';
 
 type JsonRecord = Record<string, unknown>;
 
@@ -13,7 +14,7 @@ interface BaseStatistic {
 
 @Component({
   selector: 'app-area-statistics',
-  imports: [CommonModule, TranslateModule],
+  imports: [CommonModule, RouterLink, TranslateModule],
   templateUrl: './area-statistics.component.html',
   styleUrl: './area-statistics.component.scss'
 })
@@ -96,7 +97,13 @@ export class AreaStatisticsComponent {
       'total de autores': 'home.statistics.items.authors',
       'total de instituicoes': 'home.statistics.items.institutions',
       'total de fontes': 'home.statistics.items.sources',
-      'total de arquivos': 'home.statistics.items.files'
+      'total de arquivos': 'home.statistics.items.files',
+      'evendos indexados': 'home.statistics.items.indexedEvents',
+      'eventos indexados': 'home.statistics.items.indexedEvents',
+      'revistas brasileiras indexadas': 'home.statistics.items.indexedBrazilianJournals',
+      'revistas estrangeiras indexadas': 'home.statistics.items.indexedForeignJournals',
+      'revistas brasileitas historicas': 'home.statistics.items.historicBrazilianJournals',
+      'revistas brasileiras historicas': 'home.statistics.items.historicBrazilianJournals'
     };
 
     return keys[normalizedName] ?? null;

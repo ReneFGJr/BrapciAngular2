@@ -4,6 +4,10 @@
       <p class="area-statistics-kicker">{{ 'home.statistics.kicker' | translate }}</p>
       <h3 id="area-statistics-title" class="area-statistics-title">{{ 'home.statistics.title' | translate }}</h3>
     </div>
+    <a class="area-statistics-link" routerLink="/statistics">
+      {{ 'home.statistics.title' | translate }}
+      <i class="bi bi-arrow-up-right" aria-hidden="true"></i>
+    </a>
   </header>
 
   <p *ngIf="loading()" class="area-statistics-state">{{ 'home.statistics.loading' | translate }}</p>

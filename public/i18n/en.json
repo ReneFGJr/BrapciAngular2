@@ -383,7 +383,8 @@
       "authorIndex": "Author Indexes",
       "productionIndicator": "Production Indicator",
       "searchIndicator": "Search Indicator",
-      "apiDoc": "API Documentation"
+      "apiDoc": "API Documentation",
+      "databaseStatistics": "Database statistics"
     }
   },
   "tools": {
@@ -617,7 +618,11 @@
         "authors": "Total authors",
         "institutions": "Total institutions",
         "sources": "Total sources",
-        "files": "Total files"
+        "files": "Total files",
+        "indexedEvents": "Indexed events",
+        "indexedBrazilianJournals": "Indexed Brazilian journals",
+        "indexedForeignJournals": "Indexed foreign journals",
+        "historicBrazilianJournals": "Historic Brazilian journals"
       }
     },
     "events": {

@@ -615,7 +615,11 @@
         "authors": "Total de autores",
         "institutions": "Total de instituições",
         "sources": "Total de fontes",
-        "files": "Total de arquivos"
+        "files": "Total de arquivos",
+        "indexedEvents": "Eventos indexados",
+        "indexedBrazilianJournals": "Revistas brasileiras indexadas",
+        "indexedForeignJournals": "Revistas estrangeiras indexadas",
+        "historicBrazilianJournals": "Revistas brasileiras históricas"
       }
     },
     "events": {
