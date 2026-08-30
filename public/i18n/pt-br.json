@@ -400,7 +400,9 @@
       "card1Title": "Converter TXT para .NET (Autor)",
       "card1Text": "Visualize metricas de citacao, producao por periodo e distribuicao por periodicos.",
       "card2Title": "Converter TXT para .NET (Assunto)",
-      "card2Text": "Converta uma lista de assuntos em um arquivo de rede no formato .NET."
+      "card2Text": "Converta uma lista de assuntos em um arquivo de rede no formato .NET.",
+      "card3Title": "Análise de Rede",
+      "card3Text": "Explore os indicadores de redes de colaboração entre pesquisadores."
     },
     "text": {
       "title": "Ferramentas textuais",

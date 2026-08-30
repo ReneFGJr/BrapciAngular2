@@ -402,7 +402,9 @@
       "card1Title": "Indicadores de impacto",
       "card1Text": "Visualice metricas de citacion, produccion por periodo y distribucion por revistas.",
       "card2Title": "Analisis de coautoria",
-      "card2Text": "Mapee colaboraciones entre autores y descubra comunidades de investigacion."
+      "card2Text": "Mapee colaboraciones entre autores y descubra comunidades de investigacion.",
+      "card3Title": "Análisis de Red",
+      "card3Text": "Explore redes de colaboración entre investigadores e identifique sus conexiones."
     },
     "text": {
       "title": "Herramientas textuales",

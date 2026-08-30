@@ -27,6 +27,21 @@
           <article class="summary-card"><strong>{{ summary().periods }}</strong><span>períodos</span></article>
         </div>
         <article class="content-card mt-4"><app-bar-chart title="Periódicos por sistema de avaliação" [points]="sourceChart()"></app-bar-chart></article>
+        <section class="overview-pies mt-4" aria-label="Distribuição das revistas">
+          @for (chart of overviewPieCharts(); track chart.title) {
+            <article class="content-card pie-card">
+              <h2 class="h5 mb-3">{{ chart.title }}</h2>
+              <div class="pie-layout">
+                <div class="pie-chart" role="img" [attr.aria-label]="chart.title + ': ' + chart.total + ' revistas'" [style.background]="chart.background"><span>{{ chart.total }}</span></div>
+                <ul class="pie-legend">
+                  @for (slice of chart.slices; track slice.label) {
+                    <li><span class="pie-swatch" [style.background]="slice.color" aria-hidden="true"></span><span class="pie-label">{{ slice.label }}</span><strong>{{ slice.value }}</strong><small>{{ slice.percentage | number:'1.0-1' }}%</small></li>
+                  }
+                </ul>
+              </div>
+            </article>
+          }
+        </section>
       } @else {
         <section class="content-card mt-4" [attr.aria-label]="activeTab()">
           <div class="filter-grid">

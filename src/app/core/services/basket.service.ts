@@ -34,6 +34,21 @@ export class BasketService {
     }
   }
 
+  addMany(ids: number[]): void {
+    if (!this.isBrowser()) return;
+
+    const marked = this.getMarked();
+    const merged = [...new Set([
+      ...marked,
+      ...ids.filter((id) => Number.isFinite(id) && id > 0),
+    ])];
+
+    if (merged.length !== marked.length) {
+      window.localStorage.setItem(this.storageKey, JSON.stringify(merged));
+      this.changed.emit();
+    }
+  }
+
   remove(id: number): void {
     if (!this.isBrowser()) return;
     let marked = this.getMarked();

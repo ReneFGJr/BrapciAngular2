@@ -82,6 +82,13 @@ export const routes: Routes = [
       import('./pages/tools-txt4net/tools-txt4net.page').then((m) => m.ToolsTxt4netPage),
   },
   {
+    path: 'tools/txt4network',
+    loadComponent: () =>
+      import('./pages/tools-txt4network/tools-txt4network.page').then(
+        (m) => m.ToolsTxt4networkPage,
+      ),
+  },
+  {
     path: 'tools/term4net',
     loadComponent: () =>
       import('./pages/tools-term4net/tools-term4net.page').then((m) => m.ToolsTerm4netPage),

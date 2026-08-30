@@ -240,7 +240,6 @@ export class SearchArticlesComponent {
     return [];
   }
   selectAllWorks() {
-    // Recupera todos os IDs dos works
     const response = this.rawSearchResponse() as any;
     const works = this.asArray(
       response && typeof response === 'object' && 'works' in response ? response.works : [],
@@ -250,14 +249,11 @@ export class SearchArticlesComponent {
         if (work && typeof work === 'object' && 'id' in work) {
           return Number(work.id);
         }
-        return null;
+        return Number.NaN;
       })
-      .filter((id: number | null) => id !== null);
+      .filter((id: number) => Number.isFinite(id) && id > 0);
 
-    // Atualiza o localStorage diretamente
-    window.localStorage.setItem('marked', JSON.stringify(ids));
-    // Emite evento para atualizar menu/navbar
-    this.basketService.changed.emit();
+    this.basketService.addMany(ids);
   }
 
   private normalizeApiResponse(response: unknown): unknown[] {

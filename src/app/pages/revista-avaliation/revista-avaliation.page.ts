@@ -1,6 +1,7 @@
 import { CommonModule } from '@angular/common';
 import { Component, computed, inject, signal } from '@angular/core';
 import { TranslateModule } from '@ngx-translate/core';
+import { forkJoin } from 'rxjs';
 import { BarChartComponent, BarChartPoint } from '../../components/bar-chart/bar-chart.component';
 import { BreadcrumbsComponent } from '../../components/breadcrumbs/breadcrumbs.component';
 import { BrapciApiService } from '../../core/services/brapci-api.service';
@@ -9,6 +10,9 @@ type JsonRecord = Record<string, unknown>;
 type AvaliationItem = { periodStart: string; periodEnd: string; name: string; evaluationArea: string; rdfId: string; title: string; stratum: string; numericValue: number | null };
 type JournalAvaliationGroup = { title: string; rdfId: string; evaluations: AvaliationItem[] };
 type AvaliationsResponse = { status?: string | number; message?: string; data?: unknown };
+type Journal = { jnl_collection?: unknown; jnl_historic?: unknown; jnl_active?: unknown };
+type PieSlice = { label: string; value: number; color: string; percentage: number };
+type PieChart = { title: string; total: number; slices: PieSlice[]; background: string };
 
 const COLORS: Record<string, string> = {
   A1: '#176b45', A2: '#2b8a5b', A3: '#53a66f', A4: '#86bd7b',
@@ -29,6 +33,7 @@ export class RevistaAvaliationPage {
   readonly loading = signal(true);
   readonly error = signal('');
   readonly items = signal<AvaliationItem[]>([]);
+  readonly journals = signal<Journal[]>([]);
   readonly activeTab = signal('overview');
   readonly areaFilter = signal('ALL');
   readonly periodFilter = signal('ALL');
@@ -81,6 +86,20 @@ export class RevistaAvaliationPage {
     label: name,
     segments: [{ key: name, label: name, value: new Set(this.items().filter(i => i.name === name).map(i => i.rdfId || i.title)).size, color: name.toLowerCase().includes('scopus') ? '#e17b27' : '#356f9f' }]
   })));
+  readonly overviewPieCharts = computed<PieChart[]>(() => {
+    const journals = this.journals();
+    const collection = this.countBy(journals, journal => {
+      const value = String(journal.jnl_collection ?? '').trim().toUpperCase();
+      return value === 'JA' ? 'Brasileiras' : value === 'JE' ? 'Estrangeiras' : '';
+    });
+    const historic = this.countBy(journals, journal => this.isTruthy(journal.jnl_historic) ? 'Históricas' : 'Correntes (ativas)');
+    const status = this.countBy(journals, journal => this.statusLabel(journal.jnl_active));
+    return [
+      this.buildPieChart('Revistas por coleção', collection, ['#2f6eaa', '#d69b2d']),
+      this.buildPieChart('Revistas históricas', historic, ['#8b5e3c', '#6e9f73']),
+      this.buildPieChart('Revistas por status', status, ['#2b8a5b', '#bd5b45', '#8b95a1', '#775da6'])
+    ];
+  });
   readonly strataChartsByArea = computed(() => {
     const selectedArea = this.areaFilter();
     const selectedPeriod = this.periodFilter();
@@ -114,10 +133,49 @@ export class RevistaAvaliationPage {
 
   private loadAvaliations(): void {
     this.loading.set(true); this.error.set('');
-    this.api.get<AvaliationsResponse>('brapci/avaliations').subscribe({
-      next: response => { this.items.set(this.flatten(response?.data)); this.loading.set(false); },
+    forkJoin({
+      avaliations: this.api.get<AvaliationsResponse>('brapci/avaliations'),
+      journals: this.api.get<Journal[]>('brapci/source/journal')
+    }).subscribe({
+      next: ({ avaliations, journals }) => {
+        this.items.set(this.flatten(avaliations?.data));
+        this.journals.set(Array.isArray(journals) ? journals : []);
+        this.loading.set(false);
+      },
       error: () => { this.items.set([]); this.error.set('Não foi possível carregar as avaliações de periódicos. Tente novamente mais tarde.'); this.loading.set(false); }
     });
+  }
+  private countBy(items: Journal[], getLabel: (journal: Journal) => string): Map<string, number> {
+    const counts = new Map<string, number>();
+    for (const item of items) {
+      const label = getLabel(item);
+      if (label) counts.set(label, (counts.get(label) ?? 0) + 1);
+    }
+    return counts;
+  }
+  private buildPieChart(title: string, counts: Map<string, number>, colors: string[]): PieChart {
+    const total = [...counts.values()].reduce((sum, value) => sum + value, 0);
+    let position = 0;
+    const stops: string[] = [];
+    const slices = [...counts.entries()].map(([label, value], index) => {
+      const percentage = total ? value / total * 100 : 0;
+      const color = colors[index % colors.length];
+      stops.push(`${color} ${position}% ${position + percentage}%`);
+      position += percentage;
+      return { label, value, color, percentage };
+    });
+    return { title, total, slices, background: total ? `conic-gradient(${stops.join(', ')})` : 'var(--theme-line)' };
+  }
+  private isTruthy(value: unknown): boolean {
+    if (typeof value === 'boolean') return value;
+    if (typeof value === 'number') return value === 1;
+    return ['1', 'true', 'yes', 'sim'].includes(String(value ?? '').trim().toLowerCase());
+  }
+  private statusLabel(value: unknown): string {
+    const normalized = String(value ?? '').trim().toLowerCase();
+    if (this.isTruthy(value) || ['active', 'ativo', 'ativa'].includes(normalized)) return 'Ativas';
+    if (['0', 'false', 'no', 'não', 'nao', 'inactive', 'inativo', 'inativa'].includes(normalized)) return 'Inativas';
+    return normalized ? String(value).trim() : 'Não informado';
   }
   private flatten(data: unknown): AvaliationItem[] {
     const result: AvaliationItem[] = [];

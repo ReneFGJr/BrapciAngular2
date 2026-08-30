@@ -402,7 +402,9 @@
       "card1Title": "Impact indicators",
       "card1Text": "Visualize citation metrics, production over time, and journal distribution.",
       "card2Title": "Co-authorship analysis",
-      "card2Text": "Map author collaborations and discover research communities."
+      "card2Text": "Map author collaborations and discover research communities.",
+      "card3Title": "Network Analysis",
+      "card3Text": "Explore collaboration networks between researchers and identify their connections."
     },
     "text": {
       "title": "Text tools",

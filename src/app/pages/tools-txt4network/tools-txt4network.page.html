@@ -1,0 +1,48 @@
+<section class="txt4network-wrap py-4" aria-labelledby="txt4network-title">
+  <div class="container">
+    <app-breadcrumbs [labels]="{ tools: 'Ferramentas', txt4network: 'Análise de Rede' }"></app-breadcrumbs>
+
+    <div class="txt4network-card p-4 p-md-5">
+      <h1 id="txt4network-title" class="h2 mb-2">Análise de Rede</h1>
+      <p class="txt4network-subtitle mb-4">
+        Insira os dados da rede ou selecione um arquivo para gerar os indicadores de colaboração entre pesquisadores.
+      </p>
+
+      <div class="row g-4 align-items-start">
+        <div class="col-12 col-lg-7">
+          <form (ngSubmit)="analyze()">
+            <div class="mb-3">
+              <label for="network-text" class="form-label fw-semibold">Dados da rede</label>
+              <textarea id="network-text" name="network" class="form-control" rows="8" [(ngModel)]="text" [disabled]="loading" placeholder="Cole aqui os dados da rede" required></textarea>
+              <div class="form-text">Informe os dados que serão utilizados para calcular os indicadores da rede.</div>
+            </div>
+
+            <div class="mb-3">
+              <label for="network-file" class="form-label fw-semibold">Carregar arquivo</label>
+              <input id="network-file" class="form-control" type="file" accept=".txt,.net,text/plain" [disabled]="loading" (change)="loadFile($event)" />
+              @if (selectedFileName) { <div class="form-text">Arquivo carregado: {{ selectedFileName }}</div> }
+            </div>
+
+            @if (error) { <div class="alert alert-danger" role="alert">{{ error }}</div> }
+
+            <button type="submit" class="btn btn-primary" [disabled]="!text.trim() || loading">
+              @if (loading) { <span class="spinner-border spinner-border-sm me-2" aria-hidden="true"></span> Analisando... }
+              @else { Analisar rede }
+            </button>
+          </form>
+        </div>
+
+        <aside class="col-12 col-lg-5" aria-labelledby="network-instructions-title">
+          <h2 id="network-instructions-title" class="h5 mb-3">Como utilizar</h2>
+          <div class="instructions-card p-3">
+            <ol class="mb-0 ps-3">
+              <li>Insira os dados no campo ou carregue um arquivo.</li>
+              <li>Confira o conteúdo antes de iniciar.</li>
+              <li>Clique em “Analisar rede” para baixar o resultado.</li>
+            </ol>
+          </div>
+        </aside>
+      </div>
+    </div>
+  </div>
+</section>
