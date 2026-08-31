@@ -107,6 +107,22 @@
   color: var(--theme-ink);
 }
 
+.author-works-select-all {
+  white-space: nowrap;
+}
+
+@media (max-width: 575.98px) {
+  .author-works-header {
+    align-items: stretch;
+    flex-direction: column;
+  }
+
+  .author-works-select-all {
+    align-self: flex-start;
+    white-space: normal;
+  }
+}
+
 .json-viewer {
   background: color-mix(in srgb, var(--theme-sand) 35%, var(--theme-card-bg));
   border: 1px solid var(--theme-line);

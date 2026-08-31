@@ -1,11 +1,12 @@
 import { CommonModule } from '@angular/common';
-import { Component, Input, computed, signal } from '@angular/core';
+import { Component, Input, computed, inject, signal } from '@angular/core';
 import { TranslateModule } from '@ngx-translate/core';
 import { CoauthorsListComponent } from '../coauthors-list/coauthors-list.component';
 import { NetworkGraph3dComponent } from '../network-graph-3d/network-graph-3d.component';
 import { RedeCircleComponent } from '../rede-circle/rede-circle.component';
 import type { Coauthor } from '../../core/models/coauthor.model';
 import type { NetworkGraph } from '../../core/models/network.model';
+import { BasketService } from '../../core/services/basket.service';
 
 export type AuthorWorksGroup = {
   key: 'Article' | 'Proceeding' | 'BookChapter' | 'Book';
@@ -63,6 +64,8 @@ export type AuthorContentTab = {
   styleUrl: './author-works.component.scss'
 })
 export class AuthorWorksComponent {
+  private readonly basketService = inject(BasketService);
+
   @Input({ required: true }) groups: AuthorWorksGroup[] = [];
   @Input() dataJour: unknown = null;
   @Input() coauthors: Coauthor[] = [];
@@ -140,6 +143,21 @@ export class AuthorWorksComponent {
   });
 
   readonly totalWorks = computed(() => this.groups.reduce((sum, group) => sum + group.items.length, 0));
+
+  readonly publicationIds = computed(() => {
+    const ids = this.groups.flatMap((group) =>
+      group.items.flatMap((item) => {
+        const matches = item.matchAll(/href=["'](?:https?:\/\/[^/]+)?\/v\/(\d+)(?:[/?#][^"']*)?["']/gi);
+        return [...matches].map((match) => Number(match[1]));
+      })
+    );
+
+    return [...new Set(ids.filter((id) => Number.isFinite(id) && id > 0))];
+  });
+
+  selectAllPublications(): void {
+    this.basketService.addMany(this.publicationIds());
+  }
 
   readonly activeTab = computed(() => this.contentTabs().find((t) => t.id === this.selectedTab()));
 

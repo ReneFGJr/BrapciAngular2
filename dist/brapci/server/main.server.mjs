@@ -30097,7 +30097,6 @@ var App = class _App {
     return candidate.split(/\s+/)[0] ?? "";
   }, ...ngDevMode ? [{ debugName: "firstName" }] : []);
   sessionUserLabel = computed(() => {
-    console.log("==>", this.currentUser());
     const user = this.currentUser();
     if (!user) {
       return "";
@@ -30901,7 +30900,7 @@ var routes = [
   }, true ? { \u0275entryName: "src/app/pages/autoridade/autoridade.page.ts" } : {}),
   __spreadValues({
     path: "v/:id",
-    loadComponent: () => import("./chunk-56KXMBIT.mjs").then((m) => m.VIdPage)
+    loadComponent: () => import("./chunk-NRY7ZKMR.mjs").then((m) => m.VIdPage)
   }, true ? { \u0275entryName: "src/app/pages/v-id/v-id.page.ts" } : {}),
   __spreadValues({
     path: "admin/a/:id",

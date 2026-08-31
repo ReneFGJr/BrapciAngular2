@@ -29859,157 +29859,176 @@ var _forTrack2 = ($index, $item) => $item.label + $item.year + $item.value;
 var _forTrack3 = ($index, $item) => $item.label + $item.x + $item.y;
 var _forTrack4 = ($index, $item) => $item.label;
 var _forTrack5 = ($index, $item) => $item.agency;
-function AuthorWorksComponent_For_7_Conditional_3_Template(rf, ctx) {
-  if (rf & 1) {
-    \u0275\u0275elementStart(0, "span", 14);
-    \u0275\u0275text(1);
-    \u0275\u0275elementEnd();
-  }
-  if (rf & 2) {
-    const ctx_r2 = \u0275\u0275nextContext(2);
-    \u0275\u0275advance();
-    \u0275\u0275textInterpolate(ctx_r2.totalWorks());
-  }
-}
-function AuthorWorksComponent_For_7_Conditional_4_Template(rf, ctx) {
-  if (rf & 1) {
-    \u0275\u0275elementStart(0, "span", 14);
-    \u0275\u0275text(1);
-    \u0275\u0275elementEnd();
-  }
-  if (rf & 2) {
-    const ctx_r2 = \u0275\u0275nextContext(2);
-    \u0275\u0275advance();
-    \u0275\u0275textInterpolate(ctx_r2.coauthors.length);
-  }
-}
-function AuthorWorksComponent_For_7_Conditional_5_Template(rf, ctx) {
-  if (rf & 1) {
-    \u0275\u0275elementStart(0, "span", 14);
-    \u0275\u0275text(1);
-    \u0275\u0275elementEnd();
-  }
-  if (rf & 2) {
-    const ctx_r2 = \u0275\u0275nextContext(2);
-    \u0275\u0275advance();
-    \u0275\u0275textInterpolate(ctx_r2.networkData.nodes.length);
-  }
-}
-function AuthorWorksComponent_For_7_Conditional_6_Template(rf, ctx) {
-  if (rf & 1) {
-    \u0275\u0275elementStart(0, "span", 14);
-    \u0275\u0275text(1);
-    \u0275\u0275elementEnd();
-  }
-  if (rf & 2) {
-    const ctx_r2 = \u0275\u0275nextContext(2);
-    \u0275\u0275advance();
-    \u0275\u0275textInterpolate(ctx_r2.citationsGrantedItems().length);
-  }
-}
-function AuthorWorksComponent_For_7_Conditional_7_Template(rf, ctx) {
-  if (rf & 1) {
-    \u0275\u0275elementStart(0, "span", 14);
-    \u0275\u0275text(1);
-    \u0275\u0275elementEnd();
-  }
-  if (rf & 2) {
-    const ctx_r2 = \u0275\u0275nextContext(2);
-    \u0275\u0275advance();
-    \u0275\u0275textInterpolate(ctx_r2.variants.length);
-  }
-}
-function AuthorWorksComponent_For_7_Conditional_8_Template(rf, ctx) {
-  if (rf & 1) {
-    \u0275\u0275elementStart(0, "span", 14);
-    \u0275\u0275text(1);
-    \u0275\u0275elementEnd();
-  }
-  if (rf & 2) {
-    const ctx_r2 = \u0275\u0275nextContext(2);
-    \u0275\u0275advance();
-    \u0275\u0275textInterpolate(ctx_r2.scholarshipHistoryCount());
-  }
-}
-function AuthorWorksComponent_For_7_Template(rf, ctx) {
+function AuthorWorksComponent_Conditional_5_Template(rf, ctx) {
   if (rf & 1) {
     const _r1 = \u0275\u0275getCurrentView();
-    \u0275\u0275elementStart(0, "button", 13);
-    \u0275\u0275listener("click", function AuthorWorksComponent_For_7_Template_button_click_0_listener() {
-      const tab_r2 = \u0275\u0275restoreView(_r1).$implicit;
-      const ctx_r2 = \u0275\u0275nextContext();
-      return \u0275\u0275resetView(ctx_r2.setTab(tab_r2.id));
+    \u0275\u0275elementStart(0, "button", 14);
+    \u0275\u0275listener("click", function AuthorWorksComponent_Conditional_5_Template_button_click_0_listener() {
+      \u0275\u0275restoreView(_r1);
+      const ctx_r1 = \u0275\u0275nextContext();
+      return \u0275\u0275resetView(ctx_r1.selectAllPublications());
     });
-    \u0275\u0275text(1);
-    \u0275\u0275pipe(2, "translate");
-    \u0275\u0275conditionalCreate(3, AuthorWorksComponent_For_7_Conditional_3_Template, 2, 1, "span", 14)(4, AuthorWorksComponent_For_7_Conditional_4_Template, 2, 1, "span", 14)(5, AuthorWorksComponent_For_7_Conditional_5_Template, 2, 1, "span", 14)(6, AuthorWorksComponent_For_7_Conditional_6_Template, 2, 1, "span", 14)(7, AuthorWorksComponent_For_7_Conditional_7_Template, 2, 1, "span", 14)(8, AuthorWorksComponent_For_7_Conditional_8_Template, 2, 1, "span", 14);
+    \u0275\u0275element(1, "i", 15);
+    \u0275\u0275text(2);
+    \u0275\u0275pipe(3, "translate");
     \u0275\u0275elementEnd();
   }
   if (rf & 2) {
-    const tab_r2 = ctx.$implicit;
-    const ctx_r2 = \u0275\u0275nextContext();
-    \u0275\u0275classProp("active", ctx_r2.selectedTab() === tab_r2.id);
-    \u0275\u0275attribute("aria-selected", ctx_r2.selectedTab() === tab_r2.id);
-    \u0275\u0275advance();
-    \u0275\u0275textInterpolate1(" ", \u0275\u0275pipeBind1(2, 5, tab_r2.label), " ");
     \u0275\u0275advance(2);
-    \u0275\u0275conditional(tab_r2.type === "works" ? 3 : tab_r2.type === "coauthors" ? 4 : tab_r2.type === "network" ? 5 : tab_r2.type === "citationsGranted" ? 6 : tab_r2.type === "variants" ? 7 : tab_r2.type === "scholarship" ? 8 : -1);
+    \u0275\u0275textInterpolate1(" ", \u0275\u0275pipeBind1(3, 1, "author.selectAllPublications"), " ");
   }
 }
-function AuthorWorksComponent_Conditional_9_For_8_Template(rf, ctx) {
+function AuthorWorksComponent_For_8_Conditional_3_Template(rf, ctx) {
   if (rf & 1) {
-    const _r5 = \u0275\u0275getCurrentView();
-    \u0275\u0275elementStart(0, "button", 13);
-    \u0275\u0275listener("click", function AuthorWorksComponent_Conditional_9_For_8_Template_button_click_0_listener() {
-      const group_r6 = \u0275\u0275restoreView(_r5).$implicit;
-      const ctx_r2 = \u0275\u0275nextContext(2);
-      return \u0275\u0275resetView(ctx_r2.setWorkTab(group_r6.key));
+    \u0275\u0275elementStart(0, "span", 17);
+    \u0275\u0275text(1);
+    \u0275\u0275elementEnd();
+  }
+  if (rf & 2) {
+    const ctx_r1 = \u0275\u0275nextContext(2);
+    \u0275\u0275advance();
+    \u0275\u0275textInterpolate(ctx_r1.totalWorks());
+  }
+}
+function AuthorWorksComponent_For_8_Conditional_4_Template(rf, ctx) {
+  if (rf & 1) {
+    \u0275\u0275elementStart(0, "span", 17);
+    \u0275\u0275text(1);
+    \u0275\u0275elementEnd();
+  }
+  if (rf & 2) {
+    const ctx_r1 = \u0275\u0275nextContext(2);
+    \u0275\u0275advance();
+    \u0275\u0275textInterpolate(ctx_r1.coauthors.length);
+  }
+}
+function AuthorWorksComponent_For_8_Conditional_5_Template(rf, ctx) {
+  if (rf & 1) {
+    \u0275\u0275elementStart(0, "span", 17);
+    \u0275\u0275text(1);
+    \u0275\u0275elementEnd();
+  }
+  if (rf & 2) {
+    const ctx_r1 = \u0275\u0275nextContext(2);
+    \u0275\u0275advance();
+    \u0275\u0275textInterpolate(ctx_r1.networkData.nodes.length);
+  }
+}
+function AuthorWorksComponent_For_8_Conditional_6_Template(rf, ctx) {
+  if (rf & 1) {
+    \u0275\u0275elementStart(0, "span", 17);
+    \u0275\u0275text(1);
+    \u0275\u0275elementEnd();
+  }
+  if (rf & 2) {
+    const ctx_r1 = \u0275\u0275nextContext(2);
+    \u0275\u0275advance();
+    \u0275\u0275textInterpolate(ctx_r1.citationsGrantedItems().length);
+  }
+}
+function AuthorWorksComponent_For_8_Conditional_7_Template(rf, ctx) {
+  if (rf & 1) {
+    \u0275\u0275elementStart(0, "span", 17);
+    \u0275\u0275text(1);
+    \u0275\u0275elementEnd();
+  }
+  if (rf & 2) {
+    const ctx_r1 = \u0275\u0275nextContext(2);
+    \u0275\u0275advance();
+    \u0275\u0275textInterpolate(ctx_r1.variants.length);
+  }
+}
+function AuthorWorksComponent_For_8_Conditional_8_Template(rf, ctx) {
+  if (rf & 1) {
+    \u0275\u0275elementStart(0, "span", 17);
+    \u0275\u0275text(1);
+    \u0275\u0275elementEnd();
+  }
+  if (rf & 2) {
+    const ctx_r1 = \u0275\u0275nextContext(2);
+    \u0275\u0275advance();
+    \u0275\u0275textInterpolate(ctx_r1.scholarshipHistoryCount());
+  }
+}
+function AuthorWorksComponent_For_8_Template(rf, ctx) {
+  if (rf & 1) {
+    const _r3 = \u0275\u0275getCurrentView();
+    \u0275\u0275elementStart(0, "button", 16);
+    \u0275\u0275listener("click", function AuthorWorksComponent_For_8_Template_button_click_0_listener() {
+      const tab_r4 = \u0275\u0275restoreView(_r3).$implicit;
+      const ctx_r1 = \u0275\u0275nextContext();
+      return \u0275\u0275resetView(ctx_r1.setTab(tab_r4.id));
     });
     \u0275\u0275text(1);
     \u0275\u0275pipe(2, "translate");
-    \u0275\u0275elementStart(3, "span", 14);
+    \u0275\u0275conditionalCreate(3, AuthorWorksComponent_For_8_Conditional_3_Template, 2, 1, "span", 17)(4, AuthorWorksComponent_For_8_Conditional_4_Template, 2, 1, "span", 17)(5, AuthorWorksComponent_For_8_Conditional_5_Template, 2, 1, "span", 17)(6, AuthorWorksComponent_For_8_Conditional_6_Template, 2, 1, "span", 17)(7, AuthorWorksComponent_For_8_Conditional_7_Template, 2, 1, "span", 17)(8, AuthorWorksComponent_For_8_Conditional_8_Template, 2, 1, "span", 17);
+    \u0275\u0275elementEnd();
+  }
+  if (rf & 2) {
+    const tab_r4 = ctx.$implicit;
+    const ctx_r1 = \u0275\u0275nextContext();
+    \u0275\u0275classProp("active", ctx_r1.selectedTab() === tab_r4.id);
+    \u0275\u0275attribute("aria-selected", ctx_r1.selectedTab() === tab_r4.id);
+    \u0275\u0275advance();
+    \u0275\u0275textInterpolate1(" ", \u0275\u0275pipeBind1(2, 5, tab_r4.label), " ");
+    \u0275\u0275advance(2);
+    \u0275\u0275conditional(tab_r4.type === "works" ? 3 : tab_r4.type === "coauthors" ? 4 : tab_r4.type === "network" ? 5 : tab_r4.type === "citationsGranted" ? 6 : tab_r4.type === "variants" ? 7 : tab_r4.type === "scholarship" ? 8 : -1);
+  }
+}
+function AuthorWorksComponent_Conditional_10_For_8_Template(rf, ctx) {
+  if (rf & 1) {
+    const _r6 = \u0275\u0275getCurrentView();
+    \u0275\u0275elementStart(0, "button", 16);
+    \u0275\u0275listener("click", function AuthorWorksComponent_Conditional_10_For_8_Template_button_click_0_listener() {
+      const group_r7 = \u0275\u0275restoreView(_r6).$implicit;
+      const ctx_r1 = \u0275\u0275nextContext(2);
+      return \u0275\u0275resetView(ctx_r1.setWorkTab(group_r7.key));
+    });
+    \u0275\u0275text(1);
+    \u0275\u0275pipe(2, "translate");
+    \u0275\u0275elementStart(3, "span", 17);
     \u0275\u0275text(4);
     \u0275\u0275elementEnd()();
   }
   if (rf & 2) {
-    const group_r6 = ctx.$implicit;
-    const ctx_r2 = \u0275\u0275nextContext(2);
-    \u0275\u0275classProp("active", ctx_r2.selectedWorkTab() === group_r6.key);
-    \u0275\u0275attribute("aria-selected", ctx_r2.selectedWorkTab() === group_r6.key);
+    const group_r7 = ctx.$implicit;
+    const ctx_r1 = \u0275\u0275nextContext(2);
+    \u0275\u0275classProp("active", ctx_r1.selectedWorkTab() === group_r7.key);
+    \u0275\u0275attribute("aria-selected", ctx_r1.selectedWorkTab() === group_r7.key);
     \u0275\u0275advance();
-    \u0275\u0275textInterpolate1(" ", \u0275\u0275pipeBind1(2, 5, group_r6.label), " ");
+    \u0275\u0275textInterpolate1(" ", \u0275\u0275pipeBind1(2, 5, group_r7.label), " ");
     \u0275\u0275advance(3);
-    \u0275\u0275textInterpolate(group_r6.items.length);
+    \u0275\u0275textInterpolate(group_r7.items.length);
   }
 }
-function AuthorWorksComponent_Conditional_9_Conditional_10_Conditional_20_For_6_Template(rf, ctx) {
+function AuthorWorksComponent_Conditional_10_Conditional_10_Conditional_20_For_6_Template(rf, ctx) {
   if (rf & 1) {
     \u0275\u0275namespaceSVG();
-    \u0275\u0275elementStart(0, "rect", 32)(1, "title");
+    \u0275\u0275elementStart(0, "rect", 35)(1, "title");
     \u0275\u0275text(2);
     \u0275\u0275pipe(3, "translate");
     \u0275\u0275pipe(4, "translate");
     \u0275\u0275pipe(5, "translate");
     \u0275\u0275elementEnd()();
-    \u0275\u0275elementStart(6, "text", 33);
+    \u0275\u0275elementStart(6, "text", 36);
     \u0275\u0275text(7);
     \u0275\u0275elementEnd();
   }
   if (rf & 2) {
-    const bar_r7 = ctx.$implicit;
-    \u0275\u0275attribute("x", bar_r7.barX)("y", bar_r7.barY)("width", bar_r7.barWidth)("height", bar_r7.barHeight)("fill", bar_r7.color);
+    const bar_r8 = ctx.$implicit;
+    \u0275\u0275attribute("x", bar_r8.barX)("y", bar_r8.barY)("width", bar_r8.barWidth)("height", bar_r8.barHeight)("fill", bar_r8.color);
     \u0275\u0275advance(2);
-    \u0275\u0275textInterpolate6("", \u0275\u0275pipeBind1(3, 14, "author.summary.journal"), ": ", bar_r7.label, " | ", \u0275\u0275pipeBind1(4, 16, "author.summary.yearAxis"), ": ", bar_r7.year, " | ", \u0275\u0275pipeBind1(5, 18, "author.summary.volumeAxis"), ": ", bar_r7.value);
+    \u0275\u0275textInterpolate6("", \u0275\u0275pipeBind1(3, 14, "author.summary.journal"), ": ", bar_r8.label, " | ", \u0275\u0275pipeBind1(4, 16, "author.summary.yearAxis"), ": ", bar_r8.year, " | ", \u0275\u0275pipeBind1(5, 18, "author.summary.volumeAxis"), ": ", bar_r8.value);
     \u0275\u0275advance(4);
-    \u0275\u0275attribute("x", bar_r7.barX + bar_r7.barWidth / 2)("transform", "rotate(-45 " + (bar_r7.barX + bar_r7.barWidth / 2) + " 196)");
+    \u0275\u0275attribute("x", bar_r8.barX + bar_r8.barWidth / 2)("transform", "rotate(-45 " + (bar_r8.barX + bar_r8.barWidth / 2) + " 196)");
     \u0275\u0275advance();
-    \u0275\u0275textInterpolate1(" ", bar_r7.shortLabel, " ");
+    \u0275\u0275textInterpolate1(" ", bar_r8.shortLabel, " ");
   }
 }
-function AuthorWorksComponent_Conditional_9_Conditional_10_Conditional_20_For_33_Template(rf, ctx) {
+function AuthorWorksComponent_Conditional_10_Conditional_10_Conditional_20_For_33_Template(rf, ctx) {
   if (rf & 1) {
     \u0275\u0275elementStart(0, "tr")(1, "td");
-    \u0275\u0275element(2, "span", 34);
+    \u0275\u0275element(2, "span", 37);
     \u0275\u0275text(3);
     \u0275\u0275elementEnd();
     \u0275\u0275elementStart(4, "td");
@@ -30020,18 +30039,18 @@ function AuthorWorksComponent_Conditional_9_Conditional_10_Conditional_20_For_33
     \u0275\u0275elementEnd()();
   }
   if (rf & 2) {
-    const row_r8 = ctx.$implicit;
+    const row_r9 = ctx.$implicit;
     \u0275\u0275advance(2);
-    \u0275\u0275styleProp("background", row_r8.color);
+    \u0275\u0275styleProp("background", row_r9.color);
     \u0275\u0275advance();
-    \u0275\u0275textInterpolate1(" ", row_r8.label, " ");
+    \u0275\u0275textInterpolate1(" ", row_r9.label, " ");
     \u0275\u0275advance(2);
-    \u0275\u0275textInterpolate(row_r8.x);
+    \u0275\u0275textInterpolate(row_r9.x);
     \u0275\u0275advance(2);
-    \u0275\u0275textInterpolate(row_r8.y);
+    \u0275\u0275textInterpolate(row_r9.y);
   }
 }
-function AuthorWorksComponent_Conditional_9_Conditional_10_Conditional_20_For_42_Template(rf, ctx) {
+function AuthorWorksComponent_Conditional_10_Conditional_10_Conditional_20_For_42_Template(rf, ctx) {
   if (rf & 1) {
     \u0275\u0275namespaceSVG();
     \u0275\u0275elementStart(0, "path")(1, "title");
@@ -30039,32 +30058,32 @@ function AuthorWorksComponent_Conditional_9_Conditional_10_Conditional_20_For_42
     \u0275\u0275pipe(3, "translate");
     \u0275\u0275pipe(4, "translate");
     \u0275\u0275elementEnd()();
-    \u0275\u0275elementStart(5, "text", 35);
+    \u0275\u0275elementStart(5, "text", 38);
     \u0275\u0275text(6);
     \u0275\u0275elementEnd();
   }
   if (rf & 2) {
-    const slice_r9 = ctx.$implicit;
-    \u0275\u0275attribute("d", slice_r9.d)("fill", slice_r9.color);
+    const slice_r10 = ctx.$implicit;
+    \u0275\u0275attribute("d", slice_r10.d)("fill", slice_r10.color);
     \u0275\u0275advance(2);
-    \u0275\u0275textInterpolate4(" ", slice_r9.label.startsWith("author.") ? \u0275\u0275pipeBind1(3, 9, slice_r9.label) : slice_r9.label, " | ", \u0275\u0275pipeBind1(4, 11, "author.summary.frequency"), ": ", slice_r9.value, " | %: ", (slice_r9.percentage * 100).toFixed(1), " ");
+    \u0275\u0275textInterpolate4(" ", slice_r10.label.startsWith("author.") ? \u0275\u0275pipeBind1(3, 9, slice_r10.label) : slice_r10.label, " | ", \u0275\u0275pipeBind1(4, 11, "author.summary.frequency"), ": ", slice_r10.value, " | %: ", (slice_r10.percentage * 100).toFixed(1), " ");
     \u0275\u0275advance(3);
-    \u0275\u0275attribute("x", slice_r9.labelX)("y", slice_r9.labelY);
+    \u0275\u0275attribute("x", slice_r10.labelX)("y", slice_r10.labelY);
     \u0275\u0275advance();
-    \u0275\u0275textInterpolate1(" ", slice_r9.percentText, " ");
+    \u0275\u0275textInterpolate1(" ", slice_r10.percentText, " ");
   }
 }
-function AuthorWorksComponent_Conditional_9_Conditional_10_Conditional_20_Template(rf, ctx) {
+function AuthorWorksComponent_Conditional_10_Conditional_10_Conditional_20_Template(rf, ctx) {
   if (rf & 1) {
-    \u0275\u0275elementStart(0, "div", 20);
+    \u0275\u0275elementStart(0, "div", 23);
     \u0275\u0275pipe(1, "translate");
     \u0275\u0275namespaceSVG();
-    \u0275\u0275elementStart(2, "svg", 21);
-    \u0275\u0275element(3, "line", 22)(4, "line", 23);
-    \u0275\u0275repeaterCreate(5, AuthorWorksComponent_Conditional_9_Conditional_10_Conditional_20_For_6_Template, 8, 20, null, null, _forTrack2);
+    \u0275\u0275elementStart(2, "svg", 24);
+    \u0275\u0275element(3, "line", 25)(4, "line", 26);
+    \u0275\u0275repeaterCreate(5, AuthorWorksComponent_Conditional_10_Conditional_10_Conditional_20_For_6_Template, 8, 20, null, null, _forTrack2);
     \u0275\u0275elementEnd();
     \u0275\u0275namespaceHTML();
-    \u0275\u0275elementStart(7, "div", 24)(8, "span");
+    \u0275\u0275elementStart(7, "div", 27)(8, "span");
     \u0275\u0275text(9);
     \u0275\u0275pipe(10, "translate");
     \u0275\u0275elementEnd();
@@ -30072,11 +30091,11 @@ function AuthorWorksComponent_Conditional_9_Conditional_10_Conditional_20_Templa
     \u0275\u0275text(12);
     \u0275\u0275pipe(13, "translate");
     \u0275\u0275elementEnd()()();
-    \u0275\u0275elementStart(14, "div", 25)(15, "h4", 26);
+    \u0275\u0275elementStart(14, "div", 28)(15, "h4", 29);
     \u0275\u0275text(16);
     \u0275\u0275pipe(17, "translate");
     \u0275\u0275elementEnd();
-    \u0275\u0275elementStart(18, "div", 27)(19, "table", 28)(20, "thead")(21, "tr")(22, "th");
+    \u0275\u0275elementStart(18, "div", 30)(19, "table", 31)(20, "thead")(21, "tr")(22, "th");
     \u0275\u0275text(23);
     \u0275\u0275pipe(24, "translate");
     \u0275\u0275elementEnd();
@@ -30089,28 +30108,28 @@ function AuthorWorksComponent_Conditional_9_Conditional_10_Conditional_20_Templa
     \u0275\u0275pipe(30, "translate");
     \u0275\u0275elementEnd()()();
     \u0275\u0275elementStart(31, "tbody");
-    \u0275\u0275repeaterCreate(32, AuthorWorksComponent_Conditional_9_Conditional_10_Conditional_20_For_33_Template, 8, 5, "tr", null, _forTrack3);
+    \u0275\u0275repeaterCreate(32, AuthorWorksComponent_Conditional_10_Conditional_10_Conditional_20_For_33_Template, 8, 5, "tr", null, _forTrack3);
     \u0275\u0275elementEnd()()()();
-    \u0275\u0275elementStart(34, "div", 29)(35, "h4", 26);
+    \u0275\u0275elementStart(34, "div", 32)(35, "h4", 29);
     \u0275\u0275text(36);
     \u0275\u0275pipe(37, "translate");
     \u0275\u0275elementEnd();
-    \u0275\u0275elementStart(38, "div", 30);
+    \u0275\u0275elementStart(38, "div", 33);
     \u0275\u0275namespaceSVG();
-    \u0275\u0275elementStart(39, "svg", 31);
+    \u0275\u0275elementStart(39, "svg", 34);
     \u0275\u0275pipe(40, "translate");
-    \u0275\u0275repeaterCreate(41, AuthorWorksComponent_Conditional_9_Conditional_10_Conditional_20_For_42_Template, 7, 13, null, null, _forTrack4);
+    \u0275\u0275repeaterCreate(41, AuthorWorksComponent_Conditional_10_Conditional_10_Conditional_20_For_42_Template, 7, 13, null, null, _forTrack4);
     \u0275\u0275elementEnd()()();
   }
   if (rf & 2) {
-    const ctx_r2 = \u0275\u0275nextContext(3);
+    const ctx_r1 = \u0275\u0275nextContext(3);
     \u0275\u0275attribute("aria-label", \u0275\u0275pipeBind1(1, 12, "author.summary.dispersionTitle"));
     \u0275\u0275advance(5);
-    \u0275\u0275repeater(ctx_r2.chartBars());
+    \u0275\u0275repeater(ctx_r1.chartBars());
     \u0275\u0275advance(4);
-    \u0275\u0275textInterpolate2("", \u0275\u0275pipeBind1(10, 14, "author.summary.journals"), ": ", ctx_r2.chartBars().length);
+    \u0275\u0275textInterpolate2("", \u0275\u0275pipeBind1(10, 14, "author.summary.journals"), ": ", ctx_r1.chartBars().length);
     \u0275\u0275advance(3);
-    \u0275\u0275textInterpolate3("", \u0275\u0275pipeBind1(13, 16, "author.summary.volumeAxis"), ": ", ctx_r2.dispersionYRange().min, " - ", ctx_r2.dispersionYRange().max);
+    \u0275\u0275textInterpolate3("", \u0275\u0275pipeBind1(13, 16, "author.summary.volumeAxis"), ": ", ctx_r1.dispersionYRange().min, " - ", ctx_r1.dispersionYRange().max);
     \u0275\u0275advance(4);
     \u0275\u0275textInterpolate(\u0275\u0275pipeBind1(17, 18, "author.summary.tableTitle"));
     \u0275\u0275advance(7);
@@ -30120,18 +30139,18 @@ function AuthorWorksComponent_Conditional_9_Conditional_10_Conditional_20_Templa
     \u0275\u0275advance(3);
     \u0275\u0275textInterpolate(\u0275\u0275pipeBind1(30, 24, "author.summary.volumeAxis"));
     \u0275\u0275advance(3);
-    \u0275\u0275repeater(ctx_r2.summaryRows());
+    \u0275\u0275repeater(ctx_r1.summaryRows());
     \u0275\u0275advance(4);
     \u0275\u0275textInterpolate(\u0275\u0275pipeBind1(37, 26, "author.summary.pieTitle"));
     \u0275\u0275advance(3);
     \u0275\u0275attribute("aria-label", \u0275\u0275pipeBind1(40, 28, "author.summary.pieTitle"));
     \u0275\u0275advance(2);
-    \u0275\u0275repeater(ctx_r2.pieArcs());
+    \u0275\u0275repeater(ctx_r1.pieArcs());
   }
 }
-function AuthorWorksComponent_Conditional_9_Conditional_10_Conditional_21_Template(rf, ctx) {
+function AuthorWorksComponent_Conditional_10_Conditional_10_Conditional_21_Template(rf, ctx) {
   if (rf & 1) {
-    \u0275\u0275elementStart(0, "p", 19);
+    \u0275\u0275elementStart(0, "p", 22);
     \u0275\u0275text(1);
     \u0275\u0275pipe(2, "translate");
     \u0275\u0275elementEnd();
@@ -30141,53 +30160,53 @@ function AuthorWorksComponent_Conditional_9_Conditional_10_Conditional_21_Templa
     \u0275\u0275textInterpolate(\u0275\u0275pipeBind1(2, 1, "author.summary.noData"));
   }
 }
-function AuthorWorksComponent_Conditional_9_Conditional_10_Template(rf, ctx) {
+function AuthorWorksComponent_Conditional_10_Conditional_10_Template(rf, ctx) {
   if (rf & 1) {
-    \u0275\u0275elementStart(0, "section", 16)(1, "div", 17)(2, "div", 18)(3, "small");
+    \u0275\u0275elementStart(0, "section", 19)(1, "div", 20)(2, "div", 21)(3, "small");
     \u0275\u0275text(4);
     \u0275\u0275pipe(5, "translate");
     \u0275\u0275elementEnd();
     \u0275\u0275elementStart(6, "strong");
     \u0275\u0275text(7);
     \u0275\u0275elementEnd()();
-    \u0275\u0275elementStart(8, "div", 18)(9, "small");
+    \u0275\u0275elementStart(8, "div", 21)(9, "small");
     \u0275\u0275text(10);
     \u0275\u0275pipe(11, "translate");
     \u0275\u0275elementEnd();
     \u0275\u0275elementStart(12, "strong");
     \u0275\u0275text(13);
     \u0275\u0275elementEnd()();
-    \u0275\u0275elementStart(14, "div", 18)(15, "small");
+    \u0275\u0275elementStart(14, "div", 21)(15, "small");
     \u0275\u0275text(16);
     \u0275\u0275pipe(17, "translate");
     \u0275\u0275elementEnd();
     \u0275\u0275elementStart(18, "strong");
     \u0275\u0275text(19);
     \u0275\u0275elementEnd()()();
-    \u0275\u0275conditionalCreate(20, AuthorWorksComponent_Conditional_9_Conditional_10_Conditional_20_Template, 43, 30)(21, AuthorWorksComponent_Conditional_9_Conditional_10_Conditional_21_Template, 3, 3, "p", 19);
+    \u0275\u0275conditionalCreate(20, AuthorWorksComponent_Conditional_10_Conditional_10_Conditional_20_Template, 43, 30)(21, AuthorWorksComponent_Conditional_10_Conditional_10_Conditional_21_Template, 3, 3, "p", 22);
     \u0275\u0275elementEnd();
   }
   if (rf & 2) {
-    const ctx_r2 = \u0275\u0275nextContext(2);
+    const ctx_r1 = \u0275\u0275nextContext(2);
     \u0275\u0275advance(4);
     \u0275\u0275textInterpolate(\u0275\u0275pipeBind1(5, 7, "author.summary.journals"));
     \u0275\u0275advance(3);
-    \u0275\u0275textInterpolate(ctx_r2.summaryTotals().journals);
+    \u0275\u0275textInterpolate(ctx_r1.summaryTotals().journals);
     \u0275\u0275advance(3);
     \u0275\u0275textInterpolate(\u0275\u0275pipeBind1(11, 9, "author.summary.points"));
     \u0275\u0275advance(3);
-    \u0275\u0275textInterpolate(ctx_r2.summaryTotals().points);
+    \u0275\u0275textInterpolate(ctx_r1.summaryTotals().points);
     \u0275\u0275advance(3);
     \u0275\u0275textInterpolate(\u0275\u0275pipeBind1(17, 11, "author.summary.volume"));
     \u0275\u0275advance(3);
-    \u0275\u0275textInterpolate(ctx_r2.summaryTotals().volume);
+    \u0275\u0275textInterpolate(ctx_r1.summaryTotals().volume);
     \u0275\u0275advance();
-    \u0275\u0275conditional(ctx_r2.chartBars().length > 0 ? 20 : 21);
+    \u0275\u0275conditional(ctx_r1.chartBars().length > 0 ? 20 : 21);
   }
 }
-function AuthorWorksComponent_Conditional_9_Conditional_11_Conditional_0_Template(rf, ctx) {
+function AuthorWorksComponent_Conditional_10_Conditional_11_Conditional_0_Template(rf, ctx) {
   if (rf & 1) {
-    \u0275\u0275elementStart(0, "p", 19);
+    \u0275\u0275elementStart(0, "p", 22);
     \u0275\u0275text(1);
     \u0275\u0275pipe(2, "translate");
     \u0275\u0275elementEnd();
@@ -30197,106 +30216,106 @@ function AuthorWorksComponent_Conditional_9_Conditional_11_Conditional_0_Templat
     \u0275\u0275textInterpolate(\u0275\u0275pipeBind1(2, 1, "author.noRecords"));
   }
 }
-function AuthorWorksComponent_Conditional_9_Conditional_11_Conditional_1_For_2_Template(rf, ctx) {
+function AuthorWorksComponent_Conditional_10_Conditional_11_Conditional_1_For_2_Template(rf, ctx) {
   if (rf & 1) {
-    \u0275\u0275element(0, "li", 37);
+    \u0275\u0275element(0, "li", 40);
   }
   if (rf & 2) {
-    const item_r10 = ctx.$implicit;
-    \u0275\u0275property("innerHTML", item_r10, \u0275\u0275sanitizeHtml);
+    const item_r11 = ctx.$implicit;
+    \u0275\u0275property("innerHTML", item_r11, \u0275\u0275sanitizeHtml);
   }
 }
-function AuthorWorksComponent_Conditional_9_Conditional_11_Conditional_1_Template(rf, ctx) {
+function AuthorWorksComponent_Conditional_10_Conditional_11_Conditional_1_Template(rf, ctx) {
   if (rf & 1) {
-    \u0275\u0275elementStart(0, "ol", 36);
-    \u0275\u0275repeaterCreate(1, AuthorWorksComponent_Conditional_9_Conditional_11_Conditional_1_For_2_Template, 1, 1, "li", 37, \u0275\u0275repeaterTrackByIndex);
+    \u0275\u0275elementStart(0, "ol", 39);
+    \u0275\u0275repeaterCreate(1, AuthorWorksComponent_Conditional_10_Conditional_11_Conditional_1_For_2_Template, 1, 1, "li", 40, \u0275\u0275repeaterTrackByIndex);
     \u0275\u0275elementEnd();
   }
   if (rf & 2) {
-    const group_r11 = \u0275\u0275nextContext();
+    const group_r12 = \u0275\u0275nextContext();
     \u0275\u0275advance();
-    \u0275\u0275repeater(group_r11.items);
+    \u0275\u0275repeater(group_r12.items);
   }
 }
-function AuthorWorksComponent_Conditional_9_Conditional_11_Template(rf, ctx) {
+function AuthorWorksComponent_Conditional_10_Conditional_11_Template(rf, ctx) {
   if (rf & 1) {
-    \u0275\u0275conditionalCreate(0, AuthorWorksComponent_Conditional_9_Conditional_11_Conditional_0_Template, 3, 3, "p", 19)(1, AuthorWorksComponent_Conditional_9_Conditional_11_Conditional_1_Template, 3, 0, "ol", 36);
+    \u0275\u0275conditionalCreate(0, AuthorWorksComponent_Conditional_10_Conditional_11_Conditional_0_Template, 3, 3, "p", 22)(1, AuthorWorksComponent_Conditional_10_Conditional_11_Conditional_1_Template, 3, 0, "ol", 39);
   }
   if (rf & 2) {
     \u0275\u0275conditional(ctx.items.length === 0 ? 0 : 1);
   }
 }
-function AuthorWorksComponent_Conditional_9_Template(rf, ctx) {
+function AuthorWorksComponent_Conditional_10_Template(rf, ctx) {
   if (rf & 1) {
-    const _r4 = \u0275\u0275getCurrentView();
-    \u0275\u0275elementStart(0, "div", 6)(1, "div", 15)(2, "button", 13);
-    \u0275\u0275listener("click", function AuthorWorksComponent_Conditional_9_Template_button_click_2_listener() {
-      \u0275\u0275restoreView(_r4);
-      const ctx_r2 = \u0275\u0275nextContext();
-      return \u0275\u0275resetView(ctx_r2.setWorkTab("summary"));
+    const _r5 = \u0275\u0275getCurrentView();
+    \u0275\u0275elementStart(0, "div", 7)(1, "div", 18)(2, "button", 16);
+    \u0275\u0275listener("click", function AuthorWorksComponent_Conditional_10_Template_button_click_2_listener() {
+      \u0275\u0275restoreView(_r5);
+      const ctx_r1 = \u0275\u0275nextContext();
+      return \u0275\u0275resetView(ctx_r1.setWorkTab("summary"));
     });
     \u0275\u0275text(3);
     \u0275\u0275pipe(4, "translate");
-    \u0275\u0275elementStart(5, "span", 14);
+    \u0275\u0275elementStart(5, "span", 17);
     \u0275\u0275text(6);
     \u0275\u0275elementEnd()();
-    \u0275\u0275repeaterCreate(7, AuthorWorksComponent_Conditional_9_For_8_Template, 5, 7, "button", 4, _forTrack1);
+    \u0275\u0275repeaterCreate(7, AuthorWorksComponent_Conditional_10_For_8_Template, 5, 7, "button", 5, _forTrack1);
     \u0275\u0275elementEnd();
-    \u0275\u0275elementStart(9, "div", 5);
-    \u0275\u0275conditionalCreate(10, AuthorWorksComponent_Conditional_9_Conditional_10_Template, 22, 13, "section", 16)(11, AuthorWorksComponent_Conditional_9_Conditional_11_Template, 2, 1);
+    \u0275\u0275elementStart(9, "div", 6);
+    \u0275\u0275conditionalCreate(10, AuthorWorksComponent_Conditional_10_Conditional_10_Template, 22, 13, "section", 19)(11, AuthorWorksComponent_Conditional_10_Conditional_11_Template, 2, 1);
     \u0275\u0275elementEnd()();
   }
   if (rf & 2) {
     let tmp_6_0;
-    const ctx_r2 = \u0275\u0275nextContext();
+    const ctx_r1 = \u0275\u0275nextContext();
     \u0275\u0275advance(2);
-    \u0275\u0275classProp("active", ctx_r2.selectedWorkTab() === "summary");
-    \u0275\u0275attribute("aria-selected", ctx_r2.selectedWorkTab() === "summary");
+    \u0275\u0275classProp("active", ctx_r1.selectedWorkTab() === "summary");
+    \u0275\u0275attribute("aria-selected", ctx_r1.selectedWorkTab() === "summary");
     \u0275\u0275advance();
     \u0275\u0275textInterpolate1(" ", \u0275\u0275pipeBind1(4, 6, "author.summary.label"), " ");
     \u0275\u0275advance(3);
-    \u0275\u0275textInterpolate(ctx_r2.summaryTotals().points);
+    \u0275\u0275textInterpolate(ctx_r1.summaryTotals().points);
     \u0275\u0275advance();
-    \u0275\u0275repeater(ctx_r2.worksGroups());
+    \u0275\u0275repeater(ctx_r1.worksGroups());
     \u0275\u0275advance(3);
-    \u0275\u0275conditional(ctx_r2.selectedWorkTab() === "summary" ? 10 : (tmp_6_0 = ctx_r2.activeWorkGroup()) ? 11 : -1, tmp_6_0);
-  }
-}
-function AuthorWorksComponent_Conditional_10_Template(rf, ctx) {
-  if (rf & 1) {
-    \u0275\u0275elementStart(0, "div", 7);
-    \u0275\u0275element(1, "app-coauthors-list", 38);
-    \u0275\u0275elementEnd();
-  }
-  if (rf & 2) {
-    const ctx_r2 = \u0275\u0275nextContext();
-    \u0275\u0275advance();
-    \u0275\u0275property("coauthors", ctx_r2.coauthors);
+    \u0275\u0275conditional(ctx_r1.selectedWorkTab() === "summary" ? 10 : (tmp_6_0 = ctx_r1.activeWorkGroup()) ? 11 : -1, tmp_6_0);
   }
 }
 function AuthorWorksComponent_Conditional_11_Template(rf, ctx) {
   if (rf & 1) {
-    \u0275\u0275elementStart(0, "div", 8)(1, "h3", 39);
-    \u0275\u0275text(2, "Network - Conections");
-    \u0275\u0275elementEnd();
-    \u0275\u0275element(3, "app-rede-circle", 40);
-    \u0275\u0275elementStart(4, "h3", 39);
-    \u0275\u0275text(5, "Network");
-    \u0275\u0275elementEnd();
-    \u0275\u0275element(6, "app-network-graph-3d", 41);
+    \u0275\u0275elementStart(0, "div", 8);
+    \u0275\u0275element(1, "app-coauthors-list", 41);
     \u0275\u0275elementEnd();
   }
   if (rf & 2) {
-    const ctx_r2 = \u0275\u0275nextContext();
-    \u0275\u0275advance(3);
-    \u0275\u0275property("networkData", ctx_r2.networkData);
-    \u0275\u0275advance(3);
-    \u0275\u0275property("networkData", ctx_r2.networkData);
+    const ctx_r1 = \u0275\u0275nextContext();
+    \u0275\u0275advance();
+    \u0275\u0275property("coauthors", ctx_r1.coauthors);
   }
 }
-function AuthorWorksComponent_Conditional_12_Conditional_1_Template(rf, ctx) {
+function AuthorWorksComponent_Conditional_12_Template(rf, ctx) {
   if (rf & 1) {
-    \u0275\u0275elementStart(0, "p", 19);
+    \u0275\u0275elementStart(0, "div", 9)(1, "h3", 42);
+    \u0275\u0275text(2, "Network - Conections");
+    \u0275\u0275elementEnd();
+    \u0275\u0275element(3, "app-rede-circle", 43);
+    \u0275\u0275elementStart(4, "h3", 42);
+    \u0275\u0275text(5, "Network");
+    \u0275\u0275elementEnd();
+    \u0275\u0275element(6, "app-network-graph-3d", 44);
+    \u0275\u0275elementEnd();
+  }
+  if (rf & 2) {
+    const ctx_r1 = \u0275\u0275nextContext();
+    \u0275\u0275advance(3);
+    \u0275\u0275property("networkData", ctx_r1.networkData);
+    \u0275\u0275advance(3);
+    \u0275\u0275property("networkData", ctx_r1.networkData);
+  }
+}
+function AuthorWorksComponent_Conditional_13_Conditional_1_Template(rf, ctx) {
+  if (rf & 1) {
+    \u0275\u0275elementStart(0, "p", 22);
     \u0275\u0275text(1);
     \u0275\u0275pipe(2, "translate");
     \u0275\u0275elementEnd();
@@ -30306,64 +30325,64 @@ function AuthorWorksComponent_Conditional_12_Conditional_1_Template(rf, ctx) {
     \u0275\u0275textInterpolate(\u0275\u0275pipeBind1(2, 1, "author.noRecords"));
   }
 }
-function AuthorWorksComponent_Conditional_12_Conditional_2_For_2_Template(rf, ctx) {
+function AuthorWorksComponent_Conditional_13_Conditional_2_For_2_Template(rf, ctx) {
   if (rf & 1) {
-    \u0275\u0275element(0, "li", 37);
+    \u0275\u0275element(0, "li", 40);
   }
   if (rf & 2) {
-    const item_r12 = ctx.$implicit;
-    \u0275\u0275property("innerHTML", item_r12, \u0275\u0275sanitizeHtml);
+    const item_r13 = ctx.$implicit;
+    \u0275\u0275property("innerHTML", item_r13, \u0275\u0275sanitizeHtml);
   }
 }
-function AuthorWorksComponent_Conditional_12_Conditional_2_Template(rf, ctx) {
+function AuthorWorksComponent_Conditional_13_Conditional_2_Template(rf, ctx) {
   if (rf & 1) {
-    \u0275\u0275elementStart(0, "ol", 36);
-    \u0275\u0275repeaterCreate(1, AuthorWorksComponent_Conditional_12_Conditional_2_For_2_Template, 1, 1, "li", 37, \u0275\u0275repeaterTrackByIndex);
+    \u0275\u0275elementStart(0, "ol", 39);
+    \u0275\u0275repeaterCreate(1, AuthorWorksComponent_Conditional_13_Conditional_2_For_2_Template, 1, 1, "li", 40, \u0275\u0275repeaterTrackByIndex);
     \u0275\u0275elementEnd();
   }
   if (rf & 2) {
-    const ctx_r2 = \u0275\u0275nextContext(2);
+    const ctx_r1 = \u0275\u0275nextContext(2);
     \u0275\u0275advance();
-    \u0275\u0275repeater(ctx_r2.citationsGrantedItems());
+    \u0275\u0275repeater(ctx_r1.citationsGrantedItems());
   }
 }
-function AuthorWorksComponent_Conditional_12_Template(rf, ctx) {
+function AuthorWorksComponent_Conditional_13_Template(rf, ctx) {
   if (rf & 1) {
-    \u0275\u0275elementStart(0, "div", 9);
-    \u0275\u0275conditionalCreate(1, AuthorWorksComponent_Conditional_12_Conditional_1_Template, 3, 3, "p", 19)(2, AuthorWorksComponent_Conditional_12_Conditional_2_Template, 3, 0, "ol", 36);
+    \u0275\u0275elementStart(0, "div", 10);
+    \u0275\u0275conditionalCreate(1, AuthorWorksComponent_Conditional_13_Conditional_1_Template, 3, 3, "p", 22)(2, AuthorWorksComponent_Conditional_13_Conditional_2_Template, 3, 0, "ol", 39);
     \u0275\u0275elementEnd();
   }
   if (rf & 2) {
-    const ctx_r2 = \u0275\u0275nextContext();
+    const ctx_r1 = \u0275\u0275nextContext();
     \u0275\u0275advance();
-    \u0275\u0275conditional(ctx_r2.citationsGrantedItems().length === 0 ? 1 : 2);
+    \u0275\u0275conditional(ctx_r1.citationsGrantedItems().length === 0 ? 1 : 2);
   }
 }
-function AuthorWorksComponent_Conditional_13_For_3_Template(rf, ctx) {
+function AuthorWorksComponent_Conditional_14_For_3_Template(rf, ctx) {
   if (rf & 1) {
     \u0275\u0275elementStart(0, "li");
     \u0275\u0275text(1);
     \u0275\u0275elementEnd();
   }
   if (rf & 2) {
-    const variant_r13 = ctx.$implicit;
+    const variant_r14 = ctx.$implicit;
     \u0275\u0275advance();
-    \u0275\u0275textInterpolate(variant_r13);
+    \u0275\u0275textInterpolate(variant_r14);
   }
 }
-function AuthorWorksComponent_Conditional_13_Template(rf, ctx) {
+function AuthorWorksComponent_Conditional_14_Template(rf, ctx) {
   if (rf & 1) {
-    \u0275\u0275elementStart(0, "div", 10)(1, "ul", 36);
-    \u0275\u0275repeaterCreate(2, AuthorWorksComponent_Conditional_13_For_3_Template, 2, 1, "li", null, \u0275\u0275repeaterTrackByIdentity);
+    \u0275\u0275elementStart(0, "div", 11)(1, "ul", 39);
+    \u0275\u0275repeaterCreate(2, AuthorWorksComponent_Conditional_14_For_3_Template, 2, 1, "li", null, \u0275\u0275repeaterTrackByIdentity);
     \u0275\u0275elementEnd()();
   }
   if (rf & 2) {
-    const ctx_r2 = \u0275\u0275nextContext();
+    const ctx_r1 = \u0275\u0275nextContext();
     \u0275\u0275advance(2);
-    \u0275\u0275repeater(ctx_r2.variants);
+    \u0275\u0275repeater(ctx_r1.variants);
   }
 }
-function AuthorWorksComponent_Conditional_14_For_2_Conditional_21_For_18_Template(rf, ctx) {
+function AuthorWorksComponent_Conditional_15_For_2_Conditional_21_For_18_Template(rf, ctx) {
   if (rf & 1) {
     \u0275\u0275elementStart(0, "tr")(1, "td");
     \u0275\u0275text(2);
@@ -30378,22 +30397,22 @@ function AuthorWorksComponent_Conditional_14_For_2_Conditional_21_For_18_Templat
     \u0275\u0275elementEnd()();
   }
   if (rf & 2) {
-    const item_r14 = ctx.$implicit;
+    const item_r15 = ctx.$implicit;
     \u0275\u0275advance(2);
-    \u0275\u0275textInterpolate2("", \u0275\u0275pipeBind3(3, 5, item_r14.start, "dd/MM/yyyy", "UTC"), " \u2014 ", \u0275\u0275pipeBind3(4, 9, item_r14.finish, "dd/MM/yyyy", "UTC"));
+    \u0275\u0275textInterpolate2("", \u0275\u0275pipeBind3(3, 5, item_r15.start, "dd/MM/yyyy", "UTC"), " \u2014 ", \u0275\u0275pipeBind3(4, 9, item_r15.finish, "dd/MM/yyyy", "UTC"));
     \u0275\u0275advance(4);
-    \u0275\u0275textInterpolate(item_r14.ies);
+    \u0275\u0275textInterpolate(item_r15.ies);
     \u0275\u0275advance(2);
-    \u0275\u0275textInterpolate2("", item_r14.modality, " ", item_r14.level);
+    \u0275\u0275textInterpolate2("", item_r15.modality, " ", item_r15.level);
   }
 }
-function AuthorWorksComponent_Conditional_14_For_2_Conditional_21_Template(rf, ctx) {
+function AuthorWorksComponent_Conditional_15_For_2_Conditional_21_Template(rf, ctx) {
   if (rf & 1) {
-    \u0275\u0275elementStart(0, "h5", 47);
+    \u0275\u0275elementStart(0, "h5", 50);
     \u0275\u0275text(1);
     \u0275\u0275pipe(2, "translate");
     \u0275\u0275elementEnd();
-    \u0275\u0275elementStart(3, "div", 48)(4, "table", 49)(5, "thead")(6, "tr")(7, "th");
+    \u0275\u0275elementStart(3, "div", 51)(4, "table", 52)(5, "thead")(6, "tr")(7, "th");
     \u0275\u0275text(8);
     \u0275\u0275pipe(9, "translate");
     \u0275\u0275elementEnd();
@@ -30406,11 +30425,11 @@ function AuthorWorksComponent_Conditional_14_For_2_Conditional_21_Template(rf, c
     \u0275\u0275pipe(15, "translate");
     \u0275\u0275elementEnd()()();
     \u0275\u0275elementStart(16, "tbody");
-    \u0275\u0275repeaterCreate(17, AuthorWorksComponent_Conditional_14_For_2_Conditional_21_For_18_Template, 9, 13, "tr", null, \u0275\u0275repeaterTrackByIndex);
+    \u0275\u0275repeaterCreate(17, AuthorWorksComponent_Conditional_15_For_2_Conditional_21_For_18_Template, 9, 13, "tr", null, \u0275\u0275repeaterTrackByIndex);
     \u0275\u0275elementEnd()()();
   }
   if (rf & 2) {
-    const scholarship_r15 = \u0275\u0275nextContext().$implicit;
+    const scholarship_r16 = \u0275\u0275nextContext().$implicit;
     \u0275\u0275advance();
     \u0275\u0275textInterpolate(\u0275\u0275pipeBind1(2, 4, "author.scholarship.history"));
     \u0275\u0275advance(7);
@@ -30420,86 +30439,87 @@ function AuthorWorksComponent_Conditional_14_For_2_Conditional_21_Template(rf, c
     \u0275\u0275advance(3);
     \u0275\u0275textInterpolate(\u0275\u0275pipeBind1(15, 10, "author.scholarship.modality"));
     \u0275\u0275advance(3);
-    \u0275\u0275repeater(scholarship_r15.history);
+    \u0275\u0275repeater(scholarship_r16.history);
   }
 }
-function AuthorWorksComponent_Conditional_14_For_2_Template(rf, ctx) {
+function AuthorWorksComponent_Conditional_15_For_2_Template(rf, ctx) {
   if (rf & 1) {
-    \u0275\u0275elementStart(0, "section", 42)(1, "h4", 43);
+    \u0275\u0275elementStart(0, "section", 45)(1, "h4", 46);
     \u0275\u0275text(2);
     \u0275\u0275elementEnd();
-    \u0275\u0275elementStart(3, "dl", 44)(4, "dt", 45);
+    \u0275\u0275elementStart(3, "dl", 47)(4, "dt", 48);
     \u0275\u0275text(5);
     \u0275\u0275pipe(6, "translate");
     \u0275\u0275elementEnd();
-    \u0275\u0275elementStart(7, "dd", 46);
+    \u0275\u0275elementStart(7, "dd", 49);
     \u0275\u0275text(8);
     \u0275\u0275elementEnd();
-    \u0275\u0275elementStart(9, "dt", 45);
+    \u0275\u0275elementStart(9, "dt", 48);
     \u0275\u0275text(10);
     \u0275\u0275pipe(11, "translate");
     \u0275\u0275elementEnd();
-    \u0275\u0275elementStart(12, "dd", 46);
+    \u0275\u0275elementStart(12, "dd", 49);
     \u0275\u0275text(13);
     \u0275\u0275elementEnd();
-    \u0275\u0275elementStart(14, "dt", 45);
+    \u0275\u0275elementStart(14, "dt", 48);
     \u0275\u0275text(15);
     \u0275\u0275pipe(16, "translate");
     \u0275\u0275elementEnd();
-    \u0275\u0275elementStart(17, "dd", 46);
+    \u0275\u0275elementStart(17, "dd", 49);
     \u0275\u0275text(18);
     \u0275\u0275pipe(19, "date");
     \u0275\u0275pipe(20, "date");
     \u0275\u0275elementEnd()();
-    \u0275\u0275conditionalCreate(21, AuthorWorksComponent_Conditional_14_For_2_Conditional_21_Template, 19, 12);
+    \u0275\u0275conditionalCreate(21, AuthorWorksComponent_Conditional_15_For_2_Conditional_21_Template, 19, 12);
     \u0275\u0275elementEnd();
   }
   if (rf & 2) {
-    const scholarship_r15 = ctx.$implicit;
-    \u0275\u0275attribute("aria-label", scholarship_r15.agency);
+    const scholarship_r16 = ctx.$implicit;
+    \u0275\u0275attribute("aria-label", scholarship_r16.agency);
     \u0275\u0275advance(2);
-    \u0275\u0275textInterpolate(scholarship_r15.agency);
+    \u0275\u0275textInterpolate(scholarship_r16.agency);
     \u0275\u0275advance(3);
     \u0275\u0275textInterpolate(\u0275\u0275pipeBind1(6, 11, "author.scholarship.modality"));
     \u0275\u0275advance(3);
-    \u0275\u0275textInterpolate2("", scholarship_r15.modality, " ", scholarship_r15.level);
+    \u0275\u0275textInterpolate2("", scholarship_r16.modality, " ", scholarship_r16.level);
     \u0275\u0275advance(2);
     \u0275\u0275textInterpolate(\u0275\u0275pipeBind1(11, 13, "author.scholarship.institution"));
     \u0275\u0275advance(3);
-    \u0275\u0275textInterpolate(scholarship_r15.ies);
+    \u0275\u0275textInterpolate(scholarship_r16.ies);
     \u0275\u0275advance(2);
     \u0275\u0275textInterpolate(\u0275\u0275pipeBind1(16, 15, "author.scholarship.period"));
     \u0275\u0275advance(3);
-    \u0275\u0275textInterpolate2("", \u0275\u0275pipeBind3(19, 17, scholarship_r15.start, "dd/MM/yyyy", "UTC"), " \u2014 ", \u0275\u0275pipeBind3(20, 21, scholarship_r15.finish, "dd/MM/yyyy", "UTC"));
+    \u0275\u0275textInterpolate2("", \u0275\u0275pipeBind3(19, 17, scholarship_r16.start, "dd/MM/yyyy", "UTC"), " \u2014 ", \u0275\u0275pipeBind3(20, 21, scholarship_r16.finish, "dd/MM/yyyy", "UTC"));
     \u0275\u0275advance(3);
-    \u0275\u0275conditional(scholarship_r15.history.length > 0 ? 21 : -1);
-  }
-}
-function AuthorWorksComponent_Conditional_14_Template(rf, ctx) {
-  if (rf & 1) {
-    \u0275\u0275elementStart(0, "div", 11);
-    \u0275\u0275repeaterCreate(1, AuthorWorksComponent_Conditional_14_For_2_Template, 22, 25, "section", 42, _forTrack5);
-    \u0275\u0275elementEnd();
-  }
-  if (rf & 2) {
-    const ctx_r2 = \u0275\u0275nextContext();
-    \u0275\u0275advance();
-    \u0275\u0275repeater(ctx_r2.scholarships());
+    \u0275\u0275conditional(scholarship_r16.history.length > 0 ? 21 : -1);
   }
 }
 function AuthorWorksComponent_Conditional_15_Template(rf, ctx) {
   if (rf & 1) {
-    \u0275\u0275elementStart(0, "div", 12)(1, "pre", 50)(2, "code");
+    \u0275\u0275elementStart(0, "div", 12);
+    \u0275\u0275repeaterCreate(1, AuthorWorksComponent_Conditional_15_For_2_Template, 22, 25, "section", 45, _forTrack5);
+    \u0275\u0275elementEnd();
+  }
+  if (rf & 2) {
+    const ctx_r1 = \u0275\u0275nextContext();
+    \u0275\u0275advance();
+    \u0275\u0275repeater(ctx_r1.scholarships());
+  }
+}
+function AuthorWorksComponent_Conditional_16_Template(rf, ctx) {
+  if (rf & 1) {
+    \u0275\u0275elementStart(0, "div", 13)(1, "pre", 53)(2, "code");
     \u0275\u0275text(3);
     \u0275\u0275elementEnd()()();
   }
   if (rf & 2) {
-    const ctx_r2 = \u0275\u0275nextContext();
+    const ctx_r1 = \u0275\u0275nextContext();
     \u0275\u0275advance(3);
-    \u0275\u0275textInterpolate(ctx_r2.entityJson());
+    \u0275\u0275textInterpolate(ctx_r1.entityJson());
   }
 }
 var AuthorWorksComponent = class _AuthorWorksComponent {
+  basketService = inject(BasketService);
   groups = [];
   dataJour = null;
   coauthors = [];
@@ -30564,6 +30584,16 @@ var AuthorWorksComponent = class _AuthorWorksComponent {
     return tabs;
   }, ...ngDevMode ? [{ debugName: "contentTabs" }] : []);
   totalWorks = computed(() => this.groups.reduce((sum, group) => sum + group.items.length, 0), ...ngDevMode ? [{ debugName: "totalWorks" }] : []);
+  publicationIds = computed(() => {
+    const ids = this.groups.flatMap((group) => group.items.flatMap((item) => {
+      const matches = item.matchAll(/href=["'](?:https?:\/\/[^/]+)?\/v\/(\d+)(?:[/?#][^"']*)?["']/gi);
+      return [...matches].map((match) => Number(match[1]));
+    }));
+    return [...new Set(ids.filter((id) => Number.isFinite(id) && id > 0))];
+  }, ...ngDevMode ? [{ debugName: "publicationIds" }] : []);
+  selectAllPublications() {
+    this.basketService.addMany(this.publicationIds());
+  }
   activeTab = computed(() => this.contentTabs().find((t) => t.id === this.selectedTab()), ...ngDevMode ? [{ debugName: "activeTab" }] : []);
   worksTab = computed(() => {
     return this.contentTabs().find((t) => t.type === "works");
@@ -30838,54 +30868,68 @@ var AuthorWorksComponent = class _AuthorWorksComponent {
   static \u0275fac = function AuthorWorksComponent_Factory(__ngFactoryType__) {
     return new (__ngFactoryType__ || _AuthorWorksComponent)();
   };
-  static \u0275cmp = /* @__PURE__ */ \u0275\u0275defineComponent({ type: _AuthorWorksComponent, selectors: [["app-author-works"]], inputs: { groups: "groups", dataJour: "dataJour", coauthors: "coauthors", networkData: "networkData", citationsGranted: "citationsGranted", entityData: "entityData", bolsista: "bolsista", variants: "variants" }, decls: 16, vars: 10, consts: [["aria-label", "Producoes bibliograficas e colaboracoes", 1, "author-works", "mt-4"], [1, "author-works-header", "mb-3"], [1, "h6", "mb-0"], ["role", "tablist", 1, "nav", "nav-tabs"], ["type", "button", "role", "tab", 1, "nav-link", 3, "active"], [1, "tab-content", "mt-2"], [1, "works-tab-content"], [1, "coauthors-tab-content", "mt-2"], [1, "network-tab-content", "mt-2"], [1, "citations-granted-tab-content", "mt-2"], [1, "variants-tab-content", "mt-2"], [1, "scholarship-tab-content", "mt-2"], [1, "json-tab-content", "mt-2"], ["type", "button", "role", "tab", 1, "nav-link", 3, "click"], [1, "badge", "badge-menu-outline", "ms-1"], ["role", "tablist", 1, "nav", "nav-tabs", "nav-secondary"], ["aria-label", "Resumo da producao", 1, "summary-panel"], [1, "summary-metrics", "mb-2"], [1, "summary-metric-item"], [1, "works-empty", "mb-0"], ["role", "img", 1, "dispersion-chart-wrap"], ["viewBox", "0 0 640 260", "preserveAspectRatio", "none", 1, "dispersion-chart"], ["x1", "42", "y1", "188", "x2", "622", "y2", "188", 1, "axis-line"], ["x1", "42", "y1", "22", "x2", "42", "y2", "188", 1, "axis-line"], [1, "dispersion-axis-labels"], [1, "summary-table-wrap"], [1, "h6", "mb-2"], [1, "summary-table-scroll"], [1, "summary-table"], [1, "summary-pie-wrap"], [1, "summary-pie-layout"], ["viewBox", "0 0 200 200", "role", "img", 1, "summary-pie"], [1, "dispersion-bar"], ["y", "196", "text-anchor", "end", 1, "dispersion-bar-label"], [1, "summary-table-swatch"], ["text-anchor", "middle", "dominant-baseline", "middle", 1, "summary-pie-percent"], [1, "works-list", "mb-0"], [3, "innerHTML"], [3, "coauthors"], [1, "mt-3"], [1, "mt-3", 3, "networkData"], [3, "networkData"], [1, "mb-4"], [1, "h6", "mb-3"], [1, "row", "mb-3"], [1, "col-sm-3"], [1, "col-sm-9"], [1, "h6"], [1, "table-responsive"], [1, "table", "table-sm", "align-middle", "scholarship-history-table"], [1, "json-viewer", "mb-0"]], template: function AuthorWorksComponent_Template(rf, ctx) {
+  static \u0275cmp = /* @__PURE__ */ \u0275\u0275defineComponent({ type: _AuthorWorksComponent, selectors: [["app-author-works"]], inputs: { groups: "groups", dataJour: "dataJour", coauthors: "coauthors", networkData: "networkData", citationsGranted: "citationsGranted", entityData: "entityData", bolsista: "bolsista", variants: "variants" }, decls: 17, vars: 11, consts: [["aria-label", "Producoes bibliograficas e colaboracoes", 1, "author-works", "mt-4"], [1, "author-works-header", "mb-3"], [1, "h6", "mb-0"], ["type", "button", 1, "btn", "btn-sm", "btn-outline-primary", "author-works-select-all"], ["role", "tablist", 1, "nav", "nav-tabs"], ["type", "button", "role", "tab", 1, "nav-link", 3, "active"], [1, "tab-content", "mt-2"], [1, "works-tab-content"], [1, "coauthors-tab-content", "mt-2"], [1, "network-tab-content", "mt-2"], [1, "citations-granted-tab-content", "mt-2"], [1, "variants-tab-content", "mt-2"], [1, "scholarship-tab-content", "mt-2"], [1, "json-tab-content", "mt-2"], ["type", "button", 1, "btn", "btn-sm", "btn-outline-primary", "author-works-select-all", 3, "click"], ["aria-hidden", "true", 1, "bi", "bi-basket", "me-1"], ["type", "button", "role", "tab", 1, "nav-link", 3, "click"], [1, "badge", "badge-menu-outline", "ms-1"], ["role", "tablist", 1, "nav", "nav-tabs", "nav-secondary"], ["aria-label", "Resumo da producao", 1, "summary-panel"], [1, "summary-metrics", "mb-2"], [1, "summary-metric-item"], [1, "works-empty", "mb-0"], ["role", "img", 1, "dispersion-chart-wrap"], ["viewBox", "0 0 640 260", "preserveAspectRatio", "none", 1, "dispersion-chart"], ["x1", "42", "y1", "188", "x2", "622", "y2", "188", 1, "axis-line"], ["x1", "42", "y1", "22", "x2", "42", "y2", "188", 1, "axis-line"], [1, "dispersion-axis-labels"], [1, "summary-table-wrap"], [1, "h6", "mb-2"], [1, "summary-table-scroll"], [1, "summary-table"], [1, "summary-pie-wrap"], [1, "summary-pie-layout"], ["viewBox", "0 0 200 200", "role", "img", 1, "summary-pie"], [1, "dispersion-bar"], ["y", "196", "text-anchor", "end", 1, "dispersion-bar-label"], [1, "summary-table-swatch"], ["text-anchor", "middle", "dominant-baseline", "middle", 1, "summary-pie-percent"], [1, "works-list", "mb-0"], [3, "innerHTML"], [3, "coauthors"], [1, "mt-3"], [1, "mt-3", 3, "networkData"], [3, "networkData"], [1, "mb-4"], [1, "h6", "mb-3"], [1, "row", "mb-3"], [1, "col-sm-3"], [1, "col-sm-9"], [1, "h6"], [1, "table-responsive"], [1, "table", "table-sm", "align-middle", "scholarship-history-table"], [1, "json-viewer", "mb-0"]], template: function AuthorWorksComponent_Template(rf, ctx) {
     if (rf & 1) {
       \u0275\u0275elementStart(0, "section", 0)(1, "div", 1)(2, "h3", 2);
       \u0275\u0275text(3);
       \u0275\u0275pipe(4, "translate");
-      \u0275\u0275elementEnd()();
-      \u0275\u0275elementStart(5, "div", 3);
-      \u0275\u0275repeaterCreate(6, AuthorWorksComponent_For_7_Template, 9, 7, "button", 4, _forTrack03);
       \u0275\u0275elementEnd();
-      \u0275\u0275elementStart(8, "div", 5);
-      \u0275\u0275conditionalCreate(9, AuthorWorksComponent_Conditional_9_Template, 12, 8, "div", 6);
-      \u0275\u0275conditionalCreate(10, AuthorWorksComponent_Conditional_10_Template, 2, 1, "div", 7);
-      \u0275\u0275conditionalCreate(11, AuthorWorksComponent_Conditional_11_Template, 7, 2, "div", 8);
-      \u0275\u0275conditionalCreate(12, AuthorWorksComponent_Conditional_12_Template, 3, 1, "div", 9);
-      \u0275\u0275conditionalCreate(13, AuthorWorksComponent_Conditional_13_Template, 4, 0, "div", 10);
-      \u0275\u0275conditionalCreate(14, AuthorWorksComponent_Conditional_14_Template, 3, 0, "div", 11);
-      \u0275\u0275conditionalCreate(15, AuthorWorksComponent_Conditional_15_Template, 4, 1, "div", 12);
+      \u0275\u0275conditionalCreate(5, AuthorWorksComponent_Conditional_5_Template, 4, 3, "button", 3);
+      \u0275\u0275elementEnd();
+      \u0275\u0275elementStart(6, "div", 4);
+      \u0275\u0275repeaterCreate(7, AuthorWorksComponent_For_8_Template, 9, 7, "button", 5, _forTrack03);
+      \u0275\u0275elementEnd();
+      \u0275\u0275elementStart(9, "div", 6);
+      \u0275\u0275conditionalCreate(10, AuthorWorksComponent_Conditional_10_Template, 12, 8, "div", 7);
+      \u0275\u0275conditionalCreate(11, AuthorWorksComponent_Conditional_11_Template, 2, 1, "div", 8);
+      \u0275\u0275conditionalCreate(12, AuthorWorksComponent_Conditional_12_Template, 7, 2, "div", 9);
+      \u0275\u0275conditionalCreate(13, AuthorWorksComponent_Conditional_13_Template, 3, 1, "div", 10);
+      \u0275\u0275conditionalCreate(14, AuthorWorksComponent_Conditional_14_Template, 4, 0, "div", 11);
+      \u0275\u0275conditionalCreate(15, AuthorWorksComponent_Conditional_15_Template, 3, 0, "div", 12);
+      \u0275\u0275conditionalCreate(16, AuthorWorksComponent_Conditional_16_Template, 4, 1, "div", 13);
       \u0275\u0275elementEnd()();
     }
     if (rf & 2) {
       \u0275\u0275advance(3);
-      \u0275\u0275textInterpolate(\u0275\u0275pipeBind1(4, 8, "author.bibliographic"));
-      \u0275\u0275advance(3);
+      \u0275\u0275textInterpolate(\u0275\u0275pipeBind1(4, 9, "author.bibliographic"));
+      \u0275\u0275advance(2);
+      \u0275\u0275conditional(ctx.publicationIds().length > 0 ? 5 : -1);
+      \u0275\u0275advance(2);
       \u0275\u0275repeater(ctx.contentTabs());
       \u0275\u0275advance(3);
-      \u0275\u0275conditional(ctx.selectedTab() === "works" ? 9 : -1);
+      \u0275\u0275conditional(ctx.selectedTab() === "works" ? 10 : -1);
       \u0275\u0275advance();
-      \u0275\u0275conditional(ctx.selectedTab() === "coauthors" ? 10 : -1);
+      \u0275\u0275conditional(ctx.selectedTab() === "coauthors" ? 11 : -1);
       \u0275\u0275advance();
-      \u0275\u0275conditional(ctx.selectedTab() === "network" ? 11 : -1);
+      \u0275\u0275conditional(ctx.selectedTab() === "network" ? 12 : -1);
       \u0275\u0275advance();
-      \u0275\u0275conditional(ctx.selectedTab() === "citationsGranted" ? 12 : -1);
+      \u0275\u0275conditional(ctx.selectedTab() === "citationsGranted" ? 13 : -1);
       \u0275\u0275advance();
-      \u0275\u0275conditional(ctx.selectedTab() === "variants" ? 13 : -1);
+      \u0275\u0275conditional(ctx.selectedTab() === "variants" ? 14 : -1);
       \u0275\u0275advance();
-      \u0275\u0275conditional(ctx.selectedTab() === "scholarship" ? 14 : -1);
+      \u0275\u0275conditional(ctx.selectedTab() === "scholarship" ? 15 : -1);
       \u0275\u0275advance();
-      \u0275\u0275conditional(ctx.selectedTab() === "json" ? 15 : -1);
+      \u0275\u0275conditional(ctx.selectedTab() === "json" ? 16 : -1);
     }
-  }, dependencies: [CommonModule, TranslateModule, CoauthorsListComponent, NetworkGraph3dComponent, RedeCircleComponent, DatePipe, TranslatePipe], styles: ["\n\n.author-works[_ngcontent-%COMP%] {\n  background: var(--theme-card-bg);\n  border: 1px solid var(--theme-line);\n  border-radius: 0.7rem;\n  padding: 0.9rem;\n}\n.author-works-header[_ngcontent-%COMP%] {\n  align-items: center;\n  display: flex;\n  gap: 0.6rem;\n  justify-content: space-between;\n}\n.nav-tabs[_ngcontent-%COMP%] {\n  border-bottom: 2px solid var(--theme-line);\n  display: flex;\n  gap: 0.3rem;\n}\n.nav-tabs.nav-secondary[_ngcontent-%COMP%] {\n  border-bottom: 1px solid var(--theme-line);\n  margin-left: 1rem;\n  padding-left: 0.5rem;\n}\n.nav-tabs.nav-secondary[_ngcontent-%COMP%]   .nav-link[_ngcontent-%COMP%] {\n  font-size: 0.85rem;\n}\n.nav-tabs.nav-secondary[_ngcontent-%COMP%]   .nav-link.active[_ngcontent-%COMP%] {\n  border-bottom: 2px solid var(--theme-link);\n  color: var(--theme-link);\n  font-weight: 600;\n  margin-bottom: -1px;\n  padding-bottom: 0.35rem;\n}\n.nav-link[_ngcontent-%COMP%] {\n  background: transparent;\n  border: none;\n  color: var(--theme-ink);\n  cursor: pointer;\n  font-size: 0.9rem;\n  padding: 0.5rem 0.8rem;\n  text-decoration: none;\n  transition: all 0.2s ease;\n}\n.nav-link[_ngcontent-%COMP%]:hover {\n  color: var(--theme-link);\n  background: var(--theme-sand);\n  border-radius: 0.3rem 0.3rem 0 0;\n}\n.nav-link.active[_ngcontent-%COMP%] {\n  background: var(--theme-sand);\n  border-bottom: 2px solid var(--theme-link);\n  color: var(--theme-link);\n  font-weight: 600;\n  margin-bottom: -2px;\n  padding-bottom: 0.5rem;\n}\n.tab-content[_ngcontent-%COMP%] {\n  padding: 0.6rem 0;\n}\n.works-tab-content[_ngcontent-%COMP%], \n.coauthors-tab-content[_ngcontent-%COMP%], \n.network-tab-content[_ngcontent-%COMP%] {\n  animation: _ngcontent-%COMP%_fadeIn 0.3s ease-in-out;\n}\n@keyframes _ngcontent-%COMP%_fadeIn {\n  from {\n    opacity: 0;\n    transform: translateY(5px);\n  }\n  to {\n    opacity: 1;\n    transform: translateY(0);\n  }\n}\n.works-list[_ngcontent-%COMP%] {\n  display: grid;\n  gap: 0.45rem;\n  padding-left: 1.15rem;\n}\n.works-list[_ngcontent-%COMP%]   li[_ngcontent-%COMP%] {\n  line-height: 1.45;\n}\n.works-list[_ngcontent-%COMP%]   a[_ngcontent-%COMP%] {\n  word-break: break-word;\n}\n.works-empty[_ngcontent-%COMP%] {\n  color: var(--theme-hint);\n  padding: 0.5rem 0;\n}\n.scholarship-tab-content[_ngcontent-%COMP%] {\n  color: var(--theme-ink);\n}\n.json-viewer[_ngcontent-%COMP%] {\n  background: color-mix(in srgb, var(--theme-sand) 35%, var(--theme-card-bg));\n  border: 1px solid var(--theme-line);\n  border-radius: 0.45rem;\n  color: var(--theme-ink);\n  font-size: 0.82rem;\n  max-height: 32rem;\n  overflow: auto;\n  padding: 0.75rem;\n  white-space: pre-wrap;\n  word-break: break-word;\n}\n.scholarship-history-table[_ngcontent-%COMP%] {\n  --bs-table-bg: transparent;\n  --bs-table-border-color: var(--theme-line);\n  --bs-table-color: var(--theme-ink);\n  --bs-table-striped-bg: color-mix(in srgb, var(--theme-sand) 45%, transparent);\n  --bs-table-striped-color: var(--theme-ink);\n  --bs-table-hover-bg: color-mix(in srgb, var(--theme-sand) 65%, transparent);\n  --bs-table-hover-color: var(--theme-ink);\n  color: var(--theme-ink);\n}\n.scholarship-history-table[_ngcontent-%COMP%]   th[_ngcontent-%COMP%] {\n  background: color-mix(in srgb, var(--theme-sand) 65%, transparent);\n  color: var(--theme-ink);\n}\n.scholarship-history-table[_ngcontent-%COMP%]   td[_ngcontent-%COMP%] {\n  color: var(--theme-ink);\n}\n.summary-panel[_ngcontent-%COMP%] {\n  display: grid;\n  gap: 0.7rem;\n}\n.summary-metrics[_ngcontent-%COMP%] {\n  display: grid;\n  gap: 0.55rem;\n  grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));\n}\n.summary-metric-item[_ngcontent-%COMP%] {\n  background: rgba(255, 255, 255, 0.35);\n  border: 1px solid var(--theme-line);\n  border-radius: 0.45rem;\n  display: grid;\n  gap: 0.1rem;\n  padding: 0.5rem 0.6rem;\n}\n.summary-metric-item[_ngcontent-%COMP%]   small[_ngcontent-%COMP%] {\n  color: var(--theme-hint);\n}\n.dispersion-chart-wrap[_ngcontent-%COMP%] {\n  border: 1px solid var(--theme-line);\n  border-radius: 0.45rem;\n  padding: 0.55rem;\n}\n.dispersion-chart[_ngcontent-%COMP%] {\n  display: block;\n  height: 250px;\n  width: 100%;\n}\n.axis-line[_ngcontent-%COMP%] {\n  stroke: var(--theme-line);\n  stroke-width: 1;\n}\n.dispersion-bar[_ngcontent-%COMP%] {\n  opacity: 0.85;\n  transition: opacity 0.2s ease;\n}\n.dispersion-bar[_ngcontent-%COMP%]:hover {\n  opacity: 1;\n}\n.dispersion-bar-label[_ngcontent-%COMP%] {\n  fill: var(--theme-hint);\n  font-size: 0.42rem;\n  letter-spacing: -0.01em;\n}\n.dispersion-axis-labels[_ngcontent-%COMP%] {\n  color: var(--theme-hint);\n  display: flex;\n  font-size: 0.8rem;\n  justify-content: space-between;\n  margin-top: 0.35rem;\n}\n.summary-table-wrap[_ngcontent-%COMP%], \n.summary-pie-wrap[_ngcontent-%COMP%] {\n  border: 1px solid var(--theme-line);\n  border-radius: 0.45rem;\n  padding: 0.55rem;\n}\n.summary-table-scroll[_ngcontent-%COMP%] {\n  overflow-x: auto;\n}\n.summary-table[_ngcontent-%COMP%] {\n  border-collapse: collapse;\n  font-size: 0.88rem;\n  width: 100%;\n}\n.summary-table[_ngcontent-%COMP%]   th[_ngcontent-%COMP%], \n.summary-table[_ngcontent-%COMP%]   td[_ngcontent-%COMP%] {\n  border-bottom: 1px solid var(--theme-line);\n  padding: 0.35rem 0.4rem;\n  text-align: left;\n}\n.summary-table-swatch[_ngcontent-%COMP%] {\n  border-radius: 50%;\n  display: inline-block;\n  height: 0.65rem;\n  margin-right: 0.35rem;\n  width: 0.65rem;\n}\n.summary-pie-layout[_ngcontent-%COMP%] {\n  align-items: start;\n  display: grid;\n  gap: 0.8rem;\n  grid-template-columns: 1fr;\n  justify-items: start;\n}\n.summary-pie[_ngcontent-%COMP%] {\n  border: 1px solid var(--theme-line);\n  border-radius: 50%;\n  height: 240px;\n  width: 240px;\n}\n.summary-pie[_ngcontent-%COMP%]   path[_ngcontent-%COMP%] {\n  stroke: rgba(255, 255, 255, 0.55);\n  stroke-width: 1;\n  transition: opacity 0.2s ease;\n}\n.summary-pie[_ngcontent-%COMP%]   path[_ngcontent-%COMP%]:hover {\n  opacity: 0.85;\n}\n.summary-pie-percent[_ngcontent-%COMP%] {\n  fill: #fff;\n  font-size: 0.6rem;\n  font-weight: 700;\n  pointer-events: none;\n}\n@media (max-width: 700px) {\n  .dispersion-bar-label[_ngcontent-%COMP%] {\n    font-size: 0.38rem;\n  }\n  .dispersion-axis-labels[_ngcontent-%COMP%] {\n    flex-direction: column;\n    gap: 0.25rem;\n  }\n  .summary-pie-layout[_ngcontent-%COMP%] {\n    grid-template-columns: 1fr;\n    justify-items: start;\n  }\n}\n.badge-menu-outline[_ngcontent-%COMP%] {\n  background-color: transparent;\n  border: 1px solid var(--theme-sand);\n  border-radius: 999px;\n  color: #7f7f7f;\n}\n/*# sourceMappingURL=author-works.component.css.map */"] });
+  }, dependencies: [CommonModule, TranslateModule, CoauthorsListComponent, NetworkGraph3dComponent, RedeCircleComponent, DatePipe, TranslatePipe], styles: ["\n\n.author-works[_ngcontent-%COMP%] {\n  background: var(--theme-card-bg);\n  border: 1px solid var(--theme-line);\n  border-radius: 0.7rem;\n  padding: 0.9rem;\n}\n.author-works-header[_ngcontent-%COMP%] {\n  align-items: center;\n  display: flex;\n  gap: 0.6rem;\n  justify-content: space-between;\n}\n.nav-tabs[_ngcontent-%COMP%] {\n  border-bottom: 2px solid var(--theme-line);\n  display: flex;\n  gap: 0.3rem;\n}\n.nav-tabs.nav-secondary[_ngcontent-%COMP%] {\n  border-bottom: 1px solid var(--theme-line);\n  margin-left: 1rem;\n  padding-left: 0.5rem;\n}\n.nav-tabs.nav-secondary[_ngcontent-%COMP%]   .nav-link[_ngcontent-%COMP%] {\n  font-size: 0.85rem;\n}\n.nav-tabs.nav-secondary[_ngcontent-%COMP%]   .nav-link.active[_ngcontent-%COMP%] {\n  border-bottom: 2px solid var(--theme-link);\n  color: var(--theme-link);\n  font-weight: 600;\n  margin-bottom: -1px;\n  padding-bottom: 0.35rem;\n}\n.nav-link[_ngcontent-%COMP%] {\n  background: transparent;\n  border: none;\n  color: var(--theme-ink);\n  cursor: pointer;\n  font-size: 0.9rem;\n  padding: 0.5rem 0.8rem;\n  text-decoration: none;\n  transition: all 0.2s ease;\n}\n.nav-link[_ngcontent-%COMP%]:hover {\n  color: var(--theme-link);\n  background: var(--theme-sand);\n  border-radius: 0.3rem 0.3rem 0 0;\n}\n.nav-link.active[_ngcontent-%COMP%] {\n  background: var(--theme-sand);\n  border-bottom: 2px solid var(--theme-link);\n  color: var(--theme-link);\n  font-weight: 600;\n  margin-bottom: -2px;\n  padding-bottom: 0.5rem;\n}\n.tab-content[_ngcontent-%COMP%] {\n  padding: 0.6rem 0;\n}\n.works-tab-content[_ngcontent-%COMP%], \n.coauthors-tab-content[_ngcontent-%COMP%], \n.network-tab-content[_ngcontent-%COMP%] {\n  animation: _ngcontent-%COMP%_fadeIn 0.3s ease-in-out;\n}\n@keyframes _ngcontent-%COMP%_fadeIn {\n  from {\n    opacity: 0;\n    transform: translateY(5px);\n  }\n  to {\n    opacity: 1;\n    transform: translateY(0);\n  }\n}\n.works-list[_ngcontent-%COMP%] {\n  display: grid;\n  gap: 0.45rem;\n  padding-left: 1.15rem;\n}\n.works-list[_ngcontent-%COMP%]   li[_ngcontent-%COMP%] {\n  line-height: 1.45;\n}\n.works-list[_ngcontent-%COMP%]   a[_ngcontent-%COMP%] {\n  word-break: break-word;\n}\n.works-empty[_ngcontent-%COMP%] {\n  color: var(--theme-hint);\n  padding: 0.5rem 0;\n}\n.scholarship-tab-content[_ngcontent-%COMP%] {\n  color: var(--theme-ink);\n}\n.author-works-select-all[_ngcontent-%COMP%] {\n  white-space: nowrap;\n}\n@media (max-width: 575.98px) {\n  .author-works-header[_ngcontent-%COMP%] {\n    align-items: stretch;\n    flex-direction: column;\n  }\n  .author-works-select-all[_ngcontent-%COMP%] {\n    align-self: flex-start;\n    white-space: normal;\n  }\n}\n.json-viewer[_ngcontent-%COMP%] {\n  background: color-mix(in srgb, var(--theme-sand) 35%, var(--theme-card-bg));\n  border: 1px solid var(--theme-line);\n  border-radius: 0.45rem;\n  color: var(--theme-ink);\n  font-size: 0.82rem;\n  max-height: 32rem;\n  overflow: auto;\n  padding: 0.75rem;\n  white-space: pre-wrap;\n  word-break: break-word;\n}\n.scholarship-history-table[_ngcontent-%COMP%] {\n  --bs-table-bg: transparent;\n  --bs-table-border-color: var(--theme-line);\n  --bs-table-color: var(--theme-ink);\n  --bs-table-striped-bg: color-mix(in srgb, var(--theme-sand) 45%, transparent);\n  --bs-table-striped-color: var(--theme-ink);\n  --bs-table-hover-bg: color-mix(in srgb, var(--theme-sand) 65%, transparent);\n  --bs-table-hover-color: var(--theme-ink);\n  color: var(--theme-ink);\n}\n.scholarship-history-table[_ngcontent-%COMP%]   th[_ngcontent-%COMP%] {\n  background: color-mix(in srgb, var(--theme-sand) 65%, transparent);\n  color: var(--theme-ink);\n}\n.scholarship-history-table[_ngcontent-%COMP%]   td[_ngcontent-%COMP%] {\n  color: var(--theme-ink);\n}\n.summary-panel[_ngcontent-%COMP%] {\n  display: grid;\n  gap: 0.7rem;\n}\n.summary-metrics[_ngcontent-%COMP%] {\n  display: grid;\n  gap: 0.55rem;\n  grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));\n}\n.summary-metric-item[_ngcontent-%COMP%] {\n  background: rgba(255, 255, 255, 0.35);\n  border: 1px solid var(--theme-line);\n  border-radius: 0.45rem;\n  display: grid;\n  gap: 0.1rem;\n  padding: 0.5rem 0.6rem;\n}\n.summary-metric-item[_ngcontent-%COMP%]   small[_ngcontent-%COMP%] {\n  color: var(--theme-hint);\n}\n.dispersion-chart-wrap[_ngcontent-%COMP%] {\n  border: 1px solid var(--theme-line);\n  border-radius: 0.45rem;\n  padding: 0.55rem;\n}\n.dispersion-chart[_ngcontent-%COMP%] {\n  display: block;\n  height: 250px;\n  width: 100%;\n}\n.axis-line[_ngcontent-%COMP%] {\n  stroke: var(--theme-line);\n  stroke-width: 1;\n}\n.dispersion-bar[_ngcontent-%COMP%] {\n  opacity: 0.85;\n  transition: opacity 0.2s ease;\n}\n.dispersion-bar[_ngcontent-%COMP%]:hover {\n  opacity: 1;\n}\n.dispersion-bar-label[_ngcontent-%COMP%] {\n  fill: var(--theme-hint);\n  font-size: 0.42rem;\n  letter-spacing: -0.01em;\n}\n.dispersion-axis-labels[_ngcontent-%COMP%] {\n  color: var(--theme-hint);\n  display: flex;\n  font-size: 0.8rem;\n  justify-content: space-between;\n  margin-top: 0.35rem;\n}\n.summary-table-wrap[_ngcontent-%COMP%], \n.summary-pie-wrap[_ngcontent-%COMP%] {\n  border: 1px solid var(--theme-line);\n  border-radius: 0.45rem;\n  padding: 0.55rem;\n}\n.summary-table-scroll[_ngcontent-%COMP%] {\n  overflow-x: auto;\n}\n.summary-table[_ngcontent-%COMP%] {\n  border-collapse: collapse;\n  font-size: 0.88rem;\n  width: 100%;\n}\n.summary-table[_ngcontent-%COMP%]   th[_ngcontent-%COMP%], \n.summary-table[_ngcontent-%COMP%]   td[_ngcontent-%COMP%] {\n  border-bottom: 1px solid var(--theme-line);\n  padding: 0.35rem 0.4rem;\n  text-align: left;\n}\n.summary-table-swatch[_ngcontent-%COMP%] {\n  border-radius: 50%;\n  display: inline-block;\n  height: 0.65rem;\n  margin-right: 0.35rem;\n  width: 0.65rem;\n}\n.summary-pie-layout[_ngcontent-%COMP%] {\n  align-items: start;\n  display: grid;\n  gap: 0.8rem;\n  grid-template-columns: 1fr;\n  justify-items: start;\n}\n.summary-pie[_ngcontent-%COMP%] {\n  border: 1px solid var(--theme-line);\n  border-radius: 50%;\n  height: 240px;\n  width: 240px;\n}\n.summary-pie[_ngcontent-%COMP%]   path[_ngcontent-%COMP%] {\n  stroke: rgba(255, 255, 255, 0.55);\n  stroke-width: 1;\n  transition: opacity 0.2s ease;\n}\n.summary-pie[_ngcontent-%COMP%]   path[_ngcontent-%COMP%]:hover {\n  opacity: 0.85;\n}\n.summary-pie-percent[_ngcontent-%COMP%] {\n  fill: #fff;\n  font-size: 0.6rem;\n  font-weight: 700;\n  pointer-events: none;\n}\n@media (max-width: 700px) {\n  .dispersion-bar-label[_ngcontent-%COMP%] {\n    font-size: 0.38rem;\n  }\n  .dispersion-axis-labels[_ngcontent-%COMP%] {\n    flex-direction: column;\n    gap: 0.25rem;\n  }\n  .summary-pie-layout[_ngcontent-%COMP%] {\n    grid-template-columns: 1fr;\n    justify-items: start;\n  }\n}\n.badge-menu-outline[_ngcontent-%COMP%] {\n  background-color: transparent;\n  border: 1px solid var(--theme-sand);\n  border-radius: 999px;\n  color: #7f7f7f;\n}\n/*# sourceMappingURL=author-works.component.css.map */"] });
 };
 (() => {
   (typeof ngDevMode === "undefined" || ngDevMode) && setClassMetadata(AuthorWorksComponent, [{
     type: Component,
     args: [{ selector: "app-author-works", imports: [CommonModule, TranslateModule, CoauthorsListComponent, NetworkGraph3dComponent, RedeCircleComponent], template: `<section class="author-works mt-4" aria-label="Producoes bibliograficas e colaboracoes">\r
-  <div class="author-works-header mb-3">\r
-    <h3 class="h6 mb-0">{{ 'author.bibliographic' | translate }}</h3>\r
-  </div>\r
+  <div class="author-works-header mb-3">
+    <h3 class="h6 mb-0">{{ 'author.bibliographic' | translate }}</h3>
+    @if (publicationIds().length > 0) {
+      <button
+        type="button"
+        class="btn btn-sm btn-outline-primary author-works-select-all"
+        (click)="selectAllPublications()"
+      >
+        <i class="bi bi-basket me-1" aria-hidden="true"></i>
+        {{ 'author.selectAllPublications' | translate }}
+      </button>
+    }
+  </div>
 \r
   <!-- Main Content Tabs -->\r
   <div class="nav nav-tabs" role="tablist">\r
@@ -31166,7 +31210,7 @@ var AuthorWorksComponent = class _AuthorWorksComponent {
     }
   </div>
 </section>
-`, styles: ["/* src/app/components/author-works/author-works.component.scss */\n.author-works {\n  background: var(--theme-card-bg);\n  border: 1px solid var(--theme-line);\n  border-radius: 0.7rem;\n  padding: 0.9rem;\n}\n.author-works-header {\n  align-items: center;\n  display: flex;\n  gap: 0.6rem;\n  justify-content: space-between;\n}\n.nav-tabs {\n  border-bottom: 2px solid var(--theme-line);\n  display: flex;\n  gap: 0.3rem;\n}\n.nav-tabs.nav-secondary {\n  border-bottom: 1px solid var(--theme-line);\n  margin-left: 1rem;\n  padding-left: 0.5rem;\n}\n.nav-tabs.nav-secondary .nav-link {\n  font-size: 0.85rem;\n}\n.nav-tabs.nav-secondary .nav-link.active {\n  border-bottom: 2px solid var(--theme-link);\n  color: var(--theme-link);\n  font-weight: 600;\n  margin-bottom: -1px;\n  padding-bottom: 0.35rem;\n}\n.nav-link {\n  background: transparent;\n  border: none;\n  color: var(--theme-ink);\n  cursor: pointer;\n  font-size: 0.9rem;\n  padding: 0.5rem 0.8rem;\n  text-decoration: none;\n  transition: all 0.2s ease;\n}\n.nav-link:hover {\n  color: var(--theme-link);\n  background: var(--theme-sand);\n  border-radius: 0.3rem 0.3rem 0 0;\n}\n.nav-link.active {\n  background: var(--theme-sand);\n  border-bottom: 2px solid var(--theme-link);\n  color: var(--theme-link);\n  font-weight: 600;\n  margin-bottom: -2px;\n  padding-bottom: 0.5rem;\n}\n.tab-content {\n  padding: 0.6rem 0;\n}\n.works-tab-content,\n.coauthors-tab-content,\n.network-tab-content {\n  animation: fadeIn 0.3s ease-in-out;\n}\n@keyframes fadeIn {\n  from {\n    opacity: 0;\n    transform: translateY(5px);\n  }\n  to {\n    opacity: 1;\n    transform: translateY(0);\n  }\n}\n.works-list {\n  display: grid;\n  gap: 0.45rem;\n  padding-left: 1.15rem;\n}\n.works-list li {\n  line-height: 1.45;\n}\n.works-list a {\n  word-break: break-word;\n}\n.works-empty {\n  color: var(--theme-hint);\n  padding: 0.5rem 0;\n}\n.scholarship-tab-content {\n  color: var(--theme-ink);\n}\n.json-viewer {\n  background: color-mix(in srgb, var(--theme-sand) 35%, var(--theme-card-bg));\n  border: 1px solid var(--theme-line);\n  border-radius: 0.45rem;\n  color: var(--theme-ink);\n  font-size: 0.82rem;\n  max-height: 32rem;\n  overflow: auto;\n  padding: 0.75rem;\n  white-space: pre-wrap;\n  word-break: break-word;\n}\n.scholarship-history-table {\n  --bs-table-bg: transparent;\n  --bs-table-border-color: var(--theme-line);\n  --bs-table-color: var(--theme-ink);\n  --bs-table-striped-bg: color-mix(in srgb, var(--theme-sand) 45%, transparent);\n  --bs-table-striped-color: var(--theme-ink);\n  --bs-table-hover-bg: color-mix(in srgb, var(--theme-sand) 65%, transparent);\n  --bs-table-hover-color: var(--theme-ink);\n  color: var(--theme-ink);\n}\n.scholarship-history-table th {\n  background: color-mix(in srgb, var(--theme-sand) 65%, transparent);\n  color: var(--theme-ink);\n}\n.scholarship-history-table td {\n  color: var(--theme-ink);\n}\n.summary-panel {\n  display: grid;\n  gap: 0.7rem;\n}\n.summary-metrics {\n  display: grid;\n  gap: 0.55rem;\n  grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));\n}\n.summary-metric-item {\n  background: rgba(255, 255, 255, 0.35);\n  border: 1px solid var(--theme-line);\n  border-radius: 0.45rem;\n  display: grid;\n  gap: 0.1rem;\n  padding: 0.5rem 0.6rem;\n}\n.summary-metric-item small {\n  color: var(--theme-hint);\n}\n.dispersion-chart-wrap {\n  border: 1px solid var(--theme-line);\n  border-radius: 0.45rem;\n  padding: 0.55rem;\n}\n.dispersion-chart {\n  display: block;\n  height: 250px;\n  width: 100%;\n}\n.axis-line {\n  stroke: var(--theme-line);\n  stroke-width: 1;\n}\n.dispersion-bar {\n  opacity: 0.85;\n  transition: opacity 0.2s ease;\n}\n.dispersion-bar:hover {\n  opacity: 1;\n}\n.dispersion-bar-label {\n  fill: var(--theme-hint);\n  font-size: 0.42rem;\n  letter-spacing: -0.01em;\n}\n.dispersion-axis-labels {\n  color: var(--theme-hint);\n  display: flex;\n  font-size: 0.8rem;\n  justify-content: space-between;\n  margin-top: 0.35rem;\n}\n.summary-table-wrap,\n.summary-pie-wrap {\n  border: 1px solid var(--theme-line);\n  border-radius: 0.45rem;\n  padding: 0.55rem;\n}\n.summary-table-scroll {\n  overflow-x: auto;\n}\n.summary-table {\n  border-collapse: collapse;\n  font-size: 0.88rem;\n  width: 100%;\n}\n.summary-table th,\n.summary-table td {\n  border-bottom: 1px solid var(--theme-line);\n  padding: 0.35rem 0.4rem;\n  text-align: left;\n}\n.summary-table-swatch {\n  border-radius: 50%;\n  display: inline-block;\n  height: 0.65rem;\n  margin-right: 0.35rem;\n  width: 0.65rem;\n}\n.summary-pie-layout {\n  align-items: start;\n  display: grid;\n  gap: 0.8rem;\n  grid-template-columns: 1fr;\n  justify-items: start;\n}\n.summary-pie {\n  border: 1px solid var(--theme-line);\n  border-radius: 50%;\n  height: 240px;\n  width: 240px;\n}\n.summary-pie path {\n  stroke: rgba(255, 255, 255, 0.55);\n  stroke-width: 1;\n  transition: opacity 0.2s ease;\n}\n.summary-pie path:hover {\n  opacity: 0.85;\n}\n.summary-pie-percent {\n  fill: #fff;\n  font-size: 0.6rem;\n  font-weight: 700;\n  pointer-events: none;\n}\n@media (max-width: 700px) {\n  .dispersion-bar-label {\n    font-size: 0.38rem;\n  }\n  .dispersion-axis-labels {\n    flex-direction: column;\n    gap: 0.25rem;\n  }\n  .summary-pie-layout {\n    grid-template-columns: 1fr;\n    justify-items: start;\n  }\n}\n.badge-menu-outline {\n  background-color: transparent;\n  border: 1px solid var(--theme-sand);\n  border-radius: 999px;\n  color: #7f7f7f;\n}\n/*# sourceMappingURL=author-works.component.css.map */\n"] }]
+`, styles: ["/* src/app/components/author-works/author-works.component.scss */\n.author-works {\n  background: var(--theme-card-bg);\n  border: 1px solid var(--theme-line);\n  border-radius: 0.7rem;\n  padding: 0.9rem;\n}\n.author-works-header {\n  align-items: center;\n  display: flex;\n  gap: 0.6rem;\n  justify-content: space-between;\n}\n.nav-tabs {\n  border-bottom: 2px solid var(--theme-line);\n  display: flex;\n  gap: 0.3rem;\n}\n.nav-tabs.nav-secondary {\n  border-bottom: 1px solid var(--theme-line);\n  margin-left: 1rem;\n  padding-left: 0.5rem;\n}\n.nav-tabs.nav-secondary .nav-link {\n  font-size: 0.85rem;\n}\n.nav-tabs.nav-secondary .nav-link.active {\n  border-bottom: 2px solid var(--theme-link);\n  color: var(--theme-link);\n  font-weight: 600;\n  margin-bottom: -1px;\n  padding-bottom: 0.35rem;\n}\n.nav-link {\n  background: transparent;\n  border: none;\n  color: var(--theme-ink);\n  cursor: pointer;\n  font-size: 0.9rem;\n  padding: 0.5rem 0.8rem;\n  text-decoration: none;\n  transition: all 0.2s ease;\n}\n.nav-link:hover {\n  color: var(--theme-link);\n  background: var(--theme-sand);\n  border-radius: 0.3rem 0.3rem 0 0;\n}\n.nav-link.active {\n  background: var(--theme-sand);\n  border-bottom: 2px solid var(--theme-link);\n  color: var(--theme-link);\n  font-weight: 600;\n  margin-bottom: -2px;\n  padding-bottom: 0.5rem;\n}\n.tab-content {\n  padding: 0.6rem 0;\n}\n.works-tab-content,\n.coauthors-tab-content,\n.network-tab-content {\n  animation: fadeIn 0.3s ease-in-out;\n}\n@keyframes fadeIn {\n  from {\n    opacity: 0;\n    transform: translateY(5px);\n  }\n  to {\n    opacity: 1;\n    transform: translateY(0);\n  }\n}\n.works-list {\n  display: grid;\n  gap: 0.45rem;\n  padding-left: 1.15rem;\n}\n.works-list li {\n  line-height: 1.45;\n}\n.works-list a {\n  word-break: break-word;\n}\n.works-empty {\n  color: var(--theme-hint);\n  padding: 0.5rem 0;\n}\n.scholarship-tab-content {\n  color: var(--theme-ink);\n}\n.author-works-select-all {\n  white-space: nowrap;\n}\n@media (max-width: 575.98px) {\n  .author-works-header {\n    align-items: stretch;\n    flex-direction: column;\n  }\n  .author-works-select-all {\n    align-self: flex-start;\n    white-space: normal;\n  }\n}\n.json-viewer {\n  background: color-mix(in srgb, var(--theme-sand) 35%, var(--theme-card-bg));\n  border: 1px solid var(--theme-line);\n  border-radius: 0.45rem;\n  color: var(--theme-ink);\n  font-size: 0.82rem;\n  max-height: 32rem;\n  overflow: auto;\n  padding: 0.75rem;\n  white-space: pre-wrap;\n  word-break: break-word;\n}\n.scholarship-history-table {\n  --bs-table-bg: transparent;\n  --bs-table-border-color: var(--theme-line);\n  --bs-table-color: var(--theme-ink);\n  --bs-table-striped-bg: color-mix(in srgb, var(--theme-sand) 45%, transparent);\n  --bs-table-striped-color: var(--theme-ink);\n  --bs-table-hover-bg: color-mix(in srgb, var(--theme-sand) 65%, transparent);\n  --bs-table-hover-color: var(--theme-ink);\n  color: var(--theme-ink);\n}\n.scholarship-history-table th {\n  background: color-mix(in srgb, var(--theme-sand) 65%, transparent);\n  color: var(--theme-ink);\n}\n.scholarship-history-table td {\n  color: var(--theme-ink);\n}\n.summary-panel {\n  display: grid;\n  gap: 0.7rem;\n}\n.summary-metrics {\n  display: grid;\n  gap: 0.55rem;\n  grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));\n}\n.summary-metric-item {\n  background: rgba(255, 255, 255, 0.35);\n  border: 1px solid var(--theme-line);\n  border-radius: 0.45rem;\n  display: grid;\n  gap: 0.1rem;\n  padding: 0.5rem 0.6rem;\n}\n.summary-metric-item small {\n  color: var(--theme-hint);\n}\n.dispersion-chart-wrap {\n  border: 1px solid var(--theme-line);\n  border-radius: 0.45rem;\n  padding: 0.55rem;\n}\n.dispersion-chart {\n  display: block;\n  height: 250px;\n  width: 100%;\n}\n.axis-line {\n  stroke: var(--theme-line);\n  stroke-width: 1;\n}\n.dispersion-bar {\n  opacity: 0.85;\n  transition: opacity 0.2s ease;\n}\n.dispersion-bar:hover {\n  opacity: 1;\n}\n.dispersion-bar-label {\n  fill: var(--theme-hint);\n  font-size: 0.42rem;\n  letter-spacing: -0.01em;\n}\n.dispersion-axis-labels {\n  color: var(--theme-hint);\n  display: flex;\n  font-size: 0.8rem;\n  justify-content: space-between;\n  margin-top: 0.35rem;\n}\n.summary-table-wrap,\n.summary-pie-wrap {\n  border: 1px solid var(--theme-line);\n  border-radius: 0.45rem;\n  padding: 0.55rem;\n}\n.summary-table-scroll {\n  overflow-x: auto;\n}\n.summary-table {\n  border-collapse: collapse;\n  font-size: 0.88rem;\n  width: 100%;\n}\n.summary-table th,\n.summary-table td {\n  border-bottom: 1px solid var(--theme-line);\n  padding: 0.35rem 0.4rem;\n  text-align: left;\n}\n.summary-table-swatch {\n  border-radius: 50%;\n  display: inline-block;\n  height: 0.65rem;\n  margin-right: 0.35rem;\n  width: 0.65rem;\n}\n.summary-pie-layout {\n  align-items: start;\n  display: grid;\n  gap: 0.8rem;\n  grid-template-columns: 1fr;\n  justify-items: start;\n}\n.summary-pie {\n  border: 1px solid var(--theme-line);\n  border-radius: 50%;\n  height: 240px;\n  width: 240px;\n}\n.summary-pie path {\n  stroke: rgba(255, 255, 255, 0.55);\n  stroke-width: 1;\n  transition: opacity 0.2s ease;\n}\n.summary-pie path:hover {\n  opacity: 0.85;\n}\n.summary-pie-percent {\n  fill: #fff;\n  font-size: 0.6rem;\n  font-weight: 700;\n  pointer-events: none;\n}\n@media (max-width: 700px) {\n  .dispersion-bar-label {\n    font-size: 0.38rem;\n  }\n  .dispersion-axis-labels {\n    flex-direction: column;\n    gap: 0.25rem;\n  }\n  .summary-pie-layout {\n    grid-template-columns: 1fr;\n    justify-items: start;\n  }\n}\n.badge-menu-outline {\n  background-color: transparent;\n  border: 1px solid var(--theme-sand);\n  border-radius: 999px;\n  color: #7f7f7f;\n}\n/*# sourceMappingURL=author-works.component.css.map */\n"] }]
   }], null, { groups: [{
     type: Input,
     args: [{ required: true }]
@@ -31187,7 +31231,7 @@ var AuthorWorksComponent = class _AuthorWorksComponent {
   }] });
 })();
 (() => {
-  (typeof ngDevMode === "undefined" || ngDevMode) && \u0275setClassDebugInfo(AuthorWorksComponent, { className: "AuthorWorksComponent", filePath: "src/app/components/author-works/author-works.component.ts", lineNumber: 65 });
+  (typeof ngDevMode === "undefined" || ngDevMode) && \u0275setClassDebugInfo(AuthorWorksComponent, { className: "AuthorWorksComponent", filePath: "src/app/components/author-works/author-works.component.ts", lineNumber: 66 });
 })();
 
 // src/app/components/tag-cloud/tag-cloud.component.ts
@@ -43790,4 +43834,4 @@ three/build/three.module.js:
    * SPDX-License-Identifier: MIT
    *)
 */
-//# sourceMappingURL=chunk-JOU7PQIM.js.map
+//# sourceMappingURL=chunk-GGT2O566.js.map

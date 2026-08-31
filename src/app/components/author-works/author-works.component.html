@@ -1,6 +1,16 @@
 <section class="author-works mt-4" aria-label="Producoes bibliograficas e colaboracoes">
   <div class="author-works-header mb-3">
     <h3 class="h6 mb-0">{{ 'author.bibliographic' | translate }}</h3>
+    @if (publicationIds().length > 0) {
+      <button
+        type="button"
+        class="btn btn-sm btn-outline-primary author-works-select-all"
+        (click)="selectAllPublications()"
+      >
+        <i class="bi bi-basket me-1" aria-hidden="true"></i>
+        {{ 'author.selectAllPublications' | translate }}
+      </button>
+    }
   </div>
 
   <!-- Main Content Tabs -->

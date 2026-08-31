@@ -152,7 +152,7 @@ var routes = [
   }, false ? { \u0275entryName: "src/app/pages/autoridade/autoridade.page.ts" } : {}),
   __spreadValues({
     path: "v/:id",
-    loadComponent: () => import("./chunk-JOU7PQIM.js").then((m) => m.VIdPage)
+    loadComponent: () => import("./chunk-GGT2O566.js").then((m) => m.VIdPage)
   }, false ? { \u0275entryName: "src/app/pages/v-id/v-id.page.ts" } : {}),
   __spreadValues({
     path: "admin/a/:id",
@@ -937,7 +937,6 @@ var App = class _App {
     return candidate.split(/\s+/)[0] ?? "";
   }, ...ngDevMode ? [{ debugName: "firstName" }] : []);
   sessionUserLabel = computed(() => {
-    console.log("==>", this.currentUser());
     const user = this.currentUser();
     if (!user) {
       return "";
