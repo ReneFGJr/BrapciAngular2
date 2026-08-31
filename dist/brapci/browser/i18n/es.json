@@ -383,7 +383,8 @@
       "authorIndex": "Indices de Autores",
       "productionIndicator": "Indicador de Produccion",
       "searchIndicator": "Indicador de Busquedas",
-      "apiDoc": "Documentacion API"
+      "apiDoc": "Documentacion API",
+      "databaseStatistics": "Estadísticas de la base de datos"
     }
   },
   "tools": {

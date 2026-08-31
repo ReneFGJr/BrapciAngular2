@@ -23,6 +23,8 @@ export class BasketSelectedPage implements OnInit {
     { type: 'bibtex', label: 'BibTex' },
     { type: 'cited', label: 'Citacoes' },
     { type: 'ID', label: 'TT' },
+    { type: 'net_authors', label: '.NET (Autores)' },
+    { type: 'net_subjects', label: '.NET (Assuntos)' },
   ] as const;
 
 

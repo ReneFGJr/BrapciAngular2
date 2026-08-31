@@ -381,7 +381,8 @@
       "authorIndex": "Indices de Autores",
       "productionIndicator": "Indicador das Producoes",
       "searchIndicator": "Indicador de Buscas",
-      "apiDoc": "Documentacao API"
+      "apiDoc": "Documentacao API",
+      "databaseStatistics": "Estatísticas da base"
     }
   },
   "tools": {
