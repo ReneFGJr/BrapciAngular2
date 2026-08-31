@@ -1,16 +1,11 @@
 <div class="painel-analysis">
+  <h1 class="h3 mb-3">{{ 'painelAnalysis.productionIndicators' | translate }}</h1>
+
   <div class="card border-0 shadow-sm mb-3">
     <div class="card-body">
       <div class="d-flex align-items-center justify-content-between gap-2 mb-3">
-        <h3 class="h6 mb-0">Produção por Ano</h3>
-        <button
-          type="button"
-          class="btn btn-sm btn-outline-secondary"
-          [disabled]="!yearsChartPoints().length"
-          (click)="exportYearsCsv()"
-        >
-          Exportar CSV
-        </button>
+        <h3 class="h6 mb-0">{{ 'painelAnalysis.productionByYear' | translate }}</h3>
+        <button type="button" class="btn btn-sm btn-outline-secondary" [disabled]="!yearsChartPoints().length" (click)="exportYearsCsv()">{{ 'painelAnalysis.exportCsv' | translate }}</button>
       </div>
       <app-bar-chart title="" [points]="yearsChartPoints()"></app-bar-chart>
     </div>
@@ -22,42 +17,76 @@
         <div class="card border-0 shadow-sm h-100">
           <div class="card-body">
             <div class="d-flex align-items-center justify-content-between gap-2 mb-3">
-              <h3 class="h6 mb-0">{{ section.title }}</h3>
-              <button
-                type="button"
-                class="btn btn-sm btn-outline-secondary"
-                [disabled]="!section.rows.length"
-                (click)="exportSectionCsv(section)"
-              >
-                Exportar CSV
-              </button>
+              <h3 class="h6 mb-0">{{ section.titleKey | translate }}</h3>
+              <button type="button" class="btn btn-sm btn-outline-secondary" [disabled]="!section.rows.length" (click)="exportSectionCsv(section)">{{ 'painelAnalysis.exportCsv' | translate }}</button>
             </div>
-
             @if (section.rows.length) {
               <div class="table-responsive">
                 <table class="table table-sm align-middle mb-0">
-                  <thead>
-                    <tr>
-                      <th>Item</th>
-                      <th class="text-end">Valor</th>
-                    </tr>
-                  </thead>
+                  <thead><tr><th>{{ 'painelAnalysis.item' | translate }}</th><th class="text-end">{{ 'painelAnalysis.value' | translate }}</th></tr></thead>
                   <tbody>
                     @for (row of section.rows; track row.label) {
-                      <tr>
-                        <td>{{ row.label }}</td>
-                        <td class="text-end fw-semibold">{{ row.value }}</td>
-                      </tr>
+                      <tr><td>{{ row.label }}</td><td class="text-end fw-semibold">{{ row.value }}</td></tr>
                     }
                   </tbody>
                 </table>
               </div>
             } @else {
-              <p class="text-muted mb-0">Sem dados nesta seção.</p>
+              <p class="text-muted mb-0">{{ 'painelAnalysis.noData' | translate }}</p>
             }
           </div>
         </div>
       </div>
     }
   </div>
+
+  @if (networkMetrics().length || networkAuthors().length) {
+    <h1 class="h3 mt-4 mb-3">{{ 'painelAnalysis.connectionIndicators' | translate }}</h1>
+    <div class="card border-0 shadow-sm mb-3">
+      <div class="card-body">
+        <div class="d-flex align-items-center justify-content-between gap-2 mb-3">
+          <h3 class="h6 mb-0">{{ 'painelAnalysis.network.title' | translate }}</h3>
+          <button type="button" class="btn btn-sm btn-outline-secondary" [disabled]="!networkAuthors().length" (click)="exportNetworkAuthorsCsv()">{{ 'painelAnalysis.exportCsv' | translate }}</button>
+        </div>
+        @if (networkMetrics().length) {
+          <div class="row g-2 mb-3">
+            @for (metric of networkMetrics(); track metric.key) {
+              <div class="col-6 col-lg-3"><div class="network-metric h-100"><span>{{ metric.labelKey | translate }}</span><strong>{{ metric.value }}</strong></div></div>
+            }
+          </div>
+        }
+        @if (networkAuthors().length) {
+          <div class="table-responsive network-table">
+            <table class="table table-sm align-middle mb-0">
+              <thead><tr>
+                <th>{{ 'painelAnalysis.network.author' | translate }}</th>
+                <th class="text-end">{{ 'painelAnalysis.network.indicators.degree' | translate }}</th>
+                <th class="text-end">{{ 'painelAnalysis.network.indicators.weightedDegree' | translate }}</th>
+                <th class="text-end">{{ 'painelAnalysis.network.indicators.betweenness' | translate }}</th>
+                <th class="text-end">{{ 'painelAnalysis.network.indicators.closeness' | translate }}</th>
+                <th class="text-end">{{ 'painelAnalysis.network.indicators.eigenvector' | translate }}</th>
+                <th class="text-end">{{ 'painelAnalysis.network.indicators.community' | translate }}</th>
+              </tr></thead>
+              <tbody>
+                @for (author of networkAuthors(); track author.author) {
+                  <tr><td>{{ author.author }}</td><td class="text-end">{{ author.degree }}</td><td class="text-end">{{ author.weightedDegree }}</td><td class="text-end">{{ author.betweenness }}</td><td class="text-end">{{ author.closeness }}</td><td class="text-end">{{ author.eigenvector }}</td><td class="text-end">{{ author.community }}</td></tr>
+                }
+              </tbody>
+            </table>
+          </div>
+          <div class="network-legend mt-3" [attr.aria-label]="'painelAnalysis.network.legendTitle' | translate">
+            <h4 class="h6 mb-2">{{ 'painelAnalysis.network.legendTitle' | translate }}</h4>
+            <dl class="mb-0">
+              @for (metric of ['nodes', 'edges', 'density', 'modularity']; track metric) {
+                <div><dt>{{ 'painelAnalysis.network.metrics.' + metric | translate }}</dt><dd>{{ 'painelAnalysis.network.metricDescriptions.' + metric | translate }}</dd></div>
+              }
+              @for (indicator of ['degree', 'weightedDegree', 'betweenness', 'closeness', 'eigenvector', 'community']; track indicator) {
+                <div><dt>{{ 'painelAnalysis.network.indicators.' + indicator | translate }}</dt><dd>{{ 'painelAnalysis.network.descriptions.' + indicator | translate }}</dd></div>
+              }
+            </dl>
+          </div>
+        }
+      </div>
+    </div>
+  }
 </div>

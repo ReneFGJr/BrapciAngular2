@@ -1,0 +1,7 @@
+{
+  "version": 3,
+  "sources": ["src/app/pages/tools-txt4net/tools-txt4net.page.scss"],
+  "sourcesContent": [".txt4net-wrap {\r\n  color: var(--theme-ink);\r\n}\r\n\r\n.txt4net-card {\r\n  background: var(--theme-card-bg);\r\n  border: 1px solid var(--theme-line);\r\n  border-radius: 0.9rem;\r\n}\r\n\r\n.txt4net-subtitle {\r\n  color: var(--theme-hint);\r\n}\r\n\r\ntextarea {\r\n  resize: vertical;\r\n}\r\n\r\n.video-frame {\r\n  background: #000;\r\n  border-radius: 0.65rem;\r\n  overflow: hidden;\r\n}\r\n"],
+  "mappings": ";AAAA,CAAA;AACE,SAAA,IAAA;;AAGF,CAAA;AACE,cAAA,IAAA;AACA,UAAA,IAAA,MAAA,IAAA;AACA,iBAAA;;AAGF,CAAA;AACE,SAAA,IAAA;;AAGF;AACE,UAAA;;AAGF,CAAA;AACE,cAAA;AACA,iBAAA;AACA,YAAA;;",
+  "names": []
+}

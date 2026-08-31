@@ -637,6 +637,35 @@
       "moreDetails": "More details"
     }
   },
+  "painelAnalysis": {
+    "productionIndicators": "Production indicators",
+    "connectionIndicators": "Connection indicators",
+    "productionByYear": "Production by Year",
+    "exportCsv": "Export CSV",
+    "item": "Item",
+    "value": "Value",
+    "noData": "No data in this section.",
+    "sections": { "authors": "Authors", "subjects": "Subjects", "session": "Session", "sessionSub": "Subsection", "publications": "Publications", "types": "Types" },
+    "network": {
+      "title": "Co-authorship network", "author": "Author", "legendTitle": "Indicator legend",
+      "metrics": { "nodes": "Nodes", "edges": "Edges", "density": "Density", "modularity": "Modularity" },
+      "metricDescriptions": {
+        "nodes": "Number of authors represented in the network.",
+        "edges": "Number of co-authorship connections between authors.",
+        "density": "Ratio of existing connections to all possible connections in the network.",
+        "modularity": "Measures how strongly the network divides into communities of authors who are more connected to one another."
+      },
+      "indicators": { "degree": "Degree", "weightedDegree": "Weighted degree", "betweenness": "Betweenness", "closeness": "Closeness", "eigenvector": "Eigenvector", "community": "Community" },
+      "descriptions": {
+        "degree": "Number of different authors with whom the author has published.",
+        "weightedDegree": "Total co-authorship links, including repeated publications between authors.",
+        "betweenness": "Indicates how often the author acts as a bridge on paths between other authors in the network.",
+        "closeness": "Measures how close the author is to all other authors in the network.",
+        "eigenvector": "Represents the author's influence based on the importance of their connections.",
+        "community": "Identifies the group of authors who are more strongly connected to one another."
+      }
+    }
+  },
   "adminEdit": {
     "kicker": "Administration",
     "title": "Edit content",

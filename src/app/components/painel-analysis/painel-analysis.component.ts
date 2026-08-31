@@ -1,5 +1,6 @@
 import { CommonModule } from '@angular/common';
 import { Component, Input, computed, signal } from '@angular/core';
+import { TranslateModule } from '@ngx-translate/core';
 import { BarChartComponent, BarChartPoint } from '../bar-chart/bar-chart.component';
 
 type JsonRecord = Record<string, unknown>;
@@ -11,14 +12,30 @@ type TableRow = {
 
 type TableSection = {
   key: string;
-  title: string;
+  titleKey: string;
   rows: TableRow[];
+};
+
+type NetworkMetric = {
+  key: string;
+  labelKey: string;
+  value: number | string;
+};
+
+type NetworkAuthor = {
+  author: string;
+  degree: number | string;
+  weightedDegree: number | string;
+  betweenness: number | string;
+  closeness: number | string;
+  eigenvector: number | string;
+  community: number | string;
 };
 
 @Component({
   selector: 'app-painel-analysis',
   standalone: true,
-  imports: [CommonModule, BarChartComponent],
+  imports: [CommonModule, BarChartComponent, TranslateModule],
   templateUrl: './painel-analysis.component.html',
   styleUrl: './painel-analysis.component.scss',
 })
@@ -48,15 +65,67 @@ export class PainelAnalysisComponent {
     }));
   });
 
+  readonly networkMetrics = computed<NetworkMetric[]>(() => {
+    const network = this.asRecord(this.getSection(this.dataSignal(), 'NETWORK'));
+    const summary = this.asRecord(this.getSection(network, 'network'));
+    const specs = [
+      { key: 'nodes', labelKey: 'painelAnalysis.network.metrics.nodes' },
+      { key: 'edges', labelKey: 'painelAnalysis.network.metrics.edges' },
+      { key: 'density', labelKey: 'painelAnalysis.network.metrics.density' },
+      { key: 'modularity', labelKey: 'painelAnalysis.network.metrics.modularity' },
+    ] as const;
+
+    return specs
+      .map((spec) => ({
+        key: spec.key,
+        labelKey: spec.labelKey,
+        value: this.toDisplayValue(this.getSection(summary, spec.key)),
+      }))
+      .filter((metric) => metric.value !== '-');
+  });
+
+  readonly networkAuthors = computed<NetworkAuthor[]>(() => {
+    const network = this.asRecord(this.getSection(this.dataSignal(), 'NETWORK'));
+    const authors = this.getSection(network, 'authors');
+
+    if (!Array.isArray(authors)) {
+      return [];
+    }
+
+    return authors
+      .map((item) => {
+        const author = this.asRecord(item);
+        const name = this.pickText(author, ['author', 'name', 'label']);
+        if (!name) {
+          return null;
+        }
+
+        return {
+          author: name,
+          degree: this.toDisplayValue(this.getSection(author, 'degree')),
+          weightedDegree: this.toDisplayValue(this.getSection(author, 'weighted_degree')),
+          betweenness: this.toDisplayValue(this.getSection(author, 'betweenness')),
+          closeness: this.toDisplayValue(this.getSection(author, 'closeness')),
+          eigenvector: this.toDisplayValue(this.getSection(author, 'eigenvector')),
+          community: this.toDisplayValue(this.getSection(author, 'community')),
+        };
+      })
+      .filter((author): author is NetworkAuthor => author !== null)
+      .sort((a, b) => {
+        const weightedDifference = Number(b.weightedDegree) - Number(a.weightedDegree);
+        return weightedDifference || a.author.localeCompare(b.author, 'pt-BR', { sensitivity: 'base' });
+      });
+  });
+
   readonly tableSections = computed<TableSection[]>(() => {
     const root = this.dataSignal();
     const specs = [
-      { key: 'AUTHORS', title: 'Autores' },
-      { key: 'SUBJECTS', title: 'Assuntos' },
-      { key: 'SESSION', title: 'Sessão' },
-      { key: 'SESSION_SUB', title: 'Subsessão' },
-      { key: 'PUBLICATIONS', title: 'Publicações' },
-      { key: 'TYPES', title: 'Tipos' },
+      { key: 'AUTHORS', titleKey: 'painelAnalysis.sections.authors' },
+      { key: 'SUBJECTS', titleKey: 'painelAnalysis.sections.subjects' },
+      { key: 'SESSION', titleKey: 'painelAnalysis.sections.session' },
+      { key: 'SESSION_SUB', titleKey: 'painelAnalysis.sections.sessionSub' },
+      { key: 'PUBLICATIONS', titleKey: 'painelAnalysis.sections.publications' },
+      { key: 'TYPES', titleKey: 'painelAnalysis.sections.types' },
     ] as const;
 
     return specs.map((spec) => {
@@ -75,7 +144,7 @@ export class PainelAnalysisComponent {
 
       return {
         key: spec.key,
-        title: spec.title,
+        titleKey: spec.titleKey,
         rows,
       };
     });
@@ -100,7 +169,7 @@ export class PainelAnalysisComponent {
     const link = document.createElement('a');
 
     link.href = url;
-    link.download = `${this.toFileName(section.title)}.csv`;
+    link.download = `${this.toFileName(section.key)}.csv`;
     document.body.appendChild(link);
     link.click();
     document.body.removeChild(link);
@@ -135,6 +204,41 @@ export class PainelAnalysisComponent {
     window.URL.revokeObjectURL(url);
   }
 
+  exportNetworkAuthorsCsv(): void {
+    const authors = this.networkAuthors();
+    if (!authors.length || typeof window === 'undefined' || typeof document === 'undefined') {
+      return;
+    }
+
+    const header = [
+      'Autor',
+      'Grau',
+      'Grau ponderado',
+      'Intermediação',
+      'Proximidade',
+      'Autovetor',
+      'Comunidade',
+    ];
+    const lines = [
+      header.map((cell) => this.escapeCsv(cell)).join(','),
+      ...authors.map((author) =>
+        [
+          author.author,
+          author.degree,
+          author.weightedDegree,
+          author.betweenness,
+          author.closeness,
+          author.eigenvector,
+          author.community,
+        ]
+          .map((cell) => this.escapeCsv(String(cell)))
+          .join(','),
+      ),
+    ];
+
+    this.downloadCsv(lines.join('\n'), 'rede-de-autores.csv');
+  }
+
   private getSection(source: unknown, expectedKey: string): unknown {
     if (!source || typeof source !== 'object') {
       return null;
@@ -150,6 +254,36 @@ export class PainelAnalysisComponent {
     }
 
     return null;
+  }
+
+  private asRecord(value: unknown): JsonRecord {
+    return value && typeof value === 'object' && !Array.isArray(value) ? (value as JsonRecord) : {};
+  }
+
+  private toDisplayValue(value: unknown): number | string {
+    if (typeof value === 'number' && Number.isFinite(value)) {
+      return value;
+    }
+
+    if (typeof value === 'string' && value.trim()) {
+      const parsed = Number(value);
+      return Number.isFinite(parsed) ? parsed : value.trim();
+    }
+
+    return '-';
+  }
+
+  private downloadCsv(content: string, fileName: string): void {
+    const blob = new Blob([content], { type: 'text/csv;charset=utf-8;' });
+    const url = window.URL.createObjectURL(blob);
+    const link = document.createElement('a');
+
+    link.href = url;
+    link.download = fileName;
+    document.body.appendChild(link);
+    link.click();
+    document.body.removeChild(link);
+    window.URL.revokeObjectURL(url);
   }
 
   private normalizeSectionToPairs(section: unknown): Array<{ label: string; value: number | string }> {

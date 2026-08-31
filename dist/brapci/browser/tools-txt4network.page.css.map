@@ -1,0 +1,7 @@
+{
+  "version": 3,
+  "sources": ["src/app/pages/tools-txt4network/tools-txt4network.page.scss"],
+  "sourcesContent": [".txt4network-wrap { color: var(--theme-ink); }\n.txt4network-card { background: var(--theme-card-bg); border: 1px solid var(--theme-line); border-radius: .9rem; }\n.txt4network-subtitle { color: var(--theme-hint); }\ntextarea { resize: vertical; }\n.instructions-card { background: var(--theme-sand); border: 1px solid var(--theme-line); border-radius: .65rem; }\n.instructions-card li + li { margin-top: .65rem; }\n"],
+  "mappings": ";AAAA,CAAA;AAAoB,SAAA,IAAA;;AACpB,CAAA;AAAoB,cAAA,IAAA;AAAkC,UAAA,IAAA,MAAA,IAAA;AAAqC,iBAAA;;AAC3F,CAAA;AAAwB,SAAA,IAAA;;AACxB;AAAW,UAAA;;AACX,CAAA;AAAqB,cAAA,IAAA;AAA+B,UAAA,IAAA,MAAA,IAAA;AAAqC,iBAAA;;AACzF,CADA,kBACA,GAAA,EAAA;AAA6B,cAAA;;",
+  "names": []
+}

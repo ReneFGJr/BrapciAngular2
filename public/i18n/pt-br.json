@@ -635,6 +635,37 @@
       "moreDetails": "Mais detalhes"
     }
   },
+  "painelAnalysis": {
+    "productionIndicators": "Indicadores de produção",
+    "connectionIndicators": "Indicadores de ligação",
+    "productionByYear": "Produção por Ano",
+    "exportCsv": "Exportar CSV",
+    "item": "Item",
+    "value": "Valor",
+    "noData": "Sem dados nesta seção.",
+    "sections": { "authors": "Autores", "subjects": "Assuntos", "session": "Sessão", "sessionSub": "Subsessão", "publications": "Publicações", "types": "Tipos" },
+    "network": {
+      "title": "Rede de coautoria",
+      "author": "Autor",
+      "legendTitle": "Legenda dos indicadores",
+      "metrics": { "nodes": "Nós", "edges": "Arestas", "density": "Densidade", "modularity": "Modularidade" },
+      "metricDescriptions": {
+        "nodes": "Quantidade de autores representados na rede.",
+        "edges": "Quantidade de conexões de coautoria entre os autores.",
+        "density": "Proporção entre as conexões existentes e todas as conexões possíveis na rede.",
+        "modularity": "Mede a intensidade com que a rede se divide em comunidades de autores mais conectados entre si."
+      },
+      "indicators": { "degree": "Grau", "weightedDegree": "Grau ponderado", "betweenness": "Intermediação", "closeness": "Proximidade", "eigenvector": "Autovetor", "community": "Comunidade" },
+      "descriptions": {
+        "degree": "Número de autores diferentes com quem o autor publicou.",
+        "weightedDegree": "Total de vínculos de coautoria, considerando as publicações repetidas entre autores.",
+        "betweenness": "Indica quanto o autor atua como ponte nos caminhos entre outros autores da rede.",
+        "closeness": "Mede quão próximo o autor está de todos os demais autores da rede.",
+        "eigenvector": "Representa a influência do autor com base na importância de suas conexões.",
+        "community": "Identifica o grupo de autores mais conectados entre si ao qual o autor pertence."
+      }
+    }
+  },
   "adminEdit": {
     "kicker": "Administração",
     "title": "Editar conteúdo",

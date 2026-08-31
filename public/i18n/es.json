@@ -637,6 +637,35 @@
       "moreDetails": "Más detalles"
     }
   },
+  "painelAnalysis": {
+    "productionIndicators": "Indicadores de producción",
+    "connectionIndicators": "Indicadores de conexión",
+    "productionByYear": "Producción por año",
+    "exportCsv": "Exportar CSV",
+    "item": "Elemento",
+    "value": "Valor",
+    "noData": "No hay datos en esta sección.",
+    "sections": { "authors": "Autores", "subjects": "Temas", "session": "Sesión", "sessionSub": "Subsección", "publications": "Publicaciones", "types": "Tipos" },
+    "network": {
+      "title": "Red de coautoría", "author": "Autor", "legendTitle": "Leyenda de los indicadores",
+      "metrics": { "nodes": "Nodos", "edges": "Aristas", "density": "Densidad", "modularity": "Modularidad" },
+      "metricDescriptions": {
+        "nodes": "Cantidad de autores representados en la red.",
+        "edges": "Cantidad de conexiones de coautoría entre los autores.",
+        "density": "Proporción entre las conexiones existentes y todas las conexiones posibles en la red.",
+        "modularity": "Mide la intensidad con la que la red se divide en comunidades de autores más conectados entre sí."
+      },
+      "indicators": { "degree": "Grado", "weightedDegree": "Grado ponderado", "betweenness": "Intermediación", "closeness": "Cercanía", "eigenvector": "Vector propio", "community": "Comunidad" },
+      "descriptions": {
+        "degree": "Número de autores diferentes con quienes el autor ha publicado.",
+        "weightedDegree": "Total de vínculos de coautoría, incluidas las publicaciones repetidas entre autores.",
+        "betweenness": "Indica cuánto actúa el autor como puente en los caminos entre otros autores de la red.",
+        "closeness": "Mide qué tan cerca está el autor de todos los demás autores de la red.",
+        "eigenvector": "Representa la influencia del autor según la importancia de sus conexiones.",
+        "community": "Identifica el grupo de autores más conectados entre sí al que pertenece el autor."
+      }
+    }
+  },
   "adminEdit": {
     "kicker": "Administración",
     "title": "Editar contenido",
