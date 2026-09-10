@@ -3,6 +3,8 @@ import { Inject, Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { API_CONFIG, ApiConfig } from '../tokens/api-config.token';
 
+export type SearchMethod = 'v3' | 'v4' | 'v5';
+
 @Injectable({ providedIn: 'root' })
 export class BrapciApiService {
   constructor(
@@ -44,7 +46,7 @@ export class BrapciApiService {
     });
   }
 
-  search<T>(query: string, filters?: Array<{ name: string, value: any }>): Observable<T> {
+  search<T>(query: string, filters?: Array<{ name: string, value: any }>, method: SearchMethod = 'v4'): Observable<T> {
     const params: Record<string, string | number | boolean> = { term: query, offset: 1000 };
     if (filters && Array.isArray(filters)) {
       for (const filter of filters) {
@@ -55,7 +57,7 @@ export class BrapciApiService {
       }
     }
     console.log('Search params:', params);
-    return this.get<T>('brapci/search/v4', params);
+    return this.get<T>(`brapci/search/${method}`, params);
   }
 
   citedSearch<T>(term: string): Observable<T> {
