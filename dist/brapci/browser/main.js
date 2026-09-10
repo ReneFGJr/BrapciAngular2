@@ -1,7 +1,7 @@
 import {
   AuthService,
   SessionService
-} from "./chunk-JRX6NWBE.js";
+} from "./chunk-JZDC4C7C.js";
 import {
   toSignal
 } from "./chunk-Y3JQWDW7.js";
@@ -15,10 +15,10 @@ import {
 } from "./chunk-FC3OORFJ.js";
 import {
   API_CONFIG
-} from "./chunk-IYQHJWZ2.js";
+} from "./chunk-IQJYLTKO.js";
 import {
   BasketService
-} from "./chunk-IZYDDLZH.js";
+} from "./chunk-2AZYL663.js";
 import {
   TranslateLoader,
   TranslateModule,
@@ -144,19 +144,19 @@ var TranslateHttpLoader = class _TranslateHttpLoader {
 var routes = [
   __spreadValues({
     path: "chat",
-    loadChildren: () => import("./chunk-W5E7CONC.js").then((m) => m.CHAT_ROUTES)
+    loadChildren: () => import("./chunk-DSHNUOID.js").then((m) => m.CHAT_ROUTES)
   }, false ? { \u0275entryName: "src/app/chat/chat.routes.ts" } : {}),
   __spreadValues({
     path: "autoridade",
-    loadComponent: () => import("./chunk-X6DSZAES.js").then((m) => m.AutoridadePage)
+    loadComponent: () => import("./chunk-6JZBSFU7.js").then((m) => m.AutoridadePage)
   }, false ? { \u0275entryName: "src/app/pages/autoridade/autoridade.page.ts" } : {}),
   __spreadValues({
     path: "v/:id",
-    loadComponent: () => import("./chunk-GGT2O566.js").then((m) => m.VIdPage)
+    loadComponent: () => import("./chunk-OONEJAVV.js").then((m) => m.VIdPage)
   }, false ? { \u0275entryName: "src/app/pages/v-id/v-id.page.ts" } : {}),
   __spreadValues({
     path: "admin/a/:id",
-    loadComponent: () => import("./chunk-YIOA7C67.js").then((m) => m.AdminEditPage)
+    loadComponent: () => import("./chunk-MJYY3H4T.js").then((m) => m.AdminEditPage)
   }, false ? { \u0275entryName: "src/app/pages/admin-edit/admin-edit.page.ts" } : {}),
   {
     path: "sobre/brapci",
@@ -165,35 +165,35 @@ var routes = [
   },
   __spreadValues({
     path: "basket/selected",
-    loadComponent: () => import("./chunk-ETFZAHN5.js").then((m) => m.BasketSelectedPage)
+    loadComponent: () => import("./chunk-WTRHUTKO.js").then((m) => m.BasketSelectedPage)
   }, false ? { \u0275entryName: "src/app/pages/basket-selected/basket-selected.page.ts" } : {}),
   __spreadValues({
     path: "painel",
-    loadComponent: () => import("./chunk-MMTJDMWL.js").then((m) => m.PainelPage)
+    loadComponent: () => import("./chunk-OOQJAT4F.js").then((m) => m.PainelPage)
   }, false ? { \u0275entryName: "src/app/pages/painel/painel.page.ts" } : {}),
   __spreadValues({
     path: "about/:page",
-    loadComponent: () => import("./chunk-6CJCD6XE.js").then((m) => m.SobreBrapciPage)
+    loadComponent: () => import("./chunk-ZASZIJGK.js").then((m) => m.SobreBrapciPage)
   }, false ? { \u0275entryName: "src/app/pages/sobre-brapci/sobre-brapci.page.ts" } : {}),
   __spreadValues({
     path: "doc",
-    loadComponent: () => import("./chunk-HJKG5YBK.js").then((m) => m.DocPage)
+    loadComponent: () => import("./chunk-MWOEFZRK.js").then((m) => m.DocPage)
   }, false ? { \u0275entryName: "src/app/pages/doc/doc.page.ts" } : {}),
   __spreadValues({
     path: "pq",
-    loadComponent: () => import("./chunk-OUY27BGZ.js").then((m) => m.PqPage)
+    loadComponent: () => import("./chunk-GFAN2J7J.js").then((m) => m.PqPage)
   }, false ? { \u0275entryName: "src/app/pages/pq/pq.page.ts" } : {}),
   __spreadValues({
     path: "revistas",
-    loadComponent: () => import("./chunk-QSOCRNWD.js").then((m) => m.RevistasPage)
+    loadComponent: () => import("./chunk-ZRBMZK7K.js").then((m) => m.RevistasPage)
   }, false ? { \u0275entryName: "src/app/pages/revistas/revistas.page.ts" } : {}),
   __spreadValues({
     path: "revistas/avaliation",
-    loadComponent: () => import("./chunk-QBV37IRS.js").then((m) => m.RevistaAvaliationPage)
+    loadComponent: () => import("./chunk-RP22TRT4.js").then((m) => m.RevistaAvaliationPage)
   }, false ? { \u0275entryName: "src/app/pages/revista-avaliation/revista-avaliation.page.ts" } : {}),
   __spreadValues({
     path: "revistas/timeline",
-    loadComponent: () => import("./chunk-VTTOSY6Z.js").then((m) => m.RevistaTimelinePage)
+    loadComponent: () => import("./chunk-YLN7CXWV.js").then((m) => m.RevistaTimelinePage)
   }, false ? { \u0275entryName: "src/app/pages/revista-timeline/revista-timeline.page.ts" } : {}),
   __spreadValues({
     path: "eventos",
@@ -201,31 +201,31 @@ var routes = [
   }, false ? { \u0275entryName: "src/app/pages/eventos/eventos.page.ts" } : {}),
   __spreadValues({
     path: "livros",
-    loadComponent: () => import("./chunk-KD6RSOZ3.js").then((m) => m.LivrosPage)
+    loadComponent: () => import("./chunk-AO4BXGJJ.js").then((m) => m.LivrosPage)
   }, false ? { \u0275entryName: "src/app/pages/livros/livros.page.ts" } : {}),
   __spreadValues({
     path: "livros/submit",
-    loadComponent: () => import("./chunk-2HJV52PM.js").then((m) => m.LivrosSubmitPage)
+    loadComponent: () => import("./chunk-3X3COKJU.js").then((m) => m.LivrosSubmitPage)
   }, false ? { \u0275entryName: "src/app/pages/livros-submit/livros-submit.page.ts" } : {}),
   __spreadValues({
     path: "signin",
-    loadComponent: () => import("./chunk-X62ZVZYK.js").then((m) => m.SigninPage)
+    loadComponent: () => import("./chunk-KDAA56G3.js").then((m) => m.SigninPage)
   }, false ? { \u0275entryName: "src/app/pages/signin/signin.page.ts" } : {}),
   __spreadValues({
     path: "perfil",
-    loadComponent: () => import("./chunk-YVDH3N7Q.js").then((m) => m.PerfilPage)
+    loadComponent: () => import("./chunk-ZVKOGWK3.js").then((m) => m.PerfilPage)
   }, false ? { \u0275entryName: "src/app/pages/perfil/perfil.page.ts" } : {}),
   __spreadValues({
     path: "tools/txt4net",
-    loadComponent: () => import("./chunk-CH36IBH4.js").then((m) => m.ToolsTxt4netPage)
+    loadComponent: () => import("./chunk-LOXM6ZSS.js").then((m) => m.ToolsTxt4netPage)
   }, false ? { \u0275entryName: "src/app/pages/tools-txt4net/tools-txt4net.page.ts" } : {}),
   __spreadValues({
     path: "tools/txt4network",
-    loadComponent: () => import("./chunk-RGLB2NB2.js").then((m) => m.ToolsTxt4networkPage)
+    loadComponent: () => import("./chunk-V6A5QWSE.js").then((m) => m.ToolsTxt4networkPage)
   }, false ? { \u0275entryName: "src/app/pages/tools-txt4network/tools-txt4network.page.ts" } : {}),
   __spreadValues({
     path: "tools/term4net",
-    loadComponent: () => import("./chunk-LV3KJWAI.js").then((m) => m.ToolsTerm4netPage)
+    loadComponent: () => import("./chunk-RC4L4BT2.js").then((m) => m.ToolsTerm4netPage)
   }, false ? { \u0275entryName: "src/app/pages/tools-term4net/tools-term4net.page.ts" } : {}),
   __spreadValues({
     path: "tools_bibliografics",
@@ -233,11 +233,11 @@ var routes = [
   }, false ? { \u0275entryName: "src/app/pages/tools-bibliografics/tools-bibliografics.page.ts" } : {}),
   __spreadValues({
     path: "tools_bibliometric",
-    loadComponent: () => import("./chunk-CS4D4RT6.js").then((m) => m.ToolsBibliometricPage)
+    loadComponent: () => import("./chunk-MMBCTILH.js").then((m) => m.ToolsBibliometricPage)
   }, false ? { \u0275entryName: "src/app/pages/tools-bibliometric/tools-bibliometric.page.ts" } : {}),
   __spreadValues({
     path: "tools_text/specialist",
-    loadComponent: () => import("./chunk-2T3WDRFK.js").then((m) => m.ToolsTextSpecialistPage)
+    loadComponent: () => import("./chunk-UNLLMAGX.js").then((m) => m.ToolsTextSpecialistPage)
   }, false ? { \u0275entryName: "src/app/pages/tools-text-specialist/tools-text-specialist.page.ts" } : {}),
   __spreadValues({
     path: "tools_text",
@@ -245,19 +245,19 @@ var routes = [
   }, false ? { \u0275entryName: "src/app/pages/tools-text/tools-text.page.ts" } : {}),
   __spreadValues({
     path: "cited",
-    loadComponent: () => import("./chunk-AFYNJP6B.js").then((m) => m.CitedPage)
+    loadComponent: () => import("./chunk-2PARAGKJ.js").then((m) => m.CitedPage)
   }, false ? { \u0275entryName: "src/app/pages/cited/cited.page.ts" } : {}),
   __spreadValues({
     path: "small_world",
-    loadComponent: () => import("./chunk-MPRREHVL.js").then((m) => m.SmallWorldPage)
+    loadComponent: () => import("./chunk-4BCLVWWH.js").then((m) => m.SmallWorldPage)
   }, false ? { \u0275entryName: "src/app/pages/small-world/small-world.page.ts" } : {}),
   __spreadValues({
     path: "statistics",
-    loadComponent: () => import("./chunk-NYHRHSHR.js").then((m) => m.StatisticsPage)
+    loadComponent: () => import("./chunk-VRC54PAE.js").then((m) => m.StatisticsPage)
   }, false ? { \u0275entryName: "src/app/pages/statistics/statistics.page.ts" } : {}),
   __spreadValues({
     path: "",
-    loadComponent: () => import("./chunk-FVDRPNBO.js").then((m) => m.HomePage)
+    loadComponent: () => import("./chunk-EIIJHDWB.js").then((m) => m.HomePage)
   }, false ? { \u0275entryName: "src/app/pages/home/home.page.ts" } : {})
 ];
 
@@ -536,7 +536,7 @@ var AccessibilityPanelComponent = class _AccessibilityPanelComponent {
         </button>
       </div>
     </section>
-  `, changeDetection: ChangeDetectionStrategy.OnPush, styles: ['/* angular:styles/component:scss;2b1157db8466a10e12a620e2a5c41c92acc25818edc4d8745f2ed3c0e02b42c6;D:/Projeto/BrapciAngular2/src/app/components/accessibility-panel/accessibility-panel.component.ts */\n:host {\n  display: block;\n}\n.accessibility-panel {\n  background: var(--theme-card-bg);\n  border: 1px solid var(--theme-line);\n  border-radius: 1rem;\n  color: var(--theme-ink);\n  padding: 1rem;\n  position: absolute;\n  right: 0;\n  top: calc(100% + 0.75rem);\n  width: min(320px, 92vw);\n  z-index: 1060;\n}\n.accessibility-panel--expanded {\n  width: min(80vw, 960px);\n}\n.accessibility-panel__header {\n  align-items: flex-start;\n  display: flex;\n  justify-content: space-between;\n  gap: 1rem;\n  margin-bottom: 1rem;\n}\n.accessibility-panel__eyebrow {\n  color: var(--theme-muted);\n  font-size: 0.72rem;\n  letter-spacing: 0.12rem;\n  margin: 0 0 0.15rem;\n  text-transform: uppercase;\n}\n.accessibility-panel__title {\n  font-family:\n    "Bitter",\n    Georgia,\n    serif;\n  font-size: 1.2rem;\n  margin: 0;\n}\n.accessibility-panel__close,\n.accessibility-panel__chip,\n.accessibility-panel__toggle {\n  border: 1px solid var(--theme-line);\n  border-radius: 0.8rem;\n  transition:\n    background-color 0.2s ease,\n    border-color 0.2s ease,\n    color 0.2s ease,\n    transform 0.2s ease;\n}\n.accessibility-panel__close {\n  align-items: center;\n  background: transparent;\n  color: var(--theme-ink);\n  display: inline-flex;\n  height: 2rem;\n  justify-content: center;\n  width: 2rem;\n}\n.accessibility-panel__close:hover,\n.accessibility-panel__close:focus-visible,\n.accessibility-panel__chip:hover,\n.accessibility-panel__chip:focus-visible,\n.accessibility-panel__toggle:hover,\n.accessibility-panel__toggle:focus-visible {\n  background: var(--theme-sand);\n  border-color: var(--theme-hint);\n  transform: translateY(-1px);\n}\n.accessibility-panel__section {\n  display: grid;\n  gap: 0.55rem;\n  margin-bottom: 0.95rem;\n}\n.accessibility-panel__section:last-child {\n  margin-bottom: 0;\n}\n.accessibility-panel__section-head {\n  align-items: center;\n  display: flex;\n  justify-content: space-between;\n  gap: 0.5rem;\n  font-size: 0.9rem;\n}\n.accessibility-panel__button-row {\n  display: flex;\n  flex-wrap: wrap;\n  gap: 0.5rem;\n}\n.accessibility-panel__chip,\n.accessibility-panel__toggle {\n  background: transparent;\n  color: var(--theme-ink);\n  font-size: 0.92rem;\n  padding: 0.55rem 0.7rem;\n  text-align: left;\n}\n.accessibility-panel__chip.is-active,\n.accessibility-panel__toggle.is-active {\n  background: var(--theme-ink);\n  border-color: var(--theme-ink);\n  color: var(--theme-paper);\n}\n.accessibility-panel__toggle {\n  width: 100%;\n}\n@media (max-width: 991.98px) {\n  .accessibility-panel {\n    right: auto;\n    left: 0;\n    width: min(92vw, 560px);\n  }\n  .accessibility-panel--expanded {\n    width: 80vw;\n  }\n}\n/*# sourceMappingURL=accessibility-panel.component.css.map */\n'] }]
+  `, changeDetection: ChangeDetectionStrategy.OnPush, styles: ['/* angular:styles/component:scss;2b1157db8466a10e12a620e2a5c41c92acc25818edc4d8745f2ed3c0e02b42c6;D:/www/BrapciAngular2/src/app/components/accessibility-panel/accessibility-panel.component.ts */\n:host {\n  display: block;\n}\n.accessibility-panel {\n  background: var(--theme-card-bg);\n  border: 1px solid var(--theme-line);\n  border-radius: 1rem;\n  color: var(--theme-ink);\n  padding: 1rem;\n  position: absolute;\n  right: 0;\n  top: calc(100% + 0.75rem);\n  width: min(320px, 92vw);\n  z-index: 1060;\n}\n.accessibility-panel--expanded {\n  width: min(80vw, 960px);\n}\n.accessibility-panel__header {\n  align-items: flex-start;\n  display: flex;\n  justify-content: space-between;\n  gap: 1rem;\n  margin-bottom: 1rem;\n}\n.accessibility-panel__eyebrow {\n  color: var(--theme-muted);\n  font-size: 0.72rem;\n  letter-spacing: 0.12rem;\n  margin: 0 0 0.15rem;\n  text-transform: uppercase;\n}\n.accessibility-panel__title {\n  font-family:\n    "Bitter",\n    Georgia,\n    serif;\n  font-size: 1.2rem;\n  margin: 0;\n}\n.accessibility-panel__close,\n.accessibility-panel__chip,\n.accessibility-panel__toggle {\n  border: 1px solid var(--theme-line);\n  border-radius: 0.8rem;\n  transition:\n    background-color 0.2s ease,\n    border-color 0.2s ease,\n    color 0.2s ease,\n    transform 0.2s ease;\n}\n.accessibility-panel__close {\n  align-items: center;\n  background: transparent;\n  color: var(--theme-ink);\n  display: inline-flex;\n  height: 2rem;\n  justify-content: center;\n  width: 2rem;\n}\n.accessibility-panel__close:hover,\n.accessibility-panel__close:focus-visible,\n.accessibility-panel__chip:hover,\n.accessibility-panel__chip:focus-visible,\n.accessibility-panel__toggle:hover,\n.accessibility-panel__toggle:focus-visible {\n  background: var(--theme-sand);\n  border-color: var(--theme-hint);\n  transform: translateY(-1px);\n}\n.accessibility-panel__section {\n  display: grid;\n  gap: 0.55rem;\n  margin-bottom: 0.95rem;\n}\n.accessibility-panel__section:last-child {\n  margin-bottom: 0;\n}\n.accessibility-panel__section-head {\n  align-items: center;\n  display: flex;\n  justify-content: space-between;\n  gap: 0.5rem;\n  font-size: 0.9rem;\n}\n.accessibility-panel__button-row {\n  display: flex;\n  flex-wrap: wrap;\n  gap: 0.5rem;\n}\n.accessibility-panel__chip,\n.accessibility-panel__toggle {\n  background: transparent;\n  color: var(--theme-ink);\n  font-size: 0.92rem;\n  padding: 0.55rem 0.7rem;\n  text-align: left;\n}\n.accessibility-panel__chip.is-active,\n.accessibility-panel__toggle.is-active {\n  background: var(--theme-ink);\n  border-color: var(--theme-ink);\n  color: var(--theme-paper);\n}\n.accessibility-panel__toggle {\n  width: 100%;\n}\n@media (max-width: 991.98px) {\n  .accessibility-panel {\n    right: auto;\n    left: 0;\n    width: min(92vw, 560px);\n  }\n  .accessibility-panel--expanded {\n    width: 80vw;\n  }\n}\n/*# sourceMappingURL=accessibility-panel.component.css.map */\n'] }]
   }], null, { fontScale: [{
     type: Input
   }], letterSpacing: [{
@@ -1529,14 +1529,14 @@ var App = class _App {
             <li>\r
               <a class="dropdown-item" routerLink="/pq" (click)="closeDocsMenu()">{{ 'pq.menuItem' | translate }}</a>\r
             </li>\r
-            <li>
-              <a class="dropdown-item" routerLink="/about/team" (click)="closeDocsMenu()">{{ 'menu.navbar.team' | translate }}</a>
-            </li>
-            <li>
-              <a class="dropdown-item" routerLink="/statistics" (click)="closeDocsMenu()">{{ 'menu.navbar.databaseStatistics' | translate }}</a>
-            </li>
-            <li>
-              <a class="dropdown-item" href="#" (click)="closeDocsMenu()">{{ 'menu.navbar.subjectIndex' | translate }}</a>
+            <li>\r
+              <a class="dropdown-item" routerLink="/about/team" (click)="closeDocsMenu()">{{ 'menu.navbar.team' | translate }}</a>\r
+            </li>\r
+            <li>\r
+              <a class="dropdown-item" routerLink="/statistics" (click)="closeDocsMenu()">{{ 'menu.navbar.databaseStatistics' | translate }}</a>\r
+            </li>\r
+            <li>\r
+              <a class="dropdown-item" href="#" (click)="closeDocsMenu()">{{ 'menu.navbar.subjectIndex' | translate }}</a>\r
             </li>\r
             <li>\r
               <a class="dropdown-item" href="#" (click)="closeDocsMenu()">{{ 'menu.navbar.authorIndex' | translate }}</a>\r

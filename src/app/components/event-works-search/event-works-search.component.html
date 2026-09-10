@@ -4,7 +4,7 @@
       <h3 id="event-works-search-title" class="search-title">Buscar trabalhos deste evento</h3>
 
       <form (ngSubmit)="searchWorks()" class="search-form mb-0" novalidate>
-        <label for="event-query" class="form-label mb-0">Termo de busca</label>
+        <label for="event-query" class="form-label mb-0">{{ 'search.input' | translate }}</label>
         <div class="input-group mt-0">
           <textarea
             id="event-query"
@@ -13,16 +13,16 @@
             [ngModel]="query()"
             (ngModelChange)="query.set($event)"
             rows="3"
-            placeholder="Digite titulo, autor, resumo ou palavra-chave"
+            [placeholder]="'eventView.searchPlaceholder' | translate"
           ></textarea>
           <button type="submit" class="btn btn-primary" [disabled]="loading() || !canSearch()">
-            Buscar
+            {{ 'search.button' | translate }}
           </button>
         </div>
       </form>
 
       <div class="search-actions">
-        <span type="button" class="link search-action-link" (click)="showFilters = !showFilters">Filtros</span>
+        <span type="button" class="link search-action-link" (click)="showFilters = !showFilters">{{ 'search.filters.title' | translate }}</span>
       </div>
 
       @if (searched()) {
@@ -142,30 +142,30 @@
   <div *ngIf="showFilters" class="search-filters">
     <form [formGroup]="filtersForm" class="search-filters-form">
       <div class="search-filter-col-year">
-        <label for="year_start">Ano inicial</label>
+        <label for="year_start">{{ 'search.filters.year_start' | translate }}</label>
         <select id="year_start" formControlName="year_start" class="form-control">
           <option *ngFor="let y of yearsStart" [value]="y">{{ y }}</option>
         </select>
       </div>
 
       <div class="search-filter-col-year">
-        <label for="year_end">Ano final</label>
+        <label for="year_end">{{ 'search.filters.year_end' | translate }}</label>
         <select id="year_end" formControlName="year_end" class="form-control">
           <option *ngFor="let y of yearsEnd" [value]="y">{{ y }}</option>
         </select>
       </div>
 
       <div class="search-filter-col-wide">
-        <label class="search-filter-title">Campo de pesquisa</label>
+        <label class="search-filter-title">{{ 'search.filters.search_field' | translate }}</label>
         <div *ngFor="let field of searchFields">
           <input
             type="radio"
-            name="event-fields"
+            name="fields"
             [value]="field.value"
             formControlName="fields"
             id="event-field-{{ field.value }}"
           />
-          <label for="event-field-{{ field.value }}" class="ms-1">{{ field.label }}</label>
+          <label for="event-field-{{ field.value }}" class="ms-1">{{ 'search.filters.fields.' + field.value | translate }}</label>
         </div>
       </div>
     </form>

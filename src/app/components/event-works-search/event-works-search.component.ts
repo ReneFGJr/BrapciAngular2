@@ -1,4 +1,5 @@
 import { CommonModule } from '@angular/common';
+import { TranslateModule } from '@ngx-translate/core';
 import { Component, Input, computed, inject, signal } from '@angular/core';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { FormControl, FormGroup, FormsModule, ReactiveFormsModule } from '@angular/forms';
@@ -16,7 +17,7 @@ type WorkResult = {
 @Component({
   selector: 'app-event-works-search',
   standalone: true,
-  imports: [CommonModule, FormsModule, ReactiveFormsModule, RouterModule],
+  imports: [CommonModule, FormsModule, ReactiveFormsModule, RouterModule, TranslateModule],
   templateUrl: './event-works-search.component.html',
   styleUrl: './event-works-search.component.scss',
 })
@@ -40,7 +41,7 @@ export class EventWorksSearchComponent {
   readonly yearsStart: number[] = [];
   readonly yearsEnd: number[] = [];
   readonly searchFields = [
-    { label: 'Titulo', value: 'TI' },
+    { label: 'Título', value: 'TI' },
     { label: 'Resumo', value: 'AB' },
     { label: 'Palavras-chave', value: 'KW' },
     { label: 'Autor', value: 'AU' },
@@ -166,7 +167,7 @@ export class EventWorksSearchComponent {
         { name: 'journal', value: idJnl },
         { name: 'year_start', value: year_start },
         { name: 'year_end', value: year_end },
-        { name: 'fields', value: fields },
+        { name: 'field', value: fields },
       ])
       .subscribe({
         next: (response) => {

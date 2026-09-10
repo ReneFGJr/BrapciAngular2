@@ -1,11 +1,11 @@
 import './polyfills.server.mjs';
 import {
   BasketService
-} from "./chunk-EUX7GKRD.mjs";
+} from "./chunk-5MPKOAJB.mjs";
 import {
   AuthService,
   SessionService
-} from "./chunk-KNBI7DSD.mjs";
+} from "./chunk-NDPP5HV6.mjs";
 import {
   TranslateLoader,
   TranslateModule,
@@ -25,7 +25,7 @@ import {
 } from "./chunk-FKOHU7FA.mjs";
 import {
   API_CONFIG
-} from "./chunk-UDICY5ZG.mjs";
+} from "./chunk-4H6KSVLA.mjs";
 import {
   APP_BASE_HREF,
   APP_ID,
@@ -29696,7 +29696,7 @@ var AccessibilityPanelComponent = class _AccessibilityPanelComponent {
         </button>
       </div>
     </section>
-  `, changeDetection: ChangeDetectionStrategy.OnPush, styles: ['/* angular:styles/component:scss;2b1157db8466a10e12a620e2a5c41c92acc25818edc4d8745f2ed3c0e02b42c6;D:/Projeto/BrapciAngular2/src/app/components/accessibility-panel/accessibility-panel.component.ts */\n:host {\n  display: block;\n}\n.accessibility-panel {\n  background: var(--theme-card-bg);\n  border: 1px solid var(--theme-line);\n  border-radius: 1rem;\n  color: var(--theme-ink);\n  padding: 1rem;\n  position: absolute;\n  right: 0;\n  top: calc(100% + 0.75rem);\n  width: min(320px, 92vw);\n  z-index: 1060;\n}\n.accessibility-panel--expanded {\n  width: min(80vw, 960px);\n}\n.accessibility-panel__header {\n  align-items: flex-start;\n  display: flex;\n  justify-content: space-between;\n  gap: 1rem;\n  margin-bottom: 1rem;\n}\n.accessibility-panel__eyebrow {\n  color: var(--theme-muted);\n  font-size: 0.72rem;\n  letter-spacing: 0.12rem;\n  margin: 0 0 0.15rem;\n  text-transform: uppercase;\n}\n.accessibility-panel__title {\n  font-family:\n    "Bitter",\n    Georgia,\n    serif;\n  font-size: 1.2rem;\n  margin: 0;\n}\n.accessibility-panel__close,\n.accessibility-panel__chip,\n.accessibility-panel__toggle {\n  border: 1px solid var(--theme-line);\n  border-radius: 0.8rem;\n  transition:\n    background-color 0.2s ease,\n    border-color 0.2s ease,\n    color 0.2s ease,\n    transform 0.2s ease;\n}\n.accessibility-panel__close {\n  align-items: center;\n  background: transparent;\n  color: var(--theme-ink);\n  display: inline-flex;\n  height: 2rem;\n  justify-content: center;\n  width: 2rem;\n}\n.accessibility-panel__close:hover,\n.accessibility-panel__close:focus-visible,\n.accessibility-panel__chip:hover,\n.accessibility-panel__chip:focus-visible,\n.accessibility-panel__toggle:hover,\n.accessibility-panel__toggle:focus-visible {\n  background: var(--theme-sand);\n  border-color: var(--theme-hint);\n  transform: translateY(-1px);\n}\n.accessibility-panel__section {\n  display: grid;\n  gap: 0.55rem;\n  margin-bottom: 0.95rem;\n}\n.accessibility-panel__section:last-child {\n  margin-bottom: 0;\n}\n.accessibility-panel__section-head {\n  align-items: center;\n  display: flex;\n  justify-content: space-between;\n  gap: 0.5rem;\n  font-size: 0.9rem;\n}\n.accessibility-panel__button-row {\n  display: flex;\n  flex-wrap: wrap;\n  gap: 0.5rem;\n}\n.accessibility-panel__chip,\n.accessibility-panel__toggle {\n  background: transparent;\n  color: var(--theme-ink);\n  font-size: 0.92rem;\n  padding: 0.55rem 0.7rem;\n  text-align: left;\n}\n.accessibility-panel__chip.is-active,\n.accessibility-panel__toggle.is-active {\n  background: var(--theme-ink);\n  border-color: var(--theme-ink);\n  color: var(--theme-paper);\n}\n.accessibility-panel__toggle {\n  width: 100%;\n}\n@media (max-width: 991.98px) {\n  .accessibility-panel {\n    right: auto;\n    left: 0;\n    width: min(92vw, 560px);\n  }\n  .accessibility-panel--expanded {\n    width: 80vw;\n  }\n}\n/*# sourceMappingURL=accessibility-panel.component.css.map */\n'] }]
+  `, changeDetection: ChangeDetectionStrategy.OnPush, styles: ['/* angular:styles/component:scss;2b1157db8466a10e12a620e2a5c41c92acc25818edc4d8745f2ed3c0e02b42c6;D:/www/BrapciAngular2/src/app/components/accessibility-panel/accessibility-panel.component.ts */\n:host {\n  display: block;\n}\n.accessibility-panel {\n  background: var(--theme-card-bg);\n  border: 1px solid var(--theme-line);\n  border-radius: 1rem;\n  color: var(--theme-ink);\n  padding: 1rem;\n  position: absolute;\n  right: 0;\n  top: calc(100% + 0.75rem);\n  width: min(320px, 92vw);\n  z-index: 1060;\n}\n.accessibility-panel--expanded {\n  width: min(80vw, 960px);\n}\n.accessibility-panel__header {\n  align-items: flex-start;\n  display: flex;\n  justify-content: space-between;\n  gap: 1rem;\n  margin-bottom: 1rem;\n}\n.accessibility-panel__eyebrow {\n  color: var(--theme-muted);\n  font-size: 0.72rem;\n  letter-spacing: 0.12rem;\n  margin: 0 0 0.15rem;\n  text-transform: uppercase;\n}\n.accessibility-panel__title {\n  font-family:\n    "Bitter",\n    Georgia,\n    serif;\n  font-size: 1.2rem;\n  margin: 0;\n}\n.accessibility-panel__close,\n.accessibility-panel__chip,\n.accessibility-panel__toggle {\n  border: 1px solid var(--theme-line);\n  border-radius: 0.8rem;\n  transition:\n    background-color 0.2s ease,\n    border-color 0.2s ease,\n    color 0.2s ease,\n    transform 0.2s ease;\n}\n.accessibility-panel__close {\n  align-items: center;\n  background: transparent;\n  color: var(--theme-ink);\n  display: inline-flex;\n  height: 2rem;\n  justify-content: center;\n  width: 2rem;\n}\n.accessibility-panel__close:hover,\n.accessibility-panel__close:focus-visible,\n.accessibility-panel__chip:hover,\n.accessibility-panel__chip:focus-visible,\n.accessibility-panel__toggle:hover,\n.accessibility-panel__toggle:focus-visible {\n  background: var(--theme-sand);\n  border-color: var(--theme-hint);\n  transform: translateY(-1px);\n}\n.accessibility-panel__section {\n  display: grid;\n  gap: 0.55rem;\n  margin-bottom: 0.95rem;\n}\n.accessibility-panel__section:last-child {\n  margin-bottom: 0;\n}\n.accessibility-panel__section-head {\n  align-items: center;\n  display: flex;\n  justify-content: space-between;\n  gap: 0.5rem;\n  font-size: 0.9rem;\n}\n.accessibility-panel__button-row {\n  display: flex;\n  flex-wrap: wrap;\n  gap: 0.5rem;\n}\n.accessibility-panel__chip,\n.accessibility-panel__toggle {\n  background: transparent;\n  color: var(--theme-ink);\n  font-size: 0.92rem;\n  padding: 0.55rem 0.7rem;\n  text-align: left;\n}\n.accessibility-panel__chip.is-active,\n.accessibility-panel__toggle.is-active {\n  background: var(--theme-ink);\n  border-color: var(--theme-ink);\n  color: var(--theme-paper);\n}\n.accessibility-panel__toggle {\n  width: 100%;\n}\n@media (max-width: 991.98px) {\n  .accessibility-panel {\n    right: auto;\n    left: 0;\n    width: min(92vw, 560px);\n  }\n  .accessibility-panel--expanded {\n    width: 80vw;\n  }\n}\n/*# sourceMappingURL=accessibility-panel.component.css.map */\n'] }]
   }], null, { fontScale: [{
     type: Input
   }], letterSpacing: [{
@@ -30689,14 +30689,14 @@ var App = class _App {
             <li>\r
               <a class="dropdown-item" routerLink="/pq" (click)="closeDocsMenu()">{{ 'pq.menuItem' | translate }}</a>\r
             </li>\r
-            <li>
-              <a class="dropdown-item" routerLink="/about/team" (click)="closeDocsMenu()">{{ 'menu.navbar.team' | translate }}</a>
-            </li>
-            <li>
-              <a class="dropdown-item" routerLink="/statistics" (click)="closeDocsMenu()">{{ 'menu.navbar.databaseStatistics' | translate }}</a>
-            </li>
-            <li>
-              <a class="dropdown-item" href="#" (click)="closeDocsMenu()">{{ 'menu.navbar.subjectIndex' | translate }}</a>
+            <li>\r
+              <a class="dropdown-item" routerLink="/about/team" (click)="closeDocsMenu()">{{ 'menu.navbar.team' | translate }}</a>\r
+            </li>\r
+            <li>\r
+              <a class="dropdown-item" routerLink="/statistics" (click)="closeDocsMenu()">{{ 'menu.navbar.databaseStatistics' | translate }}</a>\r
+            </li>\r
+            <li>\r
+              <a class="dropdown-item" href="#" (click)="closeDocsMenu()">{{ 'menu.navbar.subjectIndex' | translate }}</a>\r
             </li>\r
             <li>\r
               <a class="dropdown-item" href="#" (click)="closeDocsMenu()">{{ 'menu.navbar.authorIndex' | translate }}</a>\r
@@ -30892,19 +30892,19 @@ var TranslateHttpLoader = class _TranslateHttpLoader {
 var routes = [
   __spreadValues({
     path: "chat",
-    loadChildren: () => import("./chunk-AIPEUVTF.mjs").then((m) => m.CHAT_ROUTES)
+    loadChildren: () => import("./chunk-O766AWEW.mjs").then((m) => m.CHAT_ROUTES)
   }, true ? { \u0275entryName: "src/app/chat/chat.routes.ts" } : {}),
   __spreadValues({
     path: "autoridade",
-    loadComponent: () => import("./chunk-X7O7RMHZ.mjs").then((m) => m.AutoridadePage)
+    loadComponent: () => import("./chunk-UJF7BRIL.mjs").then((m) => m.AutoridadePage)
   }, true ? { \u0275entryName: "src/app/pages/autoridade/autoridade.page.ts" } : {}),
   __spreadValues({
     path: "v/:id",
-    loadComponent: () => import("./chunk-NRY7ZKMR.mjs").then((m) => m.VIdPage)
+    loadComponent: () => import("./chunk-ZH5XUFX5.mjs").then((m) => m.VIdPage)
   }, true ? { \u0275entryName: "src/app/pages/v-id/v-id.page.ts" } : {}),
   __spreadValues({
     path: "admin/a/:id",
-    loadComponent: () => import("./chunk-4UUXAUSW.mjs").then((m) => m.AdminEditPage)
+    loadComponent: () => import("./chunk-25AZ2RW5.mjs").then((m) => m.AdminEditPage)
   }, true ? { \u0275entryName: "src/app/pages/admin-edit/admin-edit.page.ts" } : {}),
   {
     path: "sobre/brapci",
@@ -30913,35 +30913,35 @@ var routes = [
   },
   __spreadValues({
     path: "basket/selected",
-    loadComponent: () => import("./chunk-HSMHGTKC.mjs").then((m) => m.BasketSelectedPage)
+    loadComponent: () => import("./chunk-YMRJE7A3.mjs").then((m) => m.BasketSelectedPage)
   }, true ? { \u0275entryName: "src/app/pages/basket-selected/basket-selected.page.ts" } : {}),
   __spreadValues({
     path: "painel",
-    loadComponent: () => import("./chunk-MNWAZ74N.mjs").then((m) => m.PainelPage)
+    loadComponent: () => import("./chunk-UAZGJDVL.mjs").then((m) => m.PainelPage)
   }, true ? { \u0275entryName: "src/app/pages/painel/painel.page.ts" } : {}),
   __spreadValues({
     path: "about/:page",
-    loadComponent: () => import("./chunk-5ZKJMHUB.mjs").then((m) => m.SobreBrapciPage)
+    loadComponent: () => import("./chunk-TRCTQYLV.mjs").then((m) => m.SobreBrapciPage)
   }, true ? { \u0275entryName: "src/app/pages/sobre-brapci/sobre-brapci.page.ts" } : {}),
   __spreadValues({
     path: "doc",
-    loadComponent: () => import("./chunk-N3TCLXGJ.mjs").then((m) => m.DocPage)
+    loadComponent: () => import("./chunk-Q4LML5HQ.mjs").then((m) => m.DocPage)
   }, true ? { \u0275entryName: "src/app/pages/doc/doc.page.ts" } : {}),
   __spreadValues({
     path: "pq",
-    loadComponent: () => import("./chunk-ZWTWRLCG.mjs").then((m) => m.PqPage)
+    loadComponent: () => import("./chunk-ODNU4OTF.mjs").then((m) => m.PqPage)
   }, true ? { \u0275entryName: "src/app/pages/pq/pq.page.ts" } : {}),
   __spreadValues({
     path: "revistas",
-    loadComponent: () => import("./chunk-WYCCCWFU.mjs").then((m) => m.RevistasPage)
+    loadComponent: () => import("./chunk-WMFCNTPI.mjs").then((m) => m.RevistasPage)
   }, true ? { \u0275entryName: "src/app/pages/revistas/revistas.page.ts" } : {}),
   __spreadValues({
     path: "revistas/avaliation",
-    loadComponent: () => import("./chunk-XI2YV6QT.mjs").then((m) => m.RevistaAvaliationPage)
+    loadComponent: () => import("./chunk-2ARA2CW5.mjs").then((m) => m.RevistaAvaliationPage)
   }, true ? { \u0275entryName: "src/app/pages/revista-avaliation/revista-avaliation.page.ts" } : {}),
   __spreadValues({
     path: "revistas/timeline",
-    loadComponent: () => import("./chunk-ZR45N5N6.mjs").then((m) => m.RevistaTimelinePage)
+    loadComponent: () => import("./chunk-OH6A3PTQ.mjs").then((m) => m.RevistaTimelinePage)
   }, true ? { \u0275entryName: "src/app/pages/revista-timeline/revista-timeline.page.ts" } : {}),
   __spreadValues({
     path: "eventos",
@@ -30949,31 +30949,31 @@ var routes = [
   }, true ? { \u0275entryName: "src/app/pages/eventos/eventos.page.ts" } : {}),
   __spreadValues({
     path: "livros",
-    loadComponent: () => import("./chunk-OO7N7AWR.mjs").then((m) => m.LivrosPage)
+    loadComponent: () => import("./chunk-PPFEAIGO.mjs").then((m) => m.LivrosPage)
   }, true ? { \u0275entryName: "src/app/pages/livros/livros.page.ts" } : {}),
   __spreadValues({
     path: "livros/submit",
-    loadComponent: () => import("./chunk-7VJLFMX2.mjs").then((m) => m.LivrosSubmitPage)
+    loadComponent: () => import("./chunk-7YISXH64.mjs").then((m) => m.LivrosSubmitPage)
   }, true ? { \u0275entryName: "src/app/pages/livros-submit/livros-submit.page.ts" } : {}),
   __spreadValues({
     path: "signin",
-    loadComponent: () => import("./chunk-Z4P7D44C.mjs").then((m) => m.SigninPage)
+    loadComponent: () => import("./chunk-AV7XMLDQ.mjs").then((m) => m.SigninPage)
   }, true ? { \u0275entryName: "src/app/pages/signin/signin.page.ts" } : {}),
   __spreadValues({
     path: "perfil",
-    loadComponent: () => import("./chunk-Z77BX7MW.mjs").then((m) => m.PerfilPage)
+    loadComponent: () => import("./chunk-J73EVB3F.mjs").then((m) => m.PerfilPage)
   }, true ? { \u0275entryName: "src/app/pages/perfil/perfil.page.ts" } : {}),
   __spreadValues({
     path: "tools/txt4net",
-    loadComponent: () => import("./chunk-2ZNVY3O5.mjs").then((m) => m.ToolsTxt4netPage)
+    loadComponent: () => import("./chunk-OBHGKSHJ.mjs").then((m) => m.ToolsTxt4netPage)
   }, true ? { \u0275entryName: "src/app/pages/tools-txt4net/tools-txt4net.page.ts" } : {}),
   __spreadValues({
     path: "tools/txt4network",
-    loadComponent: () => import("./chunk-6X7BDYYN.mjs").then((m) => m.ToolsTxt4networkPage)
+    loadComponent: () => import("./chunk-6VMCDGDG.mjs").then((m) => m.ToolsTxt4networkPage)
   }, true ? { \u0275entryName: "src/app/pages/tools-txt4network/tools-txt4network.page.ts" } : {}),
   __spreadValues({
     path: "tools/term4net",
-    loadComponent: () => import("./chunk-KRK36ZJW.mjs").then((m) => m.ToolsTerm4netPage)
+    loadComponent: () => import("./chunk-PSWKWFFE.mjs").then((m) => m.ToolsTerm4netPage)
   }, true ? { \u0275entryName: "src/app/pages/tools-term4net/tools-term4net.page.ts" } : {}),
   __spreadValues({
     path: "tools_bibliografics",
@@ -30981,11 +30981,11 @@ var routes = [
   }, true ? { \u0275entryName: "src/app/pages/tools-bibliografics/tools-bibliografics.page.ts" } : {}),
   __spreadValues({
     path: "tools_bibliometric",
-    loadComponent: () => import("./chunk-M3ATSTDQ.mjs").then((m) => m.ToolsBibliometricPage)
+    loadComponent: () => import("./chunk-FHQ7MW24.mjs").then((m) => m.ToolsBibliometricPage)
   }, true ? { \u0275entryName: "src/app/pages/tools-bibliometric/tools-bibliometric.page.ts" } : {}),
   __spreadValues({
     path: "tools_text/specialist",
-    loadComponent: () => import("./chunk-TIENRLFF.mjs").then((m) => m.ToolsTextSpecialistPage)
+    loadComponent: () => import("./chunk-BD27U5L4.mjs").then((m) => m.ToolsTextSpecialistPage)
   }, true ? { \u0275entryName: "src/app/pages/tools-text-specialist/tools-text-specialist.page.ts" } : {}),
   __spreadValues({
     path: "tools_text",
@@ -30993,19 +30993,19 @@ var routes = [
   }, true ? { \u0275entryName: "src/app/pages/tools-text/tools-text.page.ts" } : {}),
   __spreadValues({
     path: "cited",
-    loadComponent: () => import("./chunk-5FFDIDKH.mjs").then((m) => m.CitedPage)
+    loadComponent: () => import("./chunk-WIP6CBGS.mjs").then((m) => m.CitedPage)
   }, true ? { \u0275entryName: "src/app/pages/cited/cited.page.ts" } : {}),
   __spreadValues({
     path: "small_world",
-    loadComponent: () => import("./chunk-24B5GUMR.mjs").then((m) => m.SmallWorldPage)
+    loadComponent: () => import("./chunk-PE63YIXX.mjs").then((m) => m.SmallWorldPage)
   }, true ? { \u0275entryName: "src/app/pages/small-world/small-world.page.ts" } : {}),
   __spreadValues({
     path: "statistics",
-    loadComponent: () => import("./chunk-QH6NQYKM.mjs").then((m) => m.StatisticsPage)
+    loadComponent: () => import("./chunk-DDI4UAEF.mjs").then((m) => m.StatisticsPage)
   }, true ? { \u0275entryName: "src/app/pages/statistics/statistics.page.ts" } : {}),
   __spreadValues({
     path: "",
-    loadComponent: () => import("./chunk-EE6N4OAR.mjs").then((m) => m.HomePage)
+    loadComponent: () => import("./chunk-3EASIASH.mjs").then((m) => m.HomePage)
   }, true ? { \u0275entryName: "src/app/pages/home/home.page.ts" } : {})
 ];
 

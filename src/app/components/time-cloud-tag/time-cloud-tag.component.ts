@@ -1,3 +1,4 @@
+import { TranslateModule } from '@ngx-translate/core';
 import { CommonModule } from '@angular/common';
 import { Component, Input, OnDestroy, computed, signal } from '@angular/core';
 import { TagCloudComponent } from '../tag-cloud/tag-cloud.component';
@@ -7,7 +8,7 @@ type JsonRecord = Record<string, unknown>;
 @Component({
   selector: 'app-time-cloud-tag',
   standalone: true,
-  imports: [CommonModule, TagCloudComponent],
+  imports: [TranslateModule, CommonModule, TagCloudComponent],
   templateUrl: './time-cloud-tag.component.html',
   styleUrl: './time-cloud-tag.component.scss',
 })

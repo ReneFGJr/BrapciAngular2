@@ -5,7 +5,8 @@ import { FormBuilder, FormGroup, FormControl, ReactiveFormsModule } from '@angul
 import { FormsModule } from '@angular/forms';
 import { RouterModule, Router } from '@angular/router';
 import { TranslateModule } from '@ngx-translate/core';
-import { BrapciApiService } from '../../core/services/brapci-api.service';
+import { SessionService } from '../../core/services/session.service';
+import { BrapciApiService, SearchMethod } from '../../core/services/brapci-api.service';
 import { AreaEventsComponent } from '../area-events/area-events.component';
 import { AreaNewsComponent } from '../area-news/area-news.component';
 import { AreaStatisticsComponent } from '../area-statistics/area-statistics.component';
@@ -28,12 +29,39 @@ export class SearchArticlesComponent {
   public loadingImg: string = '/assets/img/loading.svg';
   private readonly basketService = inject(BasketService);
   private readonly brapciApiService = inject(BrapciApiService);
+  private readonly sessionService = inject(SessionService);
+  readonly searchMethods: SearchMethod[] = ['v3', 'v4', 'v5'];
+  private readonly searchMethodCookie = 'brapci_search_method';
   readonly areaNewsComponent = AreaNewsComponent;
   readonly areaEventsComponent = AreaEventsComponent;
   readonly areaStatisticsComponent = AreaStatisticsComponent;
   readonly showJsonPanel = signal(false);
   showFilters = false;
   search = false;
+  private filtersAnimation?: Animation;
+
+  toggleFilters(panel: HTMLDivElement): void {
+    // Capture the current frame so repeated clicks reverse without a jump.
+    const height = panel.getBoundingClientRect().height;
+    const opacity = getComputedStyle(panel).opacity;
+    this.filtersAnimation?.cancel();
+    this.showFilters = !this.showFilters;
+    panel.style.height = this.showFilters ? 'auto' : '0px';
+    panel.style.opacity = this.showFilters ? '1' : '0';
+    const targetHeight = this.showFilters ? panel.scrollHeight : 0;
+    const animation = panel.animate(
+      [
+        { height: height + 'px', opacity },
+        { height: targetHeight + 'px', opacity: this.showFilters ? 1 : 0 },
+      ],
+      { duration: 400, easing: 'cubic-bezier(0.4, 0, 0.2, 1)' },
+    );
+    this.filtersAnimation = animation;
+    animation.onfinish = () => {
+      if (this.filtersAnimation === animation) this.filtersAnimation = undefined;
+    };
+  }
+
 
   filtersForm: FormGroup;
   yearsStart: number[] = [];
@@ -61,7 +89,21 @@ export class SearchArticlesComponent {
       year_end: new FormControl(this.yearsEnd[0]),
       collection: new FormControl(allTypes),
       fields: new FormControl('FL'),
+      method: new FormControl(this.savedSearchMethod(), { nonNullable: true }),
     });
+  }
+
+  private savedSearchMethod(): SearchMethod {
+    try {
+      const saved = this.sessionService.getCookie(this.searchMethodCookie);
+      return this.searchMethods.includes(saved as SearchMethod) ? saved as SearchMethod : 'v4';
+    } catch {
+      return 'v4';
+    }
+  }
+
+  saveSearchMethod(method: SearchMethod): void {
+    this.sessionService.setCookie(this.searchMethodCookie, method);
   }
 
   initYears() {
@@ -160,7 +202,7 @@ export class SearchArticlesComponent {
       { name: 'year_start', value: this.filtersForm.value.year_start },
       { name: 'year_end', value: this.filtersForm.value.year_end },
       { name: 'collection', value: this.filtersForm.value.collection },
-      { name: 'fields', value: this.filtersForm.value.fields },
+      { name: 'field', value: this.filtersForm.value.fields },
     ];
 
     if (!term) {
@@ -177,7 +219,7 @@ export class SearchArticlesComponent {
     this.search = true;
     this.loading.set(true);
 
-    this.brapciApiService.search<unknown>(term, filters).subscribe({
+    this.brapciApiService.search<unknown>(term, filters, this.filtersForm.value.method).subscribe({
       next: (response) => {
         const normalizedResults = this.normalizeApiResponse(response);
         const filters = this.normalizeFilters(response);

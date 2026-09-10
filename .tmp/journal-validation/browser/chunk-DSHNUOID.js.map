@@ -1,0 +1,7 @@
+{
+  "version": 3,
+  "sources": ["src/app/chat/guards/chat-auth.guard.ts", "src/app/chat/chat.routes.ts"],
+  "sourcesContent": ["import { inject } from '@angular/core';\r\nimport { CanActivateFn, Router } from '@angular/router';\r\nimport { map } from 'rxjs';\r\nimport { AuthService } from '../../core/services/auth.service';\r\n\r\nexport const chatAuthGuard: CanActivateFn = () => {\r\n  const auth = inject(AuthService);\r\n  const router = inject(Router);\r\n  if (auth.getLocalUser()) return true;\r\n  return auth.checkSession().pipe(\r\n    map((user) => user ? true : router.createUrlTree(['/signin'], { queryParams: { returnUrl: '/chat' } })),\r\n  );\r\n};\r\n", "import { Routes } from '@angular/router';\r\nimport { chatAuthGuard } from './guards/chat-auth.guard';\r\n\r\nexport const CHAT_ROUTES: Routes = [{\r\n  path: '',\r\n  canActivate: [chatAuthGuard],\r\n  loadComponent: () => import('./pages/chat-page/chat-page.component').then((m) => m.ChatPageComponent),\r\n}];\r\n"],
+  "mappings": ";;;;;;;;;;;;;AAKO,IAAM,gBAA+B,MAAK;AAC/C,QAAM,OAAO,OAAO,WAAW;AAC/B,QAAM,SAAS,OAAO,MAAM;AAC5B,MAAI,KAAK,aAAY;AAAI,WAAO;AAChC,SAAO,KAAK,aAAY,EAAG,KACzB,IAAI,CAAC,SAAS,OAAO,OAAO,OAAO,cAAc,CAAC,SAAS,GAAG,EAAE,aAAa,EAAE,WAAW,QAAO,EAAE,CAAE,CAAC,CAAC;AAE3G;;;ACTO,IAAM,cAAsB,CAAC;EAClC,MAAM;EACN,aAAa,CAAC,aAAa;EAC3B,eAAe,MAAM,OAAO,qBAAuC,EAAE,KAAK,CAAC,MAAM,EAAE,iBAAiB;2FACrG;",
+  "names": []
+}

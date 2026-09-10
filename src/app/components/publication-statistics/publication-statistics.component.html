@@ -1,0 +1,32 @@
+@switch (view()) {
+  @case ('years') {
+    <app-bar-chart title="Total de trabalhos por ano" [points]="yearPoints()"></app-bar-chart>
+  }
+  @case ('authors') {
+    <section aria-label="Autores mais produtivos">
+      <div class="d-flex flex-wrap justify-content-between align-items-center gap-2 mb-3">
+        <h3 class="h6 mb-0">Autores mais produtivos</h3>
+        <button type="button" class="tab-btn" (click)="exportAuthorsCsv()" [disabled]="!authorRows().length">
+          Exportar para CSV
+        </button>
+      </div>
+      @if (authorRows().length) {
+        <div class="table-responsive publication-authors-table">
+          <table class="w-100">
+            <caption class="visually-hidden">Autores em ordem decrescente de total de trabalhos</caption>
+            <thead>
+              <tr><th scope="col">Autor</th><th scope="col" class="text-end">Total de trabalhos</th></tr>
+            </thead>
+            <tbody>
+              @for (author of authorRows(); track author.label) {
+                <tr><td>{{ author.label }}</td><td class="text-end">{{ author.total }}</td></tr>
+              }
+            </tbody>
+          </table>
+        </div>
+      } @else if (showEmpty()) {
+        <p class="mb-0">Sem autores disponíveis.</p>
+      }
+    </section>
+  }
+}

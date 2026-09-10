@@ -1,7 +1,26 @@
 <section class="author-gadget" aria-label="Dados do autor">
   <div class="author-header d-flex align-items-start gap-2">
     <div class="author-info flex-grow-1">
-      <h1 class="h1">{{ name}}</h1>
+      <h1 class="h1">
+        {{ name }}
+        <sup class="author-name-actions">
+          @if (isAdmin() && authorId && authorId !== '-') {
+            <a class="btn btn-sm btn-outline-primary"
+              [routerLink]="['/admin/a', authorId]"
+              [attr.title]="'adminArea.actions.edit' | translate"
+              [attr.aria-label]="'adminArea.actions.edit' | translate">
+              <i class="bi bi-pencil-square" aria-hidden="true"></i>
+            </a>
+          }
+          <button type="button" class="btn btn-sm btn-outline-primary"
+            (click)="copyName()" [disabled]="!name || name === '-'"
+            [attr.title]="'authorNameActions.copy' | translate"
+            [attr.aria-label]="'authorNameActions.copy' | translate">
+            <i class="bi bi-copy" aria-hidden="true"></i>
+          </button>
+        </sup>
+      </h1>
+      <span class="visually-hidden" role="status">{{ copyNameStatus() ? (copyNameStatus() | translate) : '' }}</span>
       <p class="mb-1"><strong>{{ 'author.nameAbnt' | translate }}:</strong> {{ nameAbnt }}</p>
       <p class="author-profile-badges mb-1">
         @for (scholarshipLabel of scholarshipLabels(); track scholarshipLabel) {

@@ -1,19 +1,28 @@
 import { CommonModule } from '@angular/common';
+import { TranslateModule } from '@ngx-translate/core';
 import { Component, Input, computed, signal } from '@angular/core';
 import { ViewType01Component } from '../issue/view-type-01/view-type-01.component';
 import { EventWorksSearchComponent } from '../event-works-search/event-works-search.component';
+
+import { PublicationStatisticsComponent } from '../publication-statistics/publication-statistics.component';
 
 type JsonRecord = Record<string, unknown>;
 type TabId = 'editions' | 'summary' | 'authors' | 'issue' | 'json';
 
 @Component({
   selector: 'app-view-event',
-  imports: [CommonModule, EventWorksSearchComponent],
+  imports: [TranslateModule, CommonModule, EventWorksSearchComponent, PublicationStatisticsComponent],
   templateUrl: './view-event.component.html',
   styleUrl: './view-event.component.scss',
 })
 export class ViewEventComponent {
-  @Input({ required: true }) data: unknown = null;
+  private readonly eventData = signal<unknown>(null);
+  @Input({ required: true }) set data(value: unknown) {
+    this.eventData.set(value);
+  }
+  get data(): unknown {
+    return this.eventData();
+  }
   readonly activeTab = signal<TabId>('summary');
   readonly issueViewComponent = ViewType01Component;
   readonly eventJournalId = computed(() => this.field(['id_jnl', 'ID']));
@@ -57,6 +66,13 @@ export class ViewEventComponent {
     const record = this.asRecord(this.data);
     if (!record) {
       return [] as string[];
+    }
+
+    const counts = this.asRecord(record['authors']);
+    if (counts && !Array.isArray(counts)) {
+      return Object.entries(counts)
+        .filter(([name, count]) => name.trim() && typeof count === 'number' && Number.isSafeInteger(count) && count >= 0)
+        .map(([name]) => name);
     }
 
     const rawList = this.arrayFromKeys(record, [

@@ -1,21 +1,21 @@
 <article class="view-card p-3 p-md-4">
-  <h2 class="h5 mb-3">ENANCIB</h2>
+  <h2 class="h5 mb-3">{{ title() }}</h2>
 
-  <div class="tab-nav mb-3" role="tablist" aria-label="Abas de conteudo do evento">
+  <div class="tab-nav mb-3" role="tablist" [attr.aria-label]="'eventView.tabs.ariaLabel' | translate">
     <button type="button" class="tab-btn" [class.active]="activeTab() === 'editions'" (click)="setTab('editions')">
-      Busca de trabalhos
+      {{ 'eventView.tabs.search' | translate }}
     </button>
     <button type="button" class="tab-btn" [class.active]="activeTab() === 'issue'" (click)="setTab('issue')">
-      Issues
+      {{ 'eventView.tabs.issues' | translate }}
     </button>
     <button type="button" class="tab-btn" [class.active]="activeTab() === 'summary'" (click)="setTab('summary')">
-      Resumo
+      {{ 'eventView.tabs.summary' | translate }}
     </button>
     <button type="button" class="tab-btn" [class.active]="activeTab() === 'authors'" (click)="setTab('authors')">
-      Autores
+      {{ 'eventView.tabs.authors' | translate }}
     </button>
     <button type="button" class="tab-btn" [class.active]="activeTab() === 'json'" (click)="setTab('json')">
-      JSON
+      {{ 'eventView.tabs.json' | translate }}
     </button>
   </div>
 
@@ -33,17 +33,20 @@
         <p class="mb-1"><strong>FRBR:</strong> {{ field(['jnl_frbr']) }}</p>
         <p class="mb-1"><strong>Qtd. de edicoes:</strong> {{ editions().length }}</p>
         <p class="mb-0"><strong>Qtd. de autores:</strong> {{ authors().length }}</p>
+        <div class="mt-4">
+          <app-publication-statistics view="years" [data]="data"></app-publication-statistics>
+        </div>
       }
 
       @case ('authors') {
-        @if (authors().length) {
+        <app-publication-statistics #statistics view="authors" [showEmpty]="!authors().length" [data]="data" [sourceId]="'evento-' + eventJournalId()"></app-publication-statistics>
+        @if (!statistics.authorRows().length && authors().length) {
           <ul class="mb-0 ps-3">
             @for (author of authors(); track author) {
               <li class="mb-1">{{ author }}</li>
             }
           </ul>
-        } @else {
-          <p class="mb-0">Sem autores disponiveis.</p>
+
         }
       }
 

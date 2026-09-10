@@ -115,8 +115,10 @@
     "title": "¿Qué estás buscando?",
     "input": "Escriba un termino",
     "button": "Buscar",
-    "selected": "Seleccionados",
+    "selected": "Ver seleccionados",
     "clear_selected": "Limpiar selección",
+    "select_all_items": "Seleccionar los {{total}} elementos",
+    "method": "Método de búsqueda",
     "empty": "No se encontraron resultados para la consulta.",
     "idle": "Escriba un termino para consultar la API Brapci.",
     "filters": {
@@ -735,5 +737,56 @@
     "deleteTitle": "Eliminar dato",
     "deleteConfirm": "¿Confirma la eliminación de {{name}}?",
     "deleting": "Eliminando..."
-  }
+  },
+  "eventView": {
+    "searchPlaceholder": "Escriba un título, autor, resumen o palabra clave",
+    "tabs":  {
+                 "authors":  "Autores",
+                 "ariaLabel":  "Pestañas de contenido del evento",
+                 "json":  "JSON",
+                 "search":  "Buscar trabajos",
+                 "summary":  "Resumen",
+                 "issues":  "Ediciones"
+             }
+},
+  "journalView": {
+  "title": "Revista",
+  "tabsLabel": "Pestañas de contenido de la revista",
+  "summary": "Resumen",
+  "authors": "Autores",
+  "issues": "Números",
+  "location": "Ubicación",
+  "theme": "Temas",
+  "strata": "Estratos",
+  "json": "JSON",
+  "themesTitle": "Temas de la revista",
+  "emptyThemes": "No hay temas disponibles.",
+  "emptyIssues": "No hay números disponibles.",
+  "city": "Ciudad",
+  "name": "Nombre",
+  "latitude": "Latitud",
+  "longitude": "Longitud",
+  "altitude": "Altitud",
+  "emptyLocation": "No hay ubicación disponible."
+},
+  "timeCloud": {
+  "title": "Evolución temporal de los temas",
+  "period": "Términos publicados entre {{start}} y {{end}}",
+  "years": "{{count}} años",
+  "year": "{{count}} año",
+  "start": "Año inicial",
+  "end": "Año final",
+  "controls": "Controles de animación temporal",
+  "play": "Reproducir",
+  "pause": "Pausar",
+  "duration": "Duración por año",
+  "range": "Intervalo de años",
+  "topics": "Temas en el período seleccionado",
+  "empty": "No hay temas en el período seleccionado"
+},
+  "authorNameActions": {
+  "copy": "Copiar nombre",
+  "copied": "Nombre copiado.",
+  "failed": "No se pudo copiar el nombre."
+}
 }

@@ -1,24 +1,27 @@
 <article class="view-card p-3 p-md-4">
-  <h2 class="h5 mb-3">Revista</h2>
+  <h2 class="h5 mb-3">{{ 'journalView.title' | translate }}</h2>
 
-  <div class="tab-nav mb-3" role="tablist" aria-label="Abas de conteudo da revista">
+  <div class="tab-nav mb-3" role="tablist" [attr.aria-label]="'journalView.tabsLabel' | translate">
     <button type="button" class="tab-btn" [class.active]="activeTab() === 'summary'" (click)="setTab('summary')">
-      Resumo
+      {{ 'journalView.summary' | translate }}
+    </button>
+    <button type="button" class="tab-btn" [class.active]="activeTab() === 'authors'" (click)="setTab('authors')">
+      {{ 'journalView.authors' | translate }}
     </button>
     <button type="button" class="tab-btn" [class.active]="activeTab() === 'issues'" (click)="setTab('issues')">
-      Fasciculos
+      {{ 'journalView.issues' | translate }}
     </button>
     <button type="button" class="tab-btn" [class.active]="activeTab() === 'location'" (click)="setTab('location')">
-      Localização
+      {{ 'journalView.location' | translate }}
     </button>
     <button type="button" class="tab-btn" [class.active]="activeTab() === 'theme'" (click)="setTab('theme')">
-      Tema
+      {{ 'journalView.theme' | translate }}
     </button>
     <button type="button" class="tab-btn" [class.active]="activeTab() === 'strata'" (click)="setTab('strata')">
-      Estratos
+      {{ 'journalView.strata' | translate }}
     </button>
     <button type="button" class="tab-btn" [class.active]="activeTab() === 'json'" (click)="setTab('json')">
-      JSON
+      {{ 'journalView.json' | translate }}
     </button>
   </div>
 
@@ -39,6 +42,13 @@
           [url]="url()"
           [oaiUrl]="oaiUrl()"
         ></app-journal-meta-grid>
+        <div class="mt-4">
+          <app-publication-statistics view="years" [data]="data"></app-publication-statistics>
+        </div>
+      }
+
+      @case ('authors') {
+        <app-publication-statistics view="authors" [data]="data" [sourceId]="'revista-' + journalId()"></app-publication-statistics>
       }
 
       @case ('issues') {
@@ -49,7 +59,7 @@
             [journalId]="journalId()"
           ></app-issue-view-type>
         } @else {
-          <p class="mb-0">Sem fasciculos disponiveis.</p>
+          <p class="mb-0">{{ 'journalView.emptyIssues' | translate }}</p>
         }
       }
 
@@ -63,24 +73,24 @@
             <div class="row g-3">
               <div class="col-12" [class.d-none]="!location().city">
                 <div class="border rounded-3 p-3 h-100">
-                  <h3 class="h6 mb-3">Cidade</h3>
-                  <p class="mb-1"><strong>Nome:</strong> {{ location().city?.name }}</p>
-                  <p class="mb-1"><strong>Latitude:</strong> {{ location().city?.lat }}</p>
-                  <p class="mb-1"><strong>Longitude:</strong> {{ location().city?.long }}</p>
-                  <p class="mb-1"><strong>Altitude:</strong> {{ location().city?.altitude }}</p>
+                  <h3 class="h6 mb-3">{{ 'journalView.city' | translate }}</h3>
+                  <p class="mb-1"><strong>{{ 'journalView.name' | translate }}:</strong> {{ location().city?.name }}</p>
+                  <p class="mb-1"><strong>{{ 'journalView.latitude' | translate }}:</strong> {{ location().city?.lat }}</p>
+                  <p class="mb-1"><strong>{{ 'journalView.longitude' | translate }}:</strong> {{ location().city?.long }}</p>
+                  <p class="mb-1"><strong>{{ 'journalView.altitude' | translate }}:</strong> {{ location().city?.altitude }}</p>
                   <p class="mb-0"><strong>ID:</strong> {{ location().city?.id }}</p>
                 </div>
               </div>
             </div>
           </div>
         } @else {
-          <p class="mb-0">Sem localização disponível.</p>
+          <p class="mb-0">{{ 'journalView.emptyLocation' | translate }}</p>
         }
       }
 
       @case ('theme') {
         <section class="journal-themes" aria-labelledby="journal-themes-title">
-          <h3 id="journal-themes-title" class="h6 mb-3">Temas da revista</h3>
+          <h3 id="journal-themes-title" class="h6 mb-3">{{ 'journalView.themesTitle' | translate }}</h3>
           <app-time-cloud-tag [subject]="subjectData()"></app-time-cloud-tag>
           @if (themeItems().length) {
             <div class="journal-theme-list mt-3">
@@ -93,7 +103,7 @@
               }
             </div>
           } @else {
-            <p class="mb-0">Sem temas disponíveis.</p>
+            <p class="mb-0">{{ 'journalView.emptyThemes' | translate }}</p>
           }
         </section>
       }

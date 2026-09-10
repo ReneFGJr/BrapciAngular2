@@ -71,7 +71,7 @@ export class SearchBookComponent {
         { name: 'collection', value: selectedCollection },
         { name: 'year_start', value: year_start },
         { name: 'year_end', value: year_end },
-        { name: 'fields', value: 'FL' },
+        { name: 'field', value: 'FL' },
       ])
       .subscribe({
         next: (response) => {

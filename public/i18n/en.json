@@ -115,10 +115,12 @@
     "title": "What are you looking for?",
     "input": "Type a term",
     "button": "Search",
-    "selected": "Selected",
+    "selected": "View selected",
     "empty": "No results found for this query.",
     "idle": "Type a term to query the Brapci API.",
     "clear_selected": "Clear selection",
+    "select_all_items": "Select all {{total}} items",
+    "method": "Search method",
     "filters": {
       "title": "Search filters",
       "year_start": "Start year",
@@ -735,5 +737,56 @@
     "deleteTitle": "Delete data",
     "deleteConfirm": "Do you want to delete {{name}}?",
     "deleting": "Deleting..."
-  }
+  },
+  "eventView": {
+    "searchPlaceholder": "Enter a title, author, abstract or keyword",
+    "tabs":  {
+                 "authors":  "Authors",
+                 "ariaLabel":  "Event content tabs",
+                 "json":  "JSON",
+                 "search":  "Search works",
+                 "summary":  "Summary",
+                 "issues":  "Issues"
+             }
+},
+  "journalView": {
+  "title": "Journal",
+  "tabsLabel": "Journal content tabs",
+  "summary": "Summary",
+  "authors": "Authors",
+  "issues": "Issues",
+  "location": "Location",
+  "theme": "Topics",
+  "strata": "Rankings",
+  "json": "JSON",
+  "themesTitle": "Journal topics",
+  "emptyThemes": "No topics available.",
+  "emptyIssues": "No issues available.",
+  "city": "City",
+  "name": "Name",
+  "latitude": "Latitude",
+  "longitude": "Longitude",
+  "altitude": "Altitude",
+  "emptyLocation": "No location available."
+},
+  "timeCloud": {
+  "title": "Topics over time",
+  "period": "Terms published between {{start}} and {{end}}",
+  "years": "{{count}} years",
+  "year": "{{count}} year",
+  "start": "Start year",
+  "end": "End year",
+  "controls": "Timeline animation controls",
+  "play": "Play",
+  "pause": "Pause",
+  "duration": "Duration per year",
+  "range": "Year range",
+  "topics": "Topics in the selected period",
+  "empty": "No topics in the selected period"
+},
+  "authorNameActions": {
+  "copy": "Copy name",
+  "copied": "Name copied.",
+  "failed": "Unable to copy the name."
+}
 }

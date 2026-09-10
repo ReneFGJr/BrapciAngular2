@@ -2,27 +2,27 @@
   <section class="time-cloud" aria-labelledby="time-cloud-title">
     <div class="time-cloud-head">
       <div>
-        <h3 id="time-cloud-title" class="h6 mb-1">Evolução temporal dos temas</h3>
-        <p class="mb-0">Termos publicados entre <strong>{{ selectedMin() }}</strong> e <strong>{{ selectedMax() }}</strong></p>
+        <h3 id="time-cloud-title" class="h6 mb-1">{{ 'timeCloud.title' | translate }}</h3>
+        <p class="mb-0">{{ 'timeCloud.period' | translate:{ start: selectedMin(), end: selectedMax() } }}</p>
       </div>
-      <span class="period-badge">{{ selectedMax() - selectedMin() + 1 }} anos</span>
+      <span class="period-badge">{{ (selectedMax() === selectedMin() ? 'timeCloud.year' : 'timeCloud.years') | translate:{ count: selectedMax() - selectedMin() + 1 } }}</span>
     </div>
 
     <div class="range-controls">
       <div class="range-values">
-        <span>Ano inicial: <strong>{{ selectedMin() }}</strong></span>
-        <span>Ano final: <strong>{{ selectedMax() }}</strong></span>
+        <span>{{ 'timeCloud.start' | translate }}: <strong>{{ selectedMin() }}</strong></span>
+        <span>{{ 'timeCloud.end' | translate }}: <strong>{{ selectedMax() }}</strong></span>
       </div>
 
-      <div class="player-controls" aria-label="Controles da animação temporal">
+      <div class="player-controls" [attr.aria-label]="'timeCloud.controls' | translate">
         <button type="button" class="btn btn-sm btn-primary" (click)="play()" [disabled]="playing()">
-          <i class="bi bi-play-fill" aria-hidden="true"></i> Play
+          <i class="bi bi-play-fill" aria-hidden="true"></i> {{ 'timeCloud.play' | translate }}
         </button>
         <button type="button" class="btn btn-sm btn-outline-secondary" (click)="pause()" [disabled]="!playing()">
-          <i class="bi bi-pause-fill" aria-hidden="true"></i> Pause
+          <i class="bi bi-pause-fill" aria-hidden="true"></i> {{ 'timeCloud.pause' | translate }}
         </button>
         <label class="animation-speed">
-          <span>Duração por ano</span>
+          <span>{{ 'timeCloud.duration' | translate }}</span>
           <input
             type="number"
             min="1"
@@ -34,23 +34,23 @@
           <span>s</span>
         </label>
       </div>
-      <div class="dual-range" aria-label="Intervalo de anos">
+      <div class="dual-range" [attr.aria-label]="'timeCloud.range' | translate">
         <div class="dual-range-track"></div>
         <div
           class="dual-range-selection"
           [style.left.%]="((selectedMin() - yearMin()) / (yearMax() - yearMin() || 1)) * 100"
           [style.right.%]="100 - ((selectedMax() - yearMin()) / (yearMax() - yearMin() || 1)) * 100"
         ></div>
-        <input aria-label="Ano inicial" type="range" [min]="yearMin()" [max]="yearMax()" [value]="selectedMin()" (input)="updateMin($event)" />
-        <input aria-label="Ano final" type="range" [min]="yearMin()" [max]="yearMax()" [value]="selectedMax()" (input)="updateMax($event)" />
+        <input [attr.aria-label]="'timeCloud.start' | translate" type="range" [min]="yearMin()" [max]="yearMax()" [value]="selectedMin()" (input)="updateMin($event)" />
+        <input [attr.aria-label]="'timeCloud.end' | translate" type="range" [min]="yearMin()" [max]="yearMax()" [value]="selectedMax()" (input)="updateMax($event)" />
       </div>
       <div class="range-scale" aria-hidden="true"><span>{{ yearMin() }}</span><span>{{ yearMax() }}</span></div>
     </div>
 
     <app-tag-cloud
       [dataTag]="dataTag()"
-      titleKey="Temas no período selecionado"
-      noDataKey="Sem temas no período selecionado"
+      titleKey="timeCloud.topics"
+      noDataKey="timeCloud.empty"
     ></app-tag-cloud>
   </section>
 }

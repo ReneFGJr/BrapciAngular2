@@ -124,7 +124,7 @@ export class VIdPage {
       .trim()
       .toUpperCase();
 
-    if (collection === 'EV') {
+    if (collection === 'EV' || ['event', 'events', 'proceedings'].includes(this.classe().trim().toLowerCase())) {
       return 'event';
     }
 

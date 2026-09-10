@@ -202,3 +202,11 @@
   flex-wrap: wrap;
   gap: 0.45rem;
 }
+
+.author-name-actions {
+  display: inline-flex;
+  gap: 0.25rem;
+  vertical-align: super;
+  position: static;
+  line-height: 1;
+}

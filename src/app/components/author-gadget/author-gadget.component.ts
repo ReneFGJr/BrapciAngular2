@@ -1,4 +1,5 @@
 import { CommonModule } from '@angular/common';
+import { RouterLink } from '@angular/router';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Component, Input, computed, inject, signal } from '@angular/core';
 import { toSignal } from '@angular/core/rxjs-interop';
@@ -30,7 +31,7 @@ type AuthorLink = {
 
 @Component({
   selector: 'app-author-gadget',
-  imports: [CommonModule, TranslateModule, BarChartComponent, TagCloudComponent, AuthorWorksComponent, AuthorGenderComponent, AuthorAffiliationsComponent],
+  imports: [RouterLink, CommonModule, TranslateModule, BarChartComponent, TagCloudComponent, AuthorWorksComponent, AuthorGenderComponent, AuthorAffiliationsComponent],
   templateUrl: './author-gadget.component.html',
   styleUrl: './author-gadget.component.scss'
 })
@@ -61,6 +62,19 @@ export class AuthorGadgetComponent {
   @Input() entityData: unknown = null;
   @Input() bolsista: unknown = null;
   @Input() variants: string[] = [];
+
+  readonly copyNameStatus = signal('');
+
+  async copyName(): Promise<void> {
+    this.copyNameStatus.set('');
+    if (!this.name || this.name === '-') return;
+    try {
+      await navigator.clipboard.writeText(this.name);
+      this.copyNameStatus.set('authorNameActions.copied');
+    } catch {
+      this.copyNameStatus.set('authorNameActions.failed');
+    }
+  }
 
   readonly isAdmin = computed(() => this.currentUser()?.role === 'admin');
   readonly photoPanelOpen = signal(false);

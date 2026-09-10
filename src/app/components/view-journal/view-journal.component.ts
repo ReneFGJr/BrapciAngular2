@@ -1,3 +1,4 @@
+import { TranslateModule } from '@ngx-translate/core';
 import { CommonModule } from '@angular/common';
 import { AfterViewInit, Component, ElementRef, Input, OnDestroy, ViewChild, computed, signal } from '@angular/core';
 import { ViewType01Component } from '../issue/view-type-01/view-type-01.component';
@@ -5,8 +6,10 @@ import { JournalMetaGridComponent } from './journal-hero-info/journal-meta-grid/
 import { TimeCloudTagComponent } from '../time-cloud-tag/time-cloud-tag.component';
 import { JournalStrataComponent } from './journal-strata/journal-strata.component';
 
+import { PublicationStatisticsComponent } from '../publication-statistics/publication-statistics.component';
+
 type JsonRecord = Record<string, unknown>;
-type TabId = 'summary' | 'issues' | 'location' | 'theme' | 'strata' | 'json';
+type TabId = 'summary' | 'authors' | 'issues' | 'location' | 'theme' | 'strata' | 'json';
 
 type ThemeItem = {
   label: string;
@@ -32,12 +35,19 @@ type GeoPoint = {
 @Component({
   selector: 'app-view-journal',
   standalone: true,
-  imports: [CommonModule, ViewType01Component, JournalMetaGridComponent, TimeCloudTagComponent, JournalStrataComponent],
+  imports: [TranslateModule, CommonModule, ViewType01Component, JournalMetaGridComponent, TimeCloudTagComponent, JournalStrataComponent, PublicationStatisticsComponent],
   templateUrl: './view-journal.component.html',
   styleUrl: './view-journal.component.scss'
 })
 export class ViewJournalComponent {
-  @Input({ required: true }) data: unknown = null;
+  private readonly journalData = signal<unknown>(null);
+  @Input({ required: true }) set data(value: unknown) {
+    this.journalData.set(value);
+  }
+  get data(): unknown {
+    return this.journalData();
+  }
+
   @ViewChild('locationMap') locationMap?: ElementRef<HTMLDivElement>;
   readonly activeTab = signal<TabId>('summary');
   private mapInstance: any = null;
