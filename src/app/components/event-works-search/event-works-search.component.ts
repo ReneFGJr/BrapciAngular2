@@ -27,6 +27,7 @@ export class EventWorksSearchComponent {
   private readonly router = inject(Router);
 
   @Input({ required: true }) journalId = '';
+  @Input() searchContext: 'event' | 'journal' = 'event';
 
   readonly query = signal('');
   readonly loading = signal(false);
@@ -56,6 +57,12 @@ export class EventWorksSearchComponent {
 
   readonly hasResults = computed(() => this.results().length > 0);
   readonly canSearch = computed(() => this.query().trim().length > 0 && this.normalizedJournalId().length > 0);
+  readonly searchTitleKey = computed(() =>
+    this.searchContext === 'journal' ? 'journalView.searchTitle' : 'eventView.searchTitle',
+  );
+  readonly searchPlaceholderKey = computed(() =>
+    this.searchContext === 'journal' ? 'journalView.searchPlaceholder' : 'eventView.searchPlaceholder',
+  );
   readonly markedResultsCount = computed(() => {
     this.basketRefresh();
     return this.results().filter((item) => this.isMarked(item.id)).length;
@@ -154,7 +161,7 @@ export class EventWorksSearchComponent {
       this.searched.set(false);
       this.results.set([]);
       this.rawSearchResponse.set(null);
-      this.error.set('Informe um termo para pesquisar trabalhos deste evento.');
+      this.error.set(`Informe um termo para pesquisar trabalhos desta ${this.contextLabel()}.`);
       return;
     }
 
@@ -181,7 +188,7 @@ export class EventWorksSearchComponent {
           this.loading.set(false);
 
           if (!mapped.length) {
-            this.error.set('Nenhum trabalho encontrado para este evento com o termo informado.');
+            this.error.set(`Nenhum trabalho encontrado para esta ${this.contextLabel()} com o termo informado.`);
           }
         },
         error: () => {
@@ -207,6 +214,10 @@ export class EventWorksSearchComponent {
 
   private normalizedJournalId(): string {
     return String(this.journalId ?? '').trim();
+  }
+
+  private contextLabel(): string {
+    return this.searchContext === 'journal' ? 'revista' : 'edição de evento';
   }
 
   private normalizeWorks(response: unknown): unknown[] {

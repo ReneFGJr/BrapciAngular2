@@ -745,6 +745,7 @@
     "deleting": "Excluindo..."
   },
   "eventView": {
+    "searchTitle": "Buscar trabalhos deste evento",
     "searchPlaceholder": "Digite título, autor, resumo ou palavra-chave",
     "tabs":  {
                  "authors":  "Autores",
@@ -758,6 +759,9 @@
   "journalView": {
   "title": "Revista",
   "tabsLabel": "Abas de conteúdo da revista",
+  "search": "Busca de trabalhos",
+  "searchTitle": "Buscar trabalhos desta revista",
+  "searchPlaceholder": "Digite título, autor, resumo ou palavra-chave",
   "summary": "Resumo",
   "authors": "Autores",
   "issues": "Fascículos",

@@ -5,11 +5,12 @@ import { ViewType01Component } from '../issue/view-type-01/view-type-01.componen
 import { JournalMetaGridComponent } from './journal-hero-info/journal-meta-grid/journal-meta-grid.component';
 import { TimeCloudTagComponent } from '../time-cloud-tag/time-cloud-tag.component';
 import { JournalStrataComponent } from './journal-strata/journal-strata.component';
+import { EventWorksSearchComponent } from '../event-works-search/event-works-search.component';
 
 import { PublicationStatisticsComponent } from '../publication-statistics/publication-statistics.component';
 
 type JsonRecord = Record<string, unknown>;
-type TabId = 'summary' | 'authors' | 'issues' | 'location' | 'theme' | 'strata' | 'json';
+type TabId = 'search' | 'summary' | 'authors' | 'issues' | 'location' | 'theme' | 'strata' | 'json';
 
 type ThemeItem = {
   label: string;
@@ -35,7 +36,7 @@ type GeoPoint = {
 @Component({
   selector: 'app-view-journal',
   standalone: true,
-  imports: [TranslateModule, CommonModule, ViewType01Component, JournalMetaGridComponent, TimeCloudTagComponent, JournalStrataComponent, PublicationStatisticsComponent],
+  imports: [TranslateModule, CommonModule, ViewType01Component, JournalMetaGridComponent, TimeCloudTagComponent, JournalStrataComponent, PublicationStatisticsComponent, EventWorksSearchComponent],
   templateUrl: './view-journal.component.html',
   styleUrl: './view-journal.component.scss'
 })
@@ -49,7 +50,7 @@ export class ViewJournalComponent {
   }
 
   @ViewChild('locationMap') locationMap?: ElementRef<HTMLDivElement>;
-  readonly activeTab = signal<TabId>('summary');
+  readonly activeTab = signal<TabId>('search');
   private mapInstance: any = null;
   private locationMapAttempt = 0;
 

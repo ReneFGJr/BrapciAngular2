@@ -97,8 +97,16 @@
     "title": "What are you looking for?",
     "input": "Type a term",
     "button": "Search",
-    "selected": "Selected",
+    "selected": "View selected",
     "clear_selected": "Clear selection",
+    "select_all_items": "Select all {{total}} items",
+    "method": "Search method",
+    "result_limit": "Result limit",
+    "methods": {
+      "v3": "Previous method (2024)",
+      "v4": "Current method (2026)",
+      "v5": "Semantic method (2026) testing"
+    },
     "empty": "No results found for this query.",
     "idle": "Type a term to query the Brapci API."
   },

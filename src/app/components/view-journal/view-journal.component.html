@@ -2,6 +2,9 @@
   <h2 class="h5 mb-3">{{ 'journalView.title' | translate }}</h2>
 
   <div class="tab-nav mb-3" role="tablist" [attr.aria-label]="'journalView.tabsLabel' | translate">
+    <button type="button" class="tab-btn" [class.active]="activeTab() === 'search'" (click)="setTab('search')">
+      {{ 'journalView.search' | translate }}
+    </button>
     <button type="button" class="tab-btn" [class.active]="activeTab() === 'summary'" (click)="setTab('summary')">
       {{ 'journalView.summary' | translate }}
     </button>
@@ -26,6 +29,13 @@
   </div>
 
   <div class="tab-panel">
+    @if (activeTab() === 'search') {
+      <app-event-works-search
+        [journalId]="journalId()"
+        searchContext="journal"
+      ></app-event-works-search>
+    }
+
     @switch (activeTab()) {
       @case ('summary') {
         <app-journal-meta-grid

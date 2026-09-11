@@ -18,10 +18,6 @@ export class SearchFilterSourcesComponent {
     this.rawItems.set(Array.isArray(value) ? value : []);
   }
 
-  encode(value: string): string {
-    return encodeURIComponent(value);
-  }
-
   readonly expanded = signal(false);
   private readonly rawItems = signal<unknown[]>([]);
 

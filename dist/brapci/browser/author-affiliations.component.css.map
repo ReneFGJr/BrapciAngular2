@@ -1,7 +1,0 @@
-{
-  "version": 3,
-  "sources": ["src/app/components/author-affiliations/author-affiliations.component.scss"],
-  "sourcesContent": [":host { display: block; max-width: 24rem; }\r\n.affiliations { text-align: right; }\r\n.affiliations-title { color: var(--theme-hint); font-size: .75rem; font-weight: 600; }\r\n.affiliations-list { align-items: center; display: flex; flex-direction: row; flex-wrap: wrap; gap: .5rem; justify-content: flex-end; }\r\n.affiliation-link { align-items: center; display: inline-flex; gap: .5rem; justify-content: flex-end; line-height: 1.25; text-align: right; }\r\n.affiliation-link img { background: #fff; border: 1px solid var(--theme-line); border-radius: .3rem; height: 3rem; object-fit: contain; padding: .12rem;  }\r\n.affiliation-link i { font-size: 1.35rem; }\r\n@media (max-width: 767px) { :host { max-width: 100%; } }\r\n"],
-  "mappings": ";AAAA;AAAQ,WAAA;AAAgB,aAAA;;AACxB,CAAA;AAAgB,cAAA;;AAChB,CAAA;AAAsB,SAAA,IAAA;AAA0B,aAAA;AAAmB,eAAA;;AACnE,CAAA;AAAqB,eAAA;AAAqB,WAAA;AAAe,kBAAA;AAAqB,aAAA;AAAiB,OAAA;AAAY,mBAAA;;AAC3G,CAAA;AAAoB,eAAA;AAAqB,WAAA;AAAsB,OAAA;AAAY,mBAAA;AAA2B,eAAA;AAAmB,cAAA;;AACzH,CADA,iBACA;AAAwB,cAAA;AAAkB,UAAA,IAAA,MAAA,IAAA;AAAqC,iBAAA;AAAsB,UAAA;AAAc,cAAA;AAAqB,WAAA;;AACxI,CAFA,iBAEA;AAAsB,aAAA;;AACtB,OAAA,CAAA,SAAA,EAAA;AAA4B;AAAQ,eAAA;;;",
-  "names": []
-}

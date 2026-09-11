@@ -1,7 +1,7 @@
 <article class="event-works-search" aria-labelledby="event-works-search-title">
   <div class="cardx h-100x shadow-sm border-0">
     <div class="card-body">
-      <h3 id="event-works-search-title" class="search-title">Buscar trabalhos deste evento</h3>
+      <h3 id="event-works-search-title" class="search-title">{{ searchTitleKey() | translate }}</h3>
 
       <form (ngSubmit)="searchWorks()" class="search-form mb-0" novalidate>
         <label for="event-query" class="form-label mb-0">{{ 'search.input' | translate }}</label>
@@ -13,7 +13,7 @@
             [ngModel]="query()"
             (ngModelChange)="query.set($event)"
             rows="3"
-            [placeholder]="'eventView.searchPlaceholder' | translate"
+            [placeholder]="searchPlaceholderKey() | translate"
           ></textarea>
           <button type="submit" class="btn btn-primary" [disabled]="loading() || !canSearch()">
             {{ 'search.button' | translate }}

@@ -745,6 +745,7 @@
     "deleting": "Deleting..."
   },
   "eventView": {
+    "searchTitle": "Search works in this event",
     "searchPlaceholder": "Enter a title, author, abstract or keyword",
     "tabs":  {
                  "authors":  "Authors",
@@ -758,6 +759,9 @@
   "journalView": {
   "title": "Journal",
   "tabsLabel": "Journal content tabs",
+  "search": "Search works",
+  "searchTitle": "Search works in this journal",
+  "searchPlaceholder": "Enter a title, author, abstract or keyword",
   "summary": "Summary",
   "authors": "Authors",
   "issues": "Issues",

@@ -113,10 +113,18 @@
     "title": "O que está procurando?",
     "input": "Digite um termo",
     "button": "Buscar",
-    "selected": "Selecionados",
+    "selected": "Ver selecionados",
     "empty": "Nenhum resultado encontrado para a consulta.",
     "idle": "Digite um termo para consultar a API Brapci.",
     "clear_selected": "Limpar seleção",
+    "select_all_items": "Selecionar os {{total}} itens",
+    "method": "Método de busca",
+    "result_limit": "Limite de resultados",
+    "methods": {
+      "v3": "Metodo anterior (2024)",
+      "v4": "Método atual (2026)",
+      "v5": "Método semantico (2026) testes"
+    },
     "filters": {
       "title": "Filtros da pesquisa",
       "year_start": "Ano inicial",
@@ -735,5 +743,60 @@
     "deleteTitle": "Excluir dado",
     "deleteConfirm": "Confirma a exclusão de {{name}}?",
     "deleting": "Excluindo..."
-  }
+  },
+  "eventView": {
+    "searchTitle": "Buscar trabalhos deste evento",
+    "searchPlaceholder": "Digite título, autor, resumo ou palavra-chave",
+    "tabs":  {
+                 "authors":  "Autores",
+                 "ariaLabel":  "Abas de conteúdo do evento",
+                 "json":  "JSON",
+                 "search":  "Busca de trabalhos",
+                 "summary":  "Resumo",
+                 "issues":  "Edições"
+             }
+},
+  "journalView": {
+  "title": "Revista",
+  "tabsLabel": "Abas de conteúdo da revista",
+  "search": "Busca de trabalhos",
+  "searchTitle": "Buscar trabalhos desta revista",
+  "searchPlaceholder": "Digite título, autor, resumo ou palavra-chave",
+  "summary": "Resumo",
+  "authors": "Autores",
+  "issues": "Fascículos",
+  "location": "Localização",
+  "theme": "Tema",
+  "strata": "Estratos",
+  "json": "JSON",
+  "themesTitle": "Temas da revista",
+  "emptyThemes": "Sem temas disponíveis.",
+  "emptyIssues": "Sem fascículos disponíveis.",
+  "city": "Cidade",
+  "name": "Nome",
+  "latitude": "Latitude",
+  "longitude": "Longitude",
+  "altitude": "Altitude",
+  "emptyLocation": "Sem localização disponível."
+},
+  "timeCloud": {
+  "title": "Evolução temporal dos temas",
+  "period": "Termos publicados entre {{start}} e {{end}}",
+  "years": "{{count}} anos",
+  "year": "{{count}} ano",
+  "start": "Ano inicial",
+  "end": "Ano final",
+  "controls": "Controles da animação temporal",
+  "play": "Reproduzir",
+  "pause": "Pausar",
+  "duration": "Duração por ano",
+  "range": "Intervalo de anos",
+  "topics": "Temas no período selecionado",
+  "empty": "Sem temas no período selecionado"
+},
+  "authorNameActions": {
+  "copy": "Copiar nome",
+  "copied": "Nome copiado.",
+  "failed": "Não foi possível copiar o nome."
+}
 }

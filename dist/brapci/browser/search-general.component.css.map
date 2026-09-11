@@ -1,7 +1,0 @@
-{
-  "version": 3,
-  "sources": ["src/app/components/search-general/search-general.component.scss"],
-  "sourcesContent": [".search-general {\r\n  display: block;\r\n}\r\n"],
-  "mappings": ";AAAA,CAAA;AACE,WAAA;;",
-  "names": []
-}

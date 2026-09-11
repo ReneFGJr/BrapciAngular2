@@ -94,8 +94,16 @@
     "title": "¿Qué estás buscando?",
     "input": "Escriba un termino",
     "button": "Buscar",
-    "selected": "Seleccionados",
+    "selected": "Ver seleccionados",
     "clear_selected": "Limpiar selección",
+    "select_all_items": "Seleccionar los {{total}} elementos",
+    "method": "Método de búsqueda",
+    "result_limit": "Límite de resultados",
+    "methods": {
+      "v3": "Método anterior (2024)",
+      "v4": "Método actual (2026)",
+      "v5": "Método semántico (2026) pruebas"
+    },
     "empty": "No se encontraron resultados para la consulta.",
     "idle": "Escriba un termino para consultar la API Brapci."
   },

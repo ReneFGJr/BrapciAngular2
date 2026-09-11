@@ -142,6 +142,11 @@ export class AuthorGadgetComponent {
   }
 
   selectPhoto(event: Event): void {
+    if (!this.isAdmin()) {
+      this.selectedPhoto.set(null);
+      return;
+    }
+
     const input = event.target as HTMLInputElement;
     const file = input.files?.[0] ?? null;
     this.selectedPhoto.set(file);
@@ -150,7 +155,7 @@ export class AuthorGadgetComponent {
 
   uploadPhoto(): void {
     const file = this.selectedPhoto();
-    if (!file || !this.authorId || this.photoUploading()) return;
+    if (!this.isAdmin() || !file || !this.authorId || this.photoUploading()) return;
 
     const body = new FormData();
     body.append('file', file, file.name);
