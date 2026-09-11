@@ -269,14 +269,16 @@
   display: flow-root;
 }
 
-.search-filter-col-method {
+.search-filter-col-method,
+.search-filter-col-limit {
   min-width: 130px;
   margin: 0;
   padding: 0;
   border: 0;
 }
 
-.search-filter-col-method legend {
+.search-filter-col-method legend,
+.search-filter-col-limit legend {
   float: none;
   width: auto;
   margin: 0;

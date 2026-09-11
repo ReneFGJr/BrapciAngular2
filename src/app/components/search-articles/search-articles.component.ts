@@ -1,5 +1,7 @@
 import { CommonModule } from '@angular/common';
-import { Component, computed, inject, signal } from '@angular/core';
+import { Component, computed, effect, inject, signal } from '@angular/core';
+import { toSignal } from '@angular/core/rxjs-interop';
+import { AuthService } from '../../core/services/auth.service';
 import { BasketService } from '../../core/services/basket.service';
 import { FormBuilder, FormGroup, FormControl, ReactiveFormsModule } from '@angular/forms';
 import { FormsModule } from '@angular/forms';
@@ -30,8 +32,14 @@ export class SearchArticlesComponent {
   private readonly basketService = inject(BasketService);
   private readonly brapciApiService = inject(BrapciApiService);
   private readonly sessionService = inject(SessionService);
-  readonly searchMethods: SearchMethod[] = ['v3', 'v4', 'v5'];
+  private readonly authService = inject(AuthService);
+  private readonly currentUser = toSignal(this.authService.currentUser$, { initialValue: null });
+  readonly searchMethods = computed<SearchMethod[]>(() =>
+    this.currentUser()?.role === 'admin' ? ['v3', 'v4', 'v5'] : ['v3', 'v4'],
+  );
   private readonly searchMethodCookie = 'brapci_search_method';
+  readonly searchLimits = [1000, 2000, 3000, 4000, 5000];
+  private readonly searchLimitCookie = 'brapci_search_limit';
   readonly areaNewsComponent = AreaNewsComponent;
   readonly areaEventsComponent = AreaEventsComponent;
   readonly areaStatisticsComponent = AreaStatisticsComponent;
@@ -90,20 +98,48 @@ export class SearchArticlesComponent {
       collection: new FormControl(allTypes),
       fields: new FormControl('FL'),
       method: new FormControl(this.savedSearchMethod(), { nonNullable: true }),
+      limit: new FormControl(this.savedSearchLimit(), { nonNullable: true }),
+    });
+    effect(() => {
+      if (!this.searchMethods().includes(this.filtersForm.controls['method'].value)) {
+        this.filtersForm.patchValue({ method: 'v4' });
+        this.saveSearchMethod('v4');
+      }
     });
   }
 
   private savedSearchMethod(): SearchMethod {
     try {
       const saved = this.sessionService.getCookie(this.searchMethodCookie);
-      return this.searchMethods.includes(saved as SearchMethod) ? saved as SearchMethod : 'v4';
+      return this.searchMethods().includes(saved as SearchMethod) ? saved as SearchMethod : 'v4';
     } catch {
       return 'v4';
     }
   }
 
   saveSearchMethod(method: SearchMethod): void {
-    this.sessionService.setCookie(this.searchMethodCookie, method);
+    const allowedMethod = this.searchMethods().includes(method) ? method : 'v4';
+    this.sessionService.setCookie(this.searchMethodCookie, allowedMethod);
+  }
+
+  private normalizeSearchLimit(value: unknown): number {
+    const limit = Number(value);
+    return this.searchLimits.includes(limit) ? limit : 1000;
+  }
+
+  private savedSearchLimit(): number {
+    try {
+      return this.normalizeSearchLimit(this.sessionService.getCookie(this.searchLimitCookie));
+    } catch {
+      return 1000;
+    }
+  }
+
+  saveSearchLimit(limit: number): void {
+    this.sessionService.setCookie(
+      this.searchLimitCookie,
+      String(this.normalizeSearchLimit(limit)),
+    );
   }
 
   initYears() {
@@ -194,7 +230,11 @@ export class SearchArticlesComponent {
     this.showJsonPanel.set(true);
   }
 
-  searchInBrapci(): void {
+  searchInBrapci(filtersPanel?: HTMLDivElement): void {
+    if (this.showFilters && filtersPanel) {
+      this.toggleFilters(filtersPanel);
+    }
+
     const term = this.query().trim();
 
     // Monta o array de filtros
@@ -203,6 +243,7 @@ export class SearchArticlesComponent {
       { name: 'year_end', value: this.filtersForm.value.year_end },
       { name: 'collection', value: this.filtersForm.value.collection },
       { name: 'field', value: this.filtersForm.value.fields },
+      { name: 'offset', value: this.normalizeSearchLimit(this.filtersForm.value.limit) },
     ];
 
     if (!term) {
@@ -219,7 +260,9 @@ export class SearchArticlesComponent {
     this.search = true;
     this.loading.set(true);
 
-    this.brapciApiService.search<unknown>(term, filters, this.filtersForm.value.method).subscribe({
+    const selectedMethod = this.filtersForm.value.method as SearchMethod;
+    const method = this.searchMethods().includes(selectedMethod) ? selectedMethod : 'v4';
+    this.brapciApiService.search<unknown>(term, filters, method).subscribe({
       next: (response) => {
         const normalizedResults = this.normalizeApiResponse(response);
         const filters = this.normalizeFilters(response);

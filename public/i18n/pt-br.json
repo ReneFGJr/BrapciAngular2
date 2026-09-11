@@ -119,6 +119,12 @@
     "clear_selected": "Limpar seleção",
     "select_all_items": "Selecionar os {{total}} itens",
     "method": "Método de busca",
+    "result_limit": "Limite de resultados",
+    "methods": {
+      "v3": "Metodo anterior (2024)",
+      "v4": "Método atual (2026)",
+      "v5": "Método semantico (2026) testes"
+    },
     "filters": {
       "title": "Filtros da pesquisa",
       "year_start": "Ano inicial",

@@ -10,7 +10,7 @@
     <div class="card-body">
       <h2 id="search-title" class="search-title">{{ 'search.title' | translate }}</h2>
 
-      <form (ngSubmit)="searchInBrapci()" class="search-form mb-0">
+      <form (ngSubmit)="searchInBrapci(filtersPanel)" class="search-form mb-0">
         <label for="query" class="form-label mb-0">{{ 'search.input' | translate }}</label>
         <div class="input-group mt-0">
           <textarea
@@ -128,7 +128,7 @@
           </div>
           <fieldset class="search-filter-col-method">
             <legend class="search-filter-title">{{ 'search.method' | translate }}</legend>
-            <div *ngFor="let method of searchMethods">
+            <div *ngFor="let method of searchMethods()">
               <input
                 type="radio"
                 name="method"
@@ -137,7 +137,21 @@
                 [id]="'search-method-' + method"
                 (change)="saveSearchMethod(method)"
               />
-              <label [for]="'search-method-' + method" class="ms-1">{{ method }}</label>
+              <label [for]="'search-method-' + method" class="ms-1">{{ 'search.methods.' + method | translate }}</label>
+            </div>
+          </fieldset>
+          <fieldset class="search-filter-col-limit">
+            <legend class="search-filter-title">{{ 'search.result_limit' | translate }}</legend>
+            <div *ngFor="let limit of searchLimits">
+              <input
+                type="radio"
+                name="limit"
+                formControlName="limit"
+                [value]="limit"
+                [id]="'search-limit-' + limit"
+                (change)="saveSearchLimit(limit)"
+              />
+              <label [for]="'search-limit-' + limit" class="ms-1">{{ limit }}</label>
             </div>
           </fieldset>
         </form>
