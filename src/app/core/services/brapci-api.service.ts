@@ -56,7 +56,6 @@ export class BrapciApiService {
         }
       }
     }
-    console.log('Search params:', params);
     return this.get<T>(`brapci/search/${method}`, params);
   }
 

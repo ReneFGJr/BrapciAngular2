@@ -122,9 +122,10 @@
         @if (chapters.length) {
           <article class="book-panel__section-block">
             <h3>Capítulos do livro</h3>
-            <ol class="book-panel__chapter-list">
+            <ol class="book-panel__chapter-list" role="list">
               @for (chapter of chapters; track trackByChapter($index, chapter)) {
                 <li class="book-panel__chapter-item">
+                  <span class="book-panel__chapter-number" aria-hidden="true">{{ $index + 1 }}</span>
                   @if (chapter.id) {
                     <h4>
                       <a
