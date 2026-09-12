@@ -245,6 +245,11 @@
 }
 
 @media (max-width: 575.98px) {
+  .idle-col-news,
+  .idle-col-stats {
+    display: none;
+  }
+
   .selection-all {
     width: 100%;
     margin-inline-start: 0;

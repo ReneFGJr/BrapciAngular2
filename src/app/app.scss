@@ -14,8 +14,26 @@ a.link.supersmall:hover, a.supersmall:hover, .supersmall:hover {
 	display: flex;
 	flex-direction: column;
 	font-family: 'Raleway', 'Trebuchet MS', sans-serif;
+	isolation: isolate;
 	min-height: 100dvh;
+	position: relative;
 	background: var(--theme-bg);
+}
+
+:host::before {
+	background: url('/assets/background/brapci_mapa_mundi.png') top center / contain no-repeat;
+	content: '';
+	inset: 10% 0 0;
+	opacity: 0.15;
+	pointer-events: none;
+	position: fixed;
+	z-index: -1;
+}
+
+@media (max-width: 575.98px) {
+	:host::before {
+		opacity: 0.3;
+	}
 }
 
 a.link.supersmall {
