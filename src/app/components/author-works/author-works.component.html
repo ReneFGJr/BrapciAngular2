@@ -221,6 +221,7 @@
 
     <!-- Author Clusters Tab Content -->
     @if (selectedTab() === 'clusters') {
+      <app-author-clusters-overview [networkData]="networkData"></app-author-clusters-overview>
       <app-author-clusters-sankey [networkData]="networkData"></app-author-clusters-sankey>
     }
 

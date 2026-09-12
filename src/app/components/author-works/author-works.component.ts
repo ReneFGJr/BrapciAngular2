@@ -5,6 +5,7 @@ import { CoauthorsListComponent } from '../coauthors-list/coauthors-list.compone
 import { NetworkGraph3dComponent } from '../network-graph-3d/network-graph-3d.component';
 import { RedeCircleComponent } from '../rede-circle/rede-circle.component';
 import { AuthorClustersSankeyComponent } from '../author-clusters-sankey/author-clusters-sankey.component';
+import { AuthorClustersOverviewComponent } from '../author-clusters-overview/author-clusters-overview.component';
 import type { Coauthor } from '../../core/models/coauthor.model';
 import type { NetworkGraph } from '../../core/models/network.model';
 import { BasketService } from '../../core/services/basket.service';
@@ -60,7 +61,7 @@ export type AuthorContentTab = {
 
 @Component({
   selector: 'app-author-works',
-  imports: [CommonModule, TranslateModule, CoauthorsListComponent, NetworkGraph3dComponent, RedeCircleComponent, AuthorClustersSankeyComponent],
+  imports: [CommonModule, TranslateModule, CoauthorsListComponent, NetworkGraph3dComponent, RedeCircleComponent, AuthorClustersSankeyComponent, AuthorClustersOverviewComponent],
   templateUrl: './author-works.component.html',
   styleUrl: './author-works.component.scss'
 })
