@@ -205,6 +205,9 @@
     "network": {
       "label": "Collaboration Network"
     },
+    "clusters": {
+      "label": "Author Clusters"
+    },
     "citationsGranted": {
       "label": "Granted Citations"
     },

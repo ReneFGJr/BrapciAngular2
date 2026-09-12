@@ -52,9 +52,9 @@ type PieArc = PieSlice & {
 };
 
 export type AuthorContentTab = {
-  id: 'works' | 'coauthors' | 'network' | 'citationsGranted' | 'variants' | 'scholarship' | 'json';
+  id: 'works' | 'coauthors' | 'network' | 'clusters' | 'citationsGranted' | 'variants' | 'scholarship' | 'json';
   label: string;
-  type: 'works' | 'coauthors' | 'network' | 'citationsGranted' | 'variants' | 'scholarship' | 'json';
+  type: 'works' | 'coauthors' | 'network' | 'clusters' | 'citationsGranted' | 'variants' | 'scholarship' | 'json';
   data?: AuthorWorksGroup[] | Coauthor[] | NetworkGraph | string[] | Scholarship[] | unknown;
 };
 
@@ -104,6 +104,12 @@ export class AuthorWorksComponent {
         id: 'network',
         label: 'author.network.label',
         type: 'network',
+        data: this.networkData
+      },
+      {
+        id: 'clusters',
+        label: 'author.clusters.label',
+        type: 'clusters',
         data: this.networkData
       },
       {
@@ -375,6 +381,7 @@ export class AuthorWorksComponent {
       tabId === 'works' ||
       tabId === 'coauthors' ||
       tabId === 'network' ||
+      tabId === 'clusters' ||
       tabId === 'citationsGranted' ||
       tabId === 'variants' ||
       tabId === 'scholarship' ||
