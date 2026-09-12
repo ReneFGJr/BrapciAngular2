@@ -42,7 +42,7 @@
 
 .labels .node-label {
   fill: var(--rede-circle-label, #1e40af);
-  font-size: 9px;
+  font-size: 7.65px;
   font-weight: 600;
   opacity: 1;
   text-decoration: none;
@@ -57,7 +57,7 @@
 .labels a:hover .node-label,
 .labels a:focus .node-label {
   fill: var(--rede-circle-label-hover, #60a5fa);
-  text-decoration: underline;
+  text-decoration: none;
 }
 
 .rede-empty {
@@ -76,23 +76,12 @@
   --rede-circle-empty: #cbd5e1;
 }
 
-@media (prefers-color-scheme: dark) {
-  .rede-circle {
-    --rede-circle-bg: #101924;
-    --rede-circle-ring: #334155;
-    --rede-circle-ribbon-stroke: rgba(148, 163, 184, 0.2);
-    --rede-circle-label: #bfdbfe;
-    --rede-circle-label-hover: #ffffff;
-    --rede-circle-empty: #cbd5e1;
-  }
-}
-
 @media (max-width: 768px) {
   .rede-circle-svg {
     min-height: 420px;
   }
 
   .labels .node-label {
-    font-size: 8px;
+    font-size: 6.8px;
   }
 }
