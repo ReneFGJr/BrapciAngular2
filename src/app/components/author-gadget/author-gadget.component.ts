@@ -173,7 +173,7 @@ export class AuthorGadgetComponent {
           const fallbackUrl = this.photoUrl
             ? `${this.photoUrl}${this.photoUrl.includes('?') ? '&' : '?'}v=${Date.now()}`
             : '';
-          this.uploadedPhotoUrl.set(returnedUrl || fallbackUrl);
+          this.uploadedPhotoUrl.set(returnedUrl ? this.resolvePhotoUrl(returnedUrl) : fallbackUrl);
           this.photoPanelOpen.set(false);
           this.selectedPhoto.set(null);
         },
@@ -184,5 +184,12 @@ export class AuthorGadgetComponent {
   private parseYear(label: string): number {
     const parsed = Number.parseInt(label, 10);
     return Number.isFinite(parsed) ? parsed : 0;
+  }
+
+  private resolvePhotoUrl(value: string): string {
+    const normalized = value.trim().replace(/^\.\//, '');
+    if (!normalized || /^blob:/i.test(normalized) || /^data:/i.test(normalized)) return normalized;
+    if (/^https?:\/\//i.test(normalized)) return normalized;
+    return `${new URL(this.apiConfig.brapciApiBaseUrl).origin}/${normalized.replace(/^\//, '')}`;
   }
 }

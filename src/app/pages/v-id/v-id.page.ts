@@ -21,6 +21,7 @@ import type { Coauthor } from '../../core/models/coauthor.model';
 import type { NetworkGraph } from '../../core/models/network.model';
 import { BookPanelComponent } from '../../components/book-panel/book-panel.component';
 import { ViewCorporateBodyComponent } from '../../components/view-corporate-body/view-corporate-body.component';
+import { API_CONFIG } from '../../core/tokens/api-config.token';
 
 type AuthorLink = {
   type: 'lattes' | 'orcid' | 'openalex' | 'googlescholar';
@@ -51,6 +52,7 @@ export class VIdPage {
   private readonly route = inject(ActivatedRoute);
   private readonly destroyRef = inject(DestroyRef);
   private readonly brapciApiService = inject(BrapciApiService);
+  private readonly apiConfig = inject(API_CONFIG);
   private readonly worksKeys = ['Article', 'Proceeding', 'BookChapter', 'Book'] as const;
   readonly issueViewComponent = ViewIssueComponent;
   readonly bookChapterViewComponent = BookChapterViewComponent;
@@ -172,7 +174,10 @@ export class VIdPage {
 
     const data = value as Record<string, unknown>;
     const candidate = data['Photo'];
-    return typeof candidate === 'string' && candidate.trim() ? candidate : '';
+    if (typeof candidate !== 'string' || !candidate.trim()) return '';
+    const normalized = candidate.trim().replace(/^\.\//, '');
+    if (/^https?:\/\//i.test(normalized)) return normalized;
+    return `${new URL(this.apiConfig.brapciApiBaseUrl).origin}/${normalized.replace(/^\//, '')}`;
   });
 
   readonly authorLinks = computed(() => {
