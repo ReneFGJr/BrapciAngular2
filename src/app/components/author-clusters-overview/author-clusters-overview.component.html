@@ -1,44 +1,47 @@
 <section class="clusters-map" aria-labelledby="clusters-map-title">
   <header class="clusters-map__header">
-    <div><h3 id="clusters-map-title">Mapa global dos clusters</h3><p>Autores com mais de uma publicação. Pontos maiores indicam maior produção.</p></div>
+    <div>
+      <h3 id="clusters-map-title">{{ 'author.clusters.overviewTitle' | translate }}</h3>
+      <p>{{ 'author.clusters.authorsWith' | translate }} <span class="clusters-map__emphasis">{{ 'author.clusters.moreThanOnePublication' | translate }}</span>. {{ 'author.clusters.biggerPoints' | translate }}</p>
+    </div>
     @if (layout().groups.length) {
       <div class="clusters-map__actions">
-        <span class="clusters-map__summary">{{ layout().groups.length }} clusters · {{ layout().authorCount }} autores</span>
-        <div class="clusters-map__zoom" role="group" aria-label="Controles de zoom">
-          <button type="button" (click)="zoomOut()" [disabled]="zoom() === 60" title="Afastar" aria-label="Afastar gráfico"><i class="bi bi-dash-lg"></i></button>
-          <button type="button" class="zoom-value" (click)="resetZoom()" title="Restaurar zoom">{{ zoom() }}%</button>
-          <button type="button" (click)="zoomIn()" [disabled]="zoom() === 180" title="Ampliar" aria-label="Ampliar gráfico"><i class="bi bi-plus-lg"></i></button>
+        <span class="clusters-map__summary">{{ 'author.clusters.summary' | translate: { groups: layout().groups.length, authors: layout().authorCount } }}</span>
+        <div class="clusters-map__zoom" role="group" [attr.aria-label]="'author.clusters.zoomControls' | translate">
+          <button type="button" (click)="zoomOut()" [disabled]="zoom() === 60" [title]="'author.clusters.zoomOut' | translate" [attr.aria-label]="'author.clusters.zoomOut' | translate"><i class="bi bi-dash-lg"></i></button>
+          <button type="button" class="zoom-value" (click)="resetZoom()" [title]="'author.clusters.resetZoom' | translate">{{ zoom() }}%</button>
+          <button type="button" (click)="zoomIn()" [disabled]="zoom() === 180" [title]="'author.clusters.zoomIn' | translate" [attr.aria-label]="'author.clusters.zoomIn' | translate"><i class="bi bi-plus-lg"></i></button>
         </div>
-        <button type="button" class="clusters-map__download" (click)="saveAsPng()"><i class="bi bi-download"></i> Salvar PNG</button>
+        <button type="button" class="clusters-map__download" (click)="saveAsPng()"><i class="bi bi-download"></i> {{ 'author.clusters.savePng' | translate }}</button>
       </div>
     }
   </header>
   @if (layout().groups.length) {
     <div class="clusters-map__viewport">
-      <svg #clusterSvg class="clusters-map__svg" [attr.viewBox]="'0 0 ' + layout().width + ' ' + layout().height" [style.width.%]="zoom()" [style.min-height.px]="layout().height * zoom() / 100" role="img" aria-label="Mapa de conexões entre clusters de autores">
+      <svg #clusterSvg class="clusters-map__svg" [attr.viewBox]="'0 0 ' + layout().width + ' ' + layout().height" [style.width.%]="zoom()" [style.min-height.px]="layout().height * zoom() / 100" role="img" [attr.aria-label]="'author.clusters.overviewAria' | translate">
         <g class="cluster-bridges">
           @for (bridge of layout().bridges; track bridge.id) {
-            <line [attr.x1]="bridge.x1" [attr.y1]="bridge.y1" [attr.x2]="bridge.x2" [attr.y2]="bridge.y2" [attr.stroke-width]="Math.min(5, 1 + bridge.weight * 0.25)"><title>{{ bridge.label }} · {{ bridge.weight }} conexões</title></line>
+            <line [attr.x1]="bridge.x1" [attr.y1]="bridge.y1" [attr.x2]="bridge.x2" [attr.y2]="bridge.y2" [attr.stroke-width]="Math.min(5, 1 + bridge.weight * 0.25)"><title>{{ bridge.label }} · {{ bridge.weight }} {{ 'author.clusters.connections' | translate }}</title></line>
           }
         </g>
         @for (group of layout().groups; track group.id) {
           <g class="cluster-group">
-            <text class="cluster-title" [attr.x]="group.x + group.width / 2" [attr.y]="group.y + 26" [attr.fill]="group.color">{{ group.label }}</text>
-            <text class="cluster-subtitle" [attr.x]="group.x + group.width / 2" [attr.y]="group.y + 45">{{ group.nodes.length }} autores</text>
+            <text class="cluster-title" [attr.x]="group.x + group.width / 2" [attr.y]="group.y + 26" [attr.fill]="group.color">{{ 'author.clusters.cluster' | translate }} {{ group.label }}</text>
+            <text class="cluster-subtitle" [attr.x]="group.x + group.width / 2" [attr.y]="group.y + 45">{{ group.nodes.length }} {{ 'author.clusters.authors' | translate }}</text>
             @for (line of group.lines; track line.id) { <line class="author-link" [attr.x1]="line.x1" [attr.y1]="line.y1" [attr.x2]="line.x2" [attr.y2]="line.y2" [attr.stroke-width]="Math.min(3, 0.7 + line.weight * 0.2)"></line> }
             @for (node of group.nodes; track node.id) {
-              <a [attr.href]="'/v/' + node.id" [attr.aria-label]="'Abrir perfil de ' + node.label">
+              <a [attr.href]="'/v/' + node.id" [attr.aria-label]="('author.clusters.openProfile' | translate) + ' ' + node.label">
                 <circle class="author-node__halo" [attr.cx]="node.x" [attr.cy]="node.y" [attr.r]="node.radius + 5" [attr.stroke]="group.color"></circle>
                 <circle class="author-node" [attr.cx]="node.x" [attr.cy]="node.y" [attr.r]="node.radius" [attr.fill]="group.color"></circle>
                 <text class="author-node__label" [attr.x]="node.x" [attr.y]="node.y + node.radius + 12">{{ node.label }}</text>
-                <title>{{ node.label }} · {{ node.publications }} publicações</title>
+                <title>{{ node.label }} · {{ node.publications }} {{ 'author.clusters.publications' | translate }}</title>
               </a>
             }
           </g>
         }
-        <text class="clusters-map__chart-source" [attr.x]="layout().width - 16" [attr.y]="layout().height - 12">Fonte: Brapci ({{ currentYear }})</text>
+        <text class="clusters-map__chart-source" [attr.x]="layout().width - 16" [attr.y]="layout().height - 12">{{ 'author.clusters.source' | translate }}: Brapci ({{ currentYear }})</text>
       </svg>
     </div>
-    <div class="clusters-map__legend"><span></span> Clique em um autor para abrir seu perfil.</div>
-  } @else { <p class="clusters-map__empty">Nenhum autor com mais de uma publicação foi encontrado.</p> }
+    <div class="clusters-map__legend"><span></span> {{ 'author.clusters.clickAuthor' | translate }}</div>
+  } @else { <p class="clusters-map__empty">{{ 'author.clusters.noRepresentativeAuthors' | translate }}</p> }
 </section>

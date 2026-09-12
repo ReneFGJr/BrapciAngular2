@@ -206,7 +206,12 @@
       "label": "Red de Colaboracion"
     },
     "clusters": {
-      "label": "Clústeres de autores"
+      "label": "Clústeres de autores",
+      "overviewTitle": "Mapa global de clústeres", "authorsWith": "Autores con", "moreThanOnePublication": "más de una publicación", "biggerPoints": "Los puntos mayores indican una mayor producción.",
+      "summary": "{{groups}} clústeres · {{authors}} autores", "groupSummary": "{{groups}} grupos · {{authors}} autores", "cluster": "Clúster", "group": "Grupo", "authors": "autores", "publications": "publicaciones", "connections": "conexiones",
+      "zoomControls": "Controles de zoom", "zoomOut": "Alejar", "zoomIn": "Ampliar", "resetZoom": "Restablecer zoom", "savePng": "Guardar PNG", "source": "Fuente", "clickAuthor": "Haga clic en un autor para abrir su perfil.", "openProfile": "Abrir perfil de",
+      "overviewAria": "Mapa de conexiones entre clústeres de autores", "sankeyAria": "Gráfico Sankey de clústeres y sus autores", "sankeyTitle": "Clústeres de autores", "sankeySubtitle": "Comunidades identificadas por la intensidad de las conexiones de coautoría.",
+      "topAuthorsNote": "Mostrando los 70 autores con mayor intensidad de conexión.", "noRepresentativeAuthors": "No se encontró ningún autor con más de una publicación.", "noClusterData": "No hay datos suficientes para identificar clústeres."
     },
     "citationsGranted": {
       "label": "Citaciones concedidas"

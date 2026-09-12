@@ -1,55 +1,27 @@
 <section class="cluster-sankey" aria-labelledby="cluster-sankey-title">
   <header class="cluster-sankey__header">
-    <div>
-      <h3 id="cluster-sankey-title">Clusters de autores</h3>
-      <p>Comunidades identificadas pela intensidade das conexões de coautoria.</p>
-    </div>
-    @if (layout().groups.length) {
-      <span class="cluster-sankey__summary">
-        {{ layout().groups.length }} grupos · {{ layout().totalAuthors }} autores
-      </span>
-    }
+    <div><h3 id="cluster-sankey-title">{{ 'author.clusters.sankeyTitle' | translate }}</h3><p>{{ 'author.clusters.sankeySubtitle' | translate }}</p></div>
+    @if (layout().groups.length) { <span class="cluster-sankey__summary">{{ 'author.clusters.groupSummary' | translate: { groups: layout().groups.length, authors: layout().totalAuthors } }}</span> }
   </header>
-
   @if (layout().groups.length) {
     <div class="cluster-sankey__viewport">
-      <svg
-        class="cluster-sankey__svg"
-        [attr.viewBox]="'0 0 760 ' + layout().height"
-        [style.min-height.px]="layout().height"
-        role="img"
-        aria-label="Gráfico Sankey dos clusters e seus autores"
-      >
-        <g class="cluster-sankey__links">
-          @for (link of layout().links; track link.id) {
-            <path [attr.d]="link.path" [attr.stroke]="link.color" [attr.stroke-width]="link.width"></path>
-          }
-        </g>
-
+      <svg class="cluster-sankey__svg" [attr.viewBox]="'0 0 760 ' + layout().height" [style.min-height.px]="layout().height" role="img" [attr.aria-label]="'author.clusters.sankeyAria' | translate">
+        <g class="cluster-sankey__links">@for (link of layout().links; track link.id) { <path [attr.d]="link.path" [attr.stroke]="link.color" [attr.stroke-width]="link.width"></path> }</g>
         @for (group of layout().groups; track group.id) {
           <g class="cluster-sankey__group">
             <rect [attr.x]="group.x" [attr.y]="group.y" width="150" [attr.height]="group.height" [attr.fill]="group.color"></rect>
-            <text [attr.x]="group.x + 12" [attr.y]="group.y + 22">{{ group.label }}</text>
-            <text class="cluster-sankey__count" [attr.x]="group.x + 12" [attr.y]="group.y + 40">
-              {{ group.authors.length }} autores
-            </text>
+            <text [attr.x]="group.x + 12" [attr.y]="group.y + 22">{{ 'author.clusters.group' | translate }} {{ group.label }}</text>
+            <text class="cluster-sankey__count" [attr.x]="group.x + 12" [attr.y]="group.y + 40">{{ group.authors.length }} {{ 'author.clusters.authors' | translate }}</text>
           </g>
         }
-
         @for (author of layout().authors; track author.id) {
-          <a [attr.href]="'/v/' + author.id" [attr.aria-label]="'Abrir perfil de ' + author.label">
+          <a [attr.href]="'/v/' + author.id" [attr.aria-label]="('author.clusters.openProfile' | translate) + ' ' + author.label">
             <rect class="cluster-sankey__author-node" [attr.x]="author.x" [attr.y]="author.y" width="8" [attr.height]="author.height"></rect>
-            <text class="cluster-sankey__author-label" [attr.x]="author.x + 16" [attr.y]="author.y + 13">
-              {{ author.label }}
-            </text>
+            <text class="cluster-sankey__author-label" [attr.x]="author.x + 16" [attr.y]="author.y + 13">{{ author.label }}</text>
           </a>
         }
       </svg>
     </div>
-    @if (layout().totalAuthors > layout().authors.length) {
-      <p class="cluster-sankey__note">Exibindo os 70 autores com maior intensidade de conexão.</p>
-    }
-  } @else {
-    <p class="cluster-sankey__empty">Sem dados suficientes para identificar clusters.</p>
-  }
+    @if (layout().totalAuthors > layout().authors.length) { <p class="cluster-sankey__note">{{ 'author.clusters.topAuthorsNote' | translate }}</p> }
+  } @else { <p class="cluster-sankey__empty">{{ 'author.clusters.noClusterData' | translate }}</p> }
 </section>

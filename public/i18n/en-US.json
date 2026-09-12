@@ -140,7 +140,12 @@
         "label": "Collaboration Network"
       },
       "clusters": {
-        "label": "Author Clusters"
+        "label": "Author Clusters",
+        "overviewTitle": "Global cluster map", "authorsWith": "Authors with", "moreThanOnePublication": "more than one publication", "biggerPoints": "Larger points indicate higher output.",
+        "summary": "{{groups}} clusters · {{authors}} authors", "groupSummary": "{{groups}} groups · {{authors}} authors", "cluster": "Cluster", "group": "Group", "authors": "authors", "publications": "publications", "connections": "connections",
+        "zoomControls": "Zoom controls", "zoomOut": "Zoom out", "zoomIn": "Zoom in", "resetZoom": "Reset zoom", "savePng": "Save PNG", "source": "Source", "clickAuthor": "Click an author to open their profile.", "openProfile": "Open profile of",
+        "overviewAria": "Connection map between author clusters", "sankeyAria": "Sankey chart of clusters and their authors", "sankeyTitle": "Author clusters", "sankeySubtitle": "Communities identified by the strength of co-authorship connections.",
+        "topAuthorsNote": "Showing the 70 authors with the strongest connections.", "noRepresentativeAuthors": "No author with more than one publication was found.", "noClusterData": "Insufficient data to identify clusters."
       },
       "citationsGranted": {
         "label": "Granted Citations"

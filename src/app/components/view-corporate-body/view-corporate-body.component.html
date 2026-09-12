@@ -1,12 +1,15 @@
 <article class="corporate-card p-3 p-md-4">
   <header class="corporate-hero mb-4">
-    <div class="corporate-mark">
-      @if (logotype()) {
-        <img [src]="logotype()" [alt]="'Logotipo de ' + name()" />
-      } @else {
-        <i class="bi bi-building" aria-hidden="true"></i>
-      }
-    </div>
+    @if (isAdmin()) {
+      <button type="button" class="corporate-mark corporate-mark-button" (click)="openImagePanel()" title="Enviar imagem da entidade" aria-label="Enviar imagem da entidade">
+        @if (displayedLogotypeUrl()) { <img [src]="displayedLogotypeUrl()" [alt]="'Logotipo de ' + name()" /> } @else { <i class="bi bi-building" aria-hidden="true"></i> }
+        <span class="corporate-mark-edit" aria-hidden="true"><i class="bi bi-camera-fill"></i></span>
+      </button>
+    } @else {
+      <div class="corporate-mark">
+        @if (displayedLogotypeUrl()) { <img [src]="displayedLogotypeUrl()" [alt]="'Logotipo de ' + name()" /> } @else { <i class="bi bi-building" aria-hidden="true"></i> }
+      </div>
+    }
     <div>
       <p class="corporate-kicker mb-1">Entidade coletiva</p>
       <h2 class="corporate-title mb-2">{{ name() }}</h2>
@@ -81,3 +84,23 @@
     }
   </div>
 </article>
+
+@if (isAdmin() && imagePanelOpen()) {
+  <div class="image-panel-backdrop" role="presentation" (click)="closeImagePanel()">
+    <section class="image-panel" role="dialog" aria-modal="true" aria-labelledby="image-panel-title" (click)="$event.stopPropagation()">
+      <header>
+        <h2 id="image-panel-title">Enviar imagem da entidade</h2>
+        <button type="button" class="image-panel-close" [disabled]="imageUploading()" (click)="closeImagePanel()" aria-label="Fechar painel"><i class="bi bi-x-lg"></i></button>
+      </header>
+      <p>Selecione uma imagem para {{ name() }}.</p>
+      <input type="file" class="form-control" accept="image/*" [disabled]="imageUploading()" (change)="selectImage($event)" />
+      @if (imageUploadError()) { <p class="alert alert-danger mt-3 mb-0" role="alert">{{ imageUploadError() }}</p> }
+      <footer>
+        <button type="button" class="btn btn-outline-secondary" [disabled]="imageUploading()" (click)="closeImagePanel()">Cancelar</button>
+        <button type="button" class="btn btn-primary" [disabled]="!selectedImage() || imageUploading()" (click)="uploadImage()">
+          @if (imageUploading()) { <span class="spinner-border spinner-border-sm me-1" aria-hidden="true"></span>Enviando... } @else { Enviar imagem }
+        </button>
+      </footer>
+    </section>
+  </div>
+}

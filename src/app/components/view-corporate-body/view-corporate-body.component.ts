@@ -1,5 +1,10 @@
 import { CommonModule } from '@angular/common';
-import { Component, Input, computed, signal } from '@angular/core';
+import { HttpClient, HttpHeaders } from '@angular/common/http';
+import { Component, Input, computed, inject, signal } from '@angular/core';
+import { toSignal } from '@angular/core/rxjs-interop';
+import { finalize } from 'rxjs';
+import { AuthService } from '../../core/services/auth.service';
+import { API_CONFIG } from '../../core/tokens/api-config.token';
 
 type JsonRecord = Record<string, unknown>;
 type TabId = 'summary' | 'works' | 'metadata' | 'json';
@@ -27,6 +32,11 @@ type CorporateBodyPerson = {
   styleUrl: './view-corporate-body.component.scss',
 })
 export class ViewCorporateBodyComponent {
+  private readonly http = inject(HttpClient);
+  private readonly authService = inject(AuthService);
+  private readonly apiConfig = inject(API_CONFIG);
+  private readonly currentUser = toSignal(this.authService.currentUser$, { initialValue: null });
+
   @Input({ required: true }) data: unknown = null;
 
   readonly activeTab = signal<TabId>('summary');
@@ -46,8 +56,17 @@ export class ViewCorporateBodyComponent {
     this.field(['description', 'Description', 'summary', 'resume', 'about', 'note']),
   );
   readonly website = computed(() => this.urlField(['url', 'URL', 'website', 'Website', 'site']));
-  readonly logotype = computed(() => this.urlField(['hasLogotype', 'logotype', 'logo', 'image']));
-  //readonly logotype = computed(() => this.extractRelation('hasLogotype', true));
+  readonly logotype = computed(() => {
+    const raw = this.extractRelation('hasLogotype') || this.field(['logotype', 'logo', 'image']);
+    return raw === '-' ? '' : this.resolveImageUrl(raw);
+  });
+  readonly uploadedLogotypeUrl = signal('');
+  readonly displayedLogotypeUrl = computed(() => this.uploadedLogotypeUrl() || this.logotype());
+  readonly isAdmin = computed(() => this.currentUser()?.role === 'admin');
+  readonly imagePanelOpen = signal(false);
+  readonly selectedImage = signal<File | null>(null);
+  readonly imageUploading = signal(false);
+  readonly imageUploadError = signal('');
   readonly rorId = computed(() =>
     this.normalizeRorId(this.extractRelation('hasCorporateBodyRORID')),
   );
@@ -62,6 +81,53 @@ export class ViewCorporateBodyComponent {
 
   setTab(tab: TabId): void {
     this.activeTab.set(tab);
+  }
+
+  openImagePanel(): void {
+    if (!this.isAdmin()) return;
+    this.selectedImage.set(null);
+    this.imageUploadError.set('');
+    this.imagePanelOpen.set(true);
+  }
+
+  closeImagePanel(): void {
+    if (this.imageUploading()) return;
+    this.imagePanelOpen.set(false);
+    this.selectedImage.set(null);
+    this.imageUploadError.set('');
+  }
+
+  selectImage(event: Event): void {
+    if (!this.isAdmin()) return;
+    const input = event.target as HTMLInputElement;
+    this.selectedImage.set(input.files?.[0] ?? null);
+    this.imageUploadError.set('');
+  }
+
+  uploadImage(): void {
+    const file = this.selectedImage();
+    const entityId = this.corporateBodyId();
+    if (!this.isAdmin() || !file || !entityId || entityId === '-' || this.imageUploading()) return;
+
+    const body = new FormData();
+    body.append('file', file, file.name);
+    const token = this.currentUser()?.token;
+    const headers = token ? new HttpHeaders({ APIKEY: token }) : undefined;
+    const endpoint = `${this.apiConfig.brapciApiBaseUrl}/upload/image/${encodeURIComponent(entityId)}?property=hasLogotype`;
+
+    this.imageUploading.set(true);
+    this.imageUploadError.set('');
+    this.http.post<Record<string, unknown>>(endpoint, body, { headers })
+      .pipe(finalize(() => this.imageUploading.set(false)))
+      .subscribe({
+        next: (response) => {
+          const returnedUrl = String(response['url'] ?? response['imageUrl'] ?? response['image'] ?? response['fileName'] ?? '').trim();
+          this.uploadedLogotypeUrl.set(returnedUrl ? this.resolveImageUrl(returnedUrl) : URL.createObjectURL(file));
+          this.imagePanelOpen.set(false);
+          this.selectedImage.set(null);
+        },
+        error: () => this.imageUploadError.set('Não foi possível enviar a imagem. Tente novamente.')
+      });
   }
 
   private extractWorks(): CorporateBodyWork[] {
@@ -182,6 +248,14 @@ export class ViewCorporateBodyComponent {
     const value = this.field(keys);
     if (value === '-') return '';
     return /^https?:\/\//i.test(value) ? value : `https://${value}`;
+  }
+
+  private resolveImageUrl(value: string): string {
+    const normalized = value.trim().replace(/^\.\//, '');
+    if (!normalized) return '';
+    if (/^https?:\/\//i.test(normalized)) return normalized;
+    const apiOrigin = new URL(this.apiConfig.brapciApiBaseUrl).origin;
+    return `${apiOrigin}/${normalized.replace(/^\//, '')}`;
   }
 
   private stringValue(value: unknown): string {

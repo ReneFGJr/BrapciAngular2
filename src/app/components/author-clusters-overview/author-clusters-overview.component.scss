@@ -3,6 +3,7 @@
 .clusters-map__header { display: flex; padding: 1.1rem 1.25rem; align-items: flex-start; justify-content: space-between; gap: 1rem; border-bottom: 1px solid var(--theme-line); }
 .clusters-map__header h3 { margin: 0; font-size: 1.15rem; }
 .clusters-map__header p { margin: .25rem 0 0; color: var(--theme-muted); font-size: .85rem; }
+.clusters-map__emphasis { text-decoration: underline; text-underline-offset: .15em; }
 .clusters-map__actions { display: flex; flex-wrap: wrap; align-items: center; justify-content: flex-end; gap: .5rem; }
 .clusters-map__summary { padding: .3rem .65rem; border-radius: 999px; color: var(--theme-hint); background: var(--theme-sand); font-size: .75rem; font-weight: 700; white-space: nowrap; }
 .clusters-map__zoom { display: inline-flex; overflow: hidden; border: 1px solid var(--theme-line); border-radius: .45rem; }

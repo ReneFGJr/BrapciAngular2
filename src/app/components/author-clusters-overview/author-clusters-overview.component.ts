@@ -1,4 +1,5 @@
 import { Component, ElementRef, Input, ViewChild, computed, signal } from '@angular/core';
+import { TranslateModule } from '@ngx-translate/core';
 import type { NetworkGraph, NetworkNode } from '../../core/models/network.model';
 
 type Edge = { source: string; target: string; weight: number };
@@ -11,6 +12,7 @@ type MapLayout = { groups: MapGroup[]; bridges: MapBridge[]; width: number; heig
 @Component({
   selector: 'app-author-clusters-overview',
   standalone: true,
+  imports: [TranslateModule],
   templateUrl: './author-clusters-overview.component.html',
   styleUrl: './author-clusters-overview.component.scss'
 })
@@ -135,7 +137,7 @@ export class AuthorClustersOverviewComponent {
         const target = positions.get(edge.target)!;
         return { id: `${edge.source}-${edge.target}`, x1: source.x, y1: source.y, x2: target.x, y2: target.y, weight: edge.weight };
       });
-      return { id: communityId, label: `Cluster ${String.fromCharCode(65 + groupIndex)}`, color: palette[groupIndex % palette.length], x, y, width: groupWidth, height: groupHeight, nodes: mapNodes, lines };
+      return { id: communityId, label: String.fromCharCode(65 + groupIndex), color: palette[groupIndex % palette.length], x, y, width: groupWidth, height: groupHeight, nodes: mapNodes, lines };
     });
 
     const groupByCommunity = new Map(groups.map((group) => [group.id, group]));

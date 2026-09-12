@@ -1,4 +1,5 @@
 import { Component, Input, computed, signal } from '@angular/core';
+import { TranslateModule } from '@ngx-translate/core';
 import type { NetworkGraph, NetworkNode } from '../../core/models/network.model';
 
 type SankeyAuthor = NetworkNode & {
@@ -38,6 +39,7 @@ type SankeyLayout = {
 @Component({
   selector: 'app-author-clusters-sankey',
   standalone: true,
+  imports: [TranslateModule],
   templateUrl: './author-clusters-sankey.component.html',
   styleUrl: './author-clusters-sankey.component.scss'
 })
@@ -113,7 +115,7 @@ export class AuthorClustersSankeyComponent {
         const contentHeight = Math.max(authorHeight, cursorY - groupStart - authorGap);
         groups.push({
           id: communityId,
-          label: `Grupo ${index + 1}`,
+          label: String(index + 1),
           color,
           value: groupAuthors.reduce((sum, author) => sum + author.value, 0),
           x: 24,
