@@ -40,6 +40,13 @@
   transition: opacity 160ms ease;
 }
 
+.labels a,
+.labels a:hover,
+.labels a:focus,
+.labels a:focus-visible {
+  text-decoration: none !important;
+}
+
 .labels .node-label {
   fill: var(--rede-circle-label, #1e40af);
   font-size: 7.65px;
@@ -57,7 +64,7 @@
 .labels a:hover .node-label,
 .labels a:focus .node-label {
   fill: var(--rede-circle-label-hover, #60a5fa);
-  text-decoration: none;
+  text-decoration: none !important;
 }
 
 .rede-empty {
