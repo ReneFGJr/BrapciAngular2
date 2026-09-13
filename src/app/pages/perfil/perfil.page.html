@@ -21,7 +21,19 @@
               </div>
             </header>
 
-            <section class="perfil-section mb-4" aria-label="Dados do usuario">
+            <nav class="perfil-tabs mb-4" role="tablist" [attr.aria-label]="'profile.tabsLabel' | translate">
+              <button type="button" role="tab" [class.active]="activeTab() === 'session'" [attr.aria-selected]="activeTab() === 'session'" (click)="setTab('session')">
+                <i class="bi bi-person-vcard" aria-hidden="true"></i> {{ 'profile.sessionTab' | translate }}
+              </button>
+              @if (isAdmin()) {
+                <button type="button" role="tab" [class.active]="activeTab() === 'monitor'" [attr.aria-selected]="activeTab() === 'monitor'" (click)="setTab('monitor')">
+                  <i class="bi bi-activity" aria-hidden="true"></i> {{ 'profile.monitorTab' | translate }}
+                </button>
+              }
+            </nav>
+
+            @if (activeTab() === 'session') {
+            <section class="perfil-section mb-4" [attr.aria-label]="'profile.sessionTab' | translate">
               <dl class="perfil-grid mb-0">
                 <div class="perfil-item">
                   <dt>{{ 'profile.name' | translate }}</dt>
@@ -42,7 +54,7 @@
               </dl>
             </section>
 
-            <section class="perfil-section mb-4" aria-label="Token de API do usuario">
+            <section class="perfil-section mb-4" [attr.aria-label]="'profile.apiTokenTitle' | translate">
               <h2 class="h5 mb-3">{{ 'profile.apiTokenTitle' | translate }}</h2>
 
               <div class="perfil-api-row">
@@ -70,7 +82,7 @@
               }
             </section>
 
-            <section class="perfil-section mb-4" aria-label="Dados da sessao local">
+            <section class="perfil-section mb-4" [attr.aria-label]="'profile.localUserTitle' | translate">
               <h2 class="h5 mb-3">{{ 'profile.localUserTitle' | translate }}</h2>
 
               @if (localUser(); as localUserData) {
@@ -123,6 +135,29 @@
                 {{ 'auth.logout' | translate }}
               </button>
             </div>
+            } @else if (isAdmin()) {
+              <section class="perfil-section perfil-monitor" aria-labelledby="perfil-monitor-title">
+                <div class="perfil-monitor-header">
+                  <span class="perfil-monitor-icon"><i class="bi bi-display" aria-hidden="true"></i></span>
+                  <div>
+                    <h2 id="perfil-monitor-title" class="h5 mb-1">{{ 'profile.monitorTab' | translate }}</h2>
+                    <p class="mb-0">{{ 'profile.monitorDescription' | translate }}</p>
+                  </div>
+                </div>
+                <div class="perfil-monitor-actions">
+                  <a class="perfil-monitor-link" routerLink="/monitor">
+                    <i class="bi bi-pc-display-horizontal" aria-hidden="true"></i>
+                    <span><strong>{{ 'profile.computers' | translate }}</strong><small>{{ 'profile.computersDescription' | translate }}</small></span>
+                    <i class="bi bi-arrow-right" aria-hidden="true"></i>
+                  </a>
+                  <a class="perfil-monitor-link" routerLink="/status">
+                    <i class="bi bi-heart-pulse" aria-hidden="true"></i>
+                    <span><strong>{{ 'profile.status' | translate }}</strong><small>{{ 'profile.statusDescription' | translate }}</small></span>
+                    <i class="bi bi-arrow-right" aria-hidden="true"></i>
+                  </a>
+                </div>
+              </section>
+            }
           }
         }
       </div>

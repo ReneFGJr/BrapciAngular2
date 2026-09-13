@@ -376,7 +376,16 @@
     "localUserTitle": "Datos de sesion local",
     "sessionExpiresAt": "Expira en",
     "noLocalUser": "No se encontraron datos de sesion local.",
-    "openExternal": "Abrir perfil externo"
+    "openExternal": "Abrir perfil externo",
+    "tabsLabel": "Secciones del perfil", "sessionTab": "Datos de la sesión", "monitorTab": "Monitor",
+    "monitorDescription": "Acceda a las herramientas de supervisión de la infraestructura Brapci.", "computers": "Computadoras", "computersDescription": "Ver computadoras encendidas y apagadas",
+    "status": "Estado", "statusDescription": "Acceder al estado de los servicios"
+  },
+  "monitor": {
+    "kicker": "Infraestructura", "title": "Monitor de computadoras", "description": "Estado actual de las computadoras y servidores conectados a Brapci.",
+    "refresh": "Actualizar", "availableNow": "Disponibles ahora", "onlineComputers": "Computadoras encendidas", "loading": "Consultando computadoras...",
+    "error": "No fue posible consultar las computadoras en este momento.", "tryAgain": "Intentar de nuevo", "online": "Encendidas", "offline": "Apagadas", "total": "Total",
+    "updatedAt": "Actualizado a las {{time}}", "onlineStatus": "En línea", "noneOnline": "No hay computadoras encendidas.", "showOffline": "Mostrar computadoras apagadas", "offlineStatus": "Fuera de línea"
   },
   "menu": {
     "tools": "Herramientas",

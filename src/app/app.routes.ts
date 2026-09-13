@@ -135,6 +135,10 @@ export const routes: Routes = [
       import('./pages/statistics/statistics.page').then((m) => m.StatisticsPage),
   },
   {
+    path: 'monitor',
+    loadComponent: () => import('./pages/monitor/monitor.page').then((m) => m.MonitorPage),
+  },
+  {
     path: '',
     loadComponent: () => import('./pages/home/home.page').then((m) => m.HomePage),
   },

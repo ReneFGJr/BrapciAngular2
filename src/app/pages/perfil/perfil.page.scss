@@ -21,6 +21,11 @@
   gap: 0.9rem;
 }
 
+.perfil-tabs { display: flex; gap: .5rem; border-bottom: 1px solid var(--theme-line); }
+.perfil-tabs button { display: inline-flex; margin-bottom: -1px; padding: .7rem 1rem; align-items: center; gap: .45rem; border: 0; border-bottom: 3px solid transparent; color: var(--theme-muted); background: transparent; font-weight: 600; }
+.perfil-tabs button:hover { color: var(--theme-link); }
+.perfil-tabs button.active { border-bottom-color: var(--theme-link); color: var(--theme-link); }
+
 .perfil-avatar {
   align-items: center;
   background: #483d8b;
@@ -103,6 +108,16 @@
   margin-top: 0.55rem;
 }
 
+.perfil-monitor-header { display: flex; align-items: center; gap: .85rem; }
+.perfil-monitor-header p { color: var(--theme-muted); }
+.perfil-monitor-icon { display: grid; width: 3rem; height: 3rem; place-items: center; border-radius: .75rem; color: var(--theme-link); background: var(--theme-sand); font-size: 1.3rem; }
+.perfil-monitor-actions { display: grid; margin-top: 1.25rem; gap: .8rem; grid-template-columns: repeat(2, minmax(0, 1fr)); }
+.perfil-monitor-link { display: grid; padding: 1rem; align-items: center; grid-template-columns: auto 1fr auto; gap: .8rem; border: 1px solid var(--theme-line); border-radius: .75rem; color: var(--theme-ink); background: var(--theme-card-bg); text-decoration: none; transition: border-color .2s ease, transform .2s ease; }
+.perfil-monitor-link > i:first-child { color: var(--theme-link); font-size: 1.35rem; }
+.perfil-monitor-link span { display: grid; gap: .12rem; }
+.perfil-monitor-link small { color: var(--theme-muted); }
+.perfil-monitor-link:hover, .perfil-monitor-link:focus-visible { border-color: var(--theme-link); color: var(--theme-ink); transform: translateY(-2px); }
+
 :host-context(body.theme-master.theme-dark) {
   .perfil-wrap,
   .perfil-wrap h1,
@@ -182,3 +197,5 @@
     color: var(--theme-ink);
   }
 }
+
+@media (max-width: 575.98px) { .perfil-tabs { overflow-x: auto; } .perfil-tabs button { white-space: nowrap; } .perfil-monitor-actions { grid-template-columns: 1fr; } }

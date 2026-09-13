@@ -1,0 +1,68 @@
+<main class="monitor-page">
+  <section class="monitor-hero">
+    <div class="container">
+      <a class="monitor-back" routerLink="/"><i class="bi bi-arrow-left" aria-hidden="true"></i> Brapci</a>
+      <div class="monitor-heading">
+        <div>
+          <p class="monitor-kicker">{{ 'monitor.kicker' | translate }}</p>
+          <h1>{{ 'monitor.title' | translate }}</h1>
+          <p class="monitor-description">{{ 'monitor.description' | translate }}</p>
+        </div>
+        <button type="button" class="refresh-button" [disabled]="refreshing()" (click)="loadComputers()">
+          <i class="bi bi-arrow-clockwise" [class.spinning]="refreshing()" aria-hidden="true"></i>
+          {{ 'monitor.refresh' | translate }}
+        </button>
+      </div>
+    </div>
+  </section>
+
+  <section class="container monitor-content" aria-live="polite">
+    @if (loading()) {
+      <div class="loading-heading">
+        <div><p class="section-kicker">{{ 'monitor.availableNow' | translate }}</p><h2>{{ 'monitor.onlineComputers' | translate }}</h2></div>
+        <span class="loading-indicator"><i class="bi bi-arrow-clockwise spinning" aria-hidden="true"></i> {{ 'monitor.loading' | translate }}</span>
+      </div>
+      <div class="computer-grid" [attr.aria-label]="'monitor.loading' | translate">
+        @for (placeholder of [1, 2, 3, 4, 5, 6]; track placeholder) {
+          <article class="computer-card computer-card--loading" aria-hidden="true">
+            <span class="skeleton skeleton-icon"></span>
+            <span class="skeleton-lines"><i></i><i></i></span>
+            <span class="skeleton skeleton-badge"></span>
+          </article>
+        }
+      </div>
+    } @else if (error()) {
+      <div class="monitor-state monitor-state--error"><i class="bi bi-exclamation-triangle" aria-hidden="true"></i><p>{{ error() | translate }}</p><button class="btn btn-primary" (click)="loadComputers()">{{ 'monitor.tryAgain' | translate }}</button></div>
+    } @else {
+      <div class="monitor-summary">
+        <article class="summary-card summary-card--online"><span><i class="bi bi-check-circle-fill"></i> {{ 'monitor.online' | translate }}</span><strong>{{ online().length }}</strong></article>
+        <article class="summary-card summary-card--offline"><span><i class="bi bi-x-circle-fill"></i> {{ 'monitor.offline' | translate }}</span><strong>{{ offline().length }}</strong></article>
+        <article class="summary-card"><span><i class="bi bi-pc-display"></i> {{ 'monitor.total' | translate }}</span><strong>{{ computers().length }}</strong></article>
+      </div>
+
+      <div class="section-heading"><div><p class="section-kicker">{{ 'monitor.availableNow' | translate }}</p><h2>{{ 'monitor.onlineComputers' | translate }}</h2></div>@if (updatedAt()) { <small>{{ 'monitor.updatedAt' | translate: { time: (updatedAt() | date:'HH:mm:ss') } }}</small> }</div>
+      @if (online().length) {
+        <div class="computer-grid">
+          @for (computer of online(); track computer.ip) {
+            <article class="computer-card computer-card--online">
+              <div class="computer-icon"><i class="bi bi-pc-display-horizontal" aria-hidden="true"></i><span class="status-dot"></span></div>
+              <div><h3>{{ computer.server }}</h3><p><i class="bi bi-hdd-network"></i> {{ computer.ip }}</p></div>
+              <span class="status-badge">{{ 'monitor.onlineStatus' | translate }}</span>
+            </article>
+          }
+        </div>
+      } @else { <div class="empty-online"><i class="bi bi-wifi-off"></i><p>{{ 'monitor.noneOnline' | translate }}</p></div> }
+
+      @if (offline().length) {
+        <details class="offline-section" open>
+          <summary>{{ 'monitor.showOffline' | translate }} <span>{{ offline().length }}</span></summary>
+          <div class="computer-grid mt-3">
+            @for (computer of offline(); track computer.ip) {
+              <article class="computer-card computer-card--offline"><div class="computer-icon"><i class="bi bi-pc-display-horizontal"></i></div><div><h3>{{ computer.server }}</h3><p><i class="bi bi-hdd-network"></i> {{ computer.ip }}</p></div><span class="status-badge">{{ 'monitor.offlineStatus' | translate }}</span></article>
+            }
+          </div>
+        </details>
+      }
+    }
+  </section>
+</main>

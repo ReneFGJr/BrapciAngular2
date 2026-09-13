@@ -288,7 +288,16 @@
     "localUserTitle": "Local session data",
     "sessionExpiresAt": "Expires at",
     "noLocalUser": "No local session data found.",
-    "openExternal": "Open external profile"
+    "openExternal": "Open external profile",
+    "tabsLabel": "Profile sections", "sessionTab": "Session Data", "monitorTab": "Monitor",
+    "monitorDescription": "Access Brapci infrastructure monitoring tools.", "computers": "Computers", "computersDescription": "View online and offline computers",
+    "status": "Status", "statusDescription": "View service status"
+  },
+  "monitor": {
+    "kicker": "Infrastructure", "title": "Computer monitor", "description": "Current status of computers and servers connected to Brapci.",
+    "refresh": "Refresh", "availableNow": "Available now", "onlineComputers": "Online computers", "loading": "Checking computers...",
+    "error": "Unable to check computers at this time.", "tryAgain": "Try again", "online": "Online", "offline": "Offline", "total": "Total",
+    "updatedAt": "Updated at {{time}}", "onlineStatus": "Online", "noneOnline": "No computers are online.", "showOffline": "Show offline computers", "offlineStatus": "Offline"
   },
   "adminArea": {
     "eyebrow": "Administration area",

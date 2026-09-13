@@ -19,6 +19,8 @@ export class PerfilPage {
 
   readonly currentUser = toSignal(this.authService.currentUser$, { initialValue: null });
   readonly isLogged = computed(() => !!this.currentUser());
+  readonly isAdmin = computed(() => this.currentUser()?.role === 'admin');
+  readonly activeTab = signal<'session' | 'monitor'>('session');
   readonly copyStatus = signal<'idle' | 'success' | 'error'>('idle');
   readonly localUser = computed(() => {
     this.currentUser();
@@ -37,6 +39,11 @@ export class PerfilPage {
     const token = this.userApiToken();
     return token ? `${this.externalProfileBaseUrl}${encodeURIComponent(token)}` : '';
   });
+
+  setTab(tab: 'session' | 'monitor'): void {
+    if (tab === 'monitor' && !this.isAdmin()) return;
+    this.activeTab.set(tab);
+  }
 
   private resetCopyStatus(): void {
     if (typeof window === 'undefined') {
