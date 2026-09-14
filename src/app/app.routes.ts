@@ -3,6 +3,11 @@ import { adminGuard } from './core/guards/admin.guard';
 
 export const routes: Routes = [
   {
+    path: '501',
+    title: 'Erro 501 | Brapci',
+    loadComponent: () => import('./pages/error-501/error-501.page').then((m) => m.Error501Page),
+  },
+  {
     path: 'chat',
     loadChildren: () => import('./chat/chat.routes').then((m) => m.CHAT_ROUTES),
   },

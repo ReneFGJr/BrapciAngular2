@@ -1,0 +1,7 @@
+{
+  "version": 3,
+  "sources": ["src/app/core/tokens/api-config.token.ts"],
+  "sourcesContent": ["import { InjectionToken } from '@angular/core';\r\n\r\nexport interface ApiConfig {\r\n  brapciApiBaseUrl: string;\r\n  authApiBaseUrl: string;\r\n  aiApiBaseUrl: string;\r\n}\r\n\r\nexport const API_CONFIG = new InjectionToken<ApiConfig>('API_CONFIG');\r\n"],
+  "mappings": ";;;;;;AAQO,IAAM,aAAa,IAAI,eAA0B,YAAY;",
+  "names": []
+}

@@ -1,0 +1,7 @@
+{
+  "version": 3,
+  "sources": ["src/app/pages/home/home.page.ts"],
+  "sourcesContent": ["\n    .loading-screen {\n      min-height: 60vh;\n      display: grid;\n      place-items: center;\n      text-align: center;\n      color: var(--bs-body-color);\n    }\n    p { font-size: 1.25rem; }\n    @media (prefers-reduced-motion: reduce) {\n      .spinner-border { animation: none; }\n    }\n  "],
+  "mappings": ";AACI,CAAA;AACE,cAAA;AACA,WAAA;AACA,eAAA;AACA,cAAA;AACA,SAAA,IAAA;;AAEF;AAAI,aAAA;;AACJ,OAAA,CAAA,sBAAA,EAAA;AACE,GAAA;AAAkB,eAAA;;;",
+  "names": []
+}

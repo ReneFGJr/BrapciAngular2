@@ -5,6 +5,7 @@ import { provideRouter } from '@angular/router';
 import { TRANSLATE_HTTP_LOADER_CONFIG, TranslateHttpLoader } from '@ngx-translate/http-loader';
 import { TranslateLoader, TranslateModule } from '@ngx-translate/core';
 
+import { homeConnectionInterceptor } from './core/interceptors/home-connection.interceptor';
 import { routes } from './app.routes';
 import { apiLoggingInterceptor } from './core/interceptors/api-logging.interceptor';
 import { authInterceptor } from './core/interceptors/auth.interceptor';
@@ -16,7 +17,7 @@ export const appConfig: ApplicationConfig = {
     provideZoneChangeDetection({ eventCoalescing: true }),
     provideRouter(routes),
     provideClientHydration(withEventReplay()),
-    provideHttpClient(withFetch(), withInterceptors([authInterceptor, apiLoggingInterceptor])),
+    provideHttpClient(withFetch(), withInterceptors([homeConnectionInterceptor, authInterceptor, apiLoggingInterceptor])),
     importProvidersFrom(
       TranslateModule.forRoot({
         fallbackLang: 'pt-br',
