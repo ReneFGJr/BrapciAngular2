@@ -1,0 +1,143 @@
+<section class="normalize-wrap py-4" aria-labelledby="normalize-title">
+  <div class="container">
+    <app-breadcrumbs
+      [labels]="{ tools: 'Ferramentas', normalize_cites: 'Normalização de referências' }"
+    ></app-breadcrumbs>
+
+    <div class="normalize-card p-4 p-md-5">
+      <p class="normalize-eyebrow mb-2">Ferramentas bibliográficas</p>
+      <h1 id="normalize-title" class="h2 mb-2">Normalização de referências</h1>
+      <p class="normalize-subtitle mb-4">
+        Cole suas referências, mantenha os destaques necessários e escolha a norma desejada.
+      </p>
+
+      <form (ngSubmit)="normalize()">
+        <fieldset class="mb-4">
+          <legend class="h6 mb-2">Norma bibliográfica</legend>
+          <div class="standard-options" aria-label="Escolha a norma bibliográfica">
+            @for (item of standards; track item) {
+              <label class="standard-option" [class.selected]="standard === item">
+                <input
+                  type="radio"
+                  name="standard"
+                  [value]="item"
+                  [(ngModel)]="standard"
+                  [disabled]="loading"
+                />
+                <span>{{ item }}</span>
+              </label>
+            }
+          </div>
+        </fieldset>
+
+        <div class="mb-3">
+          <label id="references-label" class="form-label fw-semibold">Referências</label>
+          <div class="editor-shell">
+            <div class="editor-toolbar" role="toolbar" aria-label="Formatação do texto">
+              <button
+                type="button"
+                class="format-button fw-bold"
+                title="Negrito"
+                aria-label="Aplicar negrito"
+                [disabled]="loading"
+                (mousedown)="format('bold', $event)"
+              >
+                B
+              </button>
+              <button
+                type="button"
+                class="format-button fst-italic"
+                title="Itálico"
+                aria-label="Aplicar itálico"
+                [disabled]="loading"
+                (mousedown)="format('italic', $event)"
+              >
+                I
+              </button>
+            </div>
+            <div
+              #editor
+              class="rich-editor"
+              contenteditable="true"
+              role="textbox"
+              aria-labelledby="references-label"
+              aria-multiline="true"
+              data-placeholder="Digite ou cole uma ou mais referências aqui"
+              [attr.contenteditable]="loading ? 'false' : 'true'"
+              (input)="updateText($event)"
+            ></div>
+          </div>
+          <div class="form-text">Selecione um trecho para aplicar negrito ou itálico.</div>
+        </div>
+
+        <button type="submit" class="btn btn-primary" [disabled]="!hasText() || loading">
+          @if (loading) {
+            <span class="spinner-border spinner-border-sm me-2" aria-hidden="true"></span>
+            Normalizando...
+          } @else {
+            Normalizar referências
+          }
+        </button>
+      </form>
+
+      <section class="result mt-4" aria-live="polite" aria-labelledby="result-title">
+        <h2 id="result-title" class="h5 mb-3">Resultado</h2>
+        @if (error && result === null) {
+          <div class="alert alert-danger mb-0" role="alert">{{ error }}</div>
+        } @else if (result !== null || rawResponse) {
+          @if (error) {
+            <div class="alert alert-warning" role="alert">{{ error }}</div>
+          }
+          <div class="result-tabs" role="tablist" aria-label="Visualização do retorno">
+            <button
+              type="button"
+              id="result-tab"
+              class="result-tab"
+              role="tab"
+              [class.active]="activeTab === 'result'"
+              [attr.aria-selected]="activeTab === 'result'"
+              aria-controls="result-panel"
+              (click)="selectTab('result')"
+            >
+              Resultado
+            </button>
+            <button
+              type="button"
+              id="json-tab"
+              class="result-tab"
+              role="tab"
+              [class.active]="activeTab === 'json'"
+              [attr.aria-selected]="activeTab === 'json'"
+              aria-controls="json-panel"
+              (click)="selectTab('json')"
+            >
+              JSON
+            </button>
+          </div>
+
+          @if (activeTab === 'result') {
+            <div id="result-panel" role="tabpanel" aria-labelledby="result-tab">
+              @if (resultHtml(); as html) {
+                <div class="result-content" [innerHTML]="html"></div>
+              } @else {
+                <p class="result-content mb-0 text-body-secondary">
+                  A resposta não contém um resultado textual para exibição.
+                </p>
+              }
+            </div>
+          } @else {
+            <div id="json-panel" role="tabpanel" aria-labelledby="json-tab">
+              @if (result !== null) {
+                <pre class="result-content result-json mb-0">{{ result | json }}</pre>
+              } @else {
+                <pre class="result-content result-json mb-0">{{ rawResponse }}</pre>
+              }
+            </div>
+          }
+        } @else {
+          <p class="text-body-secondary mb-0">As referências normalizadas serão exibidas aqui.</p>
+        }
+      </section>
+    </div>
+  </div>
+</section>

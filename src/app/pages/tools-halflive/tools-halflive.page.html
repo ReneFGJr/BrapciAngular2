@@ -1,0 +1,257 @@
+<section class="halflive-wrap py-4" aria-labelledby="halflive-title">
+  <div class="container">
+    <app-breadcrumbs
+      [labels]="{ tools: 'Ferramentas', halflive: 'Análise das citações (meia-vida)' }"
+    ></app-breadcrumbs>
+
+    <div class="halflive-card p-4 p-md-5">
+      <p class="halflive-eyebrow mb-2">Ferramentas bibliográficas</p>
+      <h1 id="halflive-title" class="h2 mb-2">Análise das citações (meia-vida)</h1>
+      <p class="halflive-subtitle mb-4">
+        Insira as referências citadas para calcular e analisar a meia-vida da literatura.
+      </p>
+
+      <form (ngSubmit)="analyze()">
+        <div class="mb-3">
+          <label for="citations" class="form-label fw-semibold">Citações</label>
+          <textarea
+            id="citations"
+            name="citations"
+            class="form-control"
+            rows="15"
+            [(ngModel)]="citations"
+            [disabled]="loading"
+            placeholder="Digite ou cole as citações, preferencialmente uma por linha"
+            required
+          ></textarea>
+        </div>
+
+        <button type="submit" class="btn btn-primary" [disabled]="!citations.trim() || loading">
+          @if (loading) {
+            <span class="spinner-border spinner-border-sm me-2" aria-hidden="true"></span>
+            Analisando...
+          } @else {
+            Analisar citações
+          }
+        </button>
+      </form>
+
+      <section class="analysis-result mt-4" aria-live="polite" aria-labelledby="result-title">
+        <h2 id="result-title" class="h5 mb-3">Resultado</h2>
+
+        @if (error && result === null) {
+          <div class="alert alert-danger mb-0" role="alert">{{ error }}</div>
+        } @else if (result !== null || rawResponse) {
+          @if (error) {
+            <div class="alert alert-warning" role="alert">{{ error }}</div>
+          }
+
+          <div class="result-tabs" role="tablist" aria-label="Visualização do retorno">
+            <button
+              type="button"
+              class="result-tab"
+              role="tab"
+              [class.active]="activeTab === 'result'"
+              [attr.aria-selected]="activeTab === 'result'"
+              (click)="activeTab = 'result'"
+            >
+              Resultado
+            </button>
+            <button
+              type="button"
+              class="result-tab"
+              role="tab"
+              [class.active]="activeTab === 'json'"
+              [attr.aria-selected]="activeTab === 'json'"
+              (click)="activeTab = 'json'"
+            >
+              JSON
+            </button>
+          </div>
+
+          @if (activeTab === 'result') {
+            @if (analysisData(); as data) {
+              <div class="analysis-dashboard">
+                <div class="summary-grid">
+                  <article class="half-life-card">
+                    <span class="summary-label">Meia-vida da literatura</span>
+                    <strong class="half-life-value">
+                      {{ data.meia_vida === null ? '—' : data.meia_vida }}
+                    </strong>
+                    <span class="half-life-unit">{{ data.meia_vida === 1 ? 'ano' : 'anos' }}</span>
+                    <small>Ano mediano: {{ data.ano_mediano ?? 'não identificado' }}</small>
+                  </article>
+
+                  <div class="metric-grid">
+                    <article class="metric-card">
+                      <span>Total de referências</span>
+                      <strong>{{ data.total_referencias }}</strong>
+                    </article>
+                    <article class="metric-card metric-card-success">
+                      <span>Com ano identificado</span>
+                      <strong>{{ data.referencias_com_ano }}</strong>
+                    </article>
+                    <article class="metric-card metric-card-warning">
+                      <span>Sem ano identificado</span>
+                      <strong>{{ data.referencias_sem_ano }}</strong>
+                    </article>
+                    <article class="metric-card">
+                      <span>Período das publicações</span>
+                      <strong class="period-value">
+                        {{ data.ano_mais_antigo ?? '—' }}–{{ data.ano_mais_recente ?? '—' }}
+                      </strong>
+                    </article>
+                  </div>
+                </div>
+
+                <aside class="machine-disclaimer" role="note" aria-label="Aviso sobre o processamento">
+                  <i class="bi bi-exclamation-triangle-fill" aria-hidden="true"></i>
+                  <div>
+                    <strong>Aviso sobre o processamento</strong>
+                    <p class="mb-0">
+                      Esta análise é realizada automaticamente por máquinas e podem ocorrer erros
+                      na interpretação dos dados. Recomendamos revisar os resultados antes de
+                      utilizá-los.
+                    </p>
+                  </div>
+                </aside>
+
+                <section class="dashboard-section" aria-labelledby="typologies-title">
+                  <div class="section-heading">
+                    <div>
+                      <p class="section-kicker">Composição</p>
+                      <h3 id="typologies-title" class="h5 mb-0">Tipologias das fontes</h3>
+                    </div>
+                  </div>
+                  <div class="typology-grid">
+                    @for (item of typologyEntries(data); track item.key) {
+                      <article class="typology-card" [class.is-empty]="item.value.quantidade === 0">
+                        <div class="typology-heading">
+                          <span>{{ item.label }}</span>
+                          <strong>{{ item.value.quantidade }}</strong>
+                        </div>
+                        <div
+                          class="progress typology-progress"
+                          role="progressbar"
+                          [attr.aria-label]="item.label"
+                          [attr.aria-valuenow]="item.value.percentual"
+                          aria-valuemin="0"
+                          aria-valuemax="100"
+                        >
+                          <div
+                            class="progress-bar"
+                            [style.width.%]="item.value.percentual"
+                          ></div>
+                        </div>
+                        <small>{{ item.value.percentual | number: '1.0-2' }}%</small>
+                      </article>
+                    }
+                  </div>
+                </section>
+
+                <section class="dashboard-section" aria-labelledby="languages-title">
+                  <div class="section-heading">
+                    <div>
+                      <p class="section-kicker">Idiomas</p>
+                      <h3 id="languages-title" class="h5 mb-0">Idioma das referências</h3>
+                    </div>
+                  </div>
+                  <div class="language-grid">
+                    @for (item of languageEntries(data); track item.key) {
+                      <article class="language-card">
+                        @if (item.flag) {
+                          <img class="language-flag" [src]="item.flag" [alt]="'Bandeira: ' + item.label" />
+                        } @else {
+                          <span class="unknown-language" aria-hidden="true">?</span>
+                        }
+                        <div class="language-info">
+                          <strong>{{ item.label }}</strong>
+                          <span>{{ item.value.percentual | number: '1.0-2' }}% das referências</span>
+                        </div>
+                        <strong class="language-count">{{ item.value.quantidade }}</strong>
+                      </article>
+                    }
+                  </div>
+                </section>
+
+                <section class="dashboard-section" aria-labelledby="years-title">
+                  <div class="section-heading">
+                    <div>
+                      <p class="section-kicker">Cronologia</p>
+                      <h3 id="years-title" class="h5 mb-0">Distribuição por ano</h3>
+                    </div>
+                    <span class="current-year">Ano atual: {{ data.ano_atual }}</span>
+                  </div>
+                  @if (yearEntries(data).length) {
+                    <div class="year-list">
+                      @for (item of yearEntries(data); track item.year) {
+                        <div class="year-item">
+                          <strong>{{ item.year }}</strong>
+                          <div class="year-track">
+                            <span
+                              [style.width.%]="(item.count / data.referencias_com_ano) * 100"
+                            ></span>
+                          </div>
+                          <span>{{ item.count }}</span>
+                        </div>
+                      }
+                    </div>
+                  } @else {
+                    <p class="text-body-secondary mb-0">Nenhum ano foi identificado.</p>
+                  }
+                </section>
+
+                <section class="dashboard-section" aria-labelledby="references-title">
+                  <div class="section-heading">
+                    <div>
+                      <p class="section-kicker">Detalhamento</p>
+                      <h3 id="references-title" class="h5 mb-0">Referências analisadas</h3>
+                    </div>
+                  </div>
+                  <div class="table-responsive">
+                    <table class="table references-table align-middle mb-0">
+                      <thead>
+                        <tr>
+                          <th scope="col">Referência</th>
+                          <th scope="col">Tipologia</th>
+                          <th scope="col">Idioma</th>
+                          <th scope="col">Ano</th>
+                          <th scope="col">Idade</th>
+                        </tr>
+                      </thead>
+                      <tbody>
+                        @for (reference of data.referencias; track $index) {
+                          <tr>
+                            <td>{{ reference.referencia }}</td>
+                            <td>
+                              <span class="type-badge">
+                                {{ reference.tipologia.replaceAll('_', ' ') }}
+                              </span>
+                            </td>
+                            <td>{{ reference.idioma?.replaceAll('_', ' ') || '—' }}</td>
+                            <td>{{ reference.ano ?? '—' }}</td>
+                            <td>
+                              {{ reference.idade === null ? '—' : reference.idade + ' anos' }}
+                            </td>
+                          </tr>
+                        }
+                      </tbody>
+                    </table>
+                  </div>
+                </section>
+              </div>
+            } @else if (resultText(); as text) {
+              <div class="result-content">{{ text }}</div>
+            } @else {
+              <pre class="result-content mb-0">{{ result | json }}</pre>
+            }
+          } @else {
+            <pre class="result-content result-json mb-0">{{ result | json }}</pre>
+          }
+        } @else {
+          <p class="text-body-secondary mb-0">O resultado da análise será exibido aqui.</p>
+        }
+      </section>
+    </div>
+  </div>
+</section>

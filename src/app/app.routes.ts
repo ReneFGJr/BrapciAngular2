@@ -96,6 +96,18 @@ export const routes: Routes = [
       import('./pages/tools-term4net/tools-term4net.page').then((m) => m.ToolsTerm4netPage),
   },
   {
+    path: 'tools/normalize_cites',
+    loadComponent: () =>
+      import('./pages/tools-normalize-cites/tools-normalize-cites.page').then(
+        (m) => m.ToolsNormalizeCitesPage,
+      ),
+  },
+  {
+    path: 'tools/halflive',
+    loadComponent: () =>
+      import('./pages/tools-halflive/tools-halflive.page').then((m) => m.ToolsHalflivePage),
+  },
+  {
     path: 'tools_bibliografics',
     loadComponent: () =>
       import('./pages/tools-bibliografics/tools-bibliografics.page').then(

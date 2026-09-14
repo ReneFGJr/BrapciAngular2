@@ -28,3 +28,16 @@
 .tool-item p {
   color: var(--theme-hint);
 }
+
+.tool-item-link {
+  color: inherit;
+  text-decoration: none;
+  transition: border-color 0.2s ease, transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.tool-item-link:hover,
+.tool-item-link:focus-visible {
+  border-color: var(--theme-link);
+  box-shadow: 0 0.35rem 1rem rgb(0 0 0 / 8%);
+  transform: translateY(-2px);
+}

@@ -424,7 +424,9 @@
       "card1Title": "Normalizacao de referencias",
       "card1Text": "Padronize referencias segundo normas academicas e exporte em formatos comuns.",
       "card2Title": "Gerador de citacoes",
-      "card2Text": "Monte citacoes diretas e indiretas com base em metadados de artigos."
+      "card2Text": "Monte citacoes diretas e indiretas com base em metadados de artigos.",
+      "card3Title": "Análise das citações (meia-vida)",
+      "card3Text": "Analise as referências citadas e estime a meia-vida da literatura."
     },
     "bibliometric": {
       "title": "Ferramentas bibliometricas",

@@ -421,7 +421,9 @@
       "card1Title": "Reference normalization",
       "card1Text": "Standardize references according to academic styles and export to common formats.",
       "card2Title": "Citation generator",
-      "card2Text": "Build direct and indirect citations from article metadata."
+      "card2Text": "Build direct and indirect citations from article metadata.",
+      "card3Title": "Citation analysis (half-life)",
+      "card3Text": "Analyze cited references and estimate the literature half-life."
     },
     "bibliometric": {
       "title": "Bibliometric tools",

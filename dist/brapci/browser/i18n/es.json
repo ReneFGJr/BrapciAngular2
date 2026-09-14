@@ -421,7 +421,9 @@
       "card1Title": "Normalizacion de referencias",
       "card1Text": "Estandarice referencias segun normas academicas y exporte en formatos comunes.",
       "card2Title": "Generador de citas",
-      "card2Text": "Construya citas directas e indirectas a partir de metadatos de articulos."
+      "card2Text": "Construya citas directas e indirectas a partir de metadatos de articulos.",
+      "card3Title": "Análisis de citas (vida media)",
+      "card3Text": "Analice las referencias citadas y estime la vida media de la literatura."
     },
     "bibliometric": {
       "title": "Herramientas bibliometricas",

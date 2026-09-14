@@ -1,11 +1,12 @@
 import { CommonModule } from '@angular/common';
 import { Component } from '@angular/core';
+import { RouterLink } from '@angular/router';
 import { TranslateModule } from '@ngx-translate/core';
 import { BreadcrumbsComponent } from '../../components/breadcrumbs/breadcrumbs.component';
 
 @Component({
   selector: 'app-tools-bibliografics-page',
-  imports: [CommonModule, TranslateModule, BreadcrumbsComponent],
+  imports: [CommonModule, RouterLink, TranslateModule, BreadcrumbsComponent],
   templateUrl: './tools-bibliografics.page.html',
   styleUrl: './tools-bibliografics.page.scss'
 })
