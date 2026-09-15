@@ -128,13 +128,40 @@ export class PqPage implements OnInit {
   readonly error = signal<string | null>(null);
   readonly response = signal<PqResponse | null>(null);
   readonly scholars = signal<PqScholar[]>([]);
+  readonly scholarTab = signal<'ativos' | 'todos'>('ativos');
+  readonly allScholars = computed(() => {
+    const byName = new Map<string, PqScholar>();
+    for (const year of Object.values(this.response()?.applications || {})) {
+      for (const item of [...(year.novas || []), ...(year.reconcedidas || []), ...(year.novas_apos_interrupcao || [])]) {
+        const key = this.normalize(item.nome);
+        const previous = byName.get(key);
+        if (!previous || item.inicio > previous.bs_start) {
+          byName.set(key, {
+            id_bb: item.id_bb, bs_nome: item.nome, bs_nivel: item.nivel,
+            bs_start: item.inicio, bs_finish: item.fim, BS_IES: item.ies,
+            bs_lattes: '', bs_rdf_id: '', bd_brapci: '',
+            mod_sigla: item.mod_sigla || item.modalidade || item.mod || '', mod_descricao: '',
+          });
+        }
+      }
+    }
+    for (const item of this.scholars()) {
+      const key = this.normalize(item.bs_nome);
+      const latest = byName.get(key);
+      byName.set(key, latest && latest.bs_start > item.bs_start
+        ? { ...latest, bs_lattes: item.bs_lattes, bs_rdf_id: item.bs_rdf_id, bd_brapci: item.bd_brapci }
+        : item);
+    }
+    return [...byName.values()];
+  });
+  readonly visibleScholars = computed(() => this.scholarTab() === 'ativos' ? this.scholars() : this.allScholars());
   readonly searchTerm = signal('');
   readonly levelFilter = signal('todos');
-  readonly levels = computed(() => [...new Set(this.scholars().map((item) => this.level(item)))].sort(this.sortLevel));
+  readonly levels = computed(() => [...new Set(this.visibleScholars().map((item) => this.level(item)))].sort(this.sortLevel));
   readonly filteredScholars = computed(() => {
     const term = this.normalize(this.searchTerm());
     const level = this.levelFilter();
-    return this.scholars()
+    return this.visibleScholars()
       .filter((item) => (level === 'todos' || this.level(item) === level) &&
         (!term || this.normalize(`${item.bs_nome} ${item.BS_IES} ${this.level(item)}`).includes(term)))
       .sort((a, b) => a.bs_nome.localeCompare(b.bs_nome, 'pt-BR', { sensitivity: 'base' }));
@@ -157,6 +184,7 @@ export class PqPage implements OnInit {
 
   ngOnInit(): void { this.loadData(); }
   setTab(tab: PqTab): void { this.activeTab.set(tab); }
+  setScholarTab(tab: 'ativos' | 'todos'): void { this.scholarTab.set(tab); this.levelFilter.set('todos'); }
   updateSearch(value: string): void { this.searchTerm.set(value); }
   updateLevel(value: string): void { this.levelFilter.set(value); }
   loadData(): void {

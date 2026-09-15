@@ -138,3 +138,5 @@
 @media (max-width: 991.98px) { .map-layout { grid-template-columns: 1fr; } }
 @media (max-width: 767.98px) { .pq-hero { min-height: auto; padding: 1rem 1.25rem; } .pq-logo { width: 125px; height: 125px; flex-basis: 125px; } .pq-tabs { grid-template-columns: repeat(3, 1fr); } .summary-grid, .content-grid, .region-grid { grid-template-columns: 1fr; } .region-institutions { grid-template-columns: 1fr 1fr; } }
 @media (max-width: 479.98px) { .pq-hero { align-items: flex-start; } .pq-logo { width: 88px; height: 88px; flex-basis: 88px; } .pq-tabs button { padding: .7rem .35rem; font-size: .82rem; } .filters { grid-template-columns: 1fr; } .section-heading { align-items: flex-start; } .region-institutions { grid-template-columns: 1fr; } }
+
+.pq-tabs.scholar-tabs { grid-template-columns: repeat(2, minmax(0, 1fr)); }
