@@ -131,10 +131,10 @@ export class AuthService {
     }
 
     const data = raw as Record<string, unknown>;
-    const idCandidate = Number(data['id'] ?? 0);
+    const idCandidate = Number(data['id'] ?? data['ID'] ?? 0);
     const usernameCandidate = String(data['email'] ?? data['persistent-id'] ?? data['givenName'] ?? '').trim();
-    const nameCandidate = String(data['displayName'] ?? data['givenName'] ?? '').trim();
-    const adminFlag = Boolean(data['admin']);
+    const nameCandidate = String(data['displayName'] ?? data['givenName'] ?? data['user'] ?? '').trim();
+    const adminFlag = data['admin'] === true || data['admin'] === 1 || data['admin'] === '1';
     const tokenCandidate = this.extractToken(data);
 
     return {

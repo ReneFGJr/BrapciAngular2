@@ -21,7 +21,7 @@ export class BasketSelectedPage implements OnInit {
     { type: 'doc', label: 'DOC' },
     { type: 'ris', label: 'RIS' },
     { type: 'bibtex', label: 'BibTex' },
-    { type: 'cited', label: 'Citacoes' },
+    { type: 'cited', label: 'Citações' },
     { type: 'ID', label: 'TT' },
     { type: 'net_authors', label: '.NET (Autores)' },
     { type: 'net_subjects', label: '.NET (Assuntos)' },

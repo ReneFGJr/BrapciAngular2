@@ -644,7 +644,7 @@ export class VIdPage {
       { label: 'Visualizacoes', value: toValue('Views') },
       { label: 'Downloads', value: toValue('Download') },
       { label: 'Curtidas', value: toValue('Likes') },
-      { label: 'Citacoes', value: toValue('cited') },
+      { label: 'Citações', value: toValue('cited') },
       { label: 'Variantes', value: this.variantsCount().toString() },
       { label: 'Trabalhos', value: this.worksCount().toString() },
     ];
@@ -674,7 +674,7 @@ export class VIdPage {
       { label: 'Visualizacoes', value: toValue('Views') },
       { label: 'Downloads', value: toValue('Download') },
       { label: 'Curtidas', value: toValue('Likes') },
-      { label: 'Citacoes', value: toValue('cited') },
+      { label: 'Citações', value: toValue('cited') },
       { label: 'Ano', value: toValue('year') },
       { label: 'Idioma', value: toValue('language') },
     ];
