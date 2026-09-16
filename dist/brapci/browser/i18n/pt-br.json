@@ -212,7 +212,7 @@
         "topAuthorsNote": "Exibindo os 70 autores com maior intensidade de conexão.", "noRepresentativeAuthors": "Nenhum autor com mais de uma publicação foi encontrado.", "noClusterData": "Sem dados suficientes para identificar clusters."
       },
       "citationsGranted": {
-        "label": "Citacoes concedidas"
+        "label": "Citações concedidas"
       },
       "variants": {
         "label": "Variações do nome"
@@ -537,7 +537,7 @@
       "views": "Visualizacoes",
       "downloads": "Downloads",
       "likes": "Curtidas",
-      "citations": "Citacoes"
+      "citations": "Citações"
     },
     "data": {
       "title": "Dados",
@@ -560,8 +560,8 @@
         "rdf": "RDF (Turtle)",
         "ris": "RIS",
         "marc21": "MARC21",
-        "references": "Referencias",
-        "citations": "Citacoes"
+        "references": "Referências",
+        "citations": "Citações"
       },
       "aria": {
         "viewData": "Ver dados em {{format}}",

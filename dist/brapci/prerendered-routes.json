@@ -1,6 +1,7 @@
 {
   "routes": {
     "/": {},
+    "/501": {},
     "/autoridade": {},
     "/basket/selected": {},
     "/cited": {},
