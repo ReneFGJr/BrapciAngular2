@@ -28,14 +28,23 @@
         </header>
 
         @if (iframeUrl()) {
-          <div>
+          <div class="markdown-panel-content" [attr.aria-busy]="iframeLoading()">
+            @if (iframeLoading()) {
+              <div class="markdown-panel-loading" role="status" aria-live="polite">
+                <span class="markdown-loading-image">
+                  <img src="assets/img/loading.svg" width="64" height="64" alt="" aria-hidden="true" />
+                </span>
+                <p class="mb-0">Carregando ....</p>
+              </div>
+            }
             <iframe
               class="markdown-panel-iframe"
               [src]="iframeSafeUrl()"
               title="Ferramenta NLP de texto completo"
-              loading="lazy"
+              loading="eager"
+              (load)="iframeLoading.set(false)"
+              [style.visibility]="iframeLoading() ? 'hidden' : 'visible'"
               referrerpolicy="no-referrer"
-              style="border: 0px solid #000; width: 100%; height: 100%;"
             ></iframe>
           </div>
         } @else {

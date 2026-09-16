@@ -23,6 +23,7 @@ export class ArticleMarkdownViewerComponent {
 
   readonly markdownText = signal('');
   readonly panelOpen = signal(false);
+  readonly iframeLoading = signal(false);
   readonly iframeUrl = computed(() => {
     const rawId = this.articleId;
     const id = rawId === null || rawId === undefined ? '' : String(rawId).trim();
@@ -35,12 +36,14 @@ export class ArticleMarkdownViewerComponent {
   readonly renderedHtml = computed(() => this.renderMarkdown(this.markdownText()));
 
   onProcessFullText(): void {
+    this.iframeLoading.set(!!this.iframeUrl());
     this.panelOpen.set(true);
     this.processFullText.emit();
   }
 
   closePanel(): void {
     this.panelOpen.set(false);
+    this.iframeLoading.set(false);
   }
 
   private renderMarkdown(markdown: string): string {
