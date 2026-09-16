@@ -1,0 +1,16 @@
+# Angular routes for an Apache static deployment.
+RewriteEngine On
+
+# Preserve backend endpoints and real files/directories.
+RewriteRule ^(?:api|auth)(?:/|$) - [END]
+RewriteCond %{REQUEST_FILENAME} -f [OR]
+RewriteCond %{REQUEST_FILENAME} -d
+RewriteRule ^ - [END]
+
+# Missing assets should return 404 instead of HTML.
+RewriteRule \.[^/]+$ - [END]
+
+# Use the client shell for routes not prerendered (e.g. /v/76314).
+RewriteCond %{DOCUMENT_ROOT}/index.csr.html -f
+RewriteRule ^ index.csr.html [END]
+RewriteRule ^ index.html [END]
