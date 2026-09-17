@@ -17,7 +17,7 @@ export class SeoService {
   updateHomeMetadata(language: string): void {
     const labels: Record<string, { title: string; description: string }> = {
       'pt-br': {
-        title: 'Brapci - Portal de Informacao Cientifica',
+        title: 'Brapci - Base de dados em Ciência da Informação',
         description: 'Portal da Brapci com autenticacao, busca na API e recursos semanticos para SEO.'
       },
       en: {
