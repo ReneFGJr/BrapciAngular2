@@ -59,6 +59,9 @@
             </header>
 
             @for (endpoint of group.endpoints; track endpoint.endpoint_api.metodo + endpoint.endpoint_api.url) {
+              @if (endpoint.subgrupo && ($first || endpoint.subgrupo !== group.endpoints[$index - 1].subgrupo)) {
+                <h3 class="h4 mt-4 mb-3">{{ endpoint.subgrupo }}</h3>
+              }
               <article class="endpoint-card mb-4">
                 <h3 class="h5 mb-3">
                   <span class="method-badge">{{ endpoint.endpoint_api.metodo }}</span>

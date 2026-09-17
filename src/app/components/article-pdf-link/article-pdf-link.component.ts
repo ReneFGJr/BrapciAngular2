@@ -1,3 +1,4 @@
+import { ArticleLikeComponent } from '../article-like/article-like.component';
 import { CommonModule } from '@angular/common';
 import { Component, Input, computed } from '@angular/core';
 import { TranslateModule } from '@ngx-translate/core';
@@ -5,7 +6,7 @@ import { TranslateModule } from '@ngx-translate/core';
 @Component({
   selector: 'app-article-pdf-link',
   standalone: true,
-  imports: [CommonModule, TranslateModule],
+  imports: [CommonModule, TranslateModule, ArticleLikeComponent],
   templateUrl: './article-pdf-link.component.html',
   styleUrl: './article-pdf-link.component.scss'
 })

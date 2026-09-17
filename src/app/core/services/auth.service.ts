@@ -1,4 +1,4 @@
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpErrorResponse } from '@angular/common/http';
 import { Injectable, inject } from '@angular/core';
 import { BehaviorSubject, Observable, catchError, map, of, tap, throwError } from 'rxjs';
 import { AuthResponse, ForgotPasswordPayload, LoginPayload, RegisterPayload, User } from '../models/user.model';
@@ -18,7 +18,7 @@ export class AuthService {
 
   private readonly storageKey = 'brapci_user';
   private readonly localStorageKey = 'brapci_user_session';
-  private readonly sessionDurationMs = 30 * 24 * 60 * 60 * 1000;
+  private readonly sessionDurationMs = 6 * 60 * 60 * 1000;
   private readonly userSubject = new BehaviorSubject<User | null>(null);
 
   // Legacy compatibility properties (kept for old callers).
@@ -45,14 +45,14 @@ export class AuthService {
     return this.appServer ? `${this.appServer}${path}` : path;
   }
 
-  private persistUser(user: User | null): void {
+  private persistUser(user: User | null, renewSession = false): void {
     this.userSubject.next(user);
     this.user = user;
     this.logged = !!user;
 
     if (user) {
       this.sessionService.setSessionValue(this.storageKey, JSON.stringify(user));
-      this.writeUserToLocalStorage(user);
+      this.writeUserToLocalStorage(user, renewSession);
       return;
     }
 
@@ -68,15 +68,16 @@ export class AuthService {
     return window.localStorage;
   }
 
-  private writeUserToLocalStorage(user: User): void {
+  private writeUserToLocalStorage(user: User, renewSession: boolean): void {
     const storage = this.getLocalStorage();
     if (!storage) {
       return;
     }
 
+    const existing = renewSession ? null : this.readStoredSessionFromLocalStorage();
     const payload: StoredAuthSession = {
       user,
-      expiresAt: Date.now() + this.sessionDurationMs
+      expiresAt: existing?.expiresAt ?? Date.now() + this.sessionDurationMs
     };
 
     storage.setItem(this.localStorageKey, JSON.stringify(payload));
@@ -106,7 +107,7 @@ export class AuthService {
       const parsed = JSON.parse(raw) as Partial<StoredAuthSession>;
       const expiresAt = Number(parsed.expiresAt ?? 0);
 
-      if (!expiresAt || Date.now() > expiresAt || !parsed.user) {
+      if (!Number.isFinite(expiresAt) || !expiresAt || Date.now() >= expiresAt || !parsed.user) {
         this.clearUserFromLocalStorage();
         return null;
       }
@@ -230,38 +231,35 @@ export class AuthService {
       return;
     }
 
-    const cached = this.sessionService.getSessionValue(this.storageKey);
-
-    if (cached) {
-      const parsed = JSON.parse(cached) as User;
-      this.persistUser(parsed);
-      return;
-    }
-
     this.persistUser(null);
   }
 
   checkSession(): Observable<User | null> {
-    return this.http.get<AuthResponse>(this.buildAuthUrl('/auth/me')).pipe(
-      map((response) => {
-        if (!response.user || response.user.token) return response.user;
-        const preservedToken = this.userSubject.value?.token || this.readUserFromLocalStorage()?.token;
-        return preservedToken ? { ...response.user, token: preservedToken } : response.user;
-      }),
-      tap((user) => {
-        this.persistUser(user);
-      }),
-      catchError(() => {
-        // If backend check fails but local session is still valid, keep user logged.
-        const localUser = this.readUserFromLocalStorage();
-        if (localUser) {
-          this.persistUser(localUser);
-          return of(localUser);
-        }
+    const localUser = this.readUserFromLocalStorage();
+    const verification = localUser?.token
+      ? this.loginOauthHttp(localUser.token).pipe(map((response) => {
+          // A deployment without this provider reports HTTP 200 with an application error.
+          // Distinguish service unavailability from an explicit invalid session.
+          const body = response && typeof response === 'object'
+            ? response as Record<string, unknown> : null;
+          if (String(body?.['status']) === '500' && body?.['message'] === 'Unsupported provider') {
+            throw new Error('Session validation provider is unavailable');
+          }
+          return this.extractUserFromLoginResponse(response);
+        }))
+      : this.http.get<AuthResponse>(this.buildAuthUrl('/auth/me')).pipe(map((response) => response.user));
 
-        this.persistUser(null);
-        return of(null);
-      })
+    return verification.pipe(
+      map((user) => user && localUser?.themePreference
+        ? { ...user, themePreference: localUser.themePreference } : user),
+      tap((user) => this.persistUser(user)),
+      catchError((error: unknown) => {
+        // Explicit rejection revokes the local session; transient outages do not.
+        const rejected = error instanceof HttpErrorResponse && (error.status === 401 || error.status === 403);
+        const fallback = rejected ? null : this.readUserFromLocalStorage();
+        this.persistUser(fallback);
+        return of(fallback);
+      }),
     );
   }
 
@@ -269,7 +267,7 @@ export class AuthService {
     return this.loginSubmitHttp(payload.user, payload.pwd).pipe(
       map((response) => this.extractUserFromLoginResponse(response)),
       tap((user) => {
-        this.persistUser(user);
+        this.persistUser(user, true);
       }),
       catchError(() => of(null))
     );
@@ -279,7 +277,7 @@ export class AuthService {
     return this.http.post<AuthResponse>(this.buildAuthUrl('/auth/register'), payload).pipe(
       map((response) => response.user),
       tap((user) => {
-        this.persistUser(user);
+        this.persistUser(user, true);
       }),
       catchError(() => of(null))
     );
@@ -344,7 +342,7 @@ export class AuthService {
       return false;
     }
 
-    this.persistUser(normalized);
+    this.persistUser(normalized, true);
     return true;
   }
 

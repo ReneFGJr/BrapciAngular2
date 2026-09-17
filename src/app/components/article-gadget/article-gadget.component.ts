@@ -8,7 +8,6 @@ import { ArticleAuthorsComponent } from '../article-authors/article-authors.comp
 import { ArticleKeywordsComponent } from '../article-keywords/article-keywords.component';
 import { ArticleDataComponent } from '../article-data/article-data.component';
 import { ArticlePdfLinkComponent } from '../article-pdf-link/article-pdf-link.component';
-import { AdminAreaComponent } from '../admin-area/admin-area.component';
 import { BasketService } from '../../core/services/basket.service';
 
 type JsonRecord = Record<string, unknown>;
@@ -37,7 +36,7 @@ type CreatorAuthor = {
 
 @Component({
   selector: 'app-article-gadget',
-  imports: [CommonModule, TranslateModule, CitationTabsComponent, ArticleAuthorsComponent, ArticleKeywordsComponent, ArticleDataComponent, ArticlePdfLinkComponent, AdminAreaComponent],
+  imports: [CommonModule, TranslateModule, CitationTabsComponent, ArticleAuthorsComponent, ArticleKeywordsComponent, ArticleDataComponent, ArticlePdfLinkComponent],
   templateUrl: './article-gadget.component.html',
   styleUrl: './article-gadget.component.scss'
 })
@@ -439,24 +438,23 @@ export class ArticleGadgetComponent implements OnInit, OnChanges {
 
   sectionNames(): string[] {
     const record = this.asRecord(this.data);
-    if (!record) {
-      return [];
-    }
-
+    if (!record) return [];
     const section = record['section'];
-    if (!Array.isArray(section)) {
-      return [];
+    const values = Array.isArray(section) ? section : [section];
+    const names = values.map(item => typeof item === 'string'
+      ? item.trim() : this.toText(this.asRecord(item)?.['name'])).filter(Boolean);
+    if (names.length) return [...new Set(names)];
+
+    const rdfSections = this.asRecord(this.asRecord(record['data'])?.['hasSectionOf']);
+    if (!rdfSections) return [];
+    for (const entries of Object.values(rdfSections)) {
+      if (!Array.isArray(entries)) continue;
+      for (const entry of entries) {
+        const item = this.asRecord(entry);
+        if (item) names.push(...Object.keys(item).map(name => name.trim()).filter(Boolean));
+      }
     }
-
-    return section
-      .map((item) => {
-        if (!item || typeof item !== 'object') {
-          return '';
-        }
-
-        return this.toText((item as Record<string, unknown>)['name']);
-      })
-      .filter((item) => item.length > 0);
+    return [...new Set(names)];
   }
 
   hasImageError(event: Event): void {

@@ -1,6 +1,8 @@
 {
   "files": [
     "api_auth.json",
-    "api_doc.json"
+    "api_brapci.json",
+    "api_doc.json",
+    "api_like.json"
   ]
 }

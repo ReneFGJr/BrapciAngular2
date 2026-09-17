@@ -474,7 +474,8 @@ export class ArticleDataComponent {
     const pushKeywords = (value: unknown): void => {
       if (Array.isArray(value)) {
         for (const item of value) {
-          const text = this.toText(item);
+          const entry = this.asRecord(item);
+          const text = entry ? this.pickText(entry, ['name', 'label']) : this.toText(item);
           if (text) {
             result.add(text);
           }

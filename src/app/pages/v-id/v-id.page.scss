@@ -27,3 +27,14 @@ pre {
 .full {
   width: 100%;
 }
+
+.v-record-header {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: .75rem 1rem;
+  margin-bottom: 1rem;
+}
+.v-record-identity { min-width: 0; }
+.v-record-actions { width: 180px; max-width: 100%; margin-left: auto; margin-top: .65rem; }

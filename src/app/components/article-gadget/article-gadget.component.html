@@ -16,7 +16,11 @@
 
     <div class="article-hero-content">
       <div class="article-kicker">
-        {{ (isProceeding() ? 'article.proceedingKicker' : 'article.kicker') | translate }}
+        @if (sectionNames().length > 0) {
+          {{ sectionNames().join(', ') }}
+        } @else {
+          Sessão não informada
+        }
       </div>
       <h2 class="article-main-title">{{ primaryTitle() }}</h2>
 
@@ -95,7 +99,6 @@
         ></app-article-pdf-link>
       }
 
-      <app-admin-area [recordId]="articleId()"></app-admin-area>
     </div>
   </header>
 

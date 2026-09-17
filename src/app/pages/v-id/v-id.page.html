@@ -11,9 +11,15 @@
         <p class="v-error mb-0">{{ error() }}</p>
       } @else {
 
-        <app-breadcrumbs [labels]="breadcrumbLabels()"></app-breadcrumbs>
-
-        <p class="mb-3"><strong>Classe:</strong> {{ classe() }}</p>
+        <div class="v-record-header">
+          <div class="v-record-identity">
+            <app-breadcrumbs [labels]="breadcrumbLabels()"></app-breadcrumbs>
+            <p class="mb-0"><strong>Classe:</strong> {{ classe() }}</p>
+          </div>
+          @if (isArticle() || isProceeding()) {
+            <app-admin-area class="v-record-actions" [recordId]="id()"></app-admin-area>
+          }
+        </div>
         @if (isArticle()) {
           <app-article-gadget
             class="mb-4 d-block"

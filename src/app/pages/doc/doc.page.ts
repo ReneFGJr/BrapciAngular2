@@ -15,6 +15,7 @@ type ApiVariable = {
 };
 
 type ApiEndpoint = {
+  subgrupo?: string;
   nome?: string;
   metodo_servico?: string;
   endpoint_api: {
@@ -170,6 +171,7 @@ export class DocPage {
       group.nome,
       group.descricao,
       endpoint.nome,
+      endpoint.subgrupo,
       endpoint.metodo_servico,
       endpoint.endpoint_api.metodo,
       endpoint.endpoint_api.url,

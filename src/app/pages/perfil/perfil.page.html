@@ -25,6 +25,9 @@
               <button type="button" role="tab" [class.active]="activeTab() === 'session'" [attr.aria-selected]="activeTab() === 'session'" (click)="setTab('session')">
                 <i class="bi bi-person-vcard" aria-hidden="true"></i> {{ 'profile.sessionTab' | translate }}
               </button>
+              <button type="button" role="tab" [class.active]="activeTab() === 'likes'" [attr.aria-selected]="activeTab() === 'likes'" (click)="setTab('likes')">
+                <i class="bi bi-heart-fill text-danger" aria-hidden="true"></i> Curtidas
+              </button>
               @if (isAdmin()) {
                 <button type="button" role="tab" [class.active]="activeTab() === 'monitor'" [attr.aria-selected]="activeTab() === 'monitor'" (click)="setTab('monitor')">
                   <i class="bi bi-activity" aria-hidden="true"></i> {{ 'profile.monitorTab' | translate }}
@@ -135,6 +138,8 @@
                 {{ 'auth.logout' | translate }}
               </button>
             </div>
+            } @else if (activeTab() === 'likes') {
+              <app-user-liked [userKey]="userApiToken()" />
             } @else if (isAdmin()) {
               <section class="perfil-section perfil-monitor" aria-labelledby="perfil-monitor-title">
                 <div class="perfil-monitor-header">

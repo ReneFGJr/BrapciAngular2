@@ -1,3 +1,4 @@
+import { AdminAreaComponent } from '../../components/admin-area/admin-area.component';
 import { CommonModule } from '@angular/common';
 import { Component, DestroyRef, computed, inject, signal } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
@@ -36,6 +37,7 @@ type AuthorLink = {
   standalone: true,
   imports: [
     CommonModule,
+    AdminAreaComponent,
     AuthorGadgetComponent,
     ArticleGadgetComponent,
     ProceedingGadgetComponent,
