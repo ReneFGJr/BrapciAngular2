@@ -1,6 +1,5 @@
-import { Component, Input, inject } from '@angular/core';
+import { Component, Input, OnChanges, inject } from '@angular/core';
 import { FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
-import { finalize } from 'rxjs';
 import { AuthService } from '../../core/services/auth.service';
 import { BrapciApiService } from '../../core/services/brapci-api.service';
 import { FormFileInputComponent } from '../form-file-input/form-file-input.component';
@@ -13,7 +12,7 @@ import { LoadingSpinnerComponent } from '../loading-spinner/loading-spinner.comp
   templateUrl: './upload-file.component.html',
   styleUrl: './upload-file.component.scss',
 })
-export class UploadFileComponent {
+export class UploadFileComponent implements OnChanges {
   private readonly api = inject(BrapciApiService);
   private readonly auth = inject(AuthService);
   private readonly fb = inject(FormBuilder);
@@ -33,33 +32,43 @@ export class UploadFileComponent {
   errorMessage = '';
 
   readonly emailForm = this.fb.nonNullable.group({
-    name: [this.auth.getLocalUser()?.name ?? '', Validators.required],
+    name: [this.auth.getLocalUser()?.name ?? '', [Validators.required, Validators.pattern(/\S/)]],
     email: [this.auth.getLocalUser()?.username ?? '', [Validators.required, Validators.email]],
     agree: [false, Validators.requiredTrue],
   });
 
+  ngOnChanges(): void {
+    if (this.requireTerms) {
+      this.emailForm.controls.agree.setValue(this.termsAccepted);
+    }
+  }
+
   updateDataset(newDataset: Record<string, unknown>): void {
-    this.dataset = newDataset;
-    if (String(newDataset['status'] ?? '') === '500') {
-      this.errorMessage = 'Erro no processamento do arquivo.';
+    const status = Number(newDataset['status'] ?? 200);
+    if (status >= 400 || (this.action === 'bookSubmit' && !newDataset['fileO'])) {
+      this.dataset = null;
+      this.status = 0;
+      this.errorMessage = 'Não foi possível preparar o arquivo. Tente enviá-lo novamente.';
       return;
     }
-
+    this.dataset = newDataset;
     this.errorMessage = '';
     this.status = 1;
   }
 
   onSubmitEmail(): void {
-    if (!this.termsAccepted || this.emailForm.invalid || !this.dataset) {
+    this.emailForm.patchValue({
+      name: this.emailForm.controls.name.value.trim(),
+      email: this.emailForm.controls.email.value.trim(),
+    });
+    if (!this.termsAccepted || this.status !== 1 || this.emailForm.invalid || !this.dataset) {
       this.emailForm.markAllAsTouched();
       return;
     }
-
     this.submit({ ...this.dataset, ...this.emailForm.getRawValue() }, 'brapci/book/submit');
   }
 
   process(): void {
-    console.log('Processing dataset:', this.dataset);
     if (this.dataset) {
       this.submit(this.dataset, this.endpoint);
     }
@@ -70,7 +79,7 @@ export class UploadFileComponent {
     this.dataset = null;
     this.data = null;
     this.errorMessage = '';
-    this.emailForm.controls.agree.setValue(false);
+    this.emailForm.controls.agree.setValue(this.requireTerms && this.termsAccepted);
   }
 
   displayFileName(value: unknown, maxLength = 55): string {
@@ -91,13 +100,26 @@ export class UploadFileComponent {
     this.status = 2;
     this.errorMessage = '';
 
+    const body = new FormData();
+    for (const [key, value] of Object.entries(payload)) {
+      if (value !== null && value !== undefined) body.append(key, String(value));
+    }
+    body.set('user', this.auth.getLocalUser()?.token ?? '');
     this.api
-      .post<unknown>(endpoint, payload)
-      .pipe(finalize(() => undefined))
+      .post<unknown>(endpoint, body)
       .subscribe({
         next: (response) => {
           this.data = response;
-          this.status = 3;
+          const result = response && typeof response === 'object'
+            ? response as Record<string, unknown> : {};
+          const code = String(result['status'] ?? '');
+          if (code !== '200' && code !== '201') {
+            this.status = 1;
+            this.errorMessage = typeof result['message'] === 'string'
+              ? result['message'] : 'Não foi possível confirmar a submissão. Tente novamente.';
+            return;
+          }
+          this.status = code === '201' ? 4 : 3;
         },
         error: () => {
           this.status = 1;

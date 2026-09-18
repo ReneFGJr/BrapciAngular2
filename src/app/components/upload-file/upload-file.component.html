@@ -34,21 +34,26 @@
             <form class="mt-2" [formGroup]="emailForm" (ngSubmit)="onSubmitEmail()">
               <div class="mb-3">
                 <label for="name" class="form-label">Nome completo do autor</label>
-                <input id="name" type="text" class="form-control" formControlName="name" />
+                <input id="name" type="text" class="form-control" formControlName="name" required autocomplete="name" />
+                @if (emailForm.controls.name.invalid && emailForm.controls.name.touched) {
+                  <div class="text-danger">Informe o nome completo do autor.</div>
+                }
 
                 <label for="email" class="form-label mt-3">Informe seu e-mail</label>
-                <input id="email" type="email" class="form-control" formControlName="email" />
+                <input id="email" type="email" class="form-control" formControlName="email" required autocomplete="email" />
                 @if (emailForm.controls.email.invalid && emailForm.controls.email.touched) {
                   <div class="text-danger">Por favor, insira um e-mail válido.</div>
                 }
 
+                @if (!requireTerms) {
                 <label for="agree" class="form-check-label mt-3">
-                  <input id="agree" type="checkbox" class="form-check-input me-2" formControlName="agree" />
+                  <input id="agree" type="checkbox" class="form-check-input me-2" formControlName="agree" required />
                   Concordo com os termos
                 </label>
+                }
               </div>
               <button type="submit" class="btn btn-primary full" [disabled]="emailForm.invalid || !termsAccepted">
-                Enviar
+                Confirmar submissão
               </button>
             </form>
           </div>
@@ -64,6 +69,17 @@
       <div class="upload-process"><app-loading-spinner /></div>
     }
 
+    @if (status === 4) {
+      <div class="upload-process">
+        <div class="alert alert-info" role="status">
+          Este arquivo já possui uma submissão na base de dados.
+          Consulte o e-mail utilizado na submissão original para confirmar a autorização.
+          Verifique também a pasta de spam. Em caso de dúvida, contate brapcici@gmail.com.
+        </div>
+        <button type="button" class="btn btn-secondary full mt-2" (click)="restart()">REINICIAR</button>
+      </div>
+    }
+
     @if (status === 3 && dataset) {
       <div class="upload-process">
         <p>Prezado(a), <strong>{{ dataset['name'] }}</strong>,</p>
@@ -72,7 +88,7 @@
           <span [title]="dataset['file']">{{ displayFileName(dataset['file']) }}</span>
           foi realizada com sucesso!
         </p>
-        <p>Um e-mail foi enviado para sua conta, autorizando a publicação.</p>
+        <p>Verifique seu e-mail para confirmar a autorização de indexação.</p>
         <div class="alert alert-success mt-2">
           <strong>Sucesso:</strong> Seu livro foi enviado com êxito. Assim que recebermos o retorno
           do e-mail (<strong>{{ dataset['email'] }}</strong>) de confirmação, iniciaremos o processo
