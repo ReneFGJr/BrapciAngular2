@@ -6,7 +6,7 @@
   font-family: 'Barlow Condensed', sans-serif;
   font-size: 1.8rem;
   font-weight: 700;
-  color: #35210f;
+  color: var(--theme-ink);
 }
 
 .book-carousel__catalog {
@@ -14,9 +14,9 @@
   overflow: hidden;
   padding: 1.25rem 3.5rem;
   border-radius: 28px;
-  background: linear-gradient(180deg, rgba(255, 250, 243, 0.98) 0%, rgba(245, 236, 222, 0.98) 100%);
-  border: 1px solid rgba(124, 86, 46, 0.14);
-  box-shadow: 0 22px 44px rgba(92, 63, 29, 0.08);
+  background: var(--theme-card-bg);
+  border: 1px solid var(--theme-line);
+  box-shadow: 0 22px 44px rgba(0, 0, 0, 0.08);
 }
 
 .book-carousel__viewport {
@@ -93,8 +93,8 @@
   height: 2.5rem;
   border: 0;
   border-radius: 999px;
-  background: rgba(76, 47, 25, 0.92);
-  color: #fff7ed;
+  background: var(--theme-ink);
+  color: var(--theme-paper);
   font-size: 1rem;
   line-height: 1;
   box-shadow: 0 10px 22px rgba(29, 18, 9, 0.2);
@@ -110,7 +110,7 @@
 
 .book-carousel__message {
   padding: 1rem 0;
-  color: #6d543d;
+  color: var(--theme-muted);
 }
 
 .book-carousel__skeleton-item {
@@ -118,7 +118,7 @@
   height: 250px;
   flex: 0 0 172px;
   border-radius: 14px;
-  background: linear-gradient(90deg, rgba(211, 194, 169, 0.55) 0%, rgba(242, 233, 221, 0.9) 50%, rgba(211, 194, 169, 0.55) 100%);
+  background: linear-gradient(90deg, var(--theme-line), var(--theme-sand), var(--theme-line));
   background-size: 200% 100%;
   animation: book-carousel-shimmer 1.3s linear infinite;
 }
@@ -162,30 +162,3 @@
   }
 }
 
-:host-context(body.theme-master.theme-dark) .book-carousel {
-  background: transparent;
-}
-
-:host-context(body.theme-master.theme-dark) .book-carousel__headline h2 {
-  color: #f7ecdf;
-}
-
-:host-context(body.theme-master.theme-dark) .book-carousel__catalog {
-  background: linear-gradient(180deg, rgba(38, 31, 25, 0.98) 0%, rgba(28, 23, 20, 0.98) 100%);
-  border-color: rgba(232, 213, 190, 0.1);
-  box-shadow: 0 22px 44px rgba(0, 0, 0, 0.28);
-}
-
-:host-context(body.theme-master.theme-dark) .book-carousel__book-title,
-:host-context(body.theme-master.theme-dark) .book-carousel__message {
-  color: #d6c4b2;
-}
-
-:host-context(body.theme-master.theme-dark) .book-carousel__scroll-btn {
-  background: #d9a36a;
-  color: #24180f;
-}
-
-:host-context(body.theme-master.theme-dark) .book-carousel__cover {
-  background: #332a24;
-}

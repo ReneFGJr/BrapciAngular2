@@ -12,28 +12,20 @@
   padding: 1.2rem;
   border-radius: 20px;
   text-decoration: none;
-  background:
-    linear-gradient(165deg, rgba(39, 24, 13, 0.9) 0%, rgba(99, 62, 31, 0.76) 100%),
-    url('/assets/img/banner_authority.png') center center / cover no-repeat;
-  box-shadow: 0 18px 34px rgba(67, 41, 20, 0.28);
-  color: #fff6e9;
-  border: 1px solid rgba(255, 244, 226, 0.3);
+  background: var(--theme-card-bg);
+  box-shadow: 0 18px 34px rgba(0, 0, 0, 0.28);
+  color: var(--theme-ink);
+  border: 1px solid var(--theme-line);
   transition: transform 0.25s ease, box-shadow 0.25s ease;
   overflow: hidden;
 }
 
 .submit-btn:hover {
   transform: translateY(-3px) scale(1.01);
-  box-shadow: 0 24px 40px rgba(67, 41, 20, 0.34);
+  box-shadow: 0 24px 40px rgba(0, 0, 0, 0.34);
 }
 
-.submit-btn::after {
-  content: '';
-  position: absolute;
-  inset: 0;
-  background: linear-gradient(180deg, rgba(255, 214, 157, 0.08) 0%, rgba(255, 214, 157, 0) 48%);
-  pointer-events: none;
-}
+
 
 .submit-btn-kicker,
 .submit-btn-title {
@@ -48,15 +40,15 @@
   width: fit-content;
   padding: 0.34rem 0.72rem;
   border-radius: 999px;
-  background: linear-gradient(120deg, rgba(255, 210, 138, 0.28) 0%, rgba(255, 239, 211, 0.14) 100%);
-  border: 1px solid rgba(255, 229, 187, 0.65);
+  background: var(--theme-sand);
+  border: 1px solid var(--theme-line);
   box-shadow: inset 0 1px 0 rgba(255, 246, 230, 0.35), 0 4px 12px rgba(24, 13, 6, 0.22);
-  color: #ffebc8;
+  color: var(--theme-ink);
   font-size: 0.72rem;
   font-weight: 700;
   letter-spacing: 0.14em;
   text-transform: uppercase;
-  text-shadow: 0 1px 4px rgba(0, 0, 0, 0.28);
+  text-shadow: none;
 }
 
 .submit-btn-kicker::before {
@@ -64,7 +56,7 @@
   width: 0.5rem;
   height: 0.5rem;
   border-radius: 999px;
-  background: radial-gradient(circle at 30% 30%, #ffe8c1 0%, #ffc867 55%, #b47023 100%);
+  background: var(--theme-sand);
   box-shadow: 0 0 0 2px rgba(255, 232, 193, 0.2);
 }
 
@@ -72,7 +64,7 @@
   content: '';
   width: 1.25rem;
   height: 1px;
-  background: linear-gradient(90deg, rgba(255, 233, 196, 0.55) 0%, rgba(255, 233, 196, 0) 100%);
+  background: var(--theme-sand);
 }
 
 .submit-btn-title {
@@ -81,7 +73,7 @@
   line-height: 1;
   letter-spacing: 0.03em;
   font-weight: 700;
-  text-shadow: 0 2px 14px rgba(0, 0, 0, 0.34);
+  text-shadow: none;
 }
 
 .submit-btn-copy {
@@ -89,8 +81,8 @@
   z-index: 1;
   font-size: 0.96rem;
   line-height: 1.4;
-  color: #ffeccc;
-  text-shadow: 0 1px 8px rgba(0, 0, 0, 0.32);
+  color: var(--theme-ink);
+  text-shadow: none;
 }
 
 .submit-btn-cta {
@@ -103,8 +95,8 @@
   gap: 0.4rem;
   padding: 0.45rem 0.85rem;
   border-radius: 999px;
-  background: #ffd27f;
-  color: #3c240f;
+  background: var(--theme-sand);
+  color: var(--theme-ink);
   font-size: 0.86rem;
   font-weight: 700;
   text-transform: uppercase;
@@ -113,22 +105,5 @@
 
 .submit-btn-cta::after {
   content: '->';
-}
-
-:host-context(body.theme-master.theme-dark) .submit-btn {
-  background:
-    linear-gradient(165deg, rgba(26, 16, 10, 0.92) 0%, rgba(69, 44, 22, 0.84) 100%),
-    url('/assets/img/banner_authority.png') center center / cover no-repeat;
-  border-color: rgba(255, 230, 196, 0.34);
-}
-
-:host-context(body.theme-master.theme-dark) .submit-btn-copy {
-  color: #fff1db;
-}
-
-:host-context(body.theme-master.theme-dark) .submit-btn-kicker {
-  background: linear-gradient(120deg, rgba(255, 197, 115, 0.24) 0%, rgba(255, 231, 187, 0.1) 100%);
-  border-color: rgba(255, 220, 165, 0.55);
-  color: #ffe8c1;
 }
 

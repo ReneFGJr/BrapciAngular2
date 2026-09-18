@@ -24,6 +24,8 @@ export class UploadFileComponent {
   @Input() endpoint = 'brapci/book/submit';
   @Input() action = 'bookSubmit';
   @Input() emailSend = true;
+  @Input() requireTerms = false;
+  @Input() termsAccepted = true;
 
   dataset: Record<string, unknown> | null = null;
   data: unknown;
@@ -48,7 +50,7 @@ export class UploadFileComponent {
   }
 
   onSubmitEmail(): void {
-    if (this.emailForm.invalid || !this.dataset) {
+    if (!this.termsAccepted || this.emailForm.invalid || !this.dataset) {
       this.emailForm.markAllAsTouched();
       return;
     }
@@ -84,6 +86,7 @@ export class UploadFileComponent {
   }
 
   private submit(payload: Record<string, unknown>, endpoint: string): void {
+    if (!this.termsAccepted || this.status === 2) return;
     this.dataset = payload;
     this.status = 2;
     this.errorMessage = '';

@@ -6,6 +6,8 @@
     @if (status === 0) {
       <app-form-file-input
         [action]="action"
+        [deferUpload]="requireTerms"
+        [canContinue]="termsAccepted"
         message="Anexe o arquivo do livro"
         (dataset)="updateDataset($event)"
       />
@@ -45,13 +47,13 @@
                   Concordo com os termos
                 </label>
               </div>
-              <button type="submit" class="btn btn-primary full" [disabled]="emailForm.invalid">
+              <button type="submit" class="btn btn-primary full" [disabled]="emailForm.invalid || !termsAccepted">
                 Enviar
               </button>
             </form>
           </div>
         } @else {
-          <button type="button" class="btn btn-primary full mt-3" (click)="process()">
+          <button type="button" class="btn btn-primary full mt-3" (click)="process()" [disabled]="!termsAccepted">
             {{ buttonName }}
           </button>
         }

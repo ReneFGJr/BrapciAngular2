@@ -1,3 +1,5 @@
+<app-banner-livros></app-banner-livros>
+
 <section class="livros-submit-wrap py-4" aria-labelledby="livros-submit-title">
   <div class="container livros-submit-shell">
     <app-breadcrumbs></app-breadcrumbs>
@@ -12,23 +14,29 @@
             representante autorizado, declara que:
           </p>
 
-          <ul class="livros-submit-list">
-            <li>
+          <div class="livros-submit-terms">
+            <label class="d-flex gap-2 mb-3 align-items-start">
+              <input type="checkbox" class="form-check-input flex-shrink-0" required [checked]="acceptedTerms()[0]" (change)="setTerm(0, $event)" />
+              <span>
               Voce detem os direitos autorais ou esta devidamente autorizado a submeter o conteudo
               para indexacao. Certifica que o material enviado e original e nao infringe direitos de
               terceiros.
-            </li>
-            <li>
+            </span></label>
+            <label class="d-flex gap-2 mb-3 align-items-start">
+              <input type="checkbox" class="form-check-input flex-shrink-0" required [checked]="acceptedTerms()[1]" (change)="setTerm(1, $event)" />
+              <span>
               O conteudo do livro esta relacionado a temas pertinentes as areas de Ciencia da
               Informacao, Biblioteconomia, Arquivologia, Museologia ou disciplinas correlatas,
               alinhando-se ao escopo da Brapci Livros.
-            </li>
-            <li>
+            </span></label>
+            <label class="d-flex gap-2 mb-3 align-items-start">
+              <input type="checkbox" class="form-check-input flex-shrink-0" required [checked]="acceptedTerms()[2]" (change)="setTerm(2, $event)" />
+              <span>
               Autoriza a Brapci Livros a disponibilizar os metadados do livro para consulta publica em
               sua plataforma. Esta autorizacao nao implica a disponibilizacao do texto completo da
               obra, salvo indicacao explicita e consentimento do autor.
-            </li>
-          </ul>
+            </span></label>
+          </div>
 
           <h5>Contato e Suporte</h5>
           <ul class="livros-submit-list">
@@ -41,7 +49,7 @@
         </article>
       </div>
 
-      <app-upload-file />
+      <app-upload-file [requireTerms]="true" [termsAccepted]="allTermsAccepted()" />
     </div>
   </div>
 </section>

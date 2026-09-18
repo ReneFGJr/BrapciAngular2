@@ -1,22 +1,37 @@
-<section class="sobre-wrap py-4" aria-labelledby="sobre-title">
-  <div class="container">
-    <app-breadcrumbs></app-breadcrumbs>
-
-    <div class="sobre-card p-4 p-md-5">
-      @if (loading()) {
-        <p class="mb-0">Carregando conteudo...</p>
-      } @else if (error()) {
-        <p class="sobre-error mb-0">{{ error() }}</p>
-      } @else {
-        <h1 id="sobre-title" class="h2 mb-3">{{ title() }}</h1>
-
-        @if (htmlContent()) {
-          <article class="sobre-content" [innerHTML]="htmlContent()"></article>
-        } @else {
-          <p class="mb-2">A API nao retornou conteudo HTML formatado. Exibindo JSON formatado:</p>
-          <article class="sobre-json" [innerHTML]="jsonFallbackHtml()"></article>
-        }
+<div class="sobre-wrap" (click)="navigateToSection($event)">
+  <div class="container"><app-breadcrumbs></app-breadcrumbs></div>
+  @if (loading()) {
+    <p class="sobre-status" role="status">Carregando conteúdo...</p>
+  } @else if (error()) {
+    <p class="sobre-status sobre-error" role="alert">{{ error() }}</p>
+  } @else {
+    <header class="hero">
+      <div class="hero__content">
+        <p class="eyebrow">Base de Dados em Ciência da Informação</p>
+        <h1 id="sobre-title">{{ title() }}</h1>
+      </div>
+    </header>
+    <div class="layout" [class.without-navigation]="!navigationHtml()">
+      @if (navigationHtml()) {
+        <nav class="sobre-navigation" aria-label="Navegação desta página" [innerHTML]="navigationHtml()"></nav>
       }
+      <article class="sobre-main" aria-labelledby="sobre-title">
+        @if (sections().length) {
+          <div class="sobre-content">
+            @for (section of sections(); track section.id) {
+              <div class="sobre-section">
+                <a class="sobre-anchor" [id]="section.id" [attr.name]="section.id" aria-hidden="true"></a>
+                <div [innerHTML]="section.html"></div>
+              </div>
+            }
+          </div>
+        } @else if (htmlContent()) {
+          <div class="sobre-content" [innerHTML]="htmlContent()"></div>
+        } @else if (!navigationHtml()) {
+          <p>A API não retornou conteúdo HTML formatado. Exibindo JSON formatado:</p>
+          <div class="sobre-json" [innerHTML]="jsonFallbackHtml()"></div>
+        }
+      </article>
     </div>
-  </div>
-</section>
+  }
+</div>

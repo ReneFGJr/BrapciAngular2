@@ -63,3 +63,15 @@
   }
 }
 
+
+.livros-submit-terms .form-check-input {
+  border: 2px solid #000;
+
+  &:not(:checked) {
+    background-color: #fff;
+  }
+}
+
+:host-context(body.theme-master.theme-dark) .livros-submit-terms .form-check-input {
+  outline: 1px solid #fff;
+}

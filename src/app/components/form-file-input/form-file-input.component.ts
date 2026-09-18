@@ -15,6 +15,15 @@ import { BrapciApiService } from '../../core/services/brapci-api.service';
         [disabled]="uploading"
         (change)="upload($event)"
       />
+      @if (deferUpload) {
+        @if (!canContinue) {
+          <p class="small text-muted mt-2">Marque os três termos de indexação para continuar.</p>
+        }
+        <button type="button" class="btn btn-primary mt-3"
+          [disabled]="!selectedFile || !canContinue || uploading" (click)="sendFile()">
+          Continuar --&gt;
+        </button>
+      }
       @if (uploading) {
         <div class="small text-muted mt-2" role="status">Enviando arquivo...</div>
       }
@@ -57,16 +66,22 @@ export class FormFileInputComponent {
   @Input({ required: true }) action = '';
   @Input() message = 'Selecione um arquivo';
   @Input() property = 'hasAuthor';
+  @Input() deferUpload = false;
+  @Input() canContinue = true;
+  selectedFile: File | null = null;
   @Output() readonly dataset = new EventEmitter<Record<string, unknown>>();
 
   uploading = false;
 
   upload(event: Event): void {
     const input = event.target as HTMLInputElement;
-    const file = input.files?.[0];
-    if (!file || !this.action) {
-      return;
-    }
+    this.selectedFile = input.files?.[0] ?? null;
+    if (!this.deferUpload) this.sendFile();
+  }
+
+  sendFile(): void {
+    const file = this.selectedFile;
+    if (!file || !this.action || !this.canContinue || this.uploading) return;
 
     const body = new FormData();
     body.append('file', file, file.name);
