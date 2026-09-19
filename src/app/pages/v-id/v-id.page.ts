@@ -91,7 +91,9 @@ export class VIdPage {
   readonly isArticle = computed(() => this.classe().toLowerCase() === 'article');
   readonly isBook = computed(() => this.classe().toLowerCase() === 'book');
   readonly isProceeding = computed(() => this.classe().toLowerCase() === 'proceeding');
-  readonly isJournal = computed(() => this.classe().toLowerCase() === 'journal');
+  readonly isJournal = computed(() =>
+    ['journal', 'journals'].includes(this.classe().trim().toLowerCase()),
+  );
   readonly isBookChapter = computed(() => this.classe().toLowerCase() === 'bookchapter');
   readonly isSubject = computed(() => this.classe().toLowerCase() === 'subject');
   readonly isCorporateBody = computed(() => this.classe().toLowerCase() === 'corporatebody');

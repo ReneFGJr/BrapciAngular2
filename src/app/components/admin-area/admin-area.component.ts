@@ -20,6 +20,7 @@ export class AdminAreaComponent {
   private readonly currentUser = toSignal(this.authService.currentUser$, { initialValue: null });
 
   readonly recordId = input.required<string>();
+  readonly editOnly = input(false);
   readonly actionSelected = output<AdminAction>();
   readonly isAdmin = computed(() => this.currentUser()?.role === 'admin');
 

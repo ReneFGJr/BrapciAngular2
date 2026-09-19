@@ -1,2 +1,0 @@
-import './polyfills.server.mjs';
-import{Mb as e,Nb as i,Ob as a,gc as p,jb as o}from"./chunk-4SVJI4LA.mjs";var s=class t{static \u0275fac=function(n){return new(n||t)};static \u0275cmp=o({type:t,selectors:[["app-loading-spinner"]],decls:4,vars:0,consts:[["role","status",1,"d-flex","justify-content-center","align-items-center","gap-2","py-4"],["aria-hidden","true",1,"spinner-border","text-primary"]],template:function(n,m){n&1&&(e(0,"div",0),a(1,"span",1),e(2,"span"),p(3,"Processando..."),i()())},encapsulation:2})};export{s as a};

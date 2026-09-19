@@ -18,6 +18,12 @@
           </div>
           @if (isArticle() || isProceeding()) {
             <app-admin-area class="v-record-actions" [recordId]="id()"></app-admin-area>
+          } @else if (isJournal() || isPerson()) {
+            <app-admin-area
+              class="v-record-actions"
+              [recordId]="id()"
+              [editOnly]="true"
+            ></app-admin-area>
           }
         </div>
         @if (journalBannerUrl()) {

@@ -1,6 +1,7 @@
 @if (isAdmin()) {
   <section class="admin-area" aria-labelledby="admin-area-title">
-    <div class="admin-area__actions">
+    <div class="admin-area__actions" [class.admin-area__actions--edit-only]="editOnly()">
+      @if (!editOnly()) {
       <a
         class="admin-action admin-action--bot"
         [href]="'https://cip.brapci.inf.br/tools/nlp/fulltext/' + recordId()"
@@ -12,18 +13,21 @@
       >
         <i class="bi bi-robot" aria-hidden="true"></i>
       </a>
+      }
 
-      <a
-        class="admin-action admin-action--bot"
-        [href]="'https://cip.brapci.inf.br/tools/nlp/translate/' + recordId()"
-        target="_blank"
-        rel="noopener noreferrer"
-        [attr.aria-label]="'adminArea.actions.translate' | translate"
-        [attr.title]="'adminArea.actions.translate' | translate"
-        (click)="selectAction('translate')"
-      >
-        <i class="bi bi-translate" aria-hidden="true"></i>
-      </a>
+      @if (!editOnly()) {
+        <a
+          class="admin-action admin-action--bot"
+          [href]="'https://cip.brapci.inf.br/tools/nlp/translate/' + recordId()"
+          target="_blank"
+          rel="noopener noreferrer"
+          [attr.aria-label]="'adminArea.actions.translate' | translate"
+          [attr.title]="'adminArea.actions.translate' | translate"
+          (click)="selectAction('translate')"
+        >
+          <i class="bi bi-translate" aria-hidden="true"></i>
+        </a>
+      }
 
       <button
         type="button"
@@ -35,15 +39,17 @@
         <i class="bi bi-pencil-square" aria-hidden="true"></i>
       </button>
 
-      <button
-        type="button"
-        class="admin-action admin-action--danger"
-        [attr.aria-label]="'adminArea.actions.delete' | translate"
-        [attr.title]="'adminArea.actions.delete' | translate"
-        (click)="deleteRegister()"
-      >
-        <i class="bi bi-trash3" aria-hidden="true"></i>
-      </button>
+      @if (!editOnly()) {
+        <button
+          type="button"
+          class="admin-action admin-action--danger"
+          [attr.aria-label]="'adminArea.actions.delete' | translate"
+          [attr.title]="'adminArea.actions.delete' | translate"
+          (click)="deleteRegister()"
+        >
+          <i class="bi bi-trash3" aria-hidden="true"></i>
+        </button>
+      }
     </div>
   </section>
 }

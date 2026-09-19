@@ -48,6 +48,10 @@
   gap: 0.35rem;
 }
 
+.admin-area__actions--edit-only {
+  grid-template-columns: 1fr;
+}
+
 .admin-action {
   display: flex;
   align-items: center;
