@@ -20,6 +20,11 @@
             <app-admin-area class="v-record-actions" [recordId]="id()"></app-admin-area>
           }
         </div>
+        @if (journalBannerUrl()) {
+          <figure class="v-journal-banner">
+            <img [src]="journalBannerUrl()" [alt]="journalBannerAlt()" />
+          </figure>
+        }
         @if (isArticle()) {
           <app-article-gadget
             class="mb-4 d-block"

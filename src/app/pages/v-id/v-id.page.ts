@@ -96,6 +96,28 @@ export class VIdPage {
   readonly isSubject = computed(() => this.classe().toLowerCase() === 'subject');
   readonly isCorporateBody = computed(() => this.classe().toLowerCase() === 'corporatebody');
 
+  readonly journalBannerUrl = computed(() => {
+    const journalClasses = ['journal', 'journals'];
+    if (!journalClasses.includes(this.classe().trim().toLowerCase())) {
+      return '';
+    }
+
+    const data = this.responseRecord();
+    if (!data) {
+      return '';
+    }
+
+    const candidate = this.imageValue(data['hasBanner']) || this.imageValue(data['banner']);
+    return this.absoluteAssetUrl(candidate);
+  });
+
+  readonly journalBannerAlt = computed(() => {
+    const data = this.responseRecord();
+    const title = data?.['jnl_name'] ?? data?.['title'] ?? data?.['name'];
+    const label = typeof title === 'string' ? title.trim() : '';
+    return label ? `Banner de ${label}` : 'Banner do periódico';
+  });
+
   readonly breadcrumbLabels = computed<Record<string, string>>(() => {
     const classe = this.classe();
     if (!classe || classe === '-') {
@@ -181,6 +203,38 @@ export class VIdPage {
     if (/^https?:\/\//i.test(normalized)) return normalized;
     return `${new URL(this.apiConfig.brapciApiBaseUrl).origin}/${normalized.replace(/^\//, '')}`;
   });
+
+  private imageValue(value: unknown): string {
+    if (typeof value === 'string') {
+      return value.trim();
+    }
+
+    if (Array.isArray(value)) {
+      for (const item of value) {
+        const image = this.imageValue(item);
+        if (image) return image;
+      }
+      return '';
+    }
+
+    if (value && typeof value === 'object') {
+      const image = value as Record<string, unknown>;
+      return this.imageValue(
+        image['URL'] ?? image['url'] ?? image['src'] ?? image['image'] ?? image['Caption'],
+      );
+    }
+
+    return '';
+  }
+
+  private absoluteAssetUrl(value: string): string {
+    if (!value) return '';
+    const normalized = value.replace(/^\.\//, '');
+    if (/^(https?:)?\/\//i.test(normalized) || /^data:image\//i.test(normalized)) {
+      return normalized;
+    }
+    return `${new URL(this.apiConfig.brapciApiBaseUrl).origin}/${normalized.replace(/^\//, '')}`;
+  }
 
   readonly authorLinks = computed(() => {
     const value = this.response();
