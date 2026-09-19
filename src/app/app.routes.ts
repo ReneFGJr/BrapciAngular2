@@ -76,6 +76,14 @@ export const routes: Routes = [
     loadComponent: () => import('./pages/livros-submit/livros-submit.page').then((m) => m.LivrosSubmitPage),
   },
   {
+    path: 'books/disclaimer/:id/:check',
+    title: 'Confirmacao de submissao | Brapci Livros',
+    loadComponent: () =>
+      import('./pages/book-disclaimer/book-disclaimer.page').then(
+        (m) => m.BookDisclaimerPage,
+      ),
+  },
+  {
     path: 'signin',
     loadComponent: () => import('./pages/signin/signin.page').then((m) => m.SigninPage),
   },

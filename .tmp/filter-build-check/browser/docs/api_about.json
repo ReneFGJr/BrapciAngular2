@@ -1,0 +1,67 @@
+{
+  "nome_grupo_api": "Sobre",
+  "descricao": "API de conteúdo institucional utilizada pelas páginas /about/:page. A rota da API é /api/page/{page}, consultando os registros da tabela about.",
+  "endpoints": [
+    {
+      "nome": "Consultar página institucional (about)",
+      "metodo_servico": "BrapciApiService.get(`page/${page}`)",
+      "endpoint_api": {
+        "metodo": "GET",
+        "url": "https://cip.brapci.inf.br/api/page/{page}",
+        "endpoint_relativo": "/api/page/{page}",
+        "content_type_requisicao": null,
+        "content_type_resposta": "application/json"
+      },
+      "precisa_apikey": false,
+      "autenticacao": "Consulta pública, sem APIKEY ou sessão de login.",
+      "variaveis_api": [
+        {
+          "nome": "page",
+          "local": "path",
+          "tipo": "string",
+          "obrigatoria": true,
+          "descricao": "Identificador da página. Valores usados pelo portal: brapci (Sobre a Brapci), benancib (Sobre o Benancib), brapcilivros (Brapci Livros), how_index (Como ser indexado na Brapci) e team (Equipe).",
+          "exemplo": "brapci"
+        }
+      ],
+      "exemplo_requisicao": "curl \"https://cip.brapci.inf.br/api/page/brapci\"\n\ncurl \"https://cip.brapci.inf.br/api/page/benancib\"\n\ncurl \"https://cip.brapci.inf.br/api/page/brapcilivros\"\n\ncurl \"https://cip.brapci.inf.br/api/page/how_index\"\n\ncurl \"https://cip.brapci.inf.br/api/page/team\"",
+      "resultado_api": {
+        "descricao": "Retorna diretamente um array de blocos de conteúdo, ordenados por a_order crescente. O idioma está fixado em pt no backend; não há parâmetro de idioma. Cada row pode conter HTML ou texto simples. Sem registros para a página, retorna []. O exemplo abaixo é ilustrativo.",
+        "exemplo": [
+          {
+            "row": "<ul><li><a href=\"#apresentacao\">Apresentação</a></li></ul>",
+            "lang": "pt",
+            "ordem": 0
+          },
+          {
+            "row": "<section id=\"apresentacao\"><h2>Apresentação</h2><p>Sobre a Brapci.</p></section>",
+            "lang": "pt",
+            "ordem": 1
+          }
+        ]
+      },
+      "variaveis_retorno_api": [
+        {
+          "nome": "[]",
+          "tipo": "array<object>",
+          "descricao": "Blocos da página na ordem de apresentação; array vazio quando não há conteúdo."
+        },
+        {
+          "nome": "[].row",
+          "tipo": "string",
+          "descricao": "Conteúdo do bloco em HTML ou texto simples."
+        },
+        {
+          "nome": "[].lang",
+          "tipo": "string",
+          "descricao": "Idioma do bloco. Atualmente pt."
+        },
+        {
+          "nome": "[].ordem",
+          "tipo": "integer",
+          "descricao": "Valor de a_order. Blocos com ordem 0 compõem a navegação da página; os demais compõem o conteúdo."
+        }
+      ]
+    }
+  ]
+}

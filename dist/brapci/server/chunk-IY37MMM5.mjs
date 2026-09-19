@@ -1,2 +1,0 @@
-import './polyfills.server.mjs';
-import{b as a}from"./chunk-3MCM4PU6.mjs";import{R as o}from"./chunk-O5XVCG2B.mjs";import{X as e,p as r}from"./chunk-4SVJI4LA.mjs";import"./chunk-X2SEQXRR.mjs";var n=()=>{let t=e(a),c=e(o);return t.getLocalUser()?!0:t.checkSession().pipe(r(p=>p?!0:c.createUrlTree(["/signin"],{queryParams:{returnUrl:"/chat"}})))};var d=[{path:"",canActivate:[n],loadComponent:()=>import("./chunk-RMNCO2DU.mjs").then(t=>t.ChatPageComponent),\u0275entryName:"src/app/chat/pages/chat-page/chat-page.component.ts"}];export{d as CHAT_ROUTES};

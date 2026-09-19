@@ -1,0 +1,49 @@
+<app-banner-livros></app-banner-livros>
+
+<main class="disclaimer-wrap py-4" aria-labelledby="disclaimer-title">
+  <div class="container disclaimer-shell">
+    <app-breadcrumbs
+      [labels]="{ books: 'Brapci Livros', disclaimer: 'Confirmacao da submissao' }"
+    ></app-breadcrumbs>
+
+    <article class="disclaimer-card" aria-live="polite">
+      @if (state() === 'loading') {
+        <div class="disclaimer-state text-center">
+          <span class="eyebrow">Brapci Livros</span>
+          <h1 id="disclaimer-title">Validando sua submissao</h1>
+          <p>Aguarde enquanto registramos a concordancia com os termos.</p>
+          <app-loading-spinner></app-loading-spinner>
+        </div>
+      } @else if (state() === 'success') {
+        <div class="disclaimer-state text-center">
+          <span class="status-icon success" aria-hidden="true">
+            <i class="bi bi-check-lg"></i>
+          </span>
+          <span class="eyebrow">Confirmacao concluida</span>
+          <h1 id="disclaimer-title">Obrigado, {{ details().name }}!</h1>
+          <p>
+            Sua submissao do arquivo <strong>{{ details().file }}</strong> foi validada com sucesso.
+            A obra esta liberada para analise pela equipe da Brapci Livros.
+          </p>
+          <div class="alert alert-success mb-0" role="status">
+            A concordancia com os termos foi registrada.
+          </div>
+          <a class="btn btn-primary mt-4" routerLink="/livros">Ir para Brapci Livros</a>
+        </div>
+      } @else {
+        <div class="disclaimer-state text-center">
+          <span class="status-icon error" aria-hidden="true">
+            <i class="bi bi-exclamation-lg"></i>
+          </span>
+          <span class="eyebrow">Nao foi possivel confirmar</span>
+          <h1 id="disclaimer-title">Link de confirmacao invalido</h1>
+          <p>{{ errorMessage() }}</p>
+          <div class="d-flex flex-wrap justify-content-center gap-2 mt-4">
+            <button type="button" class="btn btn-primary" (click)="retry()">Tentar novamente</button>
+            <a class="btn btn-outline-secondary" routerLink="/livros/submit">Nova submissao</a>
+          </div>
+        </div>
+      }
+    </article>
+  </div>
+</main>

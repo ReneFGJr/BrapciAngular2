@@ -25,6 +25,38 @@
         <span type="button" class="link search-action-link" (click)="showFilters = !showFilters">{{ 'search.filters.title' | translate }}</span>
       </div>
 
+      <div *ngIf="showFilters" class="search-filters">
+        <form [formGroup]="filtersForm" class="search-filters-form">
+          <div class="search-filter-col-year">
+            <label for="year_start">{{ 'search.filters.year_start' | translate }}</label>
+            <select id="year_start" formControlName="year_start" class="form-control">
+              <option *ngFor="let y of yearsStart" [value]="y">{{ y }}</option>
+            </select>
+          </div>
+
+          <div class="search-filter-col-year">
+            <label for="year_end">{{ 'search.filters.year_end' | translate }}</label>
+            <select id="year_end" formControlName="year_end" class="form-control">
+              <option *ngFor="let y of yearsEnd" [value]="y">{{ y }}</option>
+            </select>
+          </div>
+
+          <div class="search-filter-col-wide">
+            <label class="search-filter-title">{{ 'search.filters.search_field' | translate }}</label>
+            <div *ngFor="let field of searchFields">
+              <input
+                type="radio"
+                name="fields"
+                [value]="field.value"
+                formControlName="fields"
+                id="event-field-{{ field.value }}"
+              />
+              <label for="event-field-{{ field.value }}" class="ms-1">{{ 'search.filters.fields.' + field.value | translate }}</label>
+            </div>
+          </div>
+        </form>
+      </div>
+
       @if (searched()) {
         <div class="search-results-grid mt-3">
           <div class="search-results-main">
@@ -42,7 +74,9 @@
                   (click)="allResultsMarked() ? showSelection() : selectAllResults()"
                 >
                   {{ allResultsMarked() ? 'Mostrar seleção' : 'Selecionar todos' }}
-                  <span class="badge text-bg-primary ms-1">{{ basketCount() }}</span>
+                  <span class="badge text-bg-primary ms-1">
+                    {{ allResultsMarked() ? basketCount() : results().length }}
+                  </span>
                 </button>
 
                 <button
@@ -139,35 +173,4 @@
     </div>
   </div>
 
-  <div *ngIf="showFilters" class="search-filters">
-    <form [formGroup]="filtersForm" class="search-filters-form">
-      <div class="search-filter-col-year">
-        <label for="year_start">{{ 'search.filters.year_start' | translate }}</label>
-        <select id="year_start" formControlName="year_start" class="form-control">
-          <option *ngFor="let y of yearsStart" [value]="y">{{ y }}</option>
-        </select>
-      </div>
-
-      <div class="search-filter-col-year">
-        <label for="year_end">{{ 'search.filters.year_end' | translate }}</label>
-        <select id="year_end" formControlName="year_end" class="form-control">
-          <option *ngFor="let y of yearsEnd" [value]="y">{{ y }}</option>
-        </select>
-      </div>
-
-      <div class="search-filter-col-wide">
-        <label class="search-filter-title">{{ 'search.filters.search_field' | translate }}</label>
-        <div *ngFor="let field of searchFields">
-          <input
-            type="radio"
-            name="fields"
-            [value]="field.value"
-            formControlName="fields"
-            id="event-field-{{ field.value }}"
-          />
-          <label for="event-field-{{ field.value }}" class="ms-1">{{ 'search.filters.fields.' + field.value | translate }}</label>
-        </div>
-      </div>
-    </form>
-  </div>
 </article>

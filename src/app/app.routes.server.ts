@@ -14,6 +14,10 @@ export const serverRoutes: ServerRoute[] = [
     renderMode: RenderMode.Client
   },
   {
+    path: 'books/disclaimer/:id/:check',
+    renderMode: RenderMode.Client
+  },
+  {
     path: 'about/:page',
     renderMode: RenderMode.Server
   },
