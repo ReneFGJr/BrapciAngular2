@@ -212,13 +212,7 @@ export class AdminEditPage {
     const allowedClass = allowedTypes.find((type): type is JsonRecord => (
       typeof type === 'object' && type !== null && typeof type['c_class'] === 'string'
     ))?.['c_class'];
-    const mode: EditorMode = allow['imagem'] || allow['cover']
-      ? 'image'
-      : allow['pdf']
-        ? 'file'
-        : allow['literal']
-          ? 'literal'
-          : 'concept';
+    const mode = this.resolveEditorMode(allow);
     this.editor.set({
       groupIndex,
       propertyIndex,
@@ -247,7 +241,7 @@ export class AdminEditPage {
   openEdit(groupIndex: number, propertyIndex: number, dataIndex: number): void {
     const property = this.groups()[groupIndex].properties[propertyIndex];
     const allow = property.Allow ?? {};
-    const mode: EditorMode = allow['imagem'] || allow['cover'] ? 'image' : allow['pdf'] ? 'file' : allow['literal'] ? 'literal' : 'concept';
+    const mode = this.resolveEditorMode(allow);
     this.editor.set({
       groupIndex,
       propertyIndex,
@@ -290,12 +284,14 @@ export class AdminEditPage {
     return allowedTypes.some((type) => (
       typeof type === 'object' &&
       type !== null &&
-      type['c_class'] === 'Literal'
+      String(type['c_class'] ?? '').toLocaleLowerCase() === 'literal'
     ));
   }
 
   isLiteralDraft(draft: RdfData): boolean {
-    return this.allowedTypeOptions(draft).some((type) => type['c_class'] === 'Literal');
+    return this.allowedTypeOptions(draft).some(
+      (type) => String(type['c_class'] ?? '').toLocaleLowerCase() === 'literal',
+    );
   }
 
   allowedTypeOptions(draft: RdfData): JsonRecord[] {
@@ -415,19 +411,62 @@ export class AdminEditPage {
       return;
     }
     const file = this.selectedFile();
-    if ((state.mode === 'image' || state.mode === 'file') && file) {
+    if (state.mode === 'file' && file) {
+      const payload = new FormData();
+      payload.append('file', file, file.name);
+      payload.append('property', 'hasFileStorage');
+      this.uploading.set(true);
+      this.api.post<unknown>(`upload/pdf/${encodeURIComponent(this.id())}`, payload)
+        .pipe(takeUntilDestroyed(this.destroyRef))
+        .subscribe({
+          next: () => {
+            this.uploading.set(false);
+            this.closeEditor();
+            this.refreshData();
+          },
+          error: () => {
+            this.uploading.set(false);
+            this.error.set('adminEdit.errors.upload');
+          },
+        });
+      return;
+    }
+    if (state.mode === 'image' && file) {
       const payload = new FormData();
       payload.append('file', file);
       payload.append('ID', this.id());
       payload.append('IDp', state.draft.id_c);
-      payload.append('type', state.mode === 'image' ? 'bookCover' : 'file');
+      const uploadProperty = this.uploadProperty(state);
+      payload.append('type', uploadProperty);
       this.uploading.set(true);
       this.api.post<unknown>('tools/upload', payload).pipe(takeUntilDestroyed(this.destroyRef)).subscribe({
         next: (response) => {
           const result = response && typeof response === 'object' ? response as JsonRecord : {};
-          const uploadedName = String(result['filename'] ?? result['file'] ?? result['name'] ?? file.name);
-          this.applyEditor({ ...state.draft, n_name: uploadedName });
-          this.uploading.set(false);
+          const uploadedPath = String(
+            result['dest'] ?? result['destination'] ?? result['path'] ??
+            result['filename'] ?? result['file'] ?? result['name'] ?? '',
+          ).trim();
+          if (!uploadedPath) {
+            this.uploading.set(false);
+            this.error.set('adminEdit.errors.upload');
+            return;
+          }
+
+          this.api.post<unknown>('rdf/uploadFile', {
+            ID: this.id(),
+            cover: uploadedPath,
+            prop: uploadProperty,
+          }).pipe(takeUntilDestroyed(this.destroyRef)).subscribe({
+            next: () => {
+              this.uploading.set(false);
+              this.closeEditor();
+              this.refreshData();
+            },
+            error: () => {
+              this.uploading.set(false);
+              this.error.set('adminEdit.errors.save');
+            },
+          });
         },
         error: () => { this.uploading.set(false); this.error.set('adminEdit.errors.upload'); },
       });
@@ -485,6 +524,31 @@ export class AdminEditPage {
     })));
     this.closeEditor();
     this.markChanged();
+  }
+
+  private resolveEditorMode(allow: JsonRecord): EditorMode {
+    const allowedTypes = Array.isArray(allow['type']) ? allow['type'] : [];
+    const classes = allowedTypes
+      .filter((type): type is JsonRecord => typeof type === 'object' && type !== null)
+      .map((type) => String(type['c_class'] ?? '').trim().toLocaleLowerCase());
+
+    if (allow['imagem'] || allow['cover'] || classes.some((value) => ['image', 'images', 'facephoto'].includes(value))) {
+      return 'image';
+    }
+    if (allow['pdf'] || classes.includes('filestorage')) {
+      return 'file';
+    }
+    if (allow['literal'] || classes.includes('literal')) {
+      return 'literal';
+    }
+    return 'concept';
+  }
+
+  private uploadProperty(state: EditorState): string {
+    const classes = this.allowedTypeOptions(state.draft)
+      .map((type) => String(type['c_class'] ?? '').trim().toLocaleLowerCase());
+    if (classes.includes('facephoto')) return 'facePhoto';
+    return 'bookCover';
   }
 
   private removeAt(groupIndex: number, propertyIndex: number, dataIndex: number): void {
