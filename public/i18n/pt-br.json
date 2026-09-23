@@ -123,7 +123,7 @@
     "methods": {
       "v3": "Metodo anterior (2024)",
       "v4": "Método atual (2026)",
-      "v5": "Método semantico (2026) testes"
+      "v5": "Método ponderado"
     },
     "filters": {
       "title": "Filtros da pesquisa",

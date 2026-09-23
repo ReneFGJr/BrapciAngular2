@@ -1,7 +1,0 @@
-{
-  "version": 3,
-  "sources": ["src/app/components/form-file-input/form-file-input.component.ts"],
-  "sourcesContent": ["\n    .upload-body {\n      border: 1px solid rgba(124, 86, 46, 0.25);\n      border-radius: 0.45rem;\n      padding: 0.8rem;\n      background: rgba(255, 255, 255, 0.72);\n    }\n\n    :host-context(body.theme-master.theme-dark) .upload-body {\n      border-color: rgba(232, 213, 190, 0.22);\n      background: rgba(23, 20, 17, 0.55);\n      color: #d6c4b2;\n    }\n\n    :host-context(body.theme-master.theme-dark) .form-control {\n      border-color: rgba(232, 213, 190, 0.28);\n      background-color: #211c18;\n      color: #f7ecdf;\n    }\n\n    :host-context(body.theme-master.theme-dark) .form-control::file-selector-button {\n      border-color: rgba(232, 213, 190, 0.22);\n      background-color: #342b24;\n      color: #f7ecdf;\n    }\n\n    :host-context(body.theme-master.theme-dark) .text-muted {\n      color: #bbaa99 !important;\n    }\n  "],
-  "mappings": ";AACI,CAAA;AACE,UAAA,IAAA,MAAA,KAAA,GAAA,EAAA,EAAA,EAAA,EAAA,EAAA;AACA,iBAAA;AACA,WAAA;AACA,cAAA,KAAA,GAAA,EAAA,GAAA,EAAA,GAAA,EAAA;;AAGF,cAAA,IAAA,CAAA,YAAA,CAAA,YAAA,CAPA;AAQE,gBAAA,KAAA,GAAA,EAAA,GAAA,EAAA,GAAA,EAAA;AACA,cAAA,KAAA,EAAA,EAAA,EAAA,EAAA,EAAA,EAAA;AACA,SAAA;;AAGF,cAAA,IAAA,CAAA,YAAA,CAAA,YAAA,CAAA;AACE,gBAAA,KAAA,GAAA,EAAA,GAAA,EAAA,GAAA,EAAA;AACA,oBAAA;AACA,SAAA;;AAGF,cAAA,IAAA,CAAA,YAAA,CAAA,YAAA,CANA,YAMA;AACE,gBAAA,KAAA,GAAA,EAAA,GAAA,EAAA,GAAA,EAAA;AACA,oBAAA;AACA,SAAA;;AAGF,cAAA,IAAA,CAAA,YAAA,CAAA,YAAA,CAAA;AACE,SAAA;;",
-  "names": []
-}

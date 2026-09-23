@@ -1,7 +1,0 @@
-{
-  "version": 3,
-  "sources": ["src/app/components/source-basket-actions/source-basket-actions.component.scss"],
-  "sourcesContent": [".source-basket-actions {\r\n  .sba-loading {\r\n    color: #6c757d;\r\n    font-size: 0.875rem;\r\n  }\r\n\r\n  .sba-toolbar {\r\n    .sba-info {\r\n      flex-shrink: 0;\r\n    }\r\n  }\r\n}\r\n"],
-  "mappings": ";AACE,CAAA,sBAAA,CAAA;AACE,SAAA;AACA,aAAA;;AAIA,CANF,sBAME,CAAA,YAAA,CAAA;AACE,eAAA;;",
-  "names": []
-}

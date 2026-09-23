@@ -32,13 +32,11 @@ export class SearchArticlesComponent {
   private readonly basketService = inject(BasketService);
   private readonly brapciApiService = inject(BrapciApiService);
   private readonly sessionService = inject(SessionService);
+  readonly searchMethods: SearchMethod[] = ['v3', 'v4', 'v5'];
+  private readonly searchMethodCookie = 'brapci_search_method';
   private readonly authService = inject(AuthService);
   private readonly currentUser = toSignal(this.authService.currentUser$, { initialValue: null });
-  readonly searchMethods = computed<SearchMethod[]>(() =>
-    this.currentUser()?.role === 'admin' ? ['v3', 'v4', 'v5'] : ['v3', 'v4'],
-  );
-  private readonly searchMethodCookie = 'brapci_search_method';
-  readonly searchLimits = [1000, 2000, 3000, 4000, 5000];
+  readonly searchLimits = computed(() => this.currentUser() ? [1000, 2000, 3000, 4000, 5000] : [1000]);
   private readonly searchLimitCookie = 'brapci_search_limit';
   readonly areaNewsComponent = AreaNewsComponent;
   readonly areaEventsComponent = AreaEventsComponent;
@@ -101,30 +99,28 @@ export class SearchArticlesComponent {
       limit: new FormControl(this.savedSearchLimit(), { nonNullable: true }),
     });
     effect(() => {
-      if (!this.searchMethods().includes(this.filtersForm.controls['method'].value)) {
-        this.filtersForm.patchValue({ method: 'v4' });
-        this.saveSearchMethod('v4');
-      }
+      const limit = this.normalizeSearchLimit(this.filtersForm.controls['limit'].value);
+      this.filtersForm.patchValue({ limit }, { emitEvent: false });
     });
   }
 
   private savedSearchMethod(): SearchMethod {
     try {
       const saved = this.sessionService.getCookie(this.searchMethodCookie);
-      return this.searchMethods().includes(saved as SearchMethod) ? saved as SearchMethod : 'v4';
+      return this.searchMethods.includes(saved as SearchMethod) ? saved as SearchMethod : 'v5';
     } catch {
-      return 'v4';
+      return 'v5';
     }
   }
 
   saveSearchMethod(method: SearchMethod): void {
-    const allowedMethod = this.searchMethods().includes(method) ? method : 'v4';
+    const allowedMethod = this.searchMethods.includes(method) ? method : 'v5';
     this.sessionService.setCookie(this.searchMethodCookie, allowedMethod);
   }
 
   private normalizeSearchLimit(value: unknown): number {
     const limit = Number(value);
-    return this.searchLimits.includes(limit) ? limit : 1000;
+    return this.searchLimits().includes(limit) ? limit : 1000;
   }
 
   private savedSearchLimit(): number {
@@ -261,7 +257,7 @@ export class SearchArticlesComponent {
     this.loading.set(true);
 
     const selectedMethod = this.filtersForm.value.method as SearchMethod;
-    const method = this.searchMethods().includes(selectedMethod) ? selectedMethod : 'v4';
+    const method = this.searchMethods.includes(selectedMethod) ? selectedMethod : 'v5';
     this.brapciApiService.search<unknown>(term, filters, method).subscribe({
       next: (response) => {
         const normalizedResults = this.normalizeApiResponse(response);

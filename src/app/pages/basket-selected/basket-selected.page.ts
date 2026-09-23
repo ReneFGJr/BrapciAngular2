@@ -1,8 +1,10 @@
 // ...existing code...
-import { Component, inject, signal, OnInit } from '@angular/core';
+import { Component, computed, inject, signal, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { HttpClient, HttpClientModule } from '@angular/common/http';
 import { RouterLink } from '@angular/router';
+import { toSignal } from '@angular/core/rxjs-interop';
+import { AuthService } from '../../core/services/auth.service';
 import { BasketService } from '../../core/services/basket.service';
 import { TranslateModule } from '@ngx-translate/core';
 
@@ -39,7 +41,10 @@ export class BasketSelectedPage implements OnInit {
   private readonly http = inject(HttpClient);
   private readonly exportBaseUrl = 'https://cip.brapci.inf.br/api/brapci/export/';
 
+  private readonly authService = inject(AuthService);
+  private readonly currentUser = toSignal(this.authService.currentUser$, { initialValue: null });
   markedIds = signal<number[]>([]);
+  readonly canExport = computed(() => this.markedIds().length <= 1000 || !!this.currentUser());
   loading = signal(false);
   error = signal<string | null>(null);
   results = signal<any>(null);
@@ -94,7 +99,7 @@ export class BasketSelectedPage implements OnInit {
   export(typeE: string): void {
     const ids = this.basket.getMarked();
 
-    if (!ids.length) {
+    if (!ids.length || (ids.length > 1000 && !this.currentUser())) {
       return;
     }
 

@@ -1,7 +1,0 @@
-{
-  "version": 3,
-  "sources": ["src/app/chat/components/model-selector/model-selector.component.ts"],
-  "sourcesContent": [".model-label{display:block;font-size:.7rem;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--theme-hint);margin-bottom:.2rem}.form-select{min-width:11rem;background-color:var(--theme-card-bg);color:var(--theme-ink);border-color:var(--theme-line)}"],
-  "mappings": ";AAAA,CAAA;AAAa,WAAA;AAAc,aAAA;AAAgB,eAAA;AAAgB,kBAAA;AAAqB,kBAAA;AAAyB,SAAA,IAAA;AAAwB,iBAAA;;AAAoB,CAAA;AAAa,aAAA;AAAgB,oBAAA,IAAA;AAAsC,SAAA,IAAA;AAAuB,gBAAA,IAAA;;",
-  "names": []
-}

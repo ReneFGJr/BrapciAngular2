@@ -46,7 +46,7 @@ export class BrapciApiService {
     });
   }
 
-  search<T>(query: string, filters?: Array<{ name: string, value: any }>, method: SearchMethod = 'v4'): Observable<T> {
+  search<T>(query: string, filters?: Array<{ name: string, value: any }>, method: SearchMethod = 'v5'): Observable<T> {
     const params: Record<string, string | number | boolean> = { term: query, offset: 1000 };
     if (filters && Array.isArray(filters)) {
       for (const filter of filters) {

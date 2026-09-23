@@ -128,7 +128,7 @@
           </div>
           <fieldset class="search-filter-col-method">
             <legend class="search-filter-title">{{ 'search.method' | translate }}</legend>
-            <div *ngFor="let method of searchMethods()">
+            <div *ngFor="let method of searchMethods">
               <input
                 type="radio"
                 name="method"
@@ -142,7 +142,7 @@
           </fieldset>
           <fieldset class="search-filter-col-limit">
             <legend class="search-filter-title">{{ 'search.result_limit' | translate }}</legend>
-            <div *ngFor="let limit of searchLimits">
+            <div *ngFor="let limit of searchLimits()">
               <input
                 type="radio"
                 name="limit"

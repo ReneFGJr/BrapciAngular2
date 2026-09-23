@@ -18,7 +18,7 @@
     </button>
   </div>
 
-  <div class="mt-2 mb-2 export-actions" *ngIf="markedIds().length > 0">
+  <div class="mt-2 mb-2 export-actions" *ngIf="markedIds().length > 0 && canExport()">
     <span class="export-label">{{ 'basket.selected.export' | translate }}:</span>
 
     <button

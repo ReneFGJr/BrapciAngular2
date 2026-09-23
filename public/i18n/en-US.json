@@ -105,7 +105,7 @@
     "methods": {
       "v3": "Previous method (2024)",
       "v4": "Current method (2026)",
-      "v5": "Semantic method (2026) testing"
+      "v5": "Weighted method"
     },
     "empty": "No results found for this query.",
     "idle": "Type a term to query the Brapci API."

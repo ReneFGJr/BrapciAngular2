@@ -123,7 +123,7 @@
     "methods": {
       "v3": "Método anterior (2024)",
       "v4": "Método actual (2026)",
-      "v5": "Método semántico (2026) pruebas"
+      "v5": "Método ponderado"
     },
     "empty": "No se encontraron resultados para la consulta.",
     "idle": "Escriba un termino para consultar la API Brapci.",
