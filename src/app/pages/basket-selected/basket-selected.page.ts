@@ -44,7 +44,7 @@ export class BasketSelectedPage implements OnInit {
   private readonly authService = inject(AuthService);
   private readonly currentUser = toSignal(this.authService.currentUser$, { initialValue: null });
   markedIds = signal<number[]>([]);
-  readonly canExport = computed(() => this.markedIds().length <= 1000 || !!this.currentUser());
+  readonly canExport = computed(() => !!this.currentUser());
   loading = signal(false);
   error = signal<string | null>(null);
   results = signal<any>(null);
@@ -99,7 +99,7 @@ export class BasketSelectedPage implements OnInit {
   export(typeE: string): void {
     const ids = this.basket.getMarked();
 
-    if (!ids.length || (ids.length > 1000 && !this.currentUser())) {
+    if (!ids.length || !this.canExport()) {
       return;
     }
 

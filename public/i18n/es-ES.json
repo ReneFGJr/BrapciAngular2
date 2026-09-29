@@ -67,6 +67,7 @@
         "clear": "Limpiar selección",
         "export": "Exportar",
         "export_format": "Exportar en {{format}}",
+        "export_login_required": "Exportación disponible solo para usuarios que hayan iniciado sesión.",
         "panel_title": "Panel (Análisis)",
         "panel_link": "Ir al panel",
         "fetch_error": "Error al obtener los datos de la API.",

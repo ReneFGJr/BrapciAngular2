@@ -82,6 +82,7 @@
         "Proceedings": "Conference Proceedings",
         "export": "Export",
         "export_format": "Export as {{format}}",
+        "export_login_required": "Export is available only to signed-in users.",
         "panel_title": "Dashboard (Analysis)",
         "panel_link": "Go to dashboard",
         "fetch_error": "Unable to retrieve data from the API.",

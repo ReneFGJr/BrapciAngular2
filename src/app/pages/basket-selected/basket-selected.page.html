@@ -18,7 +18,7 @@
     </button>
   </div>
 
-  <div class="mt-2 mb-2 export-actions" *ngIf="markedIds().length > 0 && canExport()">
+  <div class="mt-2 mb-2 export-actions" *ngIf="markedIds().length > 0">
     <span class="export-label">{{ 'basket.selected.export' | translate }}:</span>
 
     <button
@@ -26,12 +26,16 @@
       type="button"
       (click)="export(option.type)"
       class="btn btn-outline-primary btn-sm me-2 small"
-      [disabled]="loading()"
+      [disabled]="loading() || !canExport()"
       [attr.aria-label]="'basket.selected.export_format' | translate: { format: option.label }"
       [attr.title]="'basket.selected.export_format' | translate: { format: option.label }"
     >
       {{ option.label }}
     </button>
+  </div>
+
+  <div *ngIf="markedIds().length > 0 && !canExport()" class="alert alert-info mt-3" role="status">
+    {{ 'basket.selected.export_login_required' | translate }}
   </div>
 
   <div *ngIf="markedIds().length === 0 && !loading()" class="alert alert-info mt-3">

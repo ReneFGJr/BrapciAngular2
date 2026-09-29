@@ -57,6 +57,7 @@
       "Proceedings": "Trabalhos de eventos",
       "export": "Exportar",
       "export_format": "Exportar em {{format}}",
+      "export_login_required": "Exportação somente para usuários logados.",
       "panel_title": "Painel (Análise)",
       "panel_link": "Ir para o painel",
       "fetch_error": "Erro ao buscar dados da API.",
