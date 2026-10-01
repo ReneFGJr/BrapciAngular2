@@ -32,6 +32,9 @@
     @if (activeTab() === 'search') {
       <app-event-works-search
         [journalId]="journalId()"
+        [sectionOptions]="sectionOptions()"
+        [sectionTypeOptions]="sectionTypeOptions()"
+        [showSectionFilters]="showEnancibSectionFilters()"
         searchContext="journal"
       ></app-event-works-search>
     }

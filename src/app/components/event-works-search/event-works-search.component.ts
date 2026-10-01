@@ -28,6 +28,9 @@ export class EventWorksSearchComponent {
 
   @Input({ required: true }) journalId = '';
   @Input() searchContext: 'event' | 'journal' = 'event';
+  @Input() showSectionFilters = false;
+  @Input() sectionOptions: string[] = [];
+  @Input() sectionTypeOptions: string[] = [];
 
   readonly query = signal('');
   readonly loading = signal(false);
@@ -53,6 +56,8 @@ export class EventWorksSearchComponent {
     year_start: new FormControl(1962, { nonNullable: true }),
     year_end: new FormControl(new Date().getFullYear() + 1, { nonNullable: true }),
     fields: new FormControl('FL', { nonNullable: true }),
+    section: new FormControl('', { nonNullable: true }),
+    section_type: new FormControl('', { nonNullable: true }),
   });
 
   readonly hasResults = computed(() => this.results().length > 0);
@@ -155,7 +160,7 @@ export class EventWorksSearchComponent {
   searchWorks(): void {
     const term = this.query().trim();
     const idJnl = this.normalizedJournalId();
-    const { year_start, year_end, fields } = this.filtersForm.getRawValue();
+    const { year_start, year_end, fields, section, section_type } = this.filtersForm.getRawValue();
 
     if (!term || !idJnl) {
       this.searched.set(false);
@@ -175,6 +180,12 @@ export class EventWorksSearchComponent {
         { name: 'year_start', value: year_start },
         { name: 'year_end', value: year_end },
         { name: 'field', value: fields },
+        ...(this.showSectionFilters
+          ? [
+              { name: 'section', value: section },
+              { name: 'section_type', value: section_type },
+            ]
+          : []),
       ])
       .subscribe({
         next: (response) => {

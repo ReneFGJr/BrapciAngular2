@@ -33,6 +33,13 @@ type GeoPoint = {
   id: string;
 };
 
+const SECTION_TYPE_NAMES = new Set([
+  'poster',
+  'resumo',
+  'resumo expandido',
+  'trabalho completo',
+]);
+
 @Component({
   selector: 'app-view-journal',
   standalone: true,
@@ -57,6 +64,34 @@ export class ViewJournalComponent {
   readonly title = computed(() => this.field(['jnl_name', 'title', 'name']));
   readonly acronym = computed(() => this.field(['jnl_name_abrev', 'acronym', 'sigla']));
   readonly journalId = computed(() => this.field(['id_jnl', 'ID', 'id']));
+  readonly recordId = computed(() => this.field(['ID', 'id']));
+  readonly journalClass = computed(() => this.field(['Class', 'Classe', 'class', 'classe']));
+  readonly showEnancibSectionFilters = computed(() =>
+    this.recordId() === '101894' && ['journal', 'journals'].includes(this.journalClass().toLowerCase()),
+  );
+  readonly sectionTypeOptions = computed(() => {
+    if (!this.showEnancibSectionFilters()) return [];
+
+    const record = this.asRecord(this.data);
+    const explicit = this.optionLabels(record?.['section_type'] ?? record?.['sectionsTypes']);
+    if (explicit.length) return explicit;
+
+    return this.optionLabels(record?.['sections']).filter((label) =>
+      SECTION_TYPE_NAMES.has(this.normalizeOptionLabel(label)),
+    );
+  });
+  readonly sectionOptions = computed(() => {
+    if (!this.showEnancibSectionFilters()) return [];
+
+    const record = this.asRecord(this.data);
+    const explicit = this.optionLabels(record?.['section']);
+    if (explicit.length) return explicit;
+
+    const sectionTypes = new Set(this.sectionTypeOptions().map((label) => this.normalizeOptionLabel(label)));
+    return this.optionLabels(record?.['sections']).filter(
+      (label) => !sectionTypes.has(this.normalizeOptionLabel(label)),
+    );
+  });
   readonly publisher = computed(() => this.field(['publisher', 'jnl_editor', 'editor']));
   readonly issn = computed(() => this.field(['jnl_issn', 'issn']));
   readonly eissn = computed(() => this.field(['jnl_eissn', 'eissn']));
@@ -198,6 +233,39 @@ export class ViewJournalComponent {
     }
 
     return collected;
+  }
+
+  private optionLabels(value: unknown): string[] {
+    let labels: string[] = [];
+
+    if (Array.isArray(value)) {
+      labels = value.flatMap((item) => this.optionLabels(item));
+    } else if (typeof value === 'string' || typeof value === 'number') {
+      const label = String(value).trim();
+      labels = label ? [label] : [];
+    } else {
+      const record = this.asRecord(value);
+      if (record) {
+        labels = Object.keys(record);
+      }
+    }
+
+    return [...new Map(
+      labels
+        .map((label) => label.trim())
+        .filter(Boolean)
+        .map((label) => [this.normalizeOptionLabel(label), label]),
+    ).values()].sort((left, right) =>
+      left.localeCompare(right, 'pt-BR', { numeric: true, sensitivity: 'base' }),
+    );
+  }
+
+  private normalizeOptionLabel(value: string): string {
+    return value
+      .normalize('NFD')
+      .replace(/[\u0300-\u036f]/g, '')
+      .trim()
+      .toLowerCase();
   }
 
   private extractThemeItems(value: unknown): ThemeItem[] {

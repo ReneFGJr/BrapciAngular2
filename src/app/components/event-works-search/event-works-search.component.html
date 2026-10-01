@@ -54,6 +54,24 @@
               <label for="event-field-{{ field.value }}" class="ms-1">{{ 'search.filters.fields.' + field.value | translate }}</label>
             </div>
           </div>
+
+          @if (showSectionFilters) {
+            <div class="search-filter-col-wide">
+              <label for="section">Seção</label>
+              <select id="section" formControlName="section" class="form-control">
+                <option value="">Todas as seções</option>
+                <option *ngFor="let section of sectionOptions" [value]="section">{{ section }}</option>
+              </select>
+            </div>
+
+            <div class="search-filter-col-wide">
+              <label for="section_type">Subsessão</label>
+              <select id="section_type" formControlName="section_type" class="form-control">
+                <option value="">Todas as subsessões</option>
+                <option *ngFor="let sectionType of sectionTypeOptions" [value]="sectionType">{{ sectionType }}</option>
+              </select>
+            </div>
+          }
         </form>
       </div>
 
