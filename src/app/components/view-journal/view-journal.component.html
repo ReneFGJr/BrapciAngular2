@@ -2,43 +2,27 @@
   <h2 class="h5 mb-3">{{ 'journalView.title' | translate }}</h2>
 
   <div class="tab-nav mb-3" role="tablist" [attr.aria-label]="'journalView.tabsLabel' | translate">
-    <button type="button" class="tab-btn" [class.active]="activeTab() === 'search'" (click)="setTab('search')">
-      {{ 'journalView.search' | translate }}
-    </button>
     <button type="button" class="tab-btn" [class.active]="activeTab() === 'summary'" (click)="setTab('summary')">
       {{ 'journalView.summary' | translate }}
-    </button>
-    <button type="button" class="tab-btn" [class.active]="activeTab() === 'authors'" (click)="setTab('authors')">
-      {{ 'journalView.authors' | translate }}
     </button>
     <button type="button" class="tab-btn" [class.active]="activeTab() === 'issues'" (click)="setTab('issues')">
       {{ 'journalView.issues' | translate }}
     </button>
-    <button type="button" class="tab-btn" [class.active]="activeTab() === 'location'" (click)="setTab('location')">
-      {{ 'journalView.location' | translate }}
-    </button>
     <button type="button" class="tab-btn" [class.active]="activeTab() === 'theme'" (click)="setTab('theme')">
       {{ 'journalView.theme' | translate }}
+    </button>
+    <button type="button" class="tab-btn" [class.active]="activeTab() === 'authors'" (click)="setTab('authors')">
+      {{ 'journalView.authors' | translate }}
+    </button>
+    <button type="button" class="tab-btn" [class.active]="activeTab() === 'location'" (click)="setTab('location')">
+      {{ 'journalView.location' | translate }}
     </button>
     <button type="button" class="tab-btn" [class.active]="activeTab() === 'strata'" (click)="setTab('strata')">
       {{ 'journalView.strata' | translate }}
     </button>
-    <button type="button" class="tab-btn" [class.active]="activeTab() === 'json'" (click)="setTab('json')">
-      {{ 'journalView.json' | translate }}
-    </button>
   </div>
 
   <div class="tab-panel">
-    @if (activeTab() === 'search') {
-      <app-event-works-search
-        [journalId]="journalId()"
-        [sectionOptions]="sectionOptions()"
-        [sectionTypeOptions]="sectionTypeOptions()"
-        [showSectionFilters]="showEnancibSectionFilters()"
-        searchContext="journal"
-      ></app-event-works-search>
-    }
-
     @switch (activeTab()) {
       @case ('summary') {
         <app-journal-meta-grid
@@ -57,6 +41,15 @@
         ></app-journal-meta-grid>
         <div class="mt-4">
           <app-publication-statistics view="years" [data]="data"></app-publication-statistics>
+        </div>
+        <div class="mt-4">
+          <app-event-works-search
+            [journalId]="journalId()"
+            [sectionOptions]="sectionOptions()"
+            [sectionTypeOptions]="sectionTypeOptions()"
+            [showSectionFilters]="showEnancibSectionFilters()"
+            searchContext="journal"
+          ></app-event-works-search>
         </div>
       }
 
@@ -123,10 +116,6 @@
 
       @case ('strata') {
         <app-journal-strata [avaliations]="avaliations()"></app-journal-strata>
-      }
-
-      @case ('json') {
-        <pre class="json-block mb-0">{{ jsonContent() }}</pre>
       }
     }
   </div>

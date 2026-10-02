@@ -10,7 +10,7 @@ import { EventWorksSearchComponent } from '../event-works-search/event-works-sea
 import { PublicationStatisticsComponent } from '../publication-statistics/publication-statistics.component';
 
 type JsonRecord = Record<string, unknown>;
-type TabId = 'search' | 'summary' | 'authors' | 'issues' | 'location' | 'theme' | 'strata' | 'json';
+type TabId = 'summary' | 'authors' | 'issues' | 'location' | 'theme' | 'strata';
 
 type ThemeItem = {
   label: string;
@@ -57,7 +57,7 @@ export class ViewJournalComponent {
   }
 
   @ViewChild('locationMap') locationMap?: ElementRef<HTMLDivElement>;
-  readonly activeTab = signal<TabId>('search');
+  readonly activeTab = signal<TabId>('summary');
   private mapInstance: any = null;
   private locationMapAttempt = 0;
 
@@ -181,8 +181,6 @@ export class ViewJournalComponent {
       'subject.year_max': subject['subject.year_max'] ?? record?.['subject.year_max'],
     };
   });
-
-  readonly jsonContent = computed(() => JSON.stringify(this.data, null, 2));
 
   readonly avaliations = computed(() => {
     const record = this.asRecord(this.data);

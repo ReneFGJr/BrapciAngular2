@@ -56,15 +56,15 @@
           </div>
 
           @if (showSectionFilters) {
-            <div class="search-filter-col-wide">
-              <label for="section">Seção</label>
+            <div class="search-filter-col-session">
+              <label for="section">Sessão</label>
               <select id="section" formControlName="section" class="form-control">
-                <option value="">Todas as seções</option>
+                <option value="">Todas as sessões</option>
                 <option *ngFor="let section of sectionOptions" [value]="section">{{ section }}</option>
               </select>
             </div>
 
-            <div class="search-filter-col-wide">
+            <div class="search-filter-col-session">
               <label for="section_type">Subsessão</label>
               <select id="section_type" formControlName="section_type" class="form-control">
                 <option value="">Todas as subsessões</option>

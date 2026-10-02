@@ -1,4 +1,4 @@
-import { Component, computed, inject, input, output } from '@angular/core';
+import { Component, computed, inject, input, output, signal } from '@angular/core';
 import { toSignal } from '@angular/core/rxjs-interop';
 import { TranslateModule } from '@ngx-translate/core';
 import { Router } from '@angular/router';
@@ -21,6 +21,9 @@ export class AdminAreaComponent {
 
   readonly recordId = input.required<string>();
   readonly editOnly = input(false);
+  readonly recordData = input<unknown>(undefined);
+  readonly showJson = signal(false);
+  readonly jsonContent = computed(() => JSON.stringify(this.recordData(), null, 2));
   readonly actionSelected = output<AdminAction>();
   readonly isAdmin = computed(() => this.currentUser()?.role === 'admin');
 

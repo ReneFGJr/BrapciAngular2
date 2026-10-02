@@ -39,7 +39,7 @@
 
 .search-filters-form {
   display: flex;
-  gap: 2rem;
+  gap: 1rem;
   flex-wrap: wrap;
 }
 
@@ -49,6 +49,12 @@
 
 .search-filter-col-wide {
   min-width: 220px;
+}
+
+.search-filter-col-session {
+  flex: 0 1 180px;
+  min-width: 0;
+  max-width: 100%;
 }
 
 .search-filter-title {

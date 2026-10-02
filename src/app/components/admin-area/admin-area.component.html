@@ -39,6 +39,19 @@
         <i class="bi bi-pencil-square" aria-hidden="true"></i>
       </button>
 
+      @if (recordData() !== undefined) {
+        <button
+          type="button"
+          class="admin-action"
+          aria-label="JSON"
+          title="JSON"
+          [attr.aria-expanded]="showJson()"
+          (click)="showJson.set(!showJson())"
+        >
+          <i class="bi bi-code-slash" aria-hidden="true"></i>
+        </button>
+      }
+
       @if (!editOnly()) {
         <button
           type="button"
@@ -51,5 +64,8 @@
         </button>
       }
     </div>
+    @if (showJson() && recordData() !== undefined) {
+      <pre class="border rounded p-3 mt-3 mb-0" style="max-height: 60vh; overflow: auto"><code>{{ jsonContent() }}</code></pre>
+    }
   </section>
 }

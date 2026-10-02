@@ -1,0 +1,7 @@
+{
+  "version": 3,
+  "sources": ["src/app/pages/home/home.page.ts"],
+  "sourcesContent": ["\n    .loading-screen {\n      min-height: 60vh;\n      display: grid;\n      place-items: center;\n      text-align: center;\n      color: var(--bs-body-color);\n    }\n    p { font-size: 1.25rem; }\n    .loading-spinner {\n      display: inline-block;\n      width: 3rem;\n      height: 3rem;\n      border: 0.25rem solid currentColor;\n      border-right-color: transparent;\n      border-radius: 50%;\n      animation: loading-spin 0.8s linear infinite;\n    }\n    @keyframes loading-spin {\n      to { transform: rotate(360deg); }\n    }\n    @media (prefers-reduced-motion: reduce) {\n      .loading-spinner { animation-duration: 2s; }\n    }\n  "],
+  "mappings": ";AACI,CAAA;AACE,cAAA;AACA,WAAA;AACA,eAAA;AACA,cAAA;AACA,SAAA,IAAA;;AAEF;AAAI,aAAA;;AACJ,CAAA;AACE,WAAA;AACA,SAAA;AACA,UAAA;AACA,UAAA,QAAA,MAAA;AACA,sBAAA;AACA,iBAAA;AACA,aAAA,aAAA,KAAA,OAAA;;AAEF,WAFE;AAGA;AAAK,eAAA,OAAA;;;AAEP,OAAA,CAAA,sBAAA,EAAA;AACE,GAbF;AAaqB,wBAAA;;;",
+  "names": []
+}

@@ -23,6 +23,7 @@
               class="v-record-actions"
               [recordId]="id()"
               [editOnly]="true"
+              [recordData]="isJournal() ? response() : undefined"
             ></app-admin-area>
           }
         </div>
