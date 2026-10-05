@@ -127,6 +127,9 @@
       </ul>
 
       <div class="d-flex align-items-center gap-2">
+        <button type="button" class="bug-toggle" title="Reportar problema" aria-label="Reportar problema" (click)="bugPanelOpen.set(true)">
+          <i class="bi bi-bug" aria-hidden="true"></i>
+        </button>
         <div class="accessibility-launcher">
           <button
             type="button"
@@ -220,6 +223,9 @@
 </nav>
 
 <router-outlet></router-outlet>
+@if (bugPanelOpen()) {
+  <app-bug-panel (closed)="bugPanelOpen.set(false)" />
+}
 
 <footer class="footer mt-auto py-3 border-top">
   <div class="container d-flex flex-column flex-md-row justify-content-between align-items-center gap-2">
@@ -255,6 +261,6 @@
         </svg>
       </a>
     </div>
-    <small class="text-muted">BRAPCI | brapci.inf.br | v0.26.09.23</small>
+    <small class="text-muted">BRAPCI | brapci.inf.br | v0.26.10.05</small>
   </div>
 </footer>

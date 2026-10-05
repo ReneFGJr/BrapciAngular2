@@ -1,3 +1,4 @@
+import { UserBugsComponent } from '../../components/user-bugs/user-bugs.component';
 import { UserLikedComponent } from '../../components/user-liked/user-liked.component';
 import { CommonModule } from '@angular/common';
 import { Component, computed, inject, signal } from '@angular/core';
@@ -9,7 +10,7 @@ import { AuthService } from '../../core/services/auth.service';
 
 @Component({
   selector: 'app-perfil-page',
-  imports: [CommonModule, RouterLink, TranslateModule, BreadcrumbsComponent, UserLikedComponent],
+  imports: [CommonModule, RouterLink, TranslateModule, BreadcrumbsComponent, UserLikedComponent, UserBugsComponent],
   templateUrl: './perfil.page.html',
   styleUrl: './perfil.page.scss'
 })
@@ -21,7 +22,7 @@ export class PerfilPage {
   readonly currentUser = toSignal(this.authService.currentUser$, { initialValue: null });
   readonly isLogged = computed(() => !!this.currentUser());
   readonly isAdmin = computed(() => this.currentUser()?.role === 'admin');
-  readonly activeTab = signal<'session' | 'likes' | 'monitor'>('session');
+  readonly activeTab = signal<'session' | 'likes' | 'monitor' | 'bugs'>('session');
   readonly copyStatus = signal<'idle' | 'success' | 'error'>('idle');
   readonly localUser = computed(() => {
     this.currentUser();
@@ -41,7 +42,7 @@ export class PerfilPage {
     return token ? `${this.externalProfileBaseUrl}${encodeURIComponent(token)}` : '';
   });
 
-  setTab(tab: 'session' | 'likes' | 'monitor'): void {
+  setTab(tab: 'session' | 'likes' | 'monitor' | 'bugs'): void {
     if (tab === 'monitor' && !this.isAdmin()) return;
     this.activeTab.set(tab);
   }

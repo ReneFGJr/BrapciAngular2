@@ -12,12 +12,14 @@ import { AccessibilityPanelComponent } from './components/accessibility-panel/ac
 import { LanguageService } from './core/services/language.service';
 import { SeoService } from './core/services/seo.service';
 import { SessionService } from './core/services/session.service';
+import { BugPanelComponent } from './components/bug-panel/bug-panel.component';
 
 @Component({
   selector: 'app-root',
   standalone: true,
   imports: [
     CommonModule,
+    BugPanelComponent,
     FormsModule,
     RouterOutlet,
     RouterLink,
@@ -33,6 +35,7 @@ export class App {
   readonly markedCount = computed(() => this.markedCountSignal());
   private readonly authService = inject(AuthService);
   readonly accessibilityPanelOpen = signal(false);
+  readonly bugPanelOpen = signal(false);
   readonly accessibilityFontScale = signal(1);
   readonly accessibilityLetterSpacing = signal(false);
   readonly accessibilityCursorLarge = signal(false);

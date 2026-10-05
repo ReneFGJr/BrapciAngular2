@@ -199,6 +199,25 @@ h1 {
 	cursor: pointer;
 }
 
+.bug-toggle {
+	display: inline-flex;
+	align-items: center;
+	justify-content: center;
+	width: 2.1rem;
+	height: 2.1rem;
+	margin-right: 0.75rem;
+	padding: 0;
+	border: 0;
+	background: transparent;
+	color: #fff;
+	cursor: pointer;
+}
+
+.bug-toggle:focus-visible {
+	outline: 2px solid #fff;
+	outline-offset: 2px;
+}
+
 .accessibility-launcher {
 	position: relative;
 	display: inline-flex;

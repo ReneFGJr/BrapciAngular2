@@ -1,4 +1,24 @@
 {
+  "bugs": {
+    "tab": "Errores reportados",
+    "notice": "Su problema será reportado al equipo. Pronto recibirá una respuesta en su perfil, en la pestaña Errores reportados.",
+    "loading": "Cargando reportes…",
+    "error": "No se pudieron cargar sus reportes.",
+    "retry": "Intentar de nuevo",
+    "empty": "Todavía no ha reportado problemas.",
+    "record": "Registro",
+    "problem": "Problema",
+    "description": "Descripción",
+    "url": "Página visitada",
+    "status": "Estado",
+    "solution": "Respuesta del equipo",
+    "pending": "Pendiente",
+    "resolved": "Resuelto",
+    "pdfIncorrect": "PDF incorrecto",
+    "pdfInaccessible": "PDF inaccesible",
+    "other": "Otro",
+    "authorincorrect": "Autor incorrecto"
+  },
   "common": {
     "loading": "Cargando...",
     "dark": "Oscuro",

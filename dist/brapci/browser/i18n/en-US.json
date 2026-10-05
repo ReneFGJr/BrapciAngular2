@@ -1,4 +1,24 @@
 {
+  "bugs": {
+    "tab": "Reported bugs",
+    "notice": "Your problem will be reported to the team. You will soon receive a response in your profile, in the Reported bugs tab.",
+    "loading": "Loading reports…",
+    "error": "Unable to load your reports.",
+    "retry": "Try again",
+    "empty": "You have not reported any problems yet.",
+    "record": "Record",
+    "problem": "Problem",
+    "description": "Description",
+    "url": "Visited page",
+    "status": "Status",
+    "solution": "Team response",
+    "pending": "Pending",
+    "resolved": "Resolved",
+    "pdfIncorrect": "Incorrect PDF",
+    "pdfInaccessible": "Inaccessible PDF",
+    "other": "Other",
+    "authorincorrect": "Incorrect author"
+  },
   "accessibility": {
     "eyebrow": "Accessibility",
     "title": "Quick settings",

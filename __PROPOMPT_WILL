@@ -1,0 +1,7 @@
+No formulário de Bug coloque o aviso nos vários idiomas: Seu problema será reportado a equipe, e em breve sera retornando em seu perfil, na aba Bugs reportado.
+Quando enviar o formulário, também envie a URL que o usuário está acessando.
+
+
+Em http://localhost:4200/perfil crie um novo TAB para "Bugs reportado" acessoando o endpoint /api/bugs/user/{apikey user} e exiba os bugs reportados pelo usuário.
+
+No projeto Brapcp3.1 crie um endpoint /api/bugs/user/{apikey user} vinculado ao ID do usuário mostrando todos os bugs que o usuário reportou
