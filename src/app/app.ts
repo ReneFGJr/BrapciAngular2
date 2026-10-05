@@ -1,6 +1,5 @@
 import { CommonModule, DOCUMENT, isPlatformBrowser } from '@angular/common';
 import { Component, computed, inject, signal } from '@angular/core';
-import { GoogleAnalyticsService } from './core/services/google-analytics.service';
 import { BasketService } from './core/services/basket.service';
 import { PLATFORM_ID } from '@angular/core';
 import { FormsModule } from '@angular/forms';
@@ -31,7 +30,6 @@ import { BugPanelComponent } from './components/bug-panel/bug-panel.component';
   styleUrl: './app.scss'
 })
 export class App {
-  private readonly googleAnalytics = inject(GoogleAnalyticsService);
   private readonly basket = inject(BasketService);
   private readonly markedCountSignal = signal(0);
   readonly markedCount = computed(() => this.markedCountSignal());
@@ -45,7 +43,6 @@ export class App {
   private readonly accessibilityStorageKey = 'brapci_accessibility';
 
   constructor() {
-    this.googleAnalytics.init();
     this.languageService.init();
     const currentLanguage = this.languageService.getCurrentLanguage() as 'pt-br' | 'es' | 'en';
     this.selectedLanguage.set(currentLanguage);

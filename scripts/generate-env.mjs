@@ -36,3 +36,23 @@ const outputContent = `window.__env = Object.assign({}, window.__env, {\n  "app.
 
 writeFileSync(outputPath, outputContent, 'utf8');
 console.log(`Generated ${outputPath} with app.server=${appServer || '(empty)'}`);
+
+// Keep the tag in the source HTML so every distribution includes it.
+const indexPath = resolve(process.cwd(), 'src', 'index.html');
+const startMarker = '<!-- Google Analytics: generated from .env -->';
+const endMarker = '<!-- /Google Analytics -->';
+const analyticsTag = /^G-[A-Z0-9]+$/.test(googleAnalytics) ? `${startMarker}
+  <script async src="https://www.googletagmanager.com/gtag/js?id=${googleAnalytics}"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag() { window.dataLayer.push(arguments); }
+    gtag('js', new Date());
+    gtag('config', '${googleAnalytics}');
+  </script>
+  ${endMarker}` : `${startMarker}\n  ${endMarker}`;
+const index = readFileSync(indexPath, 'utf8');
+const existingTag = /<!-- Google Analytics: generated from \.env -->[\s\S]*?<!-- \/Google Analytics -->/;
+const updatedIndex = existingTag.test(index)
+  ? index.replace(existingTag, analyticsTag)
+  : index.replace('</head>', `  ${analyticsTag}\n</head>`);
+if (index !== updatedIndex) writeFileSync(indexPath, updatedIndex, 'utf8');
