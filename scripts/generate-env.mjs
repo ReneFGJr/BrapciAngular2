@@ -27,11 +27,12 @@ function parseEnvFile(filePath) {
 const envPath = resolve(process.cwd(), '.env');
 const env = parseEnvFile(envPath);
 const appServer = env['app.server'] ?? '';
+const googleAnalytics = (env.GoogleAnalytics ?? '').replace(/^['\" ]|['\" ]$/g, '').trim();
 
 mkdirSync(resolve(process.cwd(), 'public'), { recursive: true });
 
 const outputPath = resolve(process.cwd(), 'public', 'env.js');
-const outputContent = `window.__env = Object.assign({}, window.__env, {\n  "app.server": ${JSON.stringify(appServer)}\n});\n`;
+const outputContent = `window.__env = Object.assign({}, window.__env, {\n  "app.server": ${JSON.stringify(appServer)},\n  "GoogleAnalytics": ${JSON.stringify(googleAnalytics)}\n});\n`;
 
 writeFileSync(outputPath, outputContent, 'utf8');
 console.log(`Generated ${outputPath} with app.server=${appServer || '(empty)'}`);
