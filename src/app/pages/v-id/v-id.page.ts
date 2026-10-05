@@ -263,7 +263,7 @@ export class VIdPage {
         links.push({
           type: 'lattes',
           icon: '🎓',
-          iconImage: 'https://brapci.inf.br/assets/icone/lattes.svg',
+          iconImage: 'assets/icone/lattes.svg',
           label: 'Lattes',
           url: `https://lattes.cnpq.br/${obj['lattes']}`,
         });
@@ -273,7 +273,7 @@ export class VIdPage {
         links.push({
           type: 'orcid',
           icon: '🔗',
-          iconImage: 'https://brapci.inf.br/assets/icone/orcid.svg',
+          iconImage: 'assets/icone/orcid.svg',
           label: 'ORCID',
           url: `https://orcid.org/${obj['orcid']}`,
         });
@@ -283,7 +283,7 @@ export class VIdPage {
         links.push({
           type: 'openalex',
           icon: '🌐',
-          iconImage: 'https://brapci.inf.br/assets/icone/openalex.svg',
+          iconImage: 'assets/icone/openalex.svg',
           label: 'OpenAlex',
           url: `https://openalex.org/${obj['OpenAlex']}`,
         });
@@ -293,7 +293,7 @@ export class VIdPage {
         links.push({
           type: 'googlescholar',
           icon: '📊',
-          iconImage: 'https://brapci.inf.br/assets/icone/googlescholar.svg',
+          iconImage: 'assets/icone/googlescholar.svg',
           label: 'Google Scholar',
           url: `https://scholar.google.com/citations?user=${obj['GoogleScholar']}`,
         });
