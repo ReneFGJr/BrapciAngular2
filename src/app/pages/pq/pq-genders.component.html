@@ -1,0 +1,45 @@
+<div class="gender-heading"><span class="eyebrow">Perfil dos pesquisadores</span><h2>Distribuição por gênero</h2><p>Quantidades e proporções de bolsistas no histórico disponível.</p></div>
+<div class="gender-summaries">
+  @for (summary of summaries(); track summary.title) {
+    <article class="gender-panel">
+      <header><div><h3>{{ summary.title }}</h3><p>{{ summary.subtitle }}</p></div><span class="gender-total"><strong>{{ summary.total }}</strong> bolsistas</span></header>
+      <div class="gender-cards">
+        @for (group of summary.groups; track group.code) {
+          <div class="gender-card" [style.--gender-color]="group.color">
+            <span class="gender-icon"><i class="bi" [ngClass]="group.icon" aria-hidden="true"></i></span>
+            <span class="gender-label">{{ group.label }}</span><strong>{{ group.count }}</strong>
+            <span class="gender-percent">{{ group.percentage | number:'1.1-1' }}%</span>
+            <div class="gender-meter" aria-hidden="true"><span [style.width.%]="group.percentage"></span></div>
+          </div>
+        }
+      </div>
+      @if (!summary.total) { <p class="empty-message">Não há bolsistas disponíveis para este grupo.</p> }
+    </article>
+  }
+</div>
+<article class="gender-panel temporal-panel">
+  <header><div><span class="eyebrow">Evolução temporal</span><h3>Gêneros dos bolsistas por ano</h3><p>Cada barra representa 100% dos bolsistas vigentes: em 31 de dezembro nos anos anteriores e na consulta atual para o ano corrente.</p></div><span class="chart-badge">100% por ano</span></header>
+  <div class="gender-legend">@for (group of legend; track group.code) {<span><i [style.background]="group.color" aria-hidden="true"></i>{{ group.label }}</span>}</div>
+  @if (years().length) {
+    <div class="chart-scroll" tabindex="0" role="region" aria-label="Distribuição por gênero ao longo dos anos; role horizontalmente para ver todos os anos">
+      <div class="percent-chart">
+        <div class="percent-axis" aria-hidden="true">@for (tick of [100, 75, 50, 25, 0]; track tick) {<span>{{ tick }}%</span>}</div>
+        <div class="chart-columns">
+          @for (year of years(); track year.year) {
+            <div class="year-column"><span class="year-total" [title]="year.total + ' bolsistas'">{{ year.total }}</span>
+              <div class="stacked-bar">
+                @for (group of year.groups; track group.code) {
+                  @if (group.count) {<div class="bar-segment" tabindex="0" role="img" [style.height.%]="group.percentage" [style.background]="group.color" [attr.aria-label]="year.year + ': ' + group.label + ', ' + group.count + ' bolsistas, ' + (group.percentage | number:'1.1-1') + '%'" [title]="group.label + ': ' + group.count + ' (' + (group.percentage | number:'1.1-1') + '%)'">@if (group.percentage >= 15) {<span>{{ group.percentage | number:'1.0-0' }}%</span>}</div>}
+                }
+                @if (!year.total) {<span class="no-year-data">—</span>}
+              </div><strong class="year-label">{{ year.year }}</strong>
+            </div>
+          }
+        </div>
+      </div>
+    </div>
+    <p class="chart-note">Os números acima das barras indicam o total anual. Cada pessoa é contada uma vez por ano, mesmo com reconcessões; em registros sobrepostos, vale o gênero da concessão mais recente. Anos sem bolsas ficam sem barra.</p>
+    <details class="gender-details"><summary>Ver quantidades e percentuais por ano</summary><div class="table-responsive"><table class="table"><thead><tr><th>Ano</th><th>Total</th>@for (group of legend; track group.code) {<th>{{ group.label }}</th>}</tr></thead><tbody>@for (year of years(); track year.year) {<tr><th>{{ year.year }}</th><td>{{ year.total }}</td>@for (group of year.groups; track group.code) {<td>{{ group.count }} ({{ group.percentage | number:'1.1-1' }}%)</td>}</tr>}</tbody></table></div></details>
+  } @else {<p class="empty-message">Não há períodos de bolsas disponíveis para a distribuição temporal.</p>}
+  <p class="chart-note">Gêneros ausentes ou diferentes de M/F entram em “Não informado / indefinido”. Os cards contam pessoas por nome, conforme a listagem de bolsistas.</p>
+</article>

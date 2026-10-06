@@ -4,6 +4,8 @@
     "api_auth.json",
     "api_brapci.json",
     "api_doc.json",
-    "api_like.json"
+    "api_gender.json",
+    "api_like.json",
+    "api_pq.json"
   ]
 }

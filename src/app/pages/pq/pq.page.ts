@@ -7,9 +7,10 @@ import { geoIdentity, geoPath } from 'd3';
 import { BreadcrumbsComponent } from '../../components/breadcrumbs/breadcrumbs.component';
 import { PqActiveByYearComponent, PqActivesByYear } from './pq-active-by-year.component';
 import { PqApplications, PqApplicationsComponent } from './pq-applications.component';
+import { PqGendersComponent } from './pq-genders.component';
 
-type PqTab = 'resumo' | 'bolsistas' | 'instituicoes' | 'regioes' | 'mapa' | 'concessoes';
-interface PqScholar { id_bb: string; bs_nome: string; bs_nivel: string; bs_start: string; bs_finish: string; BS_IES: string; bs_lattes: string; bs_rdf_id: string; bd_brapci: string; mod_sigla: string; mod_descricao: string; }
+type PqTab = 'resumo' | 'bolsistas' | 'generos' | 'instituicoes' | 'regioes' | 'mapa' | 'concessoes';
+interface PqScholar { id_bb: string; bs_nome: string; bs_genero?: string | null; bs_nivel: string; bs_start: string; bs_finish: string; BS_IES: string; bs_lattes: string; bs_rdf_id: string; bd_brapci: string; mod_sigla: string; mod_descricao: string; }
 interface PqResponse { status: string; message: string; actives: number; institutions: number; actives_by_year?: PqActivesByYear; applications?: PqApplications; data: PqScholar[]; }
 interface CountItem { label: string; count: number; percentage: number; }
 interface StateCount extends CountItem { code: string; ibgeCode: string; }
@@ -117,7 +118,7 @@ export class PqBrazilMapComponent implements OnInit {
 
 @Component({
   selector: 'app-pq-page', standalone: true,
-  imports: [CommonModule, FormsModule, TranslateModule, BreadcrumbsComponent, PqBrazilMapComponent, PqActiveByYearComponent, PqApplicationsComponent],
+  imports: [CommonModule, FormsModule, TranslateModule, BreadcrumbsComponent, PqBrazilMapComponent, PqActiveByYearComponent, PqApplicationsComponent, PqGendersComponent],
   templateUrl: './pq.page.html', styleUrl: './pq.page.scss',
 })
 export class PqPage implements OnInit {
@@ -137,7 +138,7 @@ export class PqPage implements OnInit {
         const previous = byName.get(key);
         if (!previous || item.inicio > previous.bs_start) {
           byName.set(key, {
-            id_bb: item.id_bb, bs_nome: item.nome, bs_nivel: item.nivel,
+            id_bb: item.id_bb, bs_nome: item.nome, bs_genero: item.bs_genero, bs_nivel: item.nivel,
             bs_start: item.inicio, bs_finish: item.fim, BS_IES: item.ies,
             bs_lattes: '', bs_rdf_id: '', bd_brapci: '',
             mod_sigla: item.mod_sigla || item.modalidade || item.mod || '', mod_descricao: '',
@@ -149,7 +150,7 @@ export class PqPage implements OnInit {
       const key = this.normalize(item.bs_nome);
       const latest = byName.get(key);
       byName.set(key, latest && latest.bs_start > item.bs_start
-        ? { ...latest, bs_lattes: item.bs_lattes, bs_rdf_id: item.bs_rdf_id, bd_brapci: item.bd_brapci }
+        ? { ...latest, bs_genero: latest.bs_genero?.trim() || item.bs_genero, bs_lattes: item.bs_lattes, bs_rdf_id: item.bs_rdf_id, bd_brapci: item.bd_brapci }
         : item);
     }
     return [...byName.values()];
@@ -186,6 +187,13 @@ export class PqPage implements OnInit {
   setTab(tab: PqTab): void { this.activeTab.set(tab); }
   setScholarTab(tab: 'ativos' | 'todos'): void { this.scholarTab.set(tab); this.levelFilter.set('todos'); }
   updateSearch(value: string): void { this.searchTerm.set(value); }
+  gender(item: PqScholar): { icon: string; label: string } {
+    switch (item.bs_genero?.trim().toUpperCase()) {
+      case 'M': return { icon: 'bi-gender-male', label: 'Gênero masculino' };
+      case 'F': return { icon: 'bi-gender-female', label: 'Gênero feminino' };
+      default: return { icon: 'bi-question-circle', label: 'Gênero não informado ou indefinido' };
+    }
+  }
   updateLevel(value: string): void { this.levelFilter.set(value); }
   loadData(): void {
     this.loading.set(true); this.error.set(null);

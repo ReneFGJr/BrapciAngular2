@@ -4,6 +4,7 @@ import { Component, Input, OnChanges, SimpleChanges, computed, signal } from '@a
 export interface PqApplicationRecord {
   id_bb: string;
   nome: string;
+  bs_genero?: string | null;
   nivel: string;
   ies: string;
   inicio: string;
@@ -153,10 +154,10 @@ export class PqApplicationsComponent implements OnChanges {
     return labels[type] || type.replaceAll('_', ' ');
   }
   exportCsv(): void {
-    const header = ['Ano', 'Bolsas encerradas', 'Pesquisador', 'ID Brapci', 'Tipo', 'Nível', 'Instituição', 'Início', 'Fim', 'Dias de interrupção'];
+    const header = ['Ano', 'Bolsas encerradas', 'Pesquisador', 'ID Brapci', 'Tipo', 'Nível', 'Instituição', 'Início', 'Fim', 'Dias de interrupção', 'bs_genero'];
     const rows = this.yearsDescending().flatMap((year) => year.records.map((record) => [
       year.year, year.encerradas, record.nome, record.id_bb, this.typeLabel(record.tipo), record.nivel,
-      record.ies, record.inicio, record.fim, record.dias_interrupcao ?? '',
+      record.ies, record.inicio, record.fim, record.dias_interrupcao ?? '', record.bs_genero ?? '',
     ]));
     const csv = [header, ...rows].map((row) => row.map((value) => this.csvCell(value)).join(';')).join('\r\n');
     const url = URL.createObjectURL(new Blob(['\uFEFF', csv], { type: 'text/csv;charset=utf-8' }));
