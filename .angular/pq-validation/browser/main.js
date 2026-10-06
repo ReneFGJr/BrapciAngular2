@@ -231,7 +231,7 @@ var routes = [
   }, false ? { \u0275entryName: "src/app/pages/doc/doc.page.ts" } : {}),
   __spreadValues({
     path: "pq",
-    loadComponent: () => import("./chunk-FKG6HFVT.js").then((m) => m.PqPage)
+    loadComponent: () => import("./chunk-PCDOE67J.js").then((m) => m.PqPage)
   }, false ? { \u0275entryName: "src/app/pages/pq/pq.page.ts" } : {}),
   __spreadValues({
     path: "revistas",

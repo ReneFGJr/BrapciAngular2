@@ -1,16 +1,15 @@
-import './polyfills.server.mjs';
 import {
   identity_default,
   path_default
-} from "./chunk-GCFZDOB3.mjs";
+} from "./chunk-NRHQYV2G.js";
 import {
   BreadcrumbsComponent
-} from "./chunk-7WFREQWI.mjs";
+} from "./chunk-BU6M5KF3.js";
 import {
   TranslateModule,
   TranslatePipe
-} from "./chunk-DSSJ4LXY.mjs";
-import "./chunk-NDTZNRAX.mjs";
+} from "./chunk-SJ4BTPG5.js";
+import "./chunk-B656RPDE.js";
 import {
   DefaultValueAccessor,
   FormsModule,
@@ -19,7 +18,7 @@ import {
   NgSelectOption,
   SelectControlValueAccessor,
   ɵNgSelectMultipleOption
-} from "./chunk-IOXEKYXJ.mjs";
+} from "./chunk-4B336FI2.js";
 import {
   CommonModule,
   DatePipe,
@@ -27,7 +26,7 @@ import {
   HttpClient,
   NgClass,
   NgIf
-} from "./chunk-X67JMPQG.mjs";
+} from "./chunk-5VDMIUJO.js";
 import {
   Component,
   Input,
@@ -53,6 +52,7 @@ import {
   ɵɵelementStart,
   ɵɵgetCurrentView,
   ɵɵlistener,
+  ɵɵnamespaceHTML,
   ɵɵnamespaceSVG,
   ɵɵnextContext,
   ɵɵpipe,
@@ -73,11 +73,11 @@ import {
   ɵɵtextInterpolate,
   ɵɵtextInterpolate1,
   ɵɵtextInterpolate2
-} from "./chunk-KYM42BAR.mjs";
+} from "./chunk-PFN54DTC.js";
 import {
   __spreadProps,
   __spreadValues
-} from "./chunk-DTEGX4RB.mjs";
+} from "./chunk-UKK5MWW6.js";
 
 // src/app/pages/pq/pq-active-by-year.component.ts
 var _forTrack0 = ($index, $item) => $item.year;
@@ -1168,8 +1168,8 @@ function genderHistory(records, currentYear, activeRecords) {
   const last = currentYear;
   return Array.from({ length: Math.max(0, last - first + 1) }, (_, index) => {
     const year = first + index;
-    const snapshot = `${year}-12-31`;
-    const people = year === currentYear ? activeRecords : dated.filter((record) => record.bs_start <= snapshot && record.bs_finish >= snapshot);
+    const snapshot2 = `${year}-12-31`;
+    const people = year === currentYear ? activeRecords : dated.filter((record) => record.bs_start <= snapshot2 && record.bs_finish >= snapshot2);
     return __spreadValues({ year }, genderCounts(people));
   });
 }
@@ -1580,8 +1580,710 @@ var PqGendersComponent = class _PqGendersComponent {
   (typeof ngDevMode === "undefined" || ngDevMode) && \u0275setClassDebugInfo(PqGendersComponent, { className: "PqGendersComponent", filePath: "src/app/pages/pq/pq-genders.component.ts", lineNumber: 10 });
 })();
 
+// src/app/pages/pq/pq-crossings-data.ts
+var MISSING = "N\xE3o informado";
+function clean(value) {
+  const text = String(value ?? "").trim();
+  return !text || /^(NI|N\/A|NULL|UNDEFINED|NÃO INFORMAD[OA])$/i.test(text) ? MISSING : text;
+}
+function classification(level) {
+  if (["A", "B", "C"].includes(clean(level).toUpperCase()))
+    return "atual";
+  if (/^(1[ABCD]|2[ABC]?)$/.test(clean(level).toUpperCase()))
+    return "antiga";
+  return "outros";
+}
+function historicalRecords(history) {
+  return Object.values(history).flatMap((year) => [...year.novas ?? [], ...year.reconcedidas ?? [], ...year.novas_apos_interrupcao ?? []].map((item) => ({
+    bs_nome: item.nome,
+    bs_genero: item.bs_genero,
+    bs_nivel: item.nivel,
+    bs_start: item.inicio,
+    bs_finish: item.fim,
+    BS_IES: item.ies
+  })));
+}
+function validDates(item) {
+  const valid = (value) => /^\d{4}-\d{2}-\d{2}$/.test(value ?? "") && Number.isFinite(Date.parse(value)) && new Date(value).toISOString().slice(0, 10) === value;
+  return valid(item.bs_start) && valid(item.bs_finish) && item.bs_start <= item.bs_finish;
+}
+function snapshot(records, date) {
+  const people = /* @__PURE__ */ new Map();
+  for (const item of records) {
+    if (date && (!validDates(item) || item.bs_start > date || item.bs_finish < date))
+      continue;
+    const key = item.bs_nome?.normalize("NFD").replace(/[\u0300-\u036f]/g, "").trim().toLowerCase();
+    if (!key)
+      continue;
+    const previous = people.get(key);
+    if (!previous || item.bs_start > previous.bs_start)
+      people.set(key, item);
+  }
+  return [...people.values()];
+}
+function crossingRows(records, levels, category) {
+  const groups = /* @__PURE__ */ new Map();
+  for (const item of records) {
+    const level = clean(item.bs_nivel).toUpperCase();
+    const normalizedLevel = level === MISSING.toUpperCase() ? MISSING : level;
+    if (!levels.includes(normalizedLevel))
+      continue;
+    const label = category(item);
+    const counts = groups.get(label) ?? /* @__PURE__ */ new Map();
+    counts.set(normalizedLevel, (counts.get(normalizedLevel) ?? 0) + 1);
+    groups.set(label, counts);
+  }
+  return [...groups].map(([label, counts]) => {
+    const total = [...counts.values()].reduce((sum, count) => sum + count, 0);
+    return { label, total, cells: levels.map((level) => {
+      const count = counts.get(level) ?? 0;
+      return { level, count, percentage: total ? count / total * 100 : 0 };
+    }) };
+  }).sort((a, b) => b.total - a.total || a.label.localeCompare(b.label, "pt-BR"));
+}
+
+// src/app/pages/pq/pq-crossings.component.ts
+var _forTrack04 = ($index, $item) => $item.label;
+var _forTrack14 = ($index, $item) => $item.level;
+var _forTrack23 = ($index, $item) => $item.category;
+function PqCrossingsComponent_For_25_Template(rf, ctx) {
+  if (rf & 1) {
+    \u0275\u0275elementStart(0, "option", 10);
+    \u0275\u0275text(1);
+    \u0275\u0275elementEnd();
+  }
+  if (rf & 2) {
+    const year_r1 = ctx.$implicit;
+    \u0275\u0275property("value", year_r1);
+    \u0275\u0275advance();
+    \u0275\u0275textInterpolate1("", year_r1, " \u2014 31 de dezembro");
+  }
+}
+function PqCrossingsComponent_For_49_Template(rf, ctx) {
+  if (rf & 1) {
+    const _r2 = \u0275\u0275getCurrentView();
+    \u0275\u0275elementStart(0, "label")(1, "input", 22);
+    \u0275\u0275listener("change", function PqCrossingsComponent_For_49_Template_input_change_1_listener() {
+      const level_r3 = \u0275\u0275restoreView(_r2).$implicit;
+      const ctx_r3 = \u0275\u0275nextContext();
+      return \u0275\u0275resetView(ctx_r3.toggleLevel(level_r3));
+    });
+    \u0275\u0275elementEnd();
+    \u0275\u0275element(2, "i");
+    \u0275\u0275text(3);
+    \u0275\u0275elementEnd();
+  }
+  if (rf & 2) {
+    const level_r3 = ctx.$implicit;
+    const ctx_r3 = \u0275\u0275nextContext();
+    \u0275\u0275advance();
+    \u0275\u0275property("checked", ctx_r3.visibleLevels().includes(level_r3));
+    \u0275\u0275advance();
+    \u0275\u0275styleProp("background", ctx_r3.color(level_r3));
+    \u0275\u0275advance();
+    \u0275\u0275textInterpolate(level_r3);
+  }
+}
+function PqCrossingsComponent_Conditional_74_Template(rf, ctx) {
+  if (rf & 1) {
+    \u0275\u0275elementStart(0, "p", 20);
+    \u0275\u0275text(1);
+    \u0275\u0275elementEnd();
+  }
+  if (rf & 2) {
+    const ctx_r3 = \u0275\u0275nextContext();
+    \u0275\u0275advance();
+    \u0275\u0275textInterpolate1("", ctx_r3.invalidHistory(), " registro(s) hist\xF3ricos com vig\xEAncia ausente ou inv\xE1lida n\xE3o permitem determinar o per\xEDodo e foram exclu\xEDdos da sele\xE7\xE3o hist\xF3rica.");
+  }
+}
+function PqCrossingsComponent_Conditional_75_Template(rf, ctx) {
+  if (rf & 1) {
+    \u0275\u0275elementStart(0, "div", 21);
+    \u0275\u0275text(1, "Nenhum bolsista encontrado para os filtros selecionados. Selecione outros n\xEDveis, classifica\xE7\xE3o ou per\xEDodo.");
+    \u0275\u0275elementEnd();
+  }
+}
+function PqCrossingsComponent_Conditional_76_For_5_Template(rf, ctx) {
+  if (rf & 1) {
+    \u0275\u0275elementStart(0, "span");
+    \u0275\u0275element(1, "i");
+    \u0275\u0275text(2);
+    \u0275\u0275elementEnd();
+  }
+  if (rf & 2) {
+    const level_r5 = ctx.$implicit;
+    const ctx_r3 = \u0275\u0275nextContext(2);
+    \u0275\u0275advance();
+    \u0275\u0275styleProp("background", ctx_r3.color(level_r5));
+    \u0275\u0275advance();
+    \u0275\u0275textInterpolate1("N\xEDvel ", level_r5);
+  }
+}
+function PqCrossingsComponent_Conditional_76_Conditional_8_Template(rf, ctx) {
+  if (rf & 1) {
+    \u0275\u0275elementStart(0, "p", 20);
+    \u0275\u0275text(1, "Este recorte tem menos de tr\xEAs categorias: o radar mostra pontos e linhas, sem formar uma \xE1rea.");
+    \u0275\u0275elementEnd();
+  }
+}
+function PqCrossingsComponent_Conditional_76_For_16_Template(rf, ctx) {
+  if (rf & 1) {
+    \u0275\u0275namespaceSVG();
+    \u0275\u0275element(0, "circle", 37);
+    \u0275\u0275elementStart(1, "text", 38);
+    \u0275\u0275text(2);
+    \u0275\u0275elementEnd();
+  }
+  if (rf & 2) {
+    const ring_r6 = ctx.$implicit;
+    const ctx_r3 = \u0275\u0275nextContext(2);
+    \u0275\u0275attribute("r", 260 * ring_r6 / 100);
+    \u0275\u0275advance();
+    \u0275\u0275attribute("y", 400 - 260 * ring_r6 / 100 - 5);
+    \u0275\u0275advance();
+    \u0275\u0275textInterpolate(ctx_r3.ringLabel(ring_r6));
+  }
+}
+function PqCrossingsComponent_Conditional_76_For_18_Template(rf, ctx) {
+  if (rf & 1) {
+    \u0275\u0275namespaceSVG();
+    \u0275\u0275element(0, "line", 39);
+    \u0275\u0275elementStart(1, "text", 40)(2, "title");
+    \u0275\u0275text(3);
+    \u0275\u0275elementEnd();
+    \u0275\u0275elementStart(4, "tspan");
+    \u0275\u0275text(5);
+    \u0275\u0275elementEnd();
+    \u0275\u0275elementStart(6, "tspan", 41);
+    \u0275\u0275text(7);
+    \u0275\u0275elementEnd()();
+  }
+  if (rf & 2) {
+    const axis_r7 = ctx.$implicit;
+    const ctx_r3 = \u0275\u0275nextContext(2);
+    \u0275\u0275attribute("x2", axis_r7.end.x)("y2", axis_r7.end.y);
+    \u0275\u0275advance();
+    \u0275\u0275attribute("x", axis_r7.labelPosition.x)("y", axis_r7.labelPosition.y)("text-anchor", axis_r7.labelPosition.x < 490 ? "end" : axis_r7.labelPosition.x > 510 ? "start" : "middle");
+    \u0275\u0275advance(2);
+    \u0275\u0275textInterpolate2("", axis_r7.label, ": ", axis_r7.total, " bolsista(s)");
+    \u0275\u0275advance();
+    \u0275\u0275attribute("x", axis_r7.labelPosition.x);
+    \u0275\u0275advance();
+    \u0275\u0275textInterpolate(ctx_r3.axisLabel(axis_r7.label));
+    \u0275\u0275advance();
+    \u0275\u0275attribute("x", axis_r7.labelPosition.x);
+    \u0275\u0275advance();
+    \u0275\u0275textInterpolate1("", axis_r7.total, " bolsista(s)");
+  }
+}
+function PqCrossingsComponent_Conditional_76_For_20_Template(rf, ctx) {
+  if (rf & 1) {
+    \u0275\u0275namespaceSVG();
+    \u0275\u0275element(0, "polygon", 31);
+  }
+  if (rf & 2) {
+    const series_r8 = ctx.$implicit;
+    const ctx_r3 = \u0275\u0275nextContext(2);
+    \u0275\u0275attribute("points", series_r8.polygon)("stroke", ctx_r3.color(series_r8.level))("fill", ctx_r3.rows().length >= 3 ? ctx_r3.color(series_r8.level) : "none");
+  }
+}
+function PqCrossingsComponent_Conditional_76_For_22_For_1_Template(rf, ctx) {
+  if (rf & 1) {
+    const _r9 = \u0275\u0275getCurrentView();
+    \u0275\u0275namespaceSVG();
+    \u0275\u0275elementStart(0, "circle", 43);
+    \u0275\u0275listener("mouseenter", function PqCrossingsComponent_Conditional_76_For_22_For_1_Template_circle_mouseenter_0_listener() {
+      const point_r10 = \u0275\u0275restoreView(_r9).$implicit;
+      const ctx_r3 = \u0275\u0275nextContext(3);
+      return \u0275\u0275resetView(ctx_r3.highlighted.set(point_r10));
+    })("mouseleave", function PqCrossingsComponent_Conditional_76_For_22_For_1_Template_circle_mouseleave_0_listener() {
+      \u0275\u0275restoreView(_r9);
+      const ctx_r3 = \u0275\u0275nextContext(3);
+      return \u0275\u0275resetView(ctx_r3.highlighted.set(null));
+    })("focus", function PqCrossingsComponent_Conditional_76_For_22_For_1_Template_circle_focus_0_listener() {
+      const point_r10 = \u0275\u0275restoreView(_r9).$implicit;
+      const ctx_r3 = \u0275\u0275nextContext(3);
+      return \u0275\u0275resetView(ctx_r3.highlighted.set(point_r10));
+    })("blur", function PqCrossingsComponent_Conditional_76_For_22_For_1_Template_circle_blur_0_listener() {
+      \u0275\u0275restoreView(_r9);
+      const ctx_r3 = \u0275\u0275nextContext(3);
+      return \u0275\u0275resetView(ctx_r3.highlighted.set(null));
+    })("click", function PqCrossingsComponent_Conditional_76_For_22_For_1_Template_circle_click_0_listener() {
+      const point_r10 = \u0275\u0275restoreView(_r9).$implicit;
+      const ctx_r3 = \u0275\u0275nextContext(3);
+      return \u0275\u0275resetView(ctx_r3.highlighted.set(point_r10));
+    });
+    \u0275\u0275elementStart(1, "title");
+    \u0275\u0275text(2);
+    \u0275\u0275elementEnd()();
+  }
+  if (rf & 2) {
+    const point_r10 = ctx.$implicit;
+    const series_r11 = \u0275\u0275nextContext().$implicit;
+    const ctx_r3 = \u0275\u0275nextContext(2);
+    \u0275\u0275attribute("cx", point_r10.x)("cy", point_r10.y)("fill", ctx_r3.color(series_r11.level))("aria-label", point_r10.description);
+    \u0275\u0275advance(2);
+    \u0275\u0275textInterpolate(point_r10.description);
+  }
+}
+function PqCrossingsComponent_Conditional_76_For_22_Template(rf, ctx) {
+  if (rf & 1) {
+    \u0275\u0275repeaterCreate(0, PqCrossingsComponent_Conditional_76_For_22_For_1_Template, 3, 5, ":svg:circle", 42, _forTrack23);
+  }
+  if (rf & 2) {
+    const series_r11 = ctx.$implicit;
+    \u0275\u0275repeater(series_r11.points);
+  }
+}
+function PqCrossingsComponent_Conditional_76_For_46_For_1_Template(rf, ctx) {
+  if (rf & 1) {
+    \u0275\u0275elementStart(0, "tr")(1, "th", 44);
+    \u0275\u0275text(2);
+    \u0275\u0275elementEnd();
+    \u0275\u0275elementStart(3, "td");
+    \u0275\u0275text(4);
+    \u0275\u0275elementEnd();
+    \u0275\u0275elementStart(5, "td");
+    \u0275\u0275text(6);
+    \u0275\u0275elementEnd();
+    \u0275\u0275elementStart(7, "td");
+    \u0275\u0275text(8);
+    \u0275\u0275elementEnd();
+    \u0275\u0275elementStart(9, "td");
+    \u0275\u0275text(10);
+    \u0275\u0275elementEnd()();
+  }
+  if (rf & 2) {
+    const cell_r12 = ctx.$implicit;
+    const row_r13 = \u0275\u0275nextContext().$implicit;
+    const ctx_r3 = \u0275\u0275nextContext(2);
+    \u0275\u0275advance(2);
+    \u0275\u0275textInterpolate(row_r13.label);
+    \u0275\u0275advance(2);
+    \u0275\u0275textInterpolate(cell_r12.level);
+    \u0275\u0275advance(2);
+    \u0275\u0275textInterpolate(cell_r12.count);
+    \u0275\u0275advance(2);
+    \u0275\u0275textInterpolate(ctx_r3.formatPercentage(cell_r12.percentage));
+    \u0275\u0275advance(2);
+    \u0275\u0275textInterpolate(row_r13.total);
+  }
+}
+function PqCrossingsComponent_Conditional_76_For_46_Template(rf, ctx) {
+  if (rf & 1) {
+    \u0275\u0275repeaterCreate(0, PqCrossingsComponent_Conditional_76_For_46_For_1_Template, 11, 5, "tr", null, _forTrack14);
+  }
+  if (rf & 2) {
+    const row_r13 = ctx.$implicit;
+    \u0275\u0275repeater(row_r13.cells);
+  }
+}
+function PqCrossingsComponent_Conditional_76_Template(rf, ctx) {
+  if (rf & 1) {
+    \u0275\u0275elementStart(0, "article", 23)(1, "h3", 24);
+    \u0275\u0275text(2);
+    \u0275\u0275elementEnd();
+    \u0275\u0275elementStart(3, "div", 25);
+    \u0275\u0275repeaterCreate(4, PqCrossingsComponent_Conditional_76_For_5_Template, 3, 3, "span", null, \u0275\u0275repeaterTrackByIdentity);
+    \u0275\u0275elementEnd();
+    \u0275\u0275elementStart(6, "p", 26);
+    \u0275\u0275text(7);
+    \u0275\u0275elementEnd();
+    \u0275\u0275conditionalCreate(8, PqCrossingsComponent_Conditional_76_Conditional_8_Template, 2, 0, "p", 20);
+    \u0275\u0275elementStart(9, "div", 27);
+    \u0275\u0275namespaceSVG();
+    \u0275\u0275elementStart(10, "svg", 28)(11, "title", 29);
+    \u0275\u0275text(12, "Cruzamentos dos n\xEDveis de bolsa em gr\xE1fico radar");
+    \u0275\u0275elementEnd();
+    \u0275\u0275elementStart(13, "desc", 30);
+    \u0275\u0275text(14, "Eixos por categoria, s\xE9ries por n\xEDvel. O centro representa zero. Os valores e as bases dos percentuais est\xE3o dispon\xEDveis nos pontos e na tabela abaixo.");
+    \u0275\u0275elementEnd();
+    \u0275\u0275repeaterCreate(15, PqCrossingsComponent_Conditional_76_For_16_Template, 3, 3, null, null, \u0275\u0275repeaterTrackByIdentity);
+    \u0275\u0275repeaterCreate(17, PqCrossingsComponent_Conditional_76_For_18_Template, 8, 11, null, null, _forTrack04);
+    \u0275\u0275repeaterCreate(19, PqCrossingsComponent_Conditional_76_For_20_Template, 1, 3, ":svg:polygon", 31, _forTrack14);
+    \u0275\u0275repeaterCreate(21, PqCrossingsComponent_Conditional_76_For_22_Template, 2, 0, null, null, _forTrack14);
+    \u0275\u0275elementEnd()();
+    \u0275\u0275namespaceHTML();
+    \u0275\u0275elementStart(23, "div", 32);
+    \u0275\u0275text(24);
+    \u0275\u0275elementEnd()();
+    \u0275\u0275elementStart(25, "details", 33)(26, "summary");
+    \u0275\u0275text(27, "Ver quantidades e percentuais em tabela");
+    \u0275\u0275elementEnd();
+    \u0275\u0275elementStart(28, "div", 34)(29, "table", 35)(30, "caption");
+    \u0275\u0275text(31, "Percentuais sobre o total de cada categoria nos n\xEDveis selecionados.");
+    \u0275\u0275elementEnd();
+    \u0275\u0275elementStart(32, "thead")(33, "tr")(34, "th", 36);
+    \u0275\u0275text(35, "Categoria");
+    \u0275\u0275elementEnd();
+    \u0275\u0275elementStart(36, "th", 36);
+    \u0275\u0275text(37, "N\xEDvel original");
+    \u0275\u0275elementEnd();
+    \u0275\u0275elementStart(38, "th", 36);
+    \u0275\u0275text(39, "Bolsistas");
+    \u0275\u0275elementEnd();
+    \u0275\u0275elementStart(40, "th", 36);
+    \u0275\u0275text(41, "Percentual");
+    \u0275\u0275elementEnd();
+    \u0275\u0275elementStart(42, "th", 36);
+    \u0275\u0275text(43, "Base");
+    \u0275\u0275elementEnd()()();
+    \u0275\u0275elementStart(44, "tbody");
+    \u0275\u0275repeaterCreate(45, PqCrossingsComponent_Conditional_76_For_46_Template, 2, 0, null, null, _forTrack04);
+    \u0275\u0275elementEnd()()()();
+  }
+  if (rf & 2) {
+    const ctx_r3 = \u0275\u0275nextContext();
+    \u0275\u0275advance(2);
+    \u0275\u0275textInterpolate1("Radar: n\xEDvel \xD7 ", ctx_r3.dimension() === "genero" ? "g\xEAnero" : ctx_r3.dimension() === "regiao" ? "regi\xE3o" : "institui\xE7\xE3o");
+    \u0275\u0275advance(2);
+    \u0275\u0275repeater(ctx_r3.visibleLevels());
+    \u0275\u0275advance(3);
+    \u0275\u0275textInterpolate1("Cada eixo representa uma categoria; cada cor representa um n\xEDvel. Escala radial: ", ctx_r3.presentation() === "percentuais" ? "0 a 100% por categoria" : "0 a " + ctx_r3.maximum() + " bolsistas", ".");
+    \u0275\u0275advance();
+    \u0275\u0275conditional(ctx_r3.rows().length < 3 ? 8 : -1);
+    \u0275\u0275advance(7);
+    \u0275\u0275repeater(ctx_r3.radarRings);
+    \u0275\u0275advance(2);
+    \u0275\u0275repeater(ctx_r3.radarAxes());
+    \u0275\u0275advance(2);
+    \u0275\u0275repeater(ctx_r3.radarSeries());
+    \u0275\u0275advance(2);
+    \u0275\u0275repeater(ctx_r3.radarSeries());
+    \u0275\u0275advance(3);
+    \u0275\u0275textInterpolate(ctx_r3.radarDetail());
+    \u0275\u0275advance(21);
+    \u0275\u0275repeater(ctx_r3.rows());
+  }
+}
+var PqCrossingsComponent = class _PqCrossingsComponent {
+  activeRecords = signal([], ...ngDevMode ? [{ debugName: "activeRecords" }] : []);
+  historyRecords = signal([], ...ngDevMode ? [{ debugName: "historyRecords" }] : []);
+  regions = signal({}, ...ngDevMode ? [{ debugName: "regions" }] : []);
+  set active(value) {
+    this.activeRecords.set(value ?? []);
+  }
+  set history(value) {
+    this.historyRecords.set(historicalRecords(value ?? {}));
+  }
+  set institutionRegions(value) {
+    this.regions.set(value);
+  }
+  dimension = signal("genero", ...ngDevMode ? [{ debugName: "dimension" }] : []);
+  period = signal("atual", ...ngDevMode ? [{ debugName: "period" }] : []);
+  scheme = signal("todos", ...ngDevMode ? [{ debugName: "scheme" }] : []);
+  presentation = signal("absolutos", ...ngDevMode ? [{ debugName: "presentation" }] : []);
+  selectedLevels = signal(null, ...ngDevMode ? [{ debugName: "selectedLevels" }] : []);
+  currentYear = Number(new Intl.DateTimeFormat("en", { timeZone: "America/Sao_Paulo", year: "numeric" }).format(/* @__PURE__ */ new Date()));
+  source = "https://www.gov.br/cnpq/pt-br/assuntos/comites-assessoramento/paginas-dos-cas/artes-ciencia-da-informacao-comunicacao-e-museologia-ac/criterios/criterios-para-avaliacao-de-bolsas-de-produtividade-nas-chamadas-de-2024-2025-e-2026";
+  periods = computed(() => {
+    const years = /* @__PURE__ */ new Set();
+    for (const record of this.historyRecords().filter(validDates)) {
+      for (let year = Number(record.bs_start.slice(0, 4)); year <= Math.min(this.currentYear - 1, Number(record.bs_finish.slice(0, 4))); year++) {
+        years.add(year);
+      }
+    }
+    return [...years].sort((a, b) => b - a);
+  }, ...ngDevMode ? [{ debugName: "periods" }] : []);
+  records = computed(() => this.period() === "atual" ? snapshot(this.activeRecords()) : snapshot(this.historyRecords(), `${this.period()}-12-31`), ...ngDevMode ? [{ debugName: "records" }] : []);
+  levels = computed(() => [...new Set(this.records().map((item) => {
+    const level = clean(item.bs_nivel);
+    return level === MISSING ? level : level.toUpperCase();
+  }))].filter((level) => this.scheme() === "todos" || classification(level) === this.scheme()).sort((a, b) => a.localeCompare(b, "pt-BR", { numeric: true })), ...ngDevMode ? [{ debugName: "levels" }] : []);
+  visibleLevels = computed(() => this.levels().filter((level) => this.selectedLevels() === null || this.selectedLevels().includes(level)), ...ngDevMode ? [{ debugName: "visibleLevels" }] : []);
+  rows = computed(() => crossingRows(this.records(), this.visibleLevels(), (item) => this.category(item)), ...ngDevMode ? [{ debugName: "rows" }] : []);
+  total = computed(() => this.rows().reduce((sum, row) => sum + row.total, 0), ...ngDevMode ? [{ debugName: "total" }] : []);
+  maximum = computed(() => Math.max(1, ...this.rows().flatMap((row) => row.cells.map((cell) => cell.count))), ...ngDevMode ? [{ debugName: "maximum" }] : []);
+  missingCount = computed(() => this.records().filter((item) => this.visibleLevels().includes(clean(item.bs_nivel) === MISSING ? MISSING : clean(item.bs_nivel).toUpperCase()) && (this.category(item).startsWith(MISSING) || clean(item.bs_nivel) === MISSING)).length, ...ngDevMode ? [{ debugName: "missingCount" }] : []);
+  invalidHistory = computed(() => this.historyRecords().filter((item) => !validDates(item)).length, ...ngDevMode ? [{ debugName: "invalidHistory" }] : []);
+  radarRings = [20, 40, 60, 80, 100];
+  highlighted = signal(null, ...ngDevMode ? [{ debugName: "highlighted" }] : []);
+  radarAxes = computed(() => this.rows().map((row, index) => __spreadProps(__spreadValues({}, row), {
+    end: this.radarPosition(index, 100),
+    labelPosition: this.radarPosition(index, 118)
+  })), ...ngDevMode ? [{ debugName: "radarAxes" }] : []);
+  radarSeries = computed(() => this.visibleLevels().map((level) => {
+    const points = this.rows().map((row, index) => {
+      const cell = row.cells.find((item) => item.level === level);
+      return __spreadProps(__spreadValues({}, this.radarPosition(index, this.width(cell))), {
+        category: row.label,
+        level,
+        description: this.tooltip(row, cell)
+      });
+    });
+    return { level, points, polygon: points.map((point) => `${point.x},${point.y}`).join(" ") };
+  }), ...ngDevMode ? [{ debugName: "radarSeries" }] : []);
+  radarDetail = computed(() => {
+    const selected = this.highlighted();
+    return this.radarSeries().flatMap((series) => series.points).find((point) => point.category === selected?.category && point.level === selected?.level)?.description ?? "Passe o cursor sobre um ponto ou use Tab para ver categoria, n\xEDvel, quantidade e percentual.";
+  }, ...ngDevMode ? [{ debugName: "radarDetail" }] : []);
+  radarPosition(index, percentage) {
+    const angle = index * 2 * Math.PI / Math.max(this.rows().length, 1) - Math.PI / 2;
+    const radius = 260 * percentage / 100;
+    return { x: 500 + Math.cos(angle) * radius, y: 400 + Math.sin(angle) * radius };
+  }
+  axisLabel(label) {
+    return label.length > 25 ? label.slice(0, 22) + "\u2026" : label;
+  }
+  ringLabel(value) {
+    return this.presentation() === "percentuais" ? value + "%" : (this.maximum() * value / 100).toLocaleString("pt-BR", { maximumFractionDigits: 1 });
+  }
+  category(item) {
+    if (this.dimension() === "genero") {
+      const code = clean(item.bs_genero).toUpperCase();
+      return code === "F" ? "Feminino" : code === "M" ? "Masculino" : `${MISSING} / indefinido`;
+    }
+    const institution = clean(item.BS_IES);
+    if (this.dimension() === "instituicao")
+      return institution;
+    const region = Object.entries(this.regions()).find(([key]) => key.toUpperCase() === institution.toUpperCase())?.[1];
+    return region ?? `${MISSING} / institui\xE7\xE3o sem regi\xE3o mapeada`;
+  }
+  setPeriod(value) {
+    this.period.set(value);
+    this.selectedLevels.set(null);
+  }
+  setScheme(value) {
+    this.scheme.set(value);
+    this.selectedLevels.set(null);
+  }
+  toggleLevel(level) {
+    const selected = this.visibleLevels();
+    this.selectedLevels.set(selected.includes(level) ? selected.filter((item) => item !== level) : [...selected, level]);
+  }
+  color(level) {
+    const order = ["A", "B", "C", "1A", "1B", "1C", "1D", "2", "2A", "2B", "2C"];
+    const palette = ["#1769aa", "#b34700", "#247a49", "#814bb0", "#ba315e", "#007d88", "#806000", "#445a83", "#72513b", "#775a9f", "#a13c36"];
+    const index = order.indexOf(level);
+    return index < 0 ? "#66717e" : palette[index];
+  }
+  width(cell) {
+    return this.presentation() === "percentuais" ? cell.percentage : cell.count / this.maximum() * 100;
+  }
+  formatPercentage(value) {
+    return value.toLocaleString("pt-BR", { minimumFractionDigits: 1, maximumFractionDigits: 1 }) + "%";
+  }
+  tooltip(row, cell) {
+    return `${row.label} \xB7 N\xEDvel ${cell.level}: ${cell.count} bolsista(s), ${cell.percentage.toLocaleString("pt-BR", { maximumFractionDigits: 1 })}%. Base: ${row.total} bolsista(s) desta categoria nos n\xEDveis selecionados.`;
+  }
+  static \u0275fac = function PqCrossingsComponent_Factory(__ngFactoryType__) {
+    return new (__ngFactoryType__ || _PqCrossingsComponent)();
+  };
+  static \u0275cmp = /* @__PURE__ */ \u0275\u0275defineComponent({ type: _PqCrossingsComponent, selectors: [["app-pq-crossings"]], inputs: { active: "active", history: "history", institutionRegions: "institutionRegions" }, decls: 77, vars: 10, consts: [["aria-labelledby", "crossings-title"], [1, "eyebrow"], ["id", "crossings-title"], [1, "filters-panel"], [1, "selectors"], [1, "form-select", 3, "ngModelChange", "ngModel"], ["value", "genero"], ["value", "regiao"], ["value", "instituicao"], ["value", "atual"], [3, "value"], ["value", "todos"], ["value", "antiga"], ["value", "outros"], ["value", "absolutos"], ["value", "percentuais"], [1, "level-options"], ["type", "button", 3, "click"], ["target", "_blank", "rel", "noopener noreferrer", 3, "href"], ["role", "status", "aria-live", "polite", 1, "result-summary"], [1, "base-note"], ["role", "status", 1, "empty"], ["type", "checkbox", 3, "change", "checked"], ["aria-labelledby", "crossings-chart-title", 1, "chart-panel"], ["id", "crossings-chart-title"], ["aria-label", "Legenda dos n\xEDveis", 1, "legend"], [1, "scale"], [1, "radar-scroll"], ["viewBox", "0 0 1000 800", "role", "group", "aria-labelledby", "radar-title radar-desc", 1, "radar"], ["id", "radar-title"], ["id", "radar-desc"], [1, "radar-polygon"], ["role", "status", "aria-live", "polite", 1, "radar-detail"], [1, "data-table"], [1, "table-responsive"], [1, "table"], ["scope", "col"], ["cx", "500", "cy", "400", 1, "radar-grid"], ["x", "508", 1, "radar-tick"], ["x1", "500", "y1", "400", 1, "radar-axis"], [1, "radar-label"], ["dy", "18", 1, "radar-label-total"], ["r", "6", "tabindex", "0", 1, "radar-point"], ["r", "6", "tabindex", "0", 1, "radar-point", 3, "mouseenter", "mouseleave", "focus", "blur", "click"], ["scope", "row"]], template: function PqCrossingsComponent_Template(rf, ctx) {
+    if (rf & 1) {
+      \u0275\u0275elementStart(0, "section", 0)(1, "header")(2, "span", 1);
+      \u0275\u0275text(3, "Explora\xE7\xE3o dos dados");
+      \u0275\u0275elementEnd();
+      \u0275\u0275elementStart(4, "h2", 2);
+      \u0275\u0275text(5, "Cruzamentos por n\xEDvel da bolsa");
+      \u0275\u0275elementEnd();
+      \u0275\u0275elementStart(6, "p");
+      \u0275\u0275text(7, "Compare o perfil dos bolsistas por g\xEAnero, regi\xE3o ou institui\xE7\xE3o.");
+      \u0275\u0275elementEnd()();
+      \u0275\u0275elementStart(8, "div", 3)(9, "div", 4)(10, "label");
+      \u0275\u0275text(11, "Dimens\xE3o");
+      \u0275\u0275elementStart(12, "select", 5);
+      \u0275\u0275listener("ngModelChange", function PqCrossingsComponent_Template_select_ngModelChange_12_listener($event) {
+        return ctx.dimension.set($event);
+      });
+      \u0275\u0275elementStart(13, "option", 6);
+      \u0275\u0275text(14, "G\xEAnero");
+      \u0275\u0275elementEnd();
+      \u0275\u0275elementStart(15, "option", 7);
+      \u0275\u0275text(16, "Regi\xE3o");
+      \u0275\u0275elementEnd();
+      \u0275\u0275elementStart(17, "option", 8);
+      \u0275\u0275text(18, "Institui\xE7\xE3o");
+      \u0275\u0275elementEnd()()();
+      \u0275\u0275elementStart(19, "label");
+      \u0275\u0275text(20, "Per\xEDodo de refer\xEAncia");
+      \u0275\u0275elementStart(21, "select", 5);
+      \u0275\u0275listener("ngModelChange", function PqCrossingsComponent_Template_select_ngModelChange_21_listener($event) {
+        return ctx.setPeriod($event);
+      });
+      \u0275\u0275elementStart(22, "option", 9);
+      \u0275\u0275text(23);
+      \u0275\u0275elementEnd();
+      \u0275\u0275repeaterCreate(24, PqCrossingsComponent_For_25_Template, 2, 2, "option", 10, \u0275\u0275repeaterTrackByIdentity);
+      \u0275\u0275elementEnd()();
+      \u0275\u0275elementStart(26, "label");
+      \u0275\u0275text(27, "Classifica\xE7\xE3o");
+      \u0275\u0275elementStart(28, "select", 5);
+      \u0275\u0275listener("ngModelChange", function PqCrossingsComponent_Template_select_ngModelChange_28_listener($event) {
+        return ctx.setScheme($event);
+      });
+      \u0275\u0275elementStart(29, "option", 11);
+      \u0275\u0275text(30, "Todos os n\xEDveis originais");
+      \u0275\u0275elementEnd();
+      \u0275\u0275elementStart(31, "option", 9);
+      \u0275\u0275text(32, "Atual \u2014 A, B e C");
+      \u0275\u0275elementEnd();
+      \u0275\u0275elementStart(33, "option", 12);
+      \u0275\u0275text(34, "Antiga \u2014 n\xEDveis 1 e 2");
+      \u0275\u0275elementEnd();
+      \u0275\u0275elementStart(35, "option", 13);
+      \u0275\u0275text(36, "Outros / n\xE3o informado");
+      \u0275\u0275elementEnd()()();
+      \u0275\u0275elementStart(37, "label");
+      \u0275\u0275text(38, "Apresenta\xE7\xE3o");
+      \u0275\u0275elementStart(39, "select", 5);
+      \u0275\u0275listener("ngModelChange", function PqCrossingsComponent_Template_select_ngModelChange_39_listener($event) {
+        return ctx.presentation.set($event);
+      });
+      \u0275\u0275elementStart(40, "option", 14);
+      \u0275\u0275text(41, "N\xFAmeros absolutos");
+      \u0275\u0275elementEnd();
+      \u0275\u0275elementStart(42, "option", 15);
+      \u0275\u0275text(43, "Percentuais por categoria");
+      \u0275\u0275elementEnd()()()();
+      \u0275\u0275elementStart(44, "fieldset")(45, "legend");
+      \u0275\u0275text(46, "N\xEDveis da bolsa");
+      \u0275\u0275elementEnd();
+      \u0275\u0275elementStart(47, "div", 16);
+      \u0275\u0275repeaterCreate(48, PqCrossingsComponent_For_49_Template, 4, 4, "label", null, \u0275\u0275repeaterTrackByIdentity);
+      \u0275\u0275elementStart(50, "button", 17);
+      \u0275\u0275listener("click", function PqCrossingsComponent_Template_button_click_50_listener() {
+        return ctx.selectedLevels.set(null);
+      });
+      \u0275\u0275text(51, "Selecionar todos");
+      \u0275\u0275elementEnd();
+      \u0275\u0275elementStart(52, "button", 17);
+      \u0275\u0275listener("click", function PqCrossingsComponent_Template_button_click_52_listener() {
+        return ctx.selectedLevels.set([]);
+      });
+      \u0275\u0275text(53, "Limpar sele\xE7\xE3o");
+      \u0275\u0275elementEnd()()();
+      \u0275\u0275elementStart(54, "details")(55, "summary");
+      \u0275\u0275text(56, "Como os n\xEDveis e o per\xEDodo s\xE3o tratados");
+      \u0275\u0275elementEnd();
+      \u0275\u0275elementStart(57, "p");
+      \u0275\u0275text(58, "Os n\xEDveis originais s\xE3o preservados. A/B/C s\xE3o exibidos somente quando registrados assim na base. Os n\xEDveis antigos n\xE3o s\xE3o convertidos: n\xE3o foi confirmada uma correspond\xEAncia completa para todos os c\xF3digos hist\xF3ricos dispon\xEDveis, incluindo 2A, 2B e 2C. N\xE3o h\xE1 agrupamento entre classifica\xE7\xF5es.");
+      \u0275\u0275elementEnd();
+      \u0275\u0275elementStart(59, "p")(60, "a", 18);
+      \u0275\u0275text(61, "Fonte oficial: crit\xE9rios do CNPq para o CA-AC, 2024\u20132026");
+      \u0275\u0275elementEnd();
+      \u0275\u0275text(62, ".");
+      \u0275\u0275elementEnd();
+      \u0275\u0275elementStart(63, "p");
+      \u0275\u0275text(64, "A consulta atual usa a lista de bolsistas ativos da API. Anos anteriores usam bolsas vigentes em 31 de dezembro, conforme in\xEDcio e fim registrados no hist\xF3rico dispon\xEDvel. Cada pessoa \xE9 contada uma vez por per\xEDodo; em sobreposi\xE7\xE3o, vale a bolsa com in\xEDcio mais recente. A identifica\xE7\xE3o usa o nome normalizado. O hist\xF3rico pode ser incompleto.");
+      \u0275\u0275elementEnd();
+      \u0275\u0275elementStart(65, "p");
+      \u0275\u0275text(66, "A regi\xE3o \xE9 obtida pelo v\xEDnculo institucional e pelo mapeamento dispon\xEDvel na base. Institui\xE7\xF5es n\xE3o mapeadas permanecem identificadas como sem informa\xE7\xE3o de regi\xE3o. N\xE3o s\xE3o inferidos g\xEAneros ausentes.");
+      \u0275\u0275elementEnd()()();
+      \u0275\u0275elementStart(67, "div", 19)(68, "strong");
+      \u0275\u0275text(69);
+      \u0275\u0275elementEnd();
+      \u0275\u0275elementStart(70, "span");
+      \u0275\u0275text(71);
+      \u0275\u0275elementEnd()();
+      \u0275\u0275elementStart(72, "p", 20);
+      \u0275\u0275text(73, "Base dos percentuais: total de bolsistas de cada categoria no per\xEDodo e nos n\xEDveis selecionados, incluindo registros sem informa\xE7\xE3o. Cada categoria soma 100%. Os filtros alteram essa base.");
+      \u0275\u0275elementEnd();
+      \u0275\u0275conditionalCreate(74, PqCrossingsComponent_Conditional_74_Template, 2, 1, "p", 20);
+      \u0275\u0275conditionalCreate(75, PqCrossingsComponent_Conditional_75_Template, 2, 0, "div", 21)(76, PqCrossingsComponent_Conditional_76_Template, 47, 4);
+      \u0275\u0275elementEnd();
+    }
+    if (rf & 2) {
+      \u0275\u0275advance(12);
+      \u0275\u0275property("ngModel", ctx.dimension());
+      \u0275\u0275advance(9);
+      \u0275\u0275property("ngModel", ctx.period());
+      \u0275\u0275advance(2);
+      \u0275\u0275textInterpolate1("Consulta atual \u2014 ", ctx.currentYear);
+      \u0275\u0275advance();
+      \u0275\u0275repeater(ctx.periods());
+      \u0275\u0275advance(4);
+      \u0275\u0275property("ngModel", ctx.scheme());
+      \u0275\u0275advance(11);
+      \u0275\u0275property("ngModel", ctx.presentation());
+      \u0275\u0275advance(9);
+      \u0275\u0275repeater(ctx.levels());
+      \u0275\u0275advance(12);
+      \u0275\u0275property("href", ctx.source, \u0275\u0275sanitizeUrl);
+      \u0275\u0275advance(9);
+      \u0275\u0275textInterpolate1("", ctx.total(), " bolsista(s)");
+      \u0275\u0275advance(2);
+      \u0275\u0275textInterpolate1("", ctx.missingCount(), " com n\xEDvel ou dimens\xE3o sem informa\xE7\xE3o");
+      \u0275\u0275advance(3);
+      \u0275\u0275conditional(ctx.period() !== "atual" && ctx.invalidHistory() > 0 ? 74 : -1);
+      \u0275\u0275advance();
+      \u0275\u0275conditional(ctx.total() === 0 ? 75 : 76);
+    }
+  }, dependencies: [CommonModule, FormsModule, NgSelectOption, \u0275NgSelectMultipleOption, SelectControlValueAccessor, NgControlStatus, NgModel], styles: ['\n\n[_nghost-%COMP%] {\n  display: block;\n  color: var(--theme-ink);\n}\nh2[_ngcontent-%COMP%], \nh3[_ngcontent-%COMP%], \nh4[_ngcontent-%COMP%] {\n  font-family: "Bitter", serif;\n}\nh2[_ngcontent-%COMP%] {\n  font-size: 1.5rem;\n}\nh3[_ngcontent-%COMP%] {\n  font-size: 1.15rem;\n}\nheader[_ngcontent-%COMP%]   p[_ngcontent-%COMP%], \n.base-note[_ngcontent-%COMP%], \n.scale[_ngcontent-%COMP%] {\n  color: var(--theme-muted);\n  font-size: 0.85rem;\n}\n.eyebrow[_ngcontent-%COMP%] {\n  color: var(--pq-accent);\n  font-size: 0.75rem;\n  text-transform: uppercase;\n  letter-spacing: 0.12em;\n}\n.filters-panel[_ngcontent-%COMP%], \n.chart-panel[_ngcontent-%COMP%], \n.data-table[_ngcontent-%COMP%] {\n  padding: 1.4rem;\n  border: 1px solid var(--theme-line);\n  border-radius: 1rem;\n  background: var(--theme-card-bg);\n}\n.selectors[_ngcontent-%COMP%] {\n  display: grid;\n  grid-template-columns: repeat(4, minmax(0, 1fr));\n  gap: 1rem;\n}\n.selectors[_ngcontent-%COMP%]   label[_ngcontent-%COMP%] {\n  font-size: 0.85rem;\n  font-weight: 700;\n}\n.form-select[_ngcontent-%COMP%] {\n  margin-top: 0.4rem;\n  color: var(--theme-ink);\n  background-color: var(--theme-card-bg);\n  border-color: var(--theme-line);\n}\nfieldset[_ngcontent-%COMP%] {\n  margin-top: 1.3rem;\n}\nlegend[_ngcontent-%COMP%] {\n  font-size: 0.9rem;\n  font-weight: 700;\n}\n.level-options[_ngcontent-%COMP%], \n.legend[_ngcontent-%COMP%] {\n  display: flex;\n  flex-wrap: wrap;\n  gap: 0.65rem 1rem;\n}\n.level-options[_ngcontent-%COMP%]   label[_ngcontent-%COMP%], \n.legend[_ngcontent-%COMP%]   span[_ngcontent-%COMP%] {\n  display: inline-flex;\n  gap: 0.4rem;\n  align-items: center;\n}\ninput[_ngcontent-%COMP%] {\n  accent-color: #1769aa;\n  width: 1rem;\n  height: 1rem;\n}\ni[_ngcontent-%COMP%] {\n  display: inline-block;\n  width: 0.85rem;\n  height: 0.85rem;\n  border: 1px solid var(--theme-line);\n  border-radius: 0.2rem;\n}\nbutton[_ngcontent-%COMP%] {\n  padding: 0.25rem 0.5rem;\n  border: 1px solid var(--theme-line);\n  border-radius: 0.3rem;\n  color: var(--theme-ink);\n  background: var(--theme-sand);\n  font-size: 0.8rem;\n}\ndetails[_ngcontent-%COMP%] {\n  margin-top: 1rem;\n  font-size: 0.85rem;\n}\nsummary[_ngcontent-%COMP%] {\n  cursor: pointer;\n  font-weight: 700;\n}\ndetails[_ngcontent-%COMP%]   p[_ngcontent-%COMP%] {\n  margin: 0.75rem 0 0;\n}\na[_ngcontent-%COMP%] {\n  color: var(--theme-hint);\n}\n.result-summary[_ngcontent-%COMP%] {\n  display: flex;\n  flex-wrap: wrap;\n  gap: 1rem;\n  margin: 1.3rem 0 0.6rem;\n}\n.result-summary[_ngcontent-%COMP%]   span[_ngcontent-%COMP%] {\n  color: var(--theme-muted);\n}\n.legend[_ngcontent-%COMP%] {\n  margin: 0.8rem 0;\n  font-size: 0.8rem;\n}\n.radar-scroll[_ngcontent-%COMP%] {\n  overflow-x: auto;\n}\n.radar[_ngcontent-%COMP%] {\n  display: block;\n  width: 100%;\n  min-width: 650px;\n  max-height: 800px;\n}\n.radar-grid[_ngcontent-%COMP%] {\n  fill: none;\n  stroke: var(--theme-line);\n}\n.radar-axis[_ngcontent-%COMP%] {\n  stroke: var(--theme-line);\n}\n.radar-tick[_ngcontent-%COMP%] {\n  fill: var(--theme-muted);\n  font-size: 12px;\n}\n.radar-label[_ngcontent-%COMP%] {\n  fill: var(--theme-ink);\n  font-size: 14px;\n  font-weight: 700;\n}\n.radar-label-total[_ngcontent-%COMP%] {\n  fill: var(--theme-muted);\n  font-size: 12px;\n  font-weight: 400;\n}\n.radar-polygon[_ngcontent-%COMP%] {\n  fill-opacity: 0.09;\n  stroke-width: 2.5;\n  stroke-linejoin: round;\n  pointer-events: none;\n}\n.radar-point[_ngcontent-%COMP%] {\n  stroke: var(--theme-card-bg);\n  stroke-width: 2;\n  cursor: pointer;\n}\n.radar-point[_ngcontent-%COMP%]:hover, \n.radar-point[_ngcontent-%COMP%]:focus {\n  r: 9;\n  stroke: var(--theme-ink);\n  stroke-width: 3;\n}\n.radar-point[_ngcontent-%COMP%]:focus-visible, \nbutton[_ngcontent-%COMP%]:focus-visible {\n  outline: 2px solid var(--theme-hint);\n  outline-offset: 3px;\n}\n.radar-detail[_ngcontent-%COMP%] {\n  min-height: 4rem;\n  padding: 1rem;\n  border: 1px solid var(--theme-line);\n  border-radius: 0.6rem;\n  background: var(--theme-sand);\n  font-size: 0.85rem;\n}\n.empty[_ngcontent-%COMP%] {\n  padding: 2rem;\n  border: 1px dashed var(--theme-line);\n  border-radius: 1rem;\n  background: var(--theme-card-bg);\n  text-align: center;\n}\n.table[_ngcontent-%COMP%] {\n  --bs-table-color:var(--theme-ink);\n  --bs-table-bg:transparent;\n  --bs-table-border-color:var(--theme-line);\n  margin-top: 1rem;\n}\ncaption[_ngcontent-%COMP%] {\n  color: var(--theme-muted);\n}\n@media (max-width: 991px) {\n  .selectors[_ngcontent-%COMP%] {\n    grid-template-columns: repeat(2, minmax(0, 1fr));\n  }\n}\n@media (max-width: 575px) {\n  .selectors[_ngcontent-%COMP%] {\n    grid-template-columns: 1fr;\n  }\n  .filters-panel[_ngcontent-%COMP%], \n   .chart-panel[_ngcontent-%COMP%] {\n    padding: 1rem;\n  }\n}\n/*# sourceMappingURL=pq-crossings.component.css.map */'] });
+};
+(() => {
+  (typeof ngDevMode === "undefined" || ngDevMode) && setClassMetadata(PqCrossingsComponent, [{
+    type: Component,
+    args: [{ selector: "app-pq-crossings", standalone: true, imports: [CommonModule, FormsModule], template: `<section aria-labelledby="crossings-title">
+  <header><span class="eyebrow">Explora\xE7\xE3o dos dados</span><h2 id="crossings-title">Cruzamentos por n\xEDvel da bolsa</h2><p>Compare o perfil dos bolsistas por g\xEAnero, regi\xE3o ou institui\xE7\xE3o.</p></header>
+  <div class="filters-panel">
+    <div class="selectors">
+      <label>Dimens\xE3o<select class="form-select" [ngModel]="dimension()" (ngModelChange)="dimension.set($event)"><option value="genero">G\xEAnero</option><option value="regiao">Regi\xE3o</option><option value="instituicao">Institui\xE7\xE3o</option></select></label>
+      <label>Per\xEDodo de refer\xEAncia<select class="form-select" [ngModel]="period()" (ngModelChange)="setPeriod($event)"><option value="atual">Consulta atual \u2014 {{ currentYear }}</option>@for (year of periods(); track year) {<option [value]="year">{{ year }} \u2014 31 de dezembro</option>}</select></label>
+      <label>Classifica\xE7\xE3o<select class="form-select" [ngModel]="scheme()" (ngModelChange)="setScheme($event)"><option value="todos">Todos os n\xEDveis originais</option><option value="atual">Atual \u2014 A, B e C</option><option value="antiga">Antiga \u2014 n\xEDveis 1 e 2</option><option value="outros">Outros / n\xE3o informado</option></select></label>
+      <label>Apresenta\xE7\xE3o<select class="form-select" [ngModel]="presentation()" (ngModelChange)="presentation.set($event)"><option value="absolutos">N\xFAmeros absolutos</option><option value="percentuais">Percentuais por categoria</option></select></label>
+    </div>
+    <fieldset><legend>N\xEDveis da bolsa</legend><div class="level-options">@for (level of levels(); track level) {<label><input type="checkbox" [checked]="visibleLevels().includes(level)" (change)="toggleLevel(level)" /><i [style.background]="color(level)"></i>{{ level }}</label>}<button type="button" (click)="selectedLevels.set(null)">Selecionar todos</button><button type="button" (click)="selectedLevels.set([])">Limpar sele\xE7\xE3o</button></div></fieldset>
+    <details><summary>Como os n\xEDveis e o per\xEDodo s\xE3o tratados</summary><p>Os n\xEDveis originais s\xE3o preservados. A/B/C s\xE3o exibidos somente quando registrados assim na base. Os n\xEDveis antigos n\xE3o s\xE3o convertidos: n\xE3o foi confirmada uma correspond\xEAncia completa para todos os c\xF3digos hist\xF3ricos dispon\xEDveis, incluindo 2A, 2B e 2C. N\xE3o h\xE1 agrupamento entre classifica\xE7\xF5es.</p><p><a [href]="source" target="_blank" rel="noopener noreferrer">Fonte oficial: crit\xE9rios do CNPq para o CA-AC, 2024\u20132026</a>.</p><p>A consulta atual usa a lista de bolsistas ativos da API. Anos anteriores usam bolsas vigentes em 31 de dezembro, conforme in\xEDcio e fim registrados no hist\xF3rico dispon\xEDvel. Cada pessoa \xE9 contada uma vez por per\xEDodo; em sobreposi\xE7\xE3o, vale a bolsa com in\xEDcio mais recente. A identifica\xE7\xE3o usa o nome normalizado. O hist\xF3rico pode ser incompleto.</p><p>A regi\xE3o \xE9 obtida pelo v\xEDnculo institucional e pelo mapeamento dispon\xEDvel na base. Institui\xE7\xF5es n\xE3o mapeadas permanecem identificadas como sem informa\xE7\xE3o de regi\xE3o. N\xE3o s\xE3o inferidos g\xEAneros ausentes.</p></details>
+  </div>
+  <div class="result-summary" role="status" aria-live="polite"><strong>{{ total() }} bolsista(s)</strong><span>{{ missingCount() }} com n\xEDvel ou dimens\xE3o sem informa\xE7\xE3o</span></div>
+  <p class="base-note">Base dos percentuais: total de bolsistas de cada categoria no per\xEDodo e nos n\xEDveis selecionados, incluindo registros sem informa\xE7\xE3o. Cada categoria soma 100%. Os filtros alteram essa base.</p>
+  @if (period() !== 'atual' && invalidHistory() > 0) {<p class="base-note">{{ invalidHistory() }} registro(s) hist\xF3ricos com vig\xEAncia ausente ou inv\xE1lida n\xE3o permitem determinar o per\xEDodo e foram exclu\xEDdos da sele\xE7\xE3o hist\xF3rica.</p>}
+  @if (total() === 0) {
+    <div class="empty" role="status">Nenhum bolsista encontrado para os filtros selecionados. Selecione outros n\xEDveis, classifica\xE7\xE3o ou per\xEDodo.</div>
+  } @else {
+    <article class="chart-panel" aria-labelledby="crossings-chart-title">
+      <h3 id="crossings-chart-title">Radar: n\xEDvel \xD7 {{ dimension() === 'genero' ? 'g\xEAnero' : dimension() === 'regiao' ? 'regi\xE3o' : 'institui\xE7\xE3o' }}</h3>
+      <div class="legend" aria-label="Legenda dos n\xEDveis">@for (level of visibleLevels(); track level) {<span><i [style.background]="color(level)"></i>N\xEDvel {{ level }}</span>}</div>
+      <p class="scale">Cada eixo representa uma categoria; cada cor representa um n\xEDvel. Escala radial: {{ presentation() === 'percentuais' ? '0 a 100% por categoria' : '0 a ' + maximum() + ' bolsistas' }}.</p>
+      @if (rows().length < 3) {<p class="base-note">Este recorte tem menos de tr\xEAs categorias: o radar mostra pontos e linhas, sem formar uma \xE1rea.</p>}
+      <div class="radar-scroll">
+        <svg class="radar" viewBox="0 0 1000 800" role="group" aria-labelledby="radar-title radar-desc">
+          <title id="radar-title">Cruzamentos dos n\xEDveis de bolsa em gr\xE1fico radar</title>
+          <desc id="radar-desc">Eixos por categoria, s\xE9ries por n\xEDvel. O centro representa zero. Os valores e as bases dos percentuais est\xE3o dispon\xEDveis nos pontos e na tabela abaixo.</desc>
+          @for (ring of radarRings; track ring) {
+            <circle class="radar-grid" cx="500" cy="400" [attr.r]="260 * ring / 100"></circle>
+            <text class="radar-tick" x="508" [attr.y]="400 - 260 * ring / 100 - 5">{{ ringLabel(ring) }}</text>
+          }
+          @for (axis of radarAxes(); track axis.label) {
+            <line class="radar-axis" x1="500" y1="400" [attr.x2]="axis.end.x" [attr.y2]="axis.end.y"></line>
+            <text class="radar-label" [attr.x]="axis.labelPosition.x" [attr.y]="axis.labelPosition.y" [attr.text-anchor]="axis.labelPosition.x < 490 ? 'end' : axis.labelPosition.x > 510 ? 'start' : 'middle'">
+              <title>{{ axis.label }}: {{ axis.total }} bolsista(s)</title>
+              <tspan [attr.x]="axis.labelPosition.x">{{ axisLabel(axis.label) }}</tspan>
+              <tspan class="radar-label-total" [attr.x]="axis.labelPosition.x" dy="18">{{ axis.total }} bolsista(s)</tspan>
+            </text>
+          }
+          @for (series of radarSeries(); track series.level) {
+            <polygon class="radar-polygon" [attr.points]="series.polygon" [attr.stroke]="color(series.level)" [attr.fill]="rows().length >= 3 ? color(series.level) : 'none'"></polygon>
+          }
+          @for (series of radarSeries(); track series.level) {
+            @for (point of series.points; track point.category) {
+              <circle class="radar-point" [attr.cx]="point.x" [attr.cy]="point.y" r="6" [attr.fill]="color(series.level)" tabindex="0" [attr.aria-label]="point.description"
+                (mouseenter)="highlighted.set(point)" (mouseleave)="highlighted.set(null)" (focus)="highlighted.set(point)" (blur)="highlighted.set(null)" (click)="highlighted.set(point)"><title>{{ point.description }}</title></circle>
+            }
+          }
+        </svg>
+      </div>
+      <div class="radar-detail" role="status" aria-live="polite">{{ radarDetail() }}</div>
+    </article>
+    <details class="data-table"><summary>Ver quantidades e percentuais em tabela</summary><div class="table-responsive"><table class="table"><caption>Percentuais sobre o total de cada categoria nos n\xEDveis selecionados.</caption><thead><tr><th scope="col">Categoria</th><th scope="col">N\xEDvel original</th><th scope="col">Bolsistas</th><th scope="col">Percentual</th><th scope="col">Base</th></tr></thead><tbody>@for (row of rows(); track row.label) {@for (cell of row.cells; track cell.level) {<tr><th scope="row">{{ row.label }}</th><td>{{ cell.level }}</td><td>{{ cell.count }}</td><td>{{ formatPercentage(cell.percentage) }}</td><td>{{ row.total }}</td></tr>}}</tbody></table></div></details>
+  }
+</section>
+`, styles: ['/* src/app/pages/pq/pq-crossings.component.scss */\n:host {\n  display: block;\n  color: var(--theme-ink);\n}\nh2,\nh3,\nh4 {\n  font-family: "Bitter", serif;\n}\nh2 {\n  font-size: 1.5rem;\n}\nh3 {\n  font-size: 1.15rem;\n}\nheader p,\n.base-note,\n.scale {\n  color: var(--theme-muted);\n  font-size: 0.85rem;\n}\n.eyebrow {\n  color: var(--pq-accent);\n  font-size: 0.75rem;\n  text-transform: uppercase;\n  letter-spacing: 0.12em;\n}\n.filters-panel,\n.chart-panel,\n.data-table {\n  padding: 1.4rem;\n  border: 1px solid var(--theme-line);\n  border-radius: 1rem;\n  background: var(--theme-card-bg);\n}\n.selectors {\n  display: grid;\n  grid-template-columns: repeat(4, minmax(0, 1fr));\n  gap: 1rem;\n}\n.selectors label {\n  font-size: 0.85rem;\n  font-weight: 700;\n}\n.form-select {\n  margin-top: 0.4rem;\n  color: var(--theme-ink);\n  background-color: var(--theme-card-bg);\n  border-color: var(--theme-line);\n}\nfieldset {\n  margin-top: 1.3rem;\n}\nlegend {\n  font-size: 0.9rem;\n  font-weight: 700;\n}\n.level-options,\n.legend {\n  display: flex;\n  flex-wrap: wrap;\n  gap: 0.65rem 1rem;\n}\n.level-options label,\n.legend span {\n  display: inline-flex;\n  gap: 0.4rem;\n  align-items: center;\n}\ninput {\n  accent-color: #1769aa;\n  width: 1rem;\n  height: 1rem;\n}\ni {\n  display: inline-block;\n  width: 0.85rem;\n  height: 0.85rem;\n  border: 1px solid var(--theme-line);\n  border-radius: 0.2rem;\n}\nbutton {\n  padding: 0.25rem 0.5rem;\n  border: 1px solid var(--theme-line);\n  border-radius: 0.3rem;\n  color: var(--theme-ink);\n  background: var(--theme-sand);\n  font-size: 0.8rem;\n}\ndetails {\n  margin-top: 1rem;\n  font-size: 0.85rem;\n}\nsummary {\n  cursor: pointer;\n  font-weight: 700;\n}\ndetails p {\n  margin: 0.75rem 0 0;\n}\na {\n  color: var(--theme-hint);\n}\n.result-summary {\n  display: flex;\n  flex-wrap: wrap;\n  gap: 1rem;\n  margin: 1.3rem 0 0.6rem;\n}\n.result-summary span {\n  color: var(--theme-muted);\n}\n.legend {\n  margin: 0.8rem 0;\n  font-size: 0.8rem;\n}\n.radar-scroll {\n  overflow-x: auto;\n}\n.radar {\n  display: block;\n  width: 100%;\n  min-width: 650px;\n  max-height: 800px;\n}\n.radar-grid {\n  fill: none;\n  stroke: var(--theme-line);\n}\n.radar-axis {\n  stroke: var(--theme-line);\n}\n.radar-tick {\n  fill: var(--theme-muted);\n  font-size: 12px;\n}\n.radar-label {\n  fill: var(--theme-ink);\n  font-size: 14px;\n  font-weight: 700;\n}\n.radar-label-total {\n  fill: var(--theme-muted);\n  font-size: 12px;\n  font-weight: 400;\n}\n.radar-polygon {\n  fill-opacity: 0.09;\n  stroke-width: 2.5;\n  stroke-linejoin: round;\n  pointer-events: none;\n}\n.radar-point {\n  stroke: var(--theme-card-bg);\n  stroke-width: 2;\n  cursor: pointer;\n}\n.radar-point:hover,\n.radar-point:focus {\n  r: 9;\n  stroke: var(--theme-ink);\n  stroke-width: 3;\n}\n.radar-point:focus-visible,\nbutton:focus-visible {\n  outline: 2px solid var(--theme-hint);\n  outline-offset: 3px;\n}\n.radar-detail {\n  min-height: 4rem;\n  padding: 1rem;\n  border: 1px solid var(--theme-line);\n  border-radius: 0.6rem;\n  background: var(--theme-sand);\n  font-size: 0.85rem;\n}\n.empty {\n  padding: 2rem;\n  border: 1px dashed var(--theme-line);\n  border-radius: 1rem;\n  background: var(--theme-card-bg);\n  text-align: center;\n}\n.table {\n  --bs-table-color:var(--theme-ink);\n  --bs-table-bg:transparent;\n  --bs-table-border-color:var(--theme-line);\n  margin-top: 1rem;\n}\ncaption {\n  color: var(--theme-muted);\n}\n@media (max-width: 991px) {\n  .selectors {\n    grid-template-columns: repeat(2, minmax(0, 1fr));\n  }\n}\n@media (max-width: 575px) {\n  .selectors {\n    grid-template-columns: 1fr;\n  }\n  .filters-panel,\n  .chart-panel {\n    padding: 1rem;\n  }\n}\n/*# sourceMappingURL=pq-crossings.component.css.map */\n'] }]
+  }], null, { active: [{
+    type: Input
+  }], history: [{
+    type: Input
+  }], institutionRegions: [{
+    type: Input
+  }] });
+})();
+(() => {
+  (typeof ngDevMode === "undefined" || ngDevMode) && \u0275setClassDebugInfo(PqCrossingsComponent, { className: "PqCrossingsComponent", filePath: "src/app/pages/pq/pq-crossings.component.ts", lineNumber: 11 });
+})();
+
 // src/app/pages/pq/pq.page.ts
-var _forTrack04 = ($index, $item) => $item.code;
+var _forTrack05 = ($index, $item) => $item.code;
 function PqBrazilMapComponent_Conditional_0_Template(rf, ctx) {
   if (rf & 1) {
     \u0275\u0275domElementStart(0, "div", 0);
@@ -1637,7 +2339,7 @@ function PqBrazilMapComponent_Conditional_2_Template(rf, ctx) {
     \u0275\u0275domElementStart(3, "desc", 5);
     \u0275\u0275text(4, "Mapa coropl\xE9tico do Brasil. Estados mais escuros possuem mais bolsistas.");
     \u0275\u0275domElementEnd();
-    \u0275\u0275repeaterCreate(5, PqBrazilMapComponent_Conditional_2_For_6_Template, 4, 5, null, null, _forTrack04);
+    \u0275\u0275repeaterCreate(5, PqBrazilMapComponent_Conditional_2_For_6_Template, 4, 5, null, null, _forTrack05);
     \u0275\u0275domElementEnd();
   }
   if (rf & 2) {
@@ -1646,8 +2348,8 @@ function PqBrazilMapComponent_Conditional_2_Template(rf, ctx) {
     \u0275\u0275repeater(ctx_r1.shapes());
   }
 }
-var _forTrack14 = ($index, $item) => $item.label;
-var _forTrack23 = ($index, $item) => $item.bs_nome;
+var _forTrack15 = ($index, $item) => $item.label;
+var _forTrack24 = ($index, $item) => $item.bs_nome;
 function PqPage_Conditional_10_Template(rf, ctx) {
   if (rf & 1) {
     \u0275\u0275elementStart(0, "div", 7);
@@ -1677,9 +2379,19 @@ function PqPage_Conditional_11_Template(rf, ctx) {
     \u0275\u0275textInterpolate(ctx_r1.error());
   }
 }
-function PqPage_Conditional_12_Conditional_30_Template(rf, ctx) {
+function PqPage_Conditional_12_Conditional_34_Template(rf, ctx) {
   if (rf & 1) {
-    \u0275\u0275element(0, "app-pq-genders", 21);
+    \u0275\u0275element(0, "app-pq-crossings", 22);
+  }
+  if (rf & 2) {
+    let tmp_3_0;
+    const ctx_r1 = \u0275\u0275nextContext(2);
+    \u0275\u0275property("active", ctx_r1.scholars())("history", (tmp_3_0 = ctx_r1.response()) == null ? null : tmp_3_0.applications)("institutionRegions", ctx_r1.institutionRegions);
+  }
+}
+function PqPage_Conditional_12_Conditional_35_Template(rf, ctx) {
+  if (rf & 1) {
+    \u0275\u0275element(0, "app-pq-genders", 23);
   }
   if (rf & 2) {
     let tmp_4_0;
@@ -1687,28 +2399,28 @@ function PqPage_Conditional_12_Conditional_30_Template(rf, ctx) {
     \u0275\u0275property("active", ctx_r1.scholars())("all", ctx_r1.allScholars())("history", (tmp_4_0 = ctx_r1.response()) == null ? null : tmp_4_0.applications);
   }
 }
-function PqPage_Conditional_12_Conditional_31_Conditional_25_Template(rf, ctx) {
+function PqPage_Conditional_12_Conditional_36_Conditional_25_Template(rf, ctx) {
   if (rf & 1) {
-    \u0275\u0275element(0, "app-pq-active-by-year", 28);
+    \u0275\u0275element(0, "app-pq-active-by-year", 30);
   }
   if (rf & 2) {
     \u0275\u0275property("data", ctx);
   }
 }
-function PqPage_Conditional_12_Conditional_31_Conditional_26_Template(rf, ctx) {
+function PqPage_Conditional_12_Conditional_36_Conditional_26_Template(rf, ctx) {
   if (rf & 1) {
-    \u0275\u0275element(0, "app-pq-applications", 29);
+    \u0275\u0275element(0, "app-pq-applications", 31);
   }
   if (rf & 2) {
     \u0275\u0275property("data", ctx)("activeOnly", true);
   }
 }
-function PqPage_Conditional_12_Conditional_31_For_39_Template(rf, ctx) {
+function PqPage_Conditional_12_Conditional_36_For_39_Template(rf, ctx) {
   if (rf & 1) {
-    \u0275\u0275elementStart(0, "div", 35)(1, "span", 40);
+    \u0275\u0275elementStart(0, "div", 37)(1, "span", 42);
     \u0275\u0275text(2);
     \u0275\u0275elementEnd();
-    \u0275\u0275elementStart(3, "div", 41);
+    \u0275\u0275elementStart(3, "div", 43);
     \u0275\u0275element(4, "span");
     \u0275\u0275elementEnd();
     \u0275\u0275elementStart(5, "strong");
@@ -1727,9 +2439,9 @@ function PqPage_Conditional_12_Conditional_31_For_39_Template(rf, ctx) {
     \u0275\u0275textInterpolate(item_r5.count);
   }
 }
-function PqPage_Conditional_12_Conditional_31_For_52_Template(rf, ctx) {
+function PqPage_Conditional_12_Conditional_36_For_52_Template(rf, ctx) {
   if (rf & 1) {
-    \u0275\u0275elementStart(0, "div", 39)(1, "span", 42);
+    \u0275\u0275elementStart(0, "div", 41)(1, "span", 44);
     \u0275\u0275text(2);
     \u0275\u0275elementEnd();
     \u0275\u0275elementStart(3, "strong");
@@ -1741,20 +2453,20 @@ function PqPage_Conditional_12_Conditional_31_For_52_Template(rf, ctx) {
   }
   if (rf & 2) {
     const item_r6 = ctx.$implicit;
-    const \u0275$index_193_r7 = ctx.$index;
+    const \u0275$index_203_r7 = ctx.$index;
     \u0275\u0275advance(2);
-    \u0275\u0275textInterpolate(\u0275$index_193_r7 + 1);
+    \u0275\u0275textInterpolate(\u0275$index_203_r7 + 1);
     \u0275\u0275advance(2);
     \u0275\u0275textInterpolate(item_r6.label);
     \u0275\u0275advance(2);
     \u0275\u0275textInterpolate1("", item_r6.count, " bolsistas");
   }
 }
-function PqPage_Conditional_12_Conditional_31_Template(rf, ctx) {
+function PqPage_Conditional_12_Conditional_36_Template(rf, ctx) {
   if (rf & 1) {
     const _r4 = \u0275\u0275getCurrentView();
-    \u0275\u0275elementStart(0, "div", 22)(1, "article", 23)(2, "span", 24);
-    \u0275\u0275element(3, "i", 25);
+    \u0275\u0275elementStart(0, "div", 24)(1, "article", 25)(2, "span", 26);
+    \u0275\u0275element(3, "i", 27);
     \u0275\u0275elementEnd();
     \u0275\u0275elementStart(4, "div")(5, "strong");
     \u0275\u0275text(6);
@@ -1762,8 +2474,8 @@ function PqPage_Conditional_12_Conditional_31_Template(rf, ctx) {
     \u0275\u0275elementStart(7, "span");
     \u0275\u0275text(8, "Bolsistas ativos");
     \u0275\u0275elementEnd()()();
-    \u0275\u0275elementStart(9, "article", 26)(10, "span", 24);
-    \u0275\u0275element(11, "i", 27);
+    \u0275\u0275elementStart(9, "article", 28)(10, "span", 26);
+    \u0275\u0275element(11, "i", 29);
     \u0275\u0275elementEnd();
     \u0275\u0275elementStart(12, "div")(13, "strong");
     \u0275\u0275text(14);
@@ -1771,7 +2483,7 @@ function PqPage_Conditional_12_Conditional_31_Template(rf, ctx) {
     \u0275\u0275elementStart(15, "span");
     \u0275\u0275text(16, "Institui\xE7\xF5es");
     \u0275\u0275elementEnd()()();
-    \u0275\u0275elementStart(17, "article", 26)(18, "span", 24);
+    \u0275\u0275elementStart(17, "article", 28)(18, "span", 26);
     \u0275\u0275element(19, "i", 18);
     \u0275\u0275elementEnd();
     \u0275\u0275elementStart(20, "div")(21, "strong");
@@ -1780,37 +2492,37 @@ function PqPage_Conditional_12_Conditional_31_Template(rf, ctx) {
     \u0275\u0275elementStart(23, "span");
     \u0275\u0275text(24, "Regi\xF5es representadas");
     \u0275\u0275elementEnd()()()();
-    \u0275\u0275conditionalCreate(25, PqPage_Conditional_12_Conditional_31_Conditional_25_Template, 1, 1, "app-pq-active-by-year", 28);
-    \u0275\u0275conditionalCreate(26, PqPage_Conditional_12_Conditional_31_Conditional_26_Template, 1, 2, "app-pq-applications", 29);
-    \u0275\u0275elementStart(27, "div", 30)(28, "article", 31)(29, "div", 32)(30, "div")(31, "span", 4);
+    \u0275\u0275conditionalCreate(25, PqPage_Conditional_12_Conditional_36_Conditional_25_Template, 1, 1, "app-pq-active-by-year", 30);
+    \u0275\u0275conditionalCreate(26, PqPage_Conditional_12_Conditional_36_Conditional_26_Template, 1, 2, "app-pq-applications", 31);
+    \u0275\u0275elementStart(27, "div", 32)(28, "article", 33)(29, "div", 34)(30, "div")(31, "span", 4);
     \u0275\u0275text(32, "Perfil das bolsas");
     \u0275\u0275elementEnd();
     \u0275\u0275elementStart(33, "h2");
     \u0275\u0275text(34, "Modalidades");
     \u0275\u0275elementEnd()();
-    \u0275\u0275elementStart(35, "span", 33);
+    \u0275\u0275elementStart(35, "span", 35);
     \u0275\u0275text(36);
     \u0275\u0275elementEnd()();
-    \u0275\u0275elementStart(37, "div", 34);
-    \u0275\u0275repeaterCreate(38, PqPage_Conditional_12_Conditional_31_For_39_Template, 7, 5, "div", 35, _forTrack14);
+    \u0275\u0275elementStart(37, "div", 36);
+    \u0275\u0275repeaterCreate(38, PqPage_Conditional_12_Conditional_36_For_39_Template, 7, 5, "div", 37, _forTrack15);
     \u0275\u0275elementEnd()();
-    \u0275\u0275elementStart(40, "article", 31)(41, "div", 32)(42, "div")(43, "span", 4);
+    \u0275\u0275elementStart(40, "article", 33)(41, "div", 34)(42, "div")(43, "span", 4);
     \u0275\u0275text(44, "Maior concentra\xE7\xE3o");
     \u0275\u0275elementEnd();
     \u0275\u0275elementStart(45, "h2");
     \u0275\u0275text(46, "Principais institui\xE7\xF5es");
     \u0275\u0275elementEnd()();
-    \u0275\u0275elementStart(47, "button", 36);
-    \u0275\u0275listener("click", function PqPage_Conditional_12_Conditional_31_Template_button_click_47_listener() {
+    \u0275\u0275elementStart(47, "button", 38);
+    \u0275\u0275listener("click", function PqPage_Conditional_12_Conditional_36_Template_button_click_47_listener() {
       \u0275\u0275restoreView(_r4);
       const ctx_r1 = \u0275\u0275nextContext(2);
       return \u0275\u0275resetView(ctx_r1.setTab("instituicoes"));
     });
     \u0275\u0275text(48, "Ver todas ");
-    \u0275\u0275element(49, "i", 37);
+    \u0275\u0275element(49, "i", 39);
     \u0275\u0275elementEnd()();
-    \u0275\u0275elementStart(50, "div", 38);
-    \u0275\u0275repeaterCreate(51, PqPage_Conditional_12_Conditional_31_For_52_Template, 7, 3, "div", 39, _forTrack14);
+    \u0275\u0275elementStart(50, "div", 40);
+    \u0275\u0275repeaterCreate(51, PqPage_Conditional_12_Conditional_36_For_52_Template, 7, 3, "div", 41, _forTrack15);
     \u0275\u0275elementEnd()()();
   }
   if (rf & 2) {
@@ -1837,9 +2549,9 @@ function PqPage_Conditional_12_Conditional_31_Template(rf, ctx) {
     \u0275\u0275repeater(ctx_r1.institutionCounts().slice(0, 6));
   }
 }
-function PqPage_Conditional_12_Conditional_32_For_26_Template(rf, ctx) {
+function PqPage_Conditional_12_Conditional_37_For_26_Template(rf, ctx) {
   if (rf & 1) {
-    \u0275\u0275elementStart(0, "option", 54);
+    \u0275\u0275elementStart(0, "option", 56);
     \u0275\u0275text(1);
     \u0275\u0275elementEnd();
   }
@@ -1850,12 +2562,12 @@ function PqPage_Conditional_12_Conditional_32_For_26_Template(rf, ctx) {
     \u0275\u0275textInterpolate1("N\xEDvel ", item_r9);
   }
 }
-function PqPage_Conditional_12_Conditional_32_For_44_a_16_Template(rf, ctx) {
+function PqPage_Conditional_12_Conditional_37_For_44_a_16_Template(rf, ctx) {
   if (rf & 1) {
-    \u0275\u0275elementStart(0, "a", 63);
+    \u0275\u0275elementStart(0, "a", 65);
     \u0275\u0275pipe(1, "translate");
     \u0275\u0275pipe(2, "translate");
-    \u0275\u0275element(3, "i", 64);
+    \u0275\u0275element(3, "i", 66);
     \u0275\u0275elementEnd();
   }
   if (rf & 2) {
@@ -1864,10 +2576,10 @@ function PqPage_Conditional_12_Conditional_32_For_44_a_16_Template(rf, ctx) {
     \u0275\u0275attribute("aria-label", \u0275\u0275pipeBind1(2, 5, "author.researcherProfileTitle"));
   }
 }
-function PqPage_Conditional_12_Conditional_32_For_44_a_17_Template(rf, ctx) {
+function PqPage_Conditional_12_Conditional_37_For_44_a_17_Template(rf, ctx) {
   if (rf & 1) {
-    \u0275\u0275elementStart(0, "a", 65);
-    \u0275\u0275element(1, "i", 66);
+    \u0275\u0275elementStart(0, "a", 67);
+    \u0275\u0275element(1, "i", 68);
     \u0275\u0275elementEnd();
   }
   if (rf & 2) {
@@ -1875,27 +2587,27 @@ function PqPage_Conditional_12_Conditional_32_For_44_a_17_Template(rf, ctx) {
     \u0275\u0275property("href", url_r11, \u0275\u0275sanitizeUrl);
   }
 }
-function PqPage_Conditional_12_Conditional_32_For_44_Template(rf, ctx) {
+function PqPage_Conditional_12_Conditional_37_For_44_Template(rf, ctx) {
   if (rf & 1) {
     \u0275\u0275elementStart(0, "tr")(1, "td")(2, "strong");
     \u0275\u0275text(3);
     \u0275\u0275elementEnd();
-    \u0275\u0275elementStart(4, "span", 57);
-    \u0275\u0275element(5, "i", 58);
+    \u0275\u0275elementStart(4, "span", 59);
+    \u0275\u0275element(5, "i", 60);
     \u0275\u0275elementEnd()();
-    \u0275\u0275elementStart(6, "td")(7, "span", 40);
+    \u0275\u0275elementStart(6, "td")(7, "span", 42);
     \u0275\u0275text(8);
     \u0275\u0275elementEnd()();
     \u0275\u0275elementStart(9, "td");
     \u0275\u0275text(10);
     \u0275\u0275elementEnd();
-    \u0275\u0275elementStart(11, "td", 59);
+    \u0275\u0275elementStart(11, "td", 61);
     \u0275\u0275text(12);
     \u0275\u0275pipe(13, "date");
     \u0275\u0275pipe(14, "date");
     \u0275\u0275elementEnd();
-    \u0275\u0275elementStart(15, "td", 60);
-    \u0275\u0275template(16, PqPage_Conditional_12_Conditional_32_For_44_a_16_Template, 4, 7, "a", 61)(17, PqPage_Conditional_12_Conditional_32_For_44_a_17_Template, 2, 1, "a", 62);
+    \u0275\u0275elementStart(15, "td", 62);
+    \u0275\u0275template(16, PqPage_Conditional_12_Conditional_37_For_44_a_16_Template, 4, 7, "a", 63)(17, PqPage_Conditional_12_Conditional_37_For_44_a_17_Template, 2, 1, "a", 64);
     \u0275\u0275elementEnd()();
   }
   if (rf & 2) {
@@ -1920,67 +2632,67 @@ function PqPage_Conditional_12_Conditional_32_For_44_Template(rf, ctx) {
     \u0275\u0275property("ngIf", ctx_r1.lattesUrl(item_r12));
   }
 }
-function PqPage_Conditional_12_Conditional_32_ForEmpty_45_Template(rf, ctx) {
+function PqPage_Conditional_12_Conditional_37_ForEmpty_45_Template(rf, ctx) {
   if (rf & 1) {
-    \u0275\u0275elementStart(0, "tr")(1, "td", 67);
+    \u0275\u0275elementStart(0, "tr")(1, "td", 69);
     \u0275\u0275text(2, "Nenhum bolsista encontrado com estes filtros.");
     \u0275\u0275elementEnd()();
   }
 }
-function PqPage_Conditional_12_Conditional_32_Template(rf, ctx) {
+function PqPage_Conditional_12_Conditional_37_Template(rf, ctx) {
   if (rf & 1) {
     const _r8 = \u0275\u0275getCurrentView();
-    \u0275\u0275elementStart(0, "div", 43)(1, "button", 44);
-    \u0275\u0275listener("click", function PqPage_Conditional_12_Conditional_32_Template_button_click_1_listener() {
+    \u0275\u0275elementStart(0, "div", 45)(1, "button", 46);
+    \u0275\u0275listener("click", function PqPage_Conditional_12_Conditional_37_Template_button_click_1_listener() {
       \u0275\u0275restoreView(_r8);
       const ctx_r1 = \u0275\u0275nextContext(2);
       return \u0275\u0275resetView(ctx_r1.setScholarTab("ativos"));
     });
     \u0275\u0275text(2, "Bolsistas Ativos");
     \u0275\u0275elementEnd();
-    \u0275\u0275elementStart(3, "button", 44);
-    \u0275\u0275listener("click", function PqPage_Conditional_12_Conditional_32_Template_button_click_3_listener() {
+    \u0275\u0275elementStart(3, "button", 46);
+    \u0275\u0275listener("click", function PqPage_Conditional_12_Conditional_37_Template_button_click_3_listener() {
       \u0275\u0275restoreView(_r8);
       const ctx_r1 = \u0275\u0275nextContext(2);
       return \u0275\u0275resetView(ctx_r1.setScholarTab("todos"));
     });
     \u0275\u0275text(4, "Todos os Bolsistas");
     \u0275\u0275elementEnd()();
-    \u0275\u0275elementStart(5, "div", 45)(6, "div")(7, "span", 4);
+    \u0275\u0275elementStart(5, "div", 47)(6, "div")(7, "span", 4);
     \u0275\u0275text(8, "Rela\xE7\xE3o nominal");
     \u0275\u0275elementEnd();
     \u0275\u0275elementStart(9, "h2");
     \u0275\u0275text(10);
     \u0275\u0275elementEnd()();
-    \u0275\u0275elementStart(11, "span", 46);
+    \u0275\u0275elementStart(11, "span", 48);
     \u0275\u0275text(12);
     \u0275\u0275elementEnd()();
-    \u0275\u0275elementStart(13, "div", 47)(14, "label", 48)(15, "span", 49);
+    \u0275\u0275elementStart(13, "div", 49)(14, "label", 50)(15, "span", 51);
     \u0275\u0275text(16, "Buscar bolsista");
     \u0275\u0275elementEnd();
-    \u0275\u0275element(17, "i", 50);
-    \u0275\u0275elementStart(18, "input", 51);
-    \u0275\u0275listener("ngModelChange", function PqPage_Conditional_12_Conditional_32_Template_input_ngModelChange_18_listener($event) {
+    \u0275\u0275element(17, "i", 52);
+    \u0275\u0275elementStart(18, "input", 53);
+    \u0275\u0275listener("ngModelChange", function PqPage_Conditional_12_Conditional_37_Template_input_ngModelChange_18_listener($event) {
       \u0275\u0275restoreView(_r8);
       const ctx_r1 = \u0275\u0275nextContext(2);
       return \u0275\u0275resetView(ctx_r1.updateSearch($event));
     });
     \u0275\u0275elementEnd()();
-    \u0275\u0275elementStart(19, "label")(20, "span", 49);
+    \u0275\u0275elementStart(19, "label")(20, "span", 51);
     \u0275\u0275text(21, "Filtrar por n\xEDvel");
     \u0275\u0275elementEnd();
-    \u0275\u0275elementStart(22, "select", 52);
-    \u0275\u0275listener("ngModelChange", function PqPage_Conditional_12_Conditional_32_Template_select_ngModelChange_22_listener($event) {
+    \u0275\u0275elementStart(22, "select", 54);
+    \u0275\u0275listener("ngModelChange", function PqPage_Conditional_12_Conditional_37_Template_select_ngModelChange_22_listener($event) {
       \u0275\u0275restoreView(_r8);
       const ctx_r1 = \u0275\u0275nextContext(2);
       return \u0275\u0275resetView(ctx_r1.updateLevel($event));
     });
-    \u0275\u0275elementStart(23, "option", 53);
+    \u0275\u0275elementStart(23, "option", 55);
     \u0275\u0275text(24, "Todos os n\xEDveis");
     \u0275\u0275elementEnd();
-    \u0275\u0275repeaterCreate(25, PqPage_Conditional_12_Conditional_32_For_26_Template, 2, 2, "option", 54, \u0275\u0275repeaterTrackByIdentity);
+    \u0275\u0275repeaterCreate(25, PqPage_Conditional_12_Conditional_37_For_26_Template, 2, 2, "option", 56, \u0275\u0275repeaterTrackByIdentity);
     \u0275\u0275elementEnd()()();
-    \u0275\u0275elementStart(27, "div", 55)(28, "table", 56)(29, "thead")(30, "tr")(31, "th");
+    \u0275\u0275elementStart(27, "div", 57)(28, "table", 58)(29, "thead")(30, "tr")(31, "th");
     \u0275\u0275text(32, "Bolsista");
     \u0275\u0275elementEnd();
     \u0275\u0275elementStart(33, "th");
@@ -1992,11 +2704,11 @@ function PqPage_Conditional_12_Conditional_32_Template(rf, ctx) {
     \u0275\u0275elementStart(37, "th");
     \u0275\u0275text(38, "Vig\xEAncia");
     \u0275\u0275elementEnd();
-    \u0275\u0275elementStart(39, "th")(40, "span", 49);
+    \u0275\u0275elementStart(39, "th")(40, "span", 51);
     \u0275\u0275text(41, "Perfis");
     \u0275\u0275elementEnd()()()();
     \u0275\u0275elementStart(42, "tbody");
-    \u0275\u0275repeaterCreate(43, PqPage_Conditional_12_Conditional_32_For_44_Template, 18, 19, "tr", null, _forTrack23, false, PqPage_Conditional_12_Conditional_32_ForEmpty_45_Template, 3, 0, "tr");
+    \u0275\u0275repeaterCreate(43, PqPage_Conditional_12_Conditional_37_For_44_Template, 18, 19, "tr", null, _forTrack24, false, PqPage_Conditional_12_Conditional_37_ForEmpty_45_Template, 3, 0, "tr");
     \u0275\u0275elementEnd()()();
   }
   if (rf & 2) {
@@ -2021,30 +2733,30 @@ function PqPage_Conditional_12_Conditional_32_Template(rf, ctx) {
     \u0275\u0275repeater(ctx_r1.filteredScholars());
   }
 }
-function PqPage_Conditional_12_Conditional_33_For_10_Template(rf, ctx) {
+function PqPage_Conditional_12_Conditional_38_For_10_Template(rf, ctx) {
   if (rf & 1) {
-    \u0275\u0275elementStart(0, "div", 69)(1, "span", 70);
+    \u0275\u0275elementStart(0, "div", 71)(1, "span", 72);
     \u0275\u0275text(2);
     \u0275\u0275elementEnd();
-    \u0275\u0275elementStart(3, "div", 71)(4, "div", 72)(5, "strong");
+    \u0275\u0275elementStart(3, "div", 73)(4, "div", 74)(5, "strong");
     \u0275\u0275text(6);
     \u0275\u0275elementEnd();
     \u0275\u0275elementStart(7, "span");
     \u0275\u0275text(8);
     \u0275\u0275elementEnd()();
-    \u0275\u0275elementStart(9, "div", 73);
+    \u0275\u0275elementStart(9, "div", 75);
     \u0275\u0275element(10, "span");
     \u0275\u0275elementEnd()();
-    \u0275\u0275elementStart(11, "strong", 74);
+    \u0275\u0275elementStart(11, "strong", 76);
     \u0275\u0275text(12);
     \u0275\u0275elementEnd()();
   }
   if (rf & 2) {
     const item_r13 = ctx.$implicit;
-    const \u0275$index_342_r14 = ctx.$index;
+    const \u0275$index_352_r14 = ctx.$index;
     const ctx_r1 = \u0275\u0275nextContext(3);
     \u0275\u0275advance(2);
-    \u0275\u0275textInterpolate(\u0275$index_342_r14 + 1);
+    \u0275\u0275textInterpolate(\u0275$index_352_r14 + 1);
     \u0275\u0275advance(4);
     \u0275\u0275textInterpolate(item_r13.label);
     \u0275\u0275advance(2);
@@ -2055,19 +2767,19 @@ function PqPage_Conditional_12_Conditional_33_For_10_Template(rf, ctx) {
     \u0275\u0275textInterpolate(item_r13.count);
   }
 }
-function PqPage_Conditional_12_Conditional_33_Template(rf, ctx) {
+function PqPage_Conditional_12_Conditional_38_Template(rf, ctx) {
   if (rf & 1) {
-    \u0275\u0275elementStart(0, "div", 45)(1, "div")(2, "span", 4);
+    \u0275\u0275elementStart(0, "div", 47)(1, "div")(2, "span", 4);
     \u0275\u0275text(3, "V\xEDnculo institucional");
     \u0275\u0275elementEnd();
     \u0275\u0275elementStart(4, "h2");
     \u0275\u0275text(5, "Institui\xE7\xF5es dos bolsistas");
     \u0275\u0275elementEnd()();
-    \u0275\u0275elementStart(6, "span", 46);
+    \u0275\u0275elementStart(6, "span", 48);
     \u0275\u0275text(7);
     \u0275\u0275elementEnd()();
-    \u0275\u0275elementStart(8, "div", 68);
-    \u0275\u0275repeaterCreate(9, PqPage_Conditional_12_Conditional_33_For_10_Template, 13, 6, "div", 69, _forTrack14);
+    \u0275\u0275elementStart(8, "div", 70);
+    \u0275\u0275repeaterCreate(9, PqPage_Conditional_12_Conditional_38_For_10_Template, 13, 6, "div", 71, _forTrack15);
     \u0275\u0275elementEnd();
   }
   if (rf & 2) {
@@ -2078,10 +2790,10 @@ function PqPage_Conditional_12_Conditional_33_Template(rf, ctx) {
     \u0275\u0275repeater(ctx_r1.institutionCounts());
   }
 }
-function PqPage_Conditional_12_Conditional_34_For_10_Template(rf, ctx) {
+function PqPage_Conditional_12_Conditional_39_For_10_Template(rf, ctx) {
   if (rf & 1) {
-    \u0275\u0275elementStart(0, "article", 76)(1, "div", 79)(2, "span", 80);
-    \u0275\u0275element(3, "i", 81);
+    \u0275\u0275elementStart(0, "article", 78)(1, "div", 81)(2, "span", 82);
+    \u0275\u0275element(3, "i", 83);
     \u0275\u0275elementEnd();
     \u0275\u0275elementStart(4, "div")(5, "span");
     \u0275\u0275text(6);
@@ -2092,7 +2804,7 @@ function PqPage_Conditional_12_Conditional_34_For_10_Template(rf, ctx) {
     \u0275\u0275elementStart(9, "small");
     \u0275\u0275text(10, "bolsistas");
     \u0275\u0275elementEnd()()();
-    \u0275\u0275elementStart(11, "div", 82);
+    \u0275\u0275elementStart(11, "div", 84);
     \u0275\u0275element(12, "span");
     \u0275\u0275elementEnd();
     \u0275\u0275elementStart(13, "p");
@@ -2113,7 +2825,7 @@ function PqPage_Conditional_12_Conditional_34_For_10_Template(rf, ctx) {
     \u0275\u0275textInterpolate1("", \u0275\u0275pipeBind2(15, 5, item_r15.percentage, "1.1-1"), "% do total");
   }
 }
-function PqPage_Conditional_12_Conditional_34_For_20_For_5_Conditional_0_Template(rf, ctx) {
+function PqPage_Conditional_12_Conditional_39_For_20_For_5_Conditional_0_Template(rf, ctx) {
   if (rf & 1) {
     \u0275\u0275elementStart(0, "span");
     \u0275\u0275text(1);
@@ -2125,9 +2837,9 @@ function PqPage_Conditional_12_Conditional_34_For_20_For_5_Conditional_0_Templat
     \u0275\u0275textInterpolate(institution_r16.label);
   }
 }
-function PqPage_Conditional_12_Conditional_34_For_20_For_5_Template(rf, ctx) {
+function PqPage_Conditional_12_Conditional_39_For_20_For_5_Template(rf, ctx) {
   if (rf & 1) {
-    \u0275\u0275conditionalCreate(0, PqPage_Conditional_12_Conditional_34_For_20_For_5_Conditional_0_Template, 2, 1, "span");
+    \u0275\u0275conditionalCreate(0, PqPage_Conditional_12_Conditional_39_For_20_For_5_Conditional_0_Template, 2, 1, "span");
   }
   if (rf & 2) {
     const institution_r16 = ctx.$implicit;
@@ -2136,13 +2848,13 @@ function PqPage_Conditional_12_Conditional_34_For_20_For_5_Template(rf, ctx) {
     \u0275\u0275conditional(ctx_r1.regionFor(institution_r16.label) === region_r17.label ? 0 : -1);
   }
 }
-function PqPage_Conditional_12_Conditional_34_For_20_Template(rf, ctx) {
+function PqPage_Conditional_12_Conditional_39_For_20_Template(rf, ctx) {
   if (rf & 1) {
     \u0275\u0275elementStart(0, "div")(1, "strong");
     \u0275\u0275text(2);
     \u0275\u0275elementEnd();
     \u0275\u0275elementStart(3, "p");
-    \u0275\u0275repeaterCreate(4, PqPage_Conditional_12_Conditional_34_For_20_For_5_Template, 1, 1, null, null, _forTrack14);
+    \u0275\u0275repeaterCreate(4, PqPage_Conditional_12_Conditional_39_For_20_For_5_Template, 1, 1, null, null, _forTrack15);
     \u0275\u0275elementEnd()();
   }
   if (rf & 2) {
@@ -2154,28 +2866,28 @@ function PqPage_Conditional_12_Conditional_34_For_20_Template(rf, ctx) {
     \u0275\u0275repeater(ctx_r1.institutionCounts());
   }
 }
-function PqPage_Conditional_12_Conditional_34_Template(rf, ctx) {
+function PqPage_Conditional_12_Conditional_39_Template(rf, ctx) {
   if (rf & 1) {
-    \u0275\u0275elementStart(0, "div", 45)(1, "div")(2, "span", 4);
+    \u0275\u0275elementStart(0, "div", 47)(1, "div")(2, "span", 4);
     \u0275\u0275text(3, "Distribui\xE7\xE3o territorial");
     \u0275\u0275elementEnd();
     \u0275\u0275elementStart(4, "h2");
     \u0275\u0275text(5, "Regi\xF5es dos bolsistas");
     \u0275\u0275elementEnd()();
-    \u0275\u0275elementStart(6, "span", 46);
+    \u0275\u0275elementStart(6, "span", 48);
     \u0275\u0275text(7, "Brasil");
     \u0275\u0275elementEnd()();
-    \u0275\u0275elementStart(8, "div", 75);
-    \u0275\u0275repeaterCreate(9, PqPage_Conditional_12_Conditional_34_For_10_Template, 16, 8, "article", 76, _forTrack14);
+    \u0275\u0275elementStart(8, "div", 77);
+    \u0275\u0275repeaterCreate(9, PqPage_Conditional_12_Conditional_39_For_10_Template, 16, 8, "article", 78, _forTrack15);
     \u0275\u0275elementEnd();
-    \u0275\u0275elementStart(11, "article", 77)(12, "div", 32)(13, "div")(14, "span", 4);
+    \u0275\u0275elementStart(11, "article", 79)(12, "div", 34)(13, "div")(14, "span", 4);
     \u0275\u0275text(15, "Composi\xE7\xE3o regional");
     \u0275\u0275elementEnd();
     \u0275\u0275elementStart(16, "h2");
     \u0275\u0275text(17, "Institui\xE7\xF5es por regi\xE3o");
     \u0275\u0275elementEnd()()();
-    \u0275\u0275elementStart(18, "div", 78);
-    \u0275\u0275repeaterCreate(19, PqPage_Conditional_12_Conditional_34_For_20_Template, 6, 1, "div", null, _forTrack14);
+    \u0275\u0275elementStart(18, "div", 80);
+    \u0275\u0275repeaterCreate(19, PqPage_Conditional_12_Conditional_39_For_20_Template, 6, 1, "div", null, _forTrack15);
     \u0275\u0275elementEnd()();
   }
   if (rf & 2) {
@@ -2186,12 +2898,12 @@ function PqPage_Conditional_12_Conditional_34_Template(rf, ctx) {
     \u0275\u0275repeater(ctx_r1.regionCounts());
   }
 }
-function PqPage_Conditional_12_Conditional_35_For_33_Conditional_0_Template(rf, ctx) {
+function PqPage_Conditional_12_Conditional_40_For_33_Conditional_0_Template(rf, ctx) {
   if (rf & 1) {
-    \u0275\u0275elementStart(0, "div", 95)(1, "span", 96);
+    \u0275\u0275elementStart(0, "div", 97)(1, "span", 98);
     \u0275\u0275text(2);
     \u0275\u0275elementEnd();
-    \u0275\u0275elementStart(3, "span", 97);
+    \u0275\u0275elementStart(3, "span", 99);
     \u0275\u0275text(4);
     \u0275\u0275elementEnd();
     \u0275\u0275elementStart(5, "div")(6, "strong");
@@ -2201,16 +2913,16 @@ function PqPage_Conditional_12_Conditional_35_For_33_Conditional_0_Template(rf, 
     \u0275\u0275text(9);
     \u0275\u0275pipe(10, "number");
     \u0275\u0275elementEnd()();
-    \u0275\u0275elementStart(11, "strong", 98);
+    \u0275\u0275elementStart(11, "strong", 100);
     \u0275\u0275text(12);
     \u0275\u0275elementEnd()();
   }
   if (rf & 2) {
     const ctx_r18 = \u0275\u0275nextContext();
     const state_r20 = ctx_r18.$implicit;
-    const \u0275$index_493_r21 = ctx_r18.$index;
+    const \u0275$index_503_r21 = ctx_r18.$index;
     \u0275\u0275advance(2);
-    \u0275\u0275textInterpolate(\u0275$index_493_r21 + 1);
+    \u0275\u0275textInterpolate(\u0275$index_503_r21 + 1);
     \u0275\u0275advance(2);
     \u0275\u0275textInterpolate(state_r20.code);
     \u0275\u0275advance(3);
@@ -2221,53 +2933,53 @@ function PqPage_Conditional_12_Conditional_35_For_33_Conditional_0_Template(rf, 
     \u0275\u0275textInterpolate(state_r20.count);
   }
 }
-function PqPage_Conditional_12_Conditional_35_For_33_Template(rf, ctx) {
+function PqPage_Conditional_12_Conditional_40_For_33_Template(rf, ctx) {
   if (rf & 1) {
-    \u0275\u0275conditionalCreate(0, PqPage_Conditional_12_Conditional_35_For_33_Conditional_0_Template, 13, 8, "div", 95);
+    \u0275\u0275conditionalCreate(0, PqPage_Conditional_12_Conditional_40_For_33_Conditional_0_Template, 13, 8, "div", 97);
   }
   if (rf & 2) {
     const state_r20 = ctx.$implicit;
     \u0275\u0275conditional(state_r20.count > 0 ? 0 : -1);
   }
 }
-function PqPage_Conditional_12_Conditional_35_Template(rf, ctx) {
+function PqPage_Conditional_12_Conditional_40_Template(rf, ctx) {
   if (rf & 1) {
     const _r18 = \u0275\u0275getCurrentView();
-    \u0275\u0275elementStart(0, "div", 45)(1, "div")(2, "span", 4);
+    \u0275\u0275elementStart(0, "div", 47)(1, "div")(2, "span", 4);
     \u0275\u0275text(3, "Distribui\xE7\xE3o estadual");
     \u0275\u0275elementEnd();
     \u0275\u0275elementStart(4, "h2");
     \u0275\u0275text(5, "Mapa dos bolsistas por estado");
     \u0275\u0275elementEnd()();
-    \u0275\u0275elementStart(6, "span", 46);
+    \u0275\u0275elementStart(6, "span", 48);
     \u0275\u0275text(7);
     \u0275\u0275elementEnd()();
-    \u0275\u0275elementStart(8, "div", 83)(9, "div", 84);
-    \u0275\u0275element(10, "app-pq-brazil-map", 28);
-    \u0275\u0275elementStart(11, "div", 85)(12, "span");
+    \u0275\u0275elementStart(8, "div", 85)(9, "div", 86);
+    \u0275\u0275element(10, "app-pq-brazil-map", 30);
+    \u0275\u0275elementStart(11, "div", 87)(12, "span");
     \u0275\u0275text(13, "Menor concentra\xE7\xE3o");
     \u0275\u0275elementEnd();
-    \u0275\u0275element(14, "i", 86)(15, "i", 87)(16, "i", 88)(17, "i", 89)(18, "i", 90);
+    \u0275\u0275element(14, "i", 88)(15, "i", 89)(16, "i", 90)(17, "i", 91)(18, "i", 92);
     \u0275\u0275elementStart(19, "span");
     \u0275\u0275text(20, "Maior concentra\xE7\xE3o");
     \u0275\u0275elementEnd()()();
-    \u0275\u0275elementStart(21, "aside", 91)(22, "div", 32)(23, "div")(24, "span", 4);
+    \u0275\u0275elementStart(21, "aside", 93)(22, "div", 34)(23, "div")(24, "span", 4);
     \u0275\u0275text(25, "Ranking estadual");
     \u0275\u0275elementEnd();
-    \u0275\u0275elementStart(26, "h2", 92);
+    \u0275\u0275elementStart(26, "h2", 94);
     \u0275\u0275text(27, "Bolsistas por UF");
     \u0275\u0275elementEnd()();
-    \u0275\u0275elementStart(28, "button", 93);
-    \u0275\u0275listener("click", function PqPage_Conditional_12_Conditional_35_Template_button_click_28_listener() {
+    \u0275\u0275elementStart(28, "button", 95);
+    \u0275\u0275listener("click", function PqPage_Conditional_12_Conditional_40_Template_button_click_28_listener() {
       \u0275\u0275restoreView(_r18);
       const ctx_r1 = \u0275\u0275nextContext(2);
       return \u0275\u0275resetView(ctx_r1.exportStateCsv());
     });
-    \u0275\u0275element(29, "i", 94);
+    \u0275\u0275element(29, "i", 96);
     \u0275\u0275elementStart(30, "span");
     \u0275\u0275text(31, "Exportar CSV");
     \u0275\u0275elementEnd()()();
-    \u0275\u0275repeaterCreate(32, PqPage_Conditional_12_Conditional_35_For_33_Template, 1, 1, null, null, _forTrack04);
+    \u0275\u0275repeaterCreate(32, PqPage_Conditional_12_Conditional_40_For_33_Template, 1, 1, null, null, _forTrack05);
     \u0275\u0275elementEnd()();
   }
   if (rf & 2) {
@@ -2280,24 +2992,24 @@ function PqPage_Conditional_12_Conditional_35_Template(rf, ctx) {
     \u0275\u0275repeater(ctx_r1.stateCounts());
   }
 }
-function PqPage_Conditional_12_Conditional_36_Conditional_0_Template(rf, ctx) {
+function PqPage_Conditional_12_Conditional_41_Conditional_0_Template(rf, ctx) {
   if (rf & 1) {
-    \u0275\u0275element(0, "app-pq-applications", 28);
+    \u0275\u0275element(0, "app-pq-applications", 30);
   }
   if (rf & 2) {
     \u0275\u0275property("data", ctx);
   }
 }
-function PqPage_Conditional_12_Conditional_36_Conditional_1_Template(rf, ctx) {
+function PqPage_Conditional_12_Conditional_41_Conditional_1_Template(rf, ctx) {
   if (rf & 1) {
-    \u0275\u0275elementStart(0, "div", 99);
+    \u0275\u0275elementStart(0, "div", 101);
     \u0275\u0275text(1, "N\xE3o h\xE1 dados de concess\xF5es dispon\xEDveis.");
     \u0275\u0275elementEnd();
   }
 }
-function PqPage_Conditional_12_Conditional_36_Template(rf, ctx) {
+function PqPage_Conditional_12_Conditional_41_Template(rf, ctx) {
   if (rf & 1) {
-    \u0275\u0275conditionalCreate(0, PqPage_Conditional_12_Conditional_36_Conditional_0_Template, 1, 1, "app-pq-applications", 28)(1, PqPage_Conditional_12_Conditional_36_Conditional_1_Template, 2, 0, "div", 99);
+    \u0275\u0275conditionalCreate(0, PqPage_Conditional_12_Conditional_41_Conditional_0_Template, 1, 1, "app-pq-applications", 30)(1, PqPage_Conditional_12_Conditional_41_Conditional_1_Template, 2, 0, "div", 101);
   }
   if (rf & 2) {
     let tmp_2_0;
@@ -2377,15 +3089,26 @@ function PqPage_Conditional_12_Template(rf, ctx) {
     \u0275\u0275element(26, "i", 19);
     \u0275\u0275elementStart(27, "span");
     \u0275\u0275text(28, "Concess\xF5es");
+    \u0275\u0275elementEnd()();
+    \u0275\u0275elementStart(29, "button", 12);
+    \u0275\u0275listener("click", function PqPage_Conditional_12_Template_button_click_29_listener() {
+      \u0275\u0275restoreView(_r3);
+      const ctx_r1 = \u0275\u0275nextContext();
+      return \u0275\u0275resetView(ctx_r1.setTab("cruzamentos"));
+    });
+    \u0275\u0275element(30, "i", 20);
+    \u0275\u0275elementStart(31, "span");
+    \u0275\u0275text(32, "Cruzamentos");
     \u0275\u0275elementEnd()()();
-    \u0275\u0275elementStart(29, "div", 20);
-    \u0275\u0275conditionalCreate(30, PqPage_Conditional_12_Conditional_30_Template, 1, 3, "app-pq-genders", 21);
-    \u0275\u0275conditionalCreate(31, PqPage_Conditional_12_Conditional_31_Template, 53, 6);
-    \u0275\u0275conditionalCreate(32, PqPage_Conditional_12_Conditional_32_Template, 46, 11);
-    \u0275\u0275conditionalCreate(33, PqPage_Conditional_12_Conditional_33_Template, 11, 1);
-    \u0275\u0275conditionalCreate(34, PqPage_Conditional_12_Conditional_34_Template, 21, 0);
-    \u0275\u0275conditionalCreate(35, PqPage_Conditional_12_Conditional_35_Template, 34, 2);
-    \u0275\u0275conditionalCreate(36, PqPage_Conditional_12_Conditional_36_Template, 2, 1);
+    \u0275\u0275elementStart(33, "div", 21);
+    \u0275\u0275conditionalCreate(34, PqPage_Conditional_12_Conditional_34_Template, 1, 3, "app-pq-crossings", 22);
+    \u0275\u0275conditionalCreate(35, PqPage_Conditional_12_Conditional_35_Template, 1, 3, "app-pq-genders", 23);
+    \u0275\u0275conditionalCreate(36, PqPage_Conditional_12_Conditional_36_Template, 53, 6);
+    \u0275\u0275conditionalCreate(37, PqPage_Conditional_12_Conditional_37_Template, 46, 11);
+    \u0275\u0275conditionalCreate(38, PqPage_Conditional_12_Conditional_38_Template, 11, 1);
+    \u0275\u0275conditionalCreate(39, PqPage_Conditional_12_Conditional_39_Template, 21, 0);
+    \u0275\u0275conditionalCreate(40, PqPage_Conditional_12_Conditional_40_Template, 34, 2);
+    \u0275\u0275conditionalCreate(41, PqPage_Conditional_12_Conditional_41_Template, 2, 1);
     \u0275\u0275elementEnd();
   }
   if (rf & 2) {
@@ -2411,20 +3134,25 @@ function PqPage_Conditional_12_Template(rf, ctx) {
     \u0275\u0275advance(4);
     \u0275\u0275classProp("active", ctx_r1.activeTab() === "concessoes");
     \u0275\u0275attribute("aria-selected", ctx_r1.activeTab() === "concessoes");
+    \u0275\u0275advance(4);
+    \u0275\u0275classProp("active", ctx_r1.activeTab() === "cruzamentos");
+    \u0275\u0275attribute("aria-selected", ctx_r1.activeTab() === "cruzamentos");
     \u0275\u0275advance(5);
-    \u0275\u0275conditional(ctx_r1.activeTab() === "generos" ? 30 : -1);
+    \u0275\u0275conditional(ctx_r1.activeTab() === "cruzamentos" ? 34 : -1);
     \u0275\u0275advance();
-    \u0275\u0275conditional(ctx_r1.activeTab() === "resumo" ? 31 : -1);
+    \u0275\u0275conditional(ctx_r1.activeTab() === "generos" ? 35 : -1);
     \u0275\u0275advance();
-    \u0275\u0275conditional(ctx_r1.activeTab() === "bolsistas" ? 32 : -1);
+    \u0275\u0275conditional(ctx_r1.activeTab() === "resumo" ? 36 : -1);
     \u0275\u0275advance();
-    \u0275\u0275conditional(ctx_r1.activeTab() === "instituicoes" ? 33 : -1);
+    \u0275\u0275conditional(ctx_r1.activeTab() === "bolsistas" ? 37 : -1);
     \u0275\u0275advance();
-    \u0275\u0275conditional(ctx_r1.activeTab() === "regioes" ? 34 : -1);
+    \u0275\u0275conditional(ctx_r1.activeTab() === "instituicoes" ? 38 : -1);
     \u0275\u0275advance();
-    \u0275\u0275conditional(ctx_r1.activeTab() === "mapa" ? 35 : -1);
+    \u0275\u0275conditional(ctx_r1.activeTab() === "regioes" ? 39 : -1);
     \u0275\u0275advance();
-    \u0275\u0275conditional(ctx_r1.activeTab() === "concessoes" ? 36 : -1);
+    \u0275\u0275conditional(ctx_r1.activeTab() === "mapa" ? 40 : -1);
+    \u0275\u0275advance();
+    \u0275\u0275conditional(ctx_r1.activeTab() === "concessoes" ? 41 : -1);
   }
 }
 var INSTITUTION_REGION = {
@@ -2589,9 +3317,10 @@ var PqBrazilMapComponent = class _PqBrazilMapComponent {
   }] });
 })();
 (() => {
-  (typeof ngDevMode === "undefined" || ngDevMode) && \u0275setClassDebugInfo(PqBrazilMapComponent, { className: "PqBrazilMapComponent", filePath: "src/app/pages/pq/pq.page.ts", lineNumber: 86 });
+  (typeof ngDevMode === "undefined" || ngDevMode) && \u0275setClassDebugInfo(PqBrazilMapComponent, { className: "PqBrazilMapComponent", filePath: "src/app/pages/pq/pq.page.ts", lineNumber: 87 });
 })();
 var PqPage = class _PqPage {
+  institutionRegions = INSTITUTION_REGION;
   http = inject(HttpClient);
   endpoint = "https://cip.brapci.inf.br/api/pq";
   activeTab = signal("resumo", ...ngDevMode ? [{ debugName: "activeTab" }] : []);
@@ -2744,7 +3473,7 @@ var PqPage = class _PqPage {
   static \u0275fac = function PqPage_Factory(__ngFactoryType__) {
     return new (__ngFactoryType__ || _PqPage)();
   };
-  static \u0275cmp = /* @__PURE__ */ \u0275\u0275defineComponent({ type: _PqPage, selectors: [["app-pq-page"]], decls: 13, vars: 1, consts: [["aria-labelledby", "pq-title", 1, "pq-page", "py-4"], [1, "container"], [1, "pq-hero"], [1, "pq-hero-copy"], [1, "eyebrow"], ["id", "pq-title"], ["src", "assets/logos/logo_pq.png", "alt", "Base de dados dos bolsistas PQ", 1, "pq-logo"], ["role", "status", "aria-live", "polite", 1, "status-panel"], ["role", "alert", 1, "alert", "alert-warning", "d-flex", "flex-wrap", "align-items-center", "justify-content-between", "gap-3"], ["aria-hidden", "true", 1, "spinner-border", "spinner-border-sm"], ["type", "button", 1, "btn", "btn-outline-dark", "btn-sm", 3, "click"], ["aria-label", "Visualiza\xE7\xF5es dos bolsistas", "role", "tablist", 1, "pq-tabs"], ["type", "button", "role", "tab", 3, "click"], ["aria-hidden", "true", 1, "bi", "bi-grid-1x2"], ["aria-hidden", "true", 1, "bi", "bi-people"], ["aria-hidden", "true", 1, "bi", "bi-gender-ambiguous"], ["aria-hidden", "true", 1, "bi", "bi-building"], ["aria-hidden", "true", 1, "bi", "bi-geo-alt"], ["aria-hidden", "true", 1, "bi", "bi-map"], ["aria-hidden", "true", 1, "bi", "bi-award"], ["role", "tabpanel", 1, "tab-content"], [3, "active", "all", "history"], [1, "summary-grid"], [1, "metric-card", "metric-primary"], [1, "metric-icon"], ["aria-hidden", "true", 1, "bi", "bi-person-check"], [1, "metric-card"], ["aria-hidden", "true", 1, "bi", "bi-bank"], [3, "data"], [3, "data", "activeOnly"], [1, "content-grid"], [1, "panel"], [1, "panel-heading"], [1, "total-label"], [1, "level-list"], [1, "level-row"], ["type", "button", 1, "text-action", 3, "click"], ["aria-hidden", "true", 1, "bi", "bi-arrow-right"], [1, "ranking-list"], [1, "ranking-row"], [1, "level-badge"], ["role", "img", 1, "level-progress"], [1, "rank"], ["role", "group", "aria-label", "Listagem de bolsistas", 1, "pq-tabs", "scholar-tabs"], ["type", "button", 3, "click"], [1, "section-heading"], [1, "result-count"], [1, "filters"], [1, "search-field"], [1, "visually-hidden"], ["aria-hidden", "true", 1, "bi", "bi-search"], ["type", "search", "placeholder", "Buscar por nome ou institui\xE7\xE3o", 1, "form-control", 3, "ngModelChange", "ngModel"], [1, "form-select", 3, "ngModelChange", "ngModel"], ["value", "todos"], [3, "value"], [1, "table-responsive", "scholar-table-wrap"], [1, "table", "align-middle", "scholar-table"], ["role", "img", 1, "scholar-gender", "ms-2", 3, "title"], ["aria-hidden", "true", 1, "bi", 3, "ngClass"], [1, "text-nowrap"], [1, "profile-links"], ["target", "_blank", "rel", "noopener", 3, "href", "title", 4, "ngIf"], ["target", "_blank", "rel", "noopener", "aria-label", "Abrir curr\xEDculo Lattes", 3, "href", 4, "ngIf"], ["target", "_blank", "rel", "noopener", 3, "href", "title"], ["aria-hidden", "true", 1, "bi", "bi-journal-text"], ["target", "_blank", "rel", "noopener", "aria-label", "Abrir curr\xEDculo Lattes", 3, "href"], ["aria-hidden", "true", 1, "bi", "bi-box-arrow-up-right"], ["colspan", "5", 1, "empty-state"], [1, "bar-list"], [1, "bar-row"], [1, "bar-rank"], [1, "bar-main"], [1, "bar-label"], [1, "bar-track"], [1, "bar-value"], [1, "region-grid"], [1, "region-card"], [1, "panel", "mt-4"], [1, "region-institutions"], [1, "region-top"], [1, "region-pin"], ["aria-hidden", "true", 1, "bi", "bi-geo-alt-fill"], [1, "region-share"], [1, "map-layout"], [1, "map-panel"], ["aria-label", "Legenda de intensidade", 1, "map-legend"], [1, "legend-step", "level-1"], [1, "legend-step", "level-2"], [1, "legend-step", "level-3"], [1, "legend-step", "level-4"], [1, "legend-step", "level-5"], ["aria-labelledby", "state-ranking-title", 1, "state-ranking"], ["id", "state-ranking-title"], ["type", "button", "aria-label", "Exportar ranking estadual para CSV", 1, "csv-button", 3, "click"], ["aria-hidden", "true", 1, "bi", "bi-file-earmark-spreadsheet"], [1, "state-row"], [1, "state-position"], [1, "state-code"], [1, "state-value"], [1, "empty-state"]], template: function PqPage_Template(rf, ctx) {
+  static \u0275cmp = /* @__PURE__ */ \u0275\u0275defineComponent({ type: _PqPage, selectors: [["app-pq-page"]], decls: 13, vars: 1, consts: [["aria-labelledby", "pq-title", 1, "pq-page", "py-4"], [1, "container"], [1, "pq-hero"], [1, "pq-hero-copy"], [1, "eyebrow"], ["id", "pq-title"], ["src", "assets/logos/logo_pq.png", "alt", "Base de dados dos bolsistas PQ", 1, "pq-logo"], ["role", "status", "aria-live", "polite", 1, "status-panel"], ["role", "alert", 1, "alert", "alert-warning", "d-flex", "flex-wrap", "align-items-center", "justify-content-between", "gap-3"], ["aria-hidden", "true", 1, "spinner-border", "spinner-border-sm"], ["type", "button", 1, "btn", "btn-outline-dark", "btn-sm", 3, "click"], ["aria-label", "Visualiza\xE7\xF5es dos bolsistas", "role", "tablist", 1, "pq-tabs"], ["type", "button", "role", "tab", 3, "click"], ["aria-hidden", "true", 1, "bi", "bi-grid-1x2"], ["aria-hidden", "true", 1, "bi", "bi-people"], ["aria-hidden", "true", 1, "bi", "bi-gender-ambiguous"], ["aria-hidden", "true", 1, "bi", "bi-building"], ["aria-hidden", "true", 1, "bi", "bi-geo-alt"], ["aria-hidden", "true", 1, "bi", "bi-map"], ["aria-hidden", "true", 1, "bi", "bi-award"], ["aria-hidden", "true", 1, "bi", "bi-bar-chart"], ["role", "tabpanel", 1, "tab-content"], [3, "active", "history", "institutionRegions"], [3, "active", "all", "history"], [1, "summary-grid"], [1, "metric-card", "metric-primary"], [1, "metric-icon"], ["aria-hidden", "true", 1, "bi", "bi-person-check"], [1, "metric-card"], ["aria-hidden", "true", 1, "bi", "bi-bank"], [3, "data"], [3, "data", "activeOnly"], [1, "content-grid"], [1, "panel"], [1, "panel-heading"], [1, "total-label"], [1, "level-list"], [1, "level-row"], ["type", "button", 1, "text-action", 3, "click"], ["aria-hidden", "true", 1, "bi", "bi-arrow-right"], [1, "ranking-list"], [1, "ranking-row"], [1, "level-badge"], ["role", "img", 1, "level-progress"], [1, "rank"], ["role", "group", "aria-label", "Listagem de bolsistas", 1, "pq-tabs", "scholar-tabs"], ["type", "button", 3, "click"], [1, "section-heading"], [1, "result-count"], [1, "filters"], [1, "search-field"], [1, "visually-hidden"], ["aria-hidden", "true", 1, "bi", "bi-search"], ["type", "search", "placeholder", "Buscar por nome ou institui\xE7\xE3o", 1, "form-control", 3, "ngModelChange", "ngModel"], [1, "form-select", 3, "ngModelChange", "ngModel"], ["value", "todos"], [3, "value"], [1, "table-responsive", "scholar-table-wrap"], [1, "table", "align-middle", "scholar-table"], ["role", "img", 1, "scholar-gender", "ms-2", 3, "title"], ["aria-hidden", "true", 1, "bi", 3, "ngClass"], [1, "text-nowrap"], [1, "profile-links"], ["target", "_blank", "rel", "noopener", 3, "href", "title", 4, "ngIf"], ["target", "_blank", "rel", "noopener", "aria-label", "Abrir curr\xEDculo Lattes", 3, "href", 4, "ngIf"], ["target", "_blank", "rel", "noopener", 3, "href", "title"], ["aria-hidden", "true", 1, "bi", "bi-journal-text"], ["target", "_blank", "rel", "noopener", "aria-label", "Abrir curr\xEDculo Lattes", 3, "href"], ["aria-hidden", "true", 1, "bi", "bi-box-arrow-up-right"], ["colspan", "5", 1, "empty-state"], [1, "bar-list"], [1, "bar-row"], [1, "bar-rank"], [1, "bar-main"], [1, "bar-label"], [1, "bar-track"], [1, "bar-value"], [1, "region-grid"], [1, "region-card"], [1, "panel", "mt-4"], [1, "region-institutions"], [1, "region-top"], [1, "region-pin"], ["aria-hidden", "true", 1, "bi", "bi-geo-alt-fill"], [1, "region-share"], [1, "map-layout"], [1, "map-panel"], ["aria-label", "Legenda de intensidade", 1, "map-legend"], [1, "legend-step", "level-1"], [1, "legend-step", "level-2"], [1, "legend-step", "level-3"], [1, "legend-step", "level-4"], [1, "legend-step", "level-5"], ["aria-labelledby", "state-ranking-title", 1, "state-ranking"], ["id", "state-ranking-title"], ["type", "button", "aria-label", "Exportar ranking estadual para CSV", 1, "csv-button", 3, "click"], ["aria-hidden", "true", 1, "bi", "bi-file-earmark-spreadsheet"], [1, "state-row"], [1, "state-position"], [1, "state-code"], [1, "state-value"], [1, "empty-state"]], template: function PqPage_Template(rf, ctx) {
     if (rf & 1) {
       \u0275\u0275elementStart(0, "section", 0)(1, "div", 1);
       \u0275\u0275element(2, "app-breadcrumbs");
@@ -2756,19 +3485,19 @@ var PqPage = class _PqPage {
       \u0275\u0275elementEnd()();
       \u0275\u0275element(9, "img", 6);
       \u0275\u0275elementEnd();
-      \u0275\u0275conditionalCreate(10, PqPage_Conditional_10_Template, 3, 0, "div", 7)(11, PqPage_Conditional_11_Template, 5, 1, "div", 8)(12, PqPage_Conditional_12_Template, 37, 28);
+      \u0275\u0275conditionalCreate(10, PqPage_Conditional_10_Template, 3, 0, "div", 7)(11, PqPage_Conditional_11_Template, 5, 1, "div", 8)(12, PqPage_Conditional_12_Template, 42, 32);
       \u0275\u0275elementEnd()();
     }
     if (rf & 2) {
       \u0275\u0275advance(10);
       \u0275\u0275conditional(ctx.loading() ? 10 : ctx.error() ? 11 : 12);
     }
-  }, dependencies: [CommonModule, NgClass, NgIf, FormsModule, NgSelectOption, \u0275NgSelectMultipleOption, DefaultValueAccessor, SelectControlValueAccessor, NgControlStatus, NgModel, TranslateModule, BreadcrumbsComponent, PqBrazilMapComponent, PqActiveByYearComponent, PqApplicationsComponent, PqGendersComponent, DecimalPipe, DatePipe, TranslatePipe], styles: ['\n\n[_nghost-%COMP%] {\n  display: block;\n}\n.pq-page[_ngcontent-%COMP%] {\n  --pq-accent: #9a654d;\n  --pq-accent-dark: #704330;\n  --pq-accent-soft: #f4e8e1;\n  --pq-green: #3b796b;\n  --pq-series-1: #4f8296;\n  --pq-series-2: #a6664e;\n  --pq-series-3: #d5a24f;\n  --pq-series-4: #577b68;\n  --pq-series-5: #7d6f9b;\n  --pq-series-6: #b27692;\n  --pq-series-7: #6b7892;\n  --pq-series-8: #7da765;\n  --pq-series-9: #c17b5c;\n  --pq-series-10: #4f9a91;\n  --pq-series-11: #9a7452;\n  --pq-series-12: #657eaa;\n  color: var(--theme-ink);\n  min-height: 70vh;\n}\n.pq-hero[_ngcontent-%COMP%] {\n  display: flex;\n  min-height: 210px;\n  margin: 1rem 0 1.5rem;\n  padding: 1.25rem 2rem;\n  align-items: center;\n  justify-content: space-between;\n  gap: 2rem;\n  overflow: hidden;\n  border: 1px solid color-mix(in srgb, var(--pq-accent) 25%, var(--theme-line));\n  border-radius: 1.25rem;\n  background:\n    radial-gradient(\n      circle at 82% 20%,\n      color-mix(in srgb, var(--pq-accent) 13%, transparent),\n      transparent 34%),\n    linear-gradient(\n      125deg,\n      var(--theme-card-bg),\n      color-mix(in srgb, var(--theme-sand) 70%, transparent));\n}\n.pq-hero-copy[_ngcontent-%COMP%] {\n  max-width: 690px;\n}\n.eyebrow[_ngcontent-%COMP%] {\n  display: block;\n  margin-bottom: 0.45rem;\n  color: var(--pq-accent);\n  font-family: "Raleway", sans-serif;\n  font-size: 0.75rem;\n  font-weight: 700;\n  letter-spacing: 0.14em;\n  text-transform: uppercase;\n}\n.pq-hero[_ngcontent-%COMP%]   h1[_ngcontent-%COMP%] {\n  margin: 0 0 0.75rem;\n  font-family:\n    "Bitter",\n    Georgia,\n    serif;\n  font-size: clamp(1.32rem, 2.56vw, 2.2rem);\n  line-height: 1.08;\n}\n.pq-hero[_ngcontent-%COMP%]   p[_ngcontent-%COMP%] {\n  max-width: 620px;\n  margin: 0;\n  color: var(--theme-muted);\n  font-size: 1.05rem;\n}\n.pq-logo[_ngcontent-%COMP%] {\n  width: 210px;\n  height: 210px;\n  flex: 0 0 210px;\n  border-radius: 50%;\n  object-fit: cover;\n  mix-blend-mode: multiply;\n}\n.status-panel[_ngcontent-%COMP%] {\n  display: flex;\n  min-height: 180px;\n  align-items: center;\n  justify-content: center;\n  gap: 0.75rem;\n  color: var(--theme-muted);\n}\n.pq-tabs[_ngcontent-%COMP%] {\n  display: grid;\n  grid-template-columns: repeat(7, 1fr);\n  margin-bottom: 1.5rem;\n  padding: 0.35rem;\n  border: 1px solid var(--theme-line);\n  border-radius: 0.85rem;\n  background: var(--theme-card-bg);\n}\n.pq-tabs[_ngcontent-%COMP%]   button[_ngcontent-%COMP%] {\n  display: flex;\n  padding: 0.8rem 1rem;\n  align-items: center;\n  justify-content: center;\n  gap: 0.5rem;\n  border: 0;\n  border-radius: 0.6rem;\n  color: var(--theme-muted);\n  background: transparent;\n  font-family: "Raleway", sans-serif;\n  font-weight: 600;\n  transition: 0.2s ease;\n}\n.pq-tabs[_ngcontent-%COMP%]   button[_ngcontent-%COMP%]:hover {\n  color: var(--theme-ink);\n  background: color-mix(in srgb, var(--pq-accent) 7%, transparent);\n}\n.pq-tabs[_ngcontent-%COMP%]   button.active[_ngcontent-%COMP%] {\n  color: #fff;\n  background: var(--pq-accent-dark);\n  box-shadow: 0 4px 12px rgba(55, 32, 22, 0.18);\n}\n.summary-grid[_ngcontent-%COMP%] {\n  display: grid;\n  grid-template-columns: repeat(3, 1fr);\n  gap: 1rem;\n  margin-bottom: 1rem;\n}\n.metric-card[_ngcontent-%COMP%], \n.panel[_ngcontent-%COMP%], \n.region-card[_ngcontent-%COMP%] {\n  border: 1px solid var(--theme-line);\n  background: var(--theme-card-bg);\n  box-shadow: 0 8px 24px rgba(16, 37, 66, 0.05);\n}\n.metric-card[_ngcontent-%COMP%] {\n  display: flex;\n  padding: 1.35rem;\n  align-items: center;\n  gap: 1rem;\n  border-radius: 1rem;\n}\n.metric-card.metric-primary[_ngcontent-%COMP%] {\n  border-color: color-mix(in srgb, var(--pq-accent) 35%, var(--theme-line));\n}\n.metric-icon[_ngcontent-%COMP%] {\n  display: grid;\n  width: 48px;\n  height: 48px;\n  flex: 0 0 48px;\n  place-items: center;\n  border-radius: 50%;\n  color: var(--pq-accent-dark);\n  background: var(--pq-accent-soft);\n  font-size: 1.2rem;\n}\n.metric-card[_ngcontent-%COMP%]   strong[_ngcontent-%COMP%] {\n  display: block;\n  font-family: "Bitter", serif;\n  font-size: 1.8rem;\n  line-height: 1;\n}\n.metric-card[_ngcontent-%COMP%]   div[_ngcontent-%COMP%]   span[_ngcontent-%COMP%] {\n  display: block;\n  margin-top: 0.35rem;\n  color: var(--theme-muted);\n  font-size: 0.88rem;\n}\n.content-grid[_ngcontent-%COMP%] {\n  display: grid;\n  grid-template-columns: 1fr 1fr;\n  gap: 1rem;\n}\n.panel[_ngcontent-%COMP%] {\n  padding: 1.5rem;\n  border-radius: 1rem;\n}\n.panel-heading[_ngcontent-%COMP%], \n.section-heading[_ngcontent-%COMP%] {\n  display: flex;\n  align-items: center;\n  justify-content: space-between;\n  gap: 1rem;\n}\n.panel-heading[_ngcontent-%COMP%] {\n  margin-bottom: 1.25rem;\n}\n.panel-heading[_ngcontent-%COMP%]   h2[_ngcontent-%COMP%], \n.section-heading[_ngcontent-%COMP%]   h2[_ngcontent-%COMP%] {\n  margin: 0;\n  font-family: "Bitter", serif;\n  font-size: 1.35rem;\n}\n.total-label[_ngcontent-%COMP%], \n.result-count[_ngcontent-%COMP%] {\n  color: var(--theme-muted);\n  font-size: 0.85rem;\n  white-space: nowrap;\n}\n.level-list[_ngcontent-%COMP%] {\n  display: grid;\n  gap: 0.9rem;\n}\n.level-row[_ngcontent-%COMP%] {\n  display: grid;\n  grid-template-columns: 3.25rem 1fr 2rem;\n  align-items: center;\n  gap: 0.75rem;\n}\n.level-badge[_ngcontent-%COMP%] {\n  display: inline-flex;\n  min-width: 2.2rem;\n  padding: 0.28rem 0.55rem;\n  align-items: center;\n  justify-content: center;\n  border-radius: 999px;\n  color: var(--pq-accent-dark);\n  background: var(--pq-accent-soft);\n  font-size: 0.78rem;\n  font-weight: 700;\n  white-space: nowrap;\n}\n.level-progress[_ngcontent-%COMP%], \n.bar-track[_ngcontent-%COMP%], \n.region-share[_ngcontent-%COMP%] {\n  height: 8px;\n  overflow: hidden;\n  border-radius: 999px;\n  background: var(--theme-sand);\n}\n.level-progress[_ngcontent-%COMP%]   span[_ngcontent-%COMP%], \n.bar-track[_ngcontent-%COMP%]   span[_ngcontent-%COMP%], \n.region-share[_ngcontent-%COMP%]   span[_ngcontent-%COMP%] {\n  display: block;\n  height: 100%;\n  border-radius: inherit;\n  background: var(--pq-accent);\n}\n.text-action[_ngcontent-%COMP%] {\n  border: 0;\n  color: var(--pq-accent);\n  background: transparent;\n  font-size: 0.85rem;\n  font-weight: 600;\n}\n.ranking-list[_ngcontent-%COMP%] {\n  display: grid;\n}\n.ranking-row[_ngcontent-%COMP%] {\n  display: grid;\n  grid-template-columns: 1.8rem 1fr auto;\n  padding: 0.72rem 0;\n  align-items: center;\n  gap: 0.5rem;\n  border-bottom: 1px solid var(--theme-line);\n}\n.ranking-row[_ngcontent-%COMP%]:last-child {\n  border-bottom: 0;\n}\n.ranking-row[_ngcontent-%COMP%]    > span[_ngcontent-%COMP%]:last-child {\n  color: var(--theme-muted);\n  font-size: 0.83rem;\n}\n.rank[_ngcontent-%COMP%], \n.bar-rank[_ngcontent-%COMP%] {\n  color: var(--theme-muted);\n  font-variant-numeric: tabular-nums;\n}\n.section-heading[_ngcontent-%COMP%] {\n  margin: 0.35rem 0 1rem;\n}\n.filters[_ngcontent-%COMP%] {\n  display: grid;\n  grid-template-columns: minmax(260px, 1fr) minmax(180px, 240px);\n  gap: 0.75rem;\n  margin-bottom: 1rem;\n}\n.search-field[_ngcontent-%COMP%] {\n  position: relative;\n}\n.search-field[_ngcontent-%COMP%]   i[_ngcontent-%COMP%] {\n  position: absolute;\n  top: 50%;\n  left: 0.9rem;\n  z-index: 1;\n  color: var(--theme-muted);\n  transform: translateY(-50%);\n}\n.search-field[_ngcontent-%COMP%]   input[_ngcontent-%COMP%] {\n  padding-left: 2.4rem;\n}\n.scholar-table-wrap[_ngcontent-%COMP%] {\n  border: 1px solid var(--theme-line);\n  border-radius: 1rem;\n  background: var(--theme-card-bg);\n}\n.scholar-table[_ngcontent-%COMP%] {\n  --bs-table-color: var(--theme-ink);\n  --bs-table-bg: transparent;\n  --bs-table-striped-color: var(--theme-ink);\n  --bs-table-hover-color: var(--theme-ink);\n  margin: 0;\n  color: var(--theme-ink);\n}\n.scholar-table[_ngcontent-%COMP%]   th[_ngcontent-%COMP%] {\n  padding: 1rem;\n  border-color: var(--theme-line);\n  color: var(--theme-muted);\n  background: color-mix(in srgb, var(--theme-sand) 65%, transparent);\n  font-family: "Raleway", sans-serif;\n  font-size: 0.76rem;\n  letter-spacing: 0.06em;\n  text-transform: uppercase;\n}\n.scholar-table[_ngcontent-%COMP%]   td[_ngcontent-%COMP%] {\n  padding: 0.9rem 1rem;\n  border-color: var(--theme-line);\n}\n.profile-links[_ngcontent-%COMP%] {\n  display: flex;\n  justify-content: flex-end;\n  gap: 0.8rem;\n  white-space: nowrap;\n}\n.profile-links[_ngcontent-%COMP%]   a[_ngcontent-%COMP%] {\n  color: var(--pq-accent);\n}\n.empty-state[_ngcontent-%COMP%] {\n  padding: 3rem !important;\n  color: var(--theme-muted);\n  text-align: center;\n}\n.bar-list[_ngcontent-%COMP%] {\n  padding: 0.4rem 1.4rem;\n  border: 1px solid var(--theme-line);\n  border-radius: 1rem;\n  background: var(--theme-card-bg);\n}\n.bar-row[_ngcontent-%COMP%] {\n  display: grid;\n  grid-template-columns: 2rem 1fr 2.5rem;\n  padding: 1rem 0;\n  align-items: center;\n  gap: 0.75rem;\n  border-bottom: 1px solid var(--theme-line);\n}\n.bar-row[_ngcontent-%COMP%]:last-child {\n  border-bottom: 0;\n}\n.bar-label[_ngcontent-%COMP%] {\n  display: flex;\n  margin-bottom: 0.5rem;\n  align-items: center;\n  justify-content: space-between;\n  gap: 1rem;\n}\n.bar-label[_ngcontent-%COMP%]   span[_ngcontent-%COMP%] {\n  color: var(--theme-muted);\n  font-size: 0.78rem;\n}\n.bar-value[_ngcontent-%COMP%] {\n  text-align: right;\n}\n.region-grid[_ngcontent-%COMP%] {\n  display: grid;\n  grid-template-columns: repeat(3, 1fr);\n  gap: 1rem;\n}\n.region-card[_ngcontent-%COMP%] {\n  padding: 1.35rem;\n  border-radius: 1rem;\n}\n.region-top[_ngcontent-%COMP%] {\n  display: flex;\n  align-items: center;\n  gap: 1rem;\n}\n.region-pin[_ngcontent-%COMP%] {\n  display: grid;\n  width: 44px;\n  height: 44px;\n  place-items: center;\n  border-radius: 50%;\n  color: var(--pq-green);\n  background: color-mix(in srgb, var(--pq-green) 12%, transparent);\n}\n.region-top[_ngcontent-%COMP%]   span[_ngcontent-%COMP%]:not(.region-pin), \n.region-top[_ngcontent-%COMP%]   small[_ngcontent-%COMP%] {\n  display: block;\n  color: var(--theme-muted);\n}\n.region-top[_ngcontent-%COMP%]   strong[_ngcontent-%COMP%] {\n  margin-right: 0.35rem;\n  font-family: "Bitter", serif;\n  font-size: 1.8rem;\n}\n.region-share[_ngcontent-%COMP%] {\n  margin-top: 1rem;\n}\n.region-share[_ngcontent-%COMP%]   span[_ngcontent-%COMP%] {\n  background: var(--pq-green);\n}\n.region-card[_ngcontent-%COMP%]   p[_ngcontent-%COMP%] {\n  margin: 0.55rem 0 0;\n  color: var(--theme-muted);\n  font-size: 0.8rem;\n  text-align: right;\n}\n.region-institutions[_ngcontent-%COMP%] {\n  display: grid;\n  grid-template-columns: repeat(3, 1fr);\n  gap: 1.25rem;\n}\n.region-institutions[_ngcontent-%COMP%]   p[_ngcontent-%COMP%] {\n  display: flex;\n  margin: 0.55rem 0 0;\n  flex-wrap: wrap;\n  gap: 0.35rem;\n}\n.region-institutions[_ngcontent-%COMP%]   p[_ngcontent-%COMP%]   span[_ngcontent-%COMP%] {\n  padding: 0.2rem 0.5rem;\n  border-radius: 999px;\n  color: var(--theme-muted);\n  background: var(--theme-sand);\n  font-size: 0.76rem;\n}\n.map-layout[_ngcontent-%COMP%] {\n  display: grid;\n  grid-template-columns: minmax(0, 1.5fr) minmax(300px, 0.75fr);\n  gap: 1rem;\n  align-items: start;\n}\n.map-panel[_ngcontent-%COMP%], \n.state-ranking[_ngcontent-%COMP%] {\n  border: 1px solid var(--theme-line);\n  border-radius: 1rem;\n  background: var(--theme-card-bg);\n  box-shadow: 0 8px 24px rgba(16, 37, 66, 0.05);\n}\n.map-panel[_ngcontent-%COMP%] {\n  --pq-map-color: var(--pq-accent);\n  padding: 1rem 1.5rem;\n}\n.map-legend[_ngcontent-%COMP%] {\n  display: flex;\n  padding: 0.75rem 0 0.25rem;\n  align-items: center;\n  justify-content: center;\n  gap: 0.35rem;\n  color: var(--theme-muted);\n  font-size: 0.76rem;\n}\n.legend-step[_ngcontent-%COMP%] {\n  width: 28px;\n  height: 9px;\n  border-radius: 999px;\n}\n.legend-step.level-1[_ngcontent-%COMP%] {\n  background: color-mix(in srgb, var(--pq-accent) 18%, var(--theme-sand));\n}\n.legend-step.level-2[_ngcontent-%COMP%] {\n  background: color-mix(in srgb, var(--pq-accent) 38%, var(--theme-sand));\n}\n.legend-step.level-3[_ngcontent-%COMP%] {\n  background: color-mix(in srgb, var(--pq-accent) 58%, var(--theme-sand));\n}\n.legend-step.level-4[_ngcontent-%COMP%] {\n  background: color-mix(in srgb, var(--pq-accent) 78%, var(--theme-sand));\n}\n.legend-step.level-5[_ngcontent-%COMP%] {\n  background: var(--pq-accent);\n}\n.state-ranking[_ngcontent-%COMP%] {\n  padding: 1.35rem;\n}\n.csv-button[_ngcontent-%COMP%] {\n  display: inline-flex;\n  padding: 0.45rem 0.65rem;\n  align-items: center;\n  gap: 0.35rem;\n  border: 1px solid var(--pq-accent);\n  border-radius: 0.5rem;\n  color: var(--pq-accent);\n  background: transparent;\n  font-size: 0.75rem;\n  font-weight: 700;\n  white-space: nowrap;\n}\n.csv-button[_ngcontent-%COMP%]:hover, \n.csv-button[_ngcontent-%COMP%]:focus-visible {\n  color: var(--theme-card-bg);\n  background: var(--pq-accent);\n}\n.state-row[_ngcontent-%COMP%] {\n  display: grid;\n  grid-template-columns: 1.5rem 2.5rem 1fr 2rem;\n  padding: 0.68rem 0;\n  align-items: center;\n  gap: 0.55rem;\n  border-bottom: 1px solid var(--theme-line);\n}\n.state-row[_ngcontent-%COMP%]:last-child {\n  border-bottom: 0;\n}\n.state-position[_ngcontent-%COMP%] {\n  color: var(--theme-muted);\n  font-size: 0.78rem;\n}\n.state-code[_ngcontent-%COMP%] {\n  display: grid;\n  width: 2.25rem;\n  height: 2.25rem;\n  place-items: center;\n  border-radius: 0.55rem;\n  color: var(--pq-accent-dark);\n  background: var(--pq-accent-soft);\n  font-weight: 700;\n}\n.state-row[_ngcontent-%COMP%]   small[_ngcontent-%COMP%] {\n  display: block;\n  color: var(--theme-muted);\n  font-size: 0.72rem;\n}\n.state-value[_ngcontent-%COMP%] {\n  text-align: right;\n}\nbody.theme-master.theme-dark[_nghost-%COMP%]   .pq-page[_ngcontent-%COMP%], body.theme-master.theme-dark   [_nghost-%COMP%]   .pq-page[_ngcontent-%COMP%] {\n  --pq-accent: #d29b7e;\n  --pq-accent-dark: #865943;\n  --pq-accent-soft: #35261f;\n  --pq-green: #74bbaa;\n  --pq-series-1: #72abc0;\n  --pq-series-2: #d28b6f;\n  --pq-series-3: #e0b561;\n  --pq-series-4: #79a88c;\n  --pq-series-5: #a092c0;\n  --pq-series-6: #ca8eaa;\n  --pq-series-7: #91a0bd;\n  --pq-series-8: #9fc482;\n  --pq-series-9: #dd9777;\n  --pq-series-10: #72bcb3;\n  --pq-series-11: #bd9773;\n  --pq-series-12: #89a1d0;\n}\nbody.theme-master.theme-dark[_nghost-%COMP%]   .pq-logo[_ngcontent-%COMP%], body.theme-master.theme-dark   [_nghost-%COMP%]   .pq-logo[_ngcontent-%COMP%] {\n  mix-blend-mode: normal;\n  opacity: 0.9;\n}\nbody.theme-master.theme-dark[_nghost-%COMP%]   .pq-tabs[_ngcontent-%COMP%]   button.active[_ngcontent-%COMP%], body.theme-master.theme-dark   [_nghost-%COMP%]   .pq-tabs[_ngcontent-%COMP%]   button.active[_ngcontent-%COMP%] {\n  color: #fff;\n}\nbody.theme-master.theme-dark[_nghost-%COMP%]   .scholar-table[_ngcontent-%COMP%], body.theme-master.theme-dark   [_nghost-%COMP%]   .scholar-table[_ngcontent-%COMP%], \nbody.theme-master.theme-dark[_nghost-%COMP%]   .scholar-table[_ngcontent-%COMP%]   td[_ngcontent-%COMP%], body.theme-master.theme-dark   [_nghost-%COMP%]   .scholar-table[_ngcontent-%COMP%]   td[_ngcontent-%COMP%], \nbody.theme-master.theme-dark[_nghost-%COMP%]   .scholar-table[_ngcontent-%COMP%]   td[_ngcontent-%COMP%]   strong[_ngcontent-%COMP%], body.theme-master.theme-dark   [_nghost-%COMP%]   .scholar-table[_ngcontent-%COMP%]   td[_ngcontent-%COMP%]   strong[_ngcontent-%COMP%] {\n  color: var(--theme-ink);\n}\n@media (max-width: 991.98px) {\n  .map-layout[_ngcontent-%COMP%] {\n    grid-template-columns: 1fr;\n  }\n}\n@media (max-width: 767.98px) {\n  .pq-hero[_ngcontent-%COMP%] {\n    min-height: auto;\n    padding: 1rem 1.25rem;\n  }\n  .pq-logo[_ngcontent-%COMP%] {\n    width: 125px;\n    height: 125px;\n    flex-basis: 125px;\n  }\n  .pq-tabs[_ngcontent-%COMP%] {\n    grid-template-columns: repeat(3, 1fr);\n  }\n  .summary-grid[_ngcontent-%COMP%], \n   .content-grid[_ngcontent-%COMP%], \n   .region-grid[_ngcontent-%COMP%] {\n    grid-template-columns: 1fr;\n  }\n  .region-institutions[_ngcontent-%COMP%] {\n    grid-template-columns: 1fr 1fr;\n  }\n}\n@media (max-width: 479.98px) {\n  .pq-hero[_ngcontent-%COMP%] {\n    align-items: flex-start;\n  }\n  .pq-logo[_ngcontent-%COMP%] {\n    width: 88px;\n    height: 88px;\n    flex-basis: 88px;\n  }\n  .pq-tabs[_ngcontent-%COMP%]   button[_ngcontent-%COMP%] {\n    padding: 0.7rem 0.35rem;\n    font-size: 0.82rem;\n  }\n  .filters[_ngcontent-%COMP%] {\n    grid-template-columns: 1fr;\n  }\n  .section-heading[_ngcontent-%COMP%] {\n    align-items: flex-start;\n  }\n  .region-institutions[_ngcontent-%COMP%] {\n    grid-template-columns: 1fr;\n  }\n}\n.pq-tabs.scholar-tabs[_ngcontent-%COMP%] {\n  grid-template-columns: repeat(2, minmax(0, 1fr));\n}\n/*# sourceMappingURL=pq.page.css.map */'] });
+  }, dependencies: [CommonModule, NgClass, NgIf, FormsModule, NgSelectOption, \u0275NgSelectMultipleOption, DefaultValueAccessor, SelectControlValueAccessor, NgControlStatus, NgModel, TranslateModule, BreadcrumbsComponent, PqBrazilMapComponent, PqActiveByYearComponent, PqApplicationsComponent, PqGendersComponent, PqCrossingsComponent, DecimalPipe, DatePipe, TranslatePipe], styles: ['\n\n[_nghost-%COMP%] {\n  display: block;\n}\n.pq-page[_ngcontent-%COMP%] {\n  --pq-accent: #9a654d;\n  --pq-accent-dark: #704330;\n  --pq-accent-soft: #f4e8e1;\n  --pq-green: #3b796b;\n  --pq-series-1: #4f8296;\n  --pq-series-2: #a6664e;\n  --pq-series-3: #d5a24f;\n  --pq-series-4: #577b68;\n  --pq-series-5: #7d6f9b;\n  --pq-series-6: #b27692;\n  --pq-series-7: #6b7892;\n  --pq-series-8: #7da765;\n  --pq-series-9: #c17b5c;\n  --pq-series-10: #4f9a91;\n  --pq-series-11: #9a7452;\n  --pq-series-12: #657eaa;\n  color: var(--theme-ink);\n  min-height: 70vh;\n}\n.pq-hero[_ngcontent-%COMP%] {\n  display: flex;\n  min-height: 210px;\n  margin: 1rem 0 1.5rem;\n  padding: 1.25rem 2rem;\n  align-items: center;\n  justify-content: space-between;\n  gap: 2rem;\n  overflow: hidden;\n  border: 1px solid color-mix(in srgb, var(--pq-accent) 25%, var(--theme-line));\n  border-radius: 1.25rem;\n  background:\n    radial-gradient(\n      circle at 82% 20%,\n      color-mix(in srgb, var(--pq-accent) 13%, transparent),\n      transparent 34%),\n    linear-gradient(\n      125deg,\n      var(--theme-card-bg),\n      color-mix(in srgb, var(--theme-sand) 70%, transparent));\n}\n.pq-hero-copy[_ngcontent-%COMP%] {\n  max-width: 690px;\n}\n.eyebrow[_ngcontent-%COMP%] {\n  display: block;\n  margin-bottom: 0.45rem;\n  color: var(--pq-accent);\n  font-family: "Raleway", sans-serif;\n  font-size: 0.75rem;\n  font-weight: 700;\n  letter-spacing: 0.14em;\n  text-transform: uppercase;\n}\n.pq-hero[_ngcontent-%COMP%]   h1[_ngcontent-%COMP%] {\n  margin: 0 0 0.75rem;\n  font-family:\n    "Bitter",\n    Georgia,\n    serif;\n  font-size: clamp(1.32rem, 2.56vw, 2.2rem);\n  line-height: 1.08;\n}\n.pq-hero[_ngcontent-%COMP%]   p[_ngcontent-%COMP%] {\n  max-width: 620px;\n  margin: 0;\n  color: var(--theme-muted);\n  font-size: 1.05rem;\n}\n.pq-logo[_ngcontent-%COMP%] {\n  width: 210px;\n  height: 210px;\n  flex: 0 0 210px;\n  border-radius: 50%;\n  object-fit: cover;\n  mix-blend-mode: multiply;\n}\n.status-panel[_ngcontent-%COMP%] {\n  display: flex;\n  min-height: 180px;\n  align-items: center;\n  justify-content: center;\n  gap: 0.75rem;\n  color: var(--theme-muted);\n}\n.pq-tabs[_ngcontent-%COMP%] {\n  display: grid;\n  grid-template-columns: repeat(7, 1fr);\n  margin-bottom: 1.5rem;\n  padding: 0.35rem;\n  border: 1px solid var(--theme-line);\n  border-radius: 0.85rem;\n  background: var(--theme-card-bg);\n}\n.pq-tabs[_ngcontent-%COMP%]   button[_ngcontent-%COMP%] {\n  display: flex;\n  padding: 0.8rem 1rem;\n  align-items: center;\n  justify-content: center;\n  gap: 0.5rem;\n  border: 0;\n  border-radius: 0.6rem;\n  color: var(--theme-muted);\n  background: transparent;\n  font-family: "Raleway", sans-serif;\n  font-weight: 600;\n  transition: 0.2s ease;\n}\n.pq-tabs[_ngcontent-%COMP%]   button[_ngcontent-%COMP%]:hover {\n  color: var(--theme-ink);\n  background: color-mix(in srgb, var(--pq-accent) 7%, transparent);\n}\n.pq-tabs[_ngcontent-%COMP%]   button.active[_ngcontent-%COMP%] {\n  color: #fff;\n  background: var(--pq-accent-dark);\n  box-shadow: 0 4px 12px rgba(55, 32, 22, 0.18);\n}\n.summary-grid[_ngcontent-%COMP%] {\n  display: grid;\n  grid-template-columns: repeat(3, 1fr);\n  gap: 1rem;\n  margin-bottom: 1rem;\n}\n.metric-card[_ngcontent-%COMP%], \n.panel[_ngcontent-%COMP%], \n.region-card[_ngcontent-%COMP%] {\n  border: 1px solid var(--theme-line);\n  background: var(--theme-card-bg);\n  box-shadow: 0 8px 24px rgba(16, 37, 66, 0.05);\n}\n.metric-card[_ngcontent-%COMP%] {\n  display: flex;\n  padding: 1.35rem;\n  align-items: center;\n  gap: 1rem;\n  border-radius: 1rem;\n}\n.metric-card.metric-primary[_ngcontent-%COMP%] {\n  border-color: color-mix(in srgb, var(--pq-accent) 35%, var(--theme-line));\n}\n.metric-icon[_ngcontent-%COMP%] {\n  display: grid;\n  width: 48px;\n  height: 48px;\n  flex: 0 0 48px;\n  place-items: center;\n  border-radius: 50%;\n  color: var(--pq-accent-dark);\n  background: var(--pq-accent-soft);\n  font-size: 1.2rem;\n}\n.metric-card[_ngcontent-%COMP%]   strong[_ngcontent-%COMP%] {\n  display: block;\n  font-family: "Bitter", serif;\n  font-size: 1.8rem;\n  line-height: 1;\n}\n.metric-card[_ngcontent-%COMP%]   div[_ngcontent-%COMP%]   span[_ngcontent-%COMP%] {\n  display: block;\n  margin-top: 0.35rem;\n  color: var(--theme-muted);\n  font-size: 0.88rem;\n}\n.content-grid[_ngcontent-%COMP%] {\n  display: grid;\n  grid-template-columns: 1fr 1fr;\n  gap: 1rem;\n}\n.panel[_ngcontent-%COMP%] {\n  padding: 1.5rem;\n  border-radius: 1rem;\n}\n.panel-heading[_ngcontent-%COMP%], \n.section-heading[_ngcontent-%COMP%] {\n  display: flex;\n  align-items: center;\n  justify-content: space-between;\n  gap: 1rem;\n}\n.panel-heading[_ngcontent-%COMP%] {\n  margin-bottom: 1.25rem;\n}\n.panel-heading[_ngcontent-%COMP%]   h2[_ngcontent-%COMP%], \n.section-heading[_ngcontent-%COMP%]   h2[_ngcontent-%COMP%] {\n  margin: 0;\n  font-family: "Bitter", serif;\n  font-size: 1.35rem;\n}\n.total-label[_ngcontent-%COMP%], \n.result-count[_ngcontent-%COMP%] {\n  color: var(--theme-muted);\n  font-size: 0.85rem;\n  white-space: nowrap;\n}\n.level-list[_ngcontent-%COMP%] {\n  display: grid;\n  gap: 0.9rem;\n}\n.level-row[_ngcontent-%COMP%] {\n  display: grid;\n  grid-template-columns: 3.25rem 1fr 2rem;\n  align-items: center;\n  gap: 0.75rem;\n}\n.level-badge[_ngcontent-%COMP%] {\n  display: inline-flex;\n  min-width: 2.2rem;\n  padding: 0.28rem 0.55rem;\n  align-items: center;\n  justify-content: center;\n  border-radius: 999px;\n  color: var(--pq-accent-dark);\n  background: var(--pq-accent-soft);\n  font-size: 0.78rem;\n  font-weight: 700;\n  white-space: nowrap;\n}\n.level-progress[_ngcontent-%COMP%], \n.bar-track[_ngcontent-%COMP%], \n.region-share[_ngcontent-%COMP%] {\n  height: 8px;\n  overflow: hidden;\n  border-radius: 999px;\n  background: var(--theme-sand);\n}\n.level-progress[_ngcontent-%COMP%]   span[_ngcontent-%COMP%], \n.bar-track[_ngcontent-%COMP%]   span[_ngcontent-%COMP%], \n.region-share[_ngcontent-%COMP%]   span[_ngcontent-%COMP%] {\n  display: block;\n  height: 100%;\n  border-radius: inherit;\n  background: var(--pq-accent);\n}\n.text-action[_ngcontent-%COMP%] {\n  border: 0;\n  color: var(--pq-accent);\n  background: transparent;\n  font-size: 0.85rem;\n  font-weight: 600;\n}\n.ranking-list[_ngcontent-%COMP%] {\n  display: grid;\n}\n.ranking-row[_ngcontent-%COMP%] {\n  display: grid;\n  grid-template-columns: 1.8rem 1fr auto;\n  padding: 0.72rem 0;\n  align-items: center;\n  gap: 0.5rem;\n  border-bottom: 1px solid var(--theme-line);\n}\n.ranking-row[_ngcontent-%COMP%]:last-child {\n  border-bottom: 0;\n}\n.ranking-row[_ngcontent-%COMP%]    > span[_ngcontent-%COMP%]:last-child {\n  color: var(--theme-muted);\n  font-size: 0.83rem;\n}\n.rank[_ngcontent-%COMP%], \n.bar-rank[_ngcontent-%COMP%] {\n  color: var(--theme-muted);\n  font-variant-numeric: tabular-nums;\n}\n.section-heading[_ngcontent-%COMP%] {\n  margin: 0.35rem 0 1rem;\n}\n.filters[_ngcontent-%COMP%] {\n  display: grid;\n  grid-template-columns: minmax(260px, 1fr) minmax(180px, 240px);\n  gap: 0.75rem;\n  margin-bottom: 1rem;\n}\n.search-field[_ngcontent-%COMP%] {\n  position: relative;\n}\n.search-field[_ngcontent-%COMP%]   i[_ngcontent-%COMP%] {\n  position: absolute;\n  top: 50%;\n  left: 0.9rem;\n  z-index: 1;\n  color: var(--theme-muted);\n  transform: translateY(-50%);\n}\n.search-field[_ngcontent-%COMP%]   input[_ngcontent-%COMP%] {\n  padding-left: 2.4rem;\n}\n.scholar-table-wrap[_ngcontent-%COMP%] {\n  border: 1px solid var(--theme-line);\n  border-radius: 1rem;\n  background: var(--theme-card-bg);\n}\n.scholar-table[_ngcontent-%COMP%] {\n  --bs-table-color: var(--theme-ink);\n  --bs-table-bg: transparent;\n  --bs-table-striped-color: var(--theme-ink);\n  --bs-table-hover-color: var(--theme-ink);\n  margin: 0;\n  color: var(--theme-ink);\n}\n.scholar-table[_ngcontent-%COMP%]   th[_ngcontent-%COMP%] {\n  padding: 1rem;\n  border-color: var(--theme-line);\n  color: var(--theme-muted);\n  background: color-mix(in srgb, var(--theme-sand) 65%, transparent);\n  font-family: "Raleway", sans-serif;\n  font-size: 0.76rem;\n  letter-spacing: 0.06em;\n  text-transform: uppercase;\n}\n.scholar-table[_ngcontent-%COMP%]   td[_ngcontent-%COMP%] {\n  padding: 0.9rem 1rem;\n  border-color: var(--theme-line);\n}\n.profile-links[_ngcontent-%COMP%] {\n  display: flex;\n  justify-content: flex-end;\n  gap: 0.8rem;\n  white-space: nowrap;\n}\n.profile-links[_ngcontent-%COMP%]   a[_ngcontent-%COMP%] {\n  color: var(--pq-accent);\n}\n.empty-state[_ngcontent-%COMP%] {\n  padding: 3rem !important;\n  color: var(--theme-muted);\n  text-align: center;\n}\n.bar-list[_ngcontent-%COMP%] {\n  padding: 0.4rem 1.4rem;\n  border: 1px solid var(--theme-line);\n  border-radius: 1rem;\n  background: var(--theme-card-bg);\n}\n.bar-row[_ngcontent-%COMP%] {\n  display: grid;\n  grid-template-columns: 2rem 1fr 2.5rem;\n  padding: 1rem 0;\n  align-items: center;\n  gap: 0.75rem;\n  border-bottom: 1px solid var(--theme-line);\n}\n.bar-row[_ngcontent-%COMP%]:last-child {\n  border-bottom: 0;\n}\n.bar-label[_ngcontent-%COMP%] {\n  display: flex;\n  margin-bottom: 0.5rem;\n  align-items: center;\n  justify-content: space-between;\n  gap: 1rem;\n}\n.bar-label[_ngcontent-%COMP%]   span[_ngcontent-%COMP%] {\n  color: var(--theme-muted);\n  font-size: 0.78rem;\n}\n.bar-value[_ngcontent-%COMP%] {\n  text-align: right;\n}\n.region-grid[_ngcontent-%COMP%] {\n  display: grid;\n  grid-template-columns: repeat(3, 1fr);\n  gap: 1rem;\n}\n.region-card[_ngcontent-%COMP%] {\n  padding: 1.35rem;\n  border-radius: 1rem;\n}\n.region-top[_ngcontent-%COMP%] {\n  display: flex;\n  align-items: center;\n  gap: 1rem;\n}\n.region-pin[_ngcontent-%COMP%] {\n  display: grid;\n  width: 44px;\n  height: 44px;\n  place-items: center;\n  border-radius: 50%;\n  color: var(--pq-green);\n  background: color-mix(in srgb, var(--pq-green) 12%, transparent);\n}\n.region-top[_ngcontent-%COMP%]   span[_ngcontent-%COMP%]:not(.region-pin), \n.region-top[_ngcontent-%COMP%]   small[_ngcontent-%COMP%] {\n  display: block;\n  color: var(--theme-muted);\n}\n.region-top[_ngcontent-%COMP%]   strong[_ngcontent-%COMP%] {\n  margin-right: 0.35rem;\n  font-family: "Bitter", serif;\n  font-size: 1.8rem;\n}\n.region-share[_ngcontent-%COMP%] {\n  margin-top: 1rem;\n}\n.region-share[_ngcontent-%COMP%]   span[_ngcontent-%COMP%] {\n  background: var(--pq-green);\n}\n.region-card[_ngcontent-%COMP%]   p[_ngcontent-%COMP%] {\n  margin: 0.55rem 0 0;\n  color: var(--theme-muted);\n  font-size: 0.8rem;\n  text-align: right;\n}\n.region-institutions[_ngcontent-%COMP%] {\n  display: grid;\n  grid-template-columns: repeat(3, 1fr);\n  gap: 1.25rem;\n}\n.region-institutions[_ngcontent-%COMP%]   p[_ngcontent-%COMP%] {\n  display: flex;\n  margin: 0.55rem 0 0;\n  flex-wrap: wrap;\n  gap: 0.35rem;\n}\n.region-institutions[_ngcontent-%COMP%]   p[_ngcontent-%COMP%]   span[_ngcontent-%COMP%] {\n  padding: 0.2rem 0.5rem;\n  border-radius: 999px;\n  color: var(--theme-muted);\n  background: var(--theme-sand);\n  font-size: 0.76rem;\n}\n.map-layout[_ngcontent-%COMP%] {\n  display: grid;\n  grid-template-columns: minmax(0, 1.5fr) minmax(300px, 0.75fr);\n  gap: 1rem;\n  align-items: start;\n}\n.map-panel[_ngcontent-%COMP%], \n.state-ranking[_ngcontent-%COMP%] {\n  border: 1px solid var(--theme-line);\n  border-radius: 1rem;\n  background: var(--theme-card-bg);\n  box-shadow: 0 8px 24px rgba(16, 37, 66, 0.05);\n}\n.map-panel[_ngcontent-%COMP%] {\n  --pq-map-color: var(--pq-accent);\n  padding: 1rem 1.5rem;\n}\n.map-legend[_ngcontent-%COMP%] {\n  display: flex;\n  padding: 0.75rem 0 0.25rem;\n  align-items: center;\n  justify-content: center;\n  gap: 0.35rem;\n  color: var(--theme-muted);\n  font-size: 0.76rem;\n}\n.legend-step[_ngcontent-%COMP%] {\n  width: 28px;\n  height: 9px;\n  border-radius: 999px;\n}\n.legend-step.level-1[_ngcontent-%COMP%] {\n  background: color-mix(in srgb, var(--pq-accent) 18%, var(--theme-sand));\n}\n.legend-step.level-2[_ngcontent-%COMP%] {\n  background: color-mix(in srgb, var(--pq-accent) 38%, var(--theme-sand));\n}\n.legend-step.level-3[_ngcontent-%COMP%] {\n  background: color-mix(in srgb, var(--pq-accent) 58%, var(--theme-sand));\n}\n.legend-step.level-4[_ngcontent-%COMP%] {\n  background: color-mix(in srgb, var(--pq-accent) 78%, var(--theme-sand));\n}\n.legend-step.level-5[_ngcontent-%COMP%] {\n  background: var(--pq-accent);\n}\n.state-ranking[_ngcontent-%COMP%] {\n  padding: 1.35rem;\n}\n.csv-button[_ngcontent-%COMP%] {\n  display: inline-flex;\n  padding: 0.45rem 0.65rem;\n  align-items: center;\n  gap: 0.35rem;\n  border: 1px solid var(--pq-accent);\n  border-radius: 0.5rem;\n  color: var(--pq-accent);\n  background: transparent;\n  font-size: 0.75rem;\n  font-weight: 700;\n  white-space: nowrap;\n}\n.csv-button[_ngcontent-%COMP%]:hover, \n.csv-button[_ngcontent-%COMP%]:focus-visible {\n  color: var(--theme-card-bg);\n  background: var(--pq-accent);\n}\n.state-row[_ngcontent-%COMP%] {\n  display: grid;\n  grid-template-columns: 1.5rem 2.5rem 1fr 2rem;\n  padding: 0.68rem 0;\n  align-items: center;\n  gap: 0.55rem;\n  border-bottom: 1px solid var(--theme-line);\n}\n.state-row[_ngcontent-%COMP%]:last-child {\n  border-bottom: 0;\n}\n.state-position[_ngcontent-%COMP%] {\n  color: var(--theme-muted);\n  font-size: 0.78rem;\n}\n.state-code[_ngcontent-%COMP%] {\n  display: grid;\n  width: 2.25rem;\n  height: 2.25rem;\n  place-items: center;\n  border-radius: 0.55rem;\n  color: var(--pq-accent-dark);\n  background: var(--pq-accent-soft);\n  font-weight: 700;\n}\n.state-row[_ngcontent-%COMP%]   small[_ngcontent-%COMP%] {\n  display: block;\n  color: var(--theme-muted);\n  font-size: 0.72rem;\n}\n.state-value[_ngcontent-%COMP%] {\n  text-align: right;\n}\nbody.theme-master.theme-dark[_nghost-%COMP%]   .pq-page[_ngcontent-%COMP%], body.theme-master.theme-dark   [_nghost-%COMP%]   .pq-page[_ngcontent-%COMP%] {\n  --pq-accent: #d29b7e;\n  --pq-accent-dark: #865943;\n  --pq-accent-soft: #35261f;\n  --pq-green: #74bbaa;\n  --pq-series-1: #72abc0;\n  --pq-series-2: #d28b6f;\n  --pq-series-3: #e0b561;\n  --pq-series-4: #79a88c;\n  --pq-series-5: #a092c0;\n  --pq-series-6: #ca8eaa;\n  --pq-series-7: #91a0bd;\n  --pq-series-8: #9fc482;\n  --pq-series-9: #dd9777;\n  --pq-series-10: #72bcb3;\n  --pq-series-11: #bd9773;\n  --pq-series-12: #89a1d0;\n}\nbody.theme-master.theme-dark[_nghost-%COMP%]   .pq-logo[_ngcontent-%COMP%], body.theme-master.theme-dark   [_nghost-%COMP%]   .pq-logo[_ngcontent-%COMP%] {\n  mix-blend-mode: normal;\n  opacity: 0.9;\n}\nbody.theme-master.theme-dark[_nghost-%COMP%]   .pq-tabs[_ngcontent-%COMP%]   button.active[_ngcontent-%COMP%], body.theme-master.theme-dark   [_nghost-%COMP%]   .pq-tabs[_ngcontent-%COMP%]   button.active[_ngcontent-%COMP%] {\n  color: #fff;\n}\nbody.theme-master.theme-dark[_nghost-%COMP%]   .scholar-table[_ngcontent-%COMP%], body.theme-master.theme-dark   [_nghost-%COMP%]   .scholar-table[_ngcontent-%COMP%], \nbody.theme-master.theme-dark[_nghost-%COMP%]   .scholar-table[_ngcontent-%COMP%]   td[_ngcontent-%COMP%], body.theme-master.theme-dark   [_nghost-%COMP%]   .scholar-table[_ngcontent-%COMP%]   td[_ngcontent-%COMP%], \nbody.theme-master.theme-dark[_nghost-%COMP%]   .scholar-table[_ngcontent-%COMP%]   td[_ngcontent-%COMP%]   strong[_ngcontent-%COMP%], body.theme-master.theme-dark   [_nghost-%COMP%]   .scholar-table[_ngcontent-%COMP%]   td[_ngcontent-%COMP%]   strong[_ngcontent-%COMP%] {\n  color: var(--theme-ink);\n}\n@media (max-width: 991.98px) {\n  .map-layout[_ngcontent-%COMP%] {\n    grid-template-columns: 1fr;\n  }\n}\n@media (max-width: 767.98px) {\n  .pq-hero[_ngcontent-%COMP%] {\n    min-height: auto;\n    padding: 1rem 1.25rem;\n  }\n  .pq-logo[_ngcontent-%COMP%] {\n    width: 125px;\n    height: 125px;\n    flex-basis: 125px;\n  }\n  .pq-tabs[_ngcontent-%COMP%] {\n    grid-template-columns: repeat(3, 1fr);\n  }\n  .summary-grid[_ngcontent-%COMP%], \n   .content-grid[_ngcontent-%COMP%], \n   .region-grid[_ngcontent-%COMP%] {\n    grid-template-columns: 1fr;\n  }\n  .region-institutions[_ngcontent-%COMP%] {\n    grid-template-columns: 1fr 1fr;\n  }\n}\n@media (max-width: 479.98px) {\n  .pq-hero[_ngcontent-%COMP%] {\n    align-items: flex-start;\n  }\n  .pq-logo[_ngcontent-%COMP%] {\n    width: 88px;\n    height: 88px;\n    flex-basis: 88px;\n  }\n  .pq-tabs[_ngcontent-%COMP%]   button[_ngcontent-%COMP%] {\n    padding: 0.7rem 0.35rem;\n    font-size: 0.82rem;\n  }\n  .filters[_ngcontent-%COMP%] {\n    grid-template-columns: 1fr;\n  }\n  .section-heading[_ngcontent-%COMP%] {\n    align-items: flex-start;\n  }\n  .region-institutions[_ngcontent-%COMP%] {\n    grid-template-columns: 1fr;\n  }\n}\n.pq-tabs.scholar-tabs[_ngcontent-%COMP%] {\n  grid-template-columns: repeat(2, minmax(0, 1fr));\n}\n/*# sourceMappingURL=pq.page.css.map */'] });
 };
 (() => {
   (typeof ngDevMode === "undefined" || ngDevMode) && setClassMetadata(PqPage, [{
     type: Component,
-    args: [{ selector: "app-pq-page", standalone: true, imports: [CommonModule, FormsModule, TranslateModule, BreadcrumbsComponent, PqBrazilMapComponent, PqActiveByYearComponent, PqApplicationsComponent, PqGendersComponent], template: `<section class="pq-page py-4" aria-labelledby="pq-title">\r
+    args: [{ selector: "app-pq-page", standalone: true, imports: [CommonModule, FormsModule, TranslateModule, BreadcrumbsComponent, PqBrazilMapComponent, PqActiveByYearComponent, PqApplicationsComponent, PqGendersComponent, PqCrossingsComponent], template: `<section class="pq-page py-4" aria-labelledby="pq-title">\r
   <div class="container">\r
     <app-breadcrumbs></app-breadcrumbs>\r
     <header class="pq-hero">\r
@@ -2788,10 +3517,14 @@ var PqPage = class _PqPage {
         <button type="button" role="tab" [attr.aria-selected]="activeTab() === 'instituicoes'" [class.active]="activeTab() === 'instituicoes'" (click)="setTab('instituicoes')"><i class="bi bi-building" aria-hidden="true"></i><span>Institui\xE7\xF5es</span></button>\r
         <button type="button" role="tab" [attr.aria-selected]="activeTab() === 'regioes'" [class.active]="activeTab() === 'regioes'" (click)="setTab('regioes')"><i class="bi bi-geo-alt" aria-hidden="true"></i><span>Regi\xF5es</span></button>\r
         <button type="button" role="tab" [attr.aria-selected]="activeTab() === 'mapa'" [class.active]="activeTab() === 'mapa'" (click)="setTab('mapa')"><i class="bi bi-map" aria-hidden="true"></i><span>Mapa</span></button>\r
-        <button type="button" role="tab" [attr.aria-selected]="activeTab() === 'concessoes'" [class.active]="activeTab() === 'concessoes'" (click)="setTab('concessoes')"><i class="bi bi-award" aria-hidden="true"></i><span>Concess\xF5es</span></button>\r
+        <button type="button" role="tab" [attr.aria-selected]="activeTab() === 'concessoes'" [class.active]="activeTab() === 'concessoes'" (click)="setTab('concessoes')"><i class="bi bi-award" aria-hidden="true"></i><span>Concess\xF5es</span></button>
+        <button type="button" role="tab" [attr.aria-selected]="activeTab() === 'cruzamentos'" [class.active]="activeTab() === 'cruzamentos'" (click)="setTab('cruzamentos')"><i class="bi bi-bar-chart" aria-hidden="true"></i><span>Cruzamentos</span></button>
       </nav>\r
 \r
-      <div class="tab-content" role="tabpanel">\r
+      <div class="tab-content" role="tabpanel">
+        @if (activeTab() === 'cruzamentos') {
+          <app-pq-crossings [active]="scholars()" [history]="response()?.applications" [institutionRegions]="institutionRegions"></app-pq-crossings>
+        }
         @if (activeTab() === 'generos') {\r
           <app-pq-genders [active]="scholars()" [all]="allScholars()" [history]="response()?.applications"></app-pq-genders>\r
         }\r
@@ -2871,10 +3604,10 @@ var PqPage = class _PqPage {
   }], null, null);
 })();
 (() => {
-  (typeof ngDevMode === "undefined" || ngDevMode) && \u0275setClassDebugInfo(PqPage, { className: "PqPage", filePath: "src/app/pages/pq/pq.page.ts", lineNumber: 124 });
+  (typeof ngDevMode === "undefined" || ngDevMode) && \u0275setClassDebugInfo(PqPage, { className: "PqPage", filePath: "src/app/pages/pq/pq.page.ts", lineNumber: 125 });
 })();
 export {
   PqBrazilMapComponent,
   PqPage
 };
-//# sourceMappingURL=chunk-CETBA47F.mjs.map
+//# sourceMappingURL=chunk-PCDOE67J.js.map

@@ -8,8 +8,9 @@ import { BreadcrumbsComponent } from '../../components/breadcrumbs/breadcrumbs.c
 import { PqActiveByYearComponent, PqActivesByYear } from './pq-active-by-year.component';
 import { PqApplications, PqApplicationsComponent } from './pq-applications.component';
 import { PqGendersComponent } from './pq-genders.component';
+import { PqCrossingsComponent } from './pq-crossings.component';
 
-type PqTab = 'resumo' | 'bolsistas' | 'generos' | 'instituicoes' | 'regioes' | 'mapa' | 'concessoes';
+type PqTab = 'resumo' | 'bolsistas' | 'generos' | 'instituicoes' | 'regioes' | 'mapa' | 'concessoes' | 'cruzamentos';
 interface PqScholar { id_bb: string; bs_nome: string; bs_genero?: string | null; bs_nivel: string; bs_start: string; bs_finish: string; BS_IES: string; bs_lattes: string; bs_rdf_id: string; bd_brapci: string; mod_sigla: string; mod_descricao: string; }
 interface PqResponse { status: string; message: string; actives: number; institutions: number; actives_by_year?: PqActivesByYear; applications?: PqApplications; data: PqScholar[]; }
 interface CountItem { label: string; count: number; percentage: number; }
@@ -118,10 +119,11 @@ export class PqBrazilMapComponent implements OnInit {
 
 @Component({
   selector: 'app-pq-page', standalone: true,
-  imports: [CommonModule, FormsModule, TranslateModule, BreadcrumbsComponent, PqBrazilMapComponent, PqActiveByYearComponent, PqApplicationsComponent, PqGendersComponent],
+  imports: [CommonModule, FormsModule, TranslateModule, BreadcrumbsComponent, PqBrazilMapComponent, PqActiveByYearComponent, PqApplicationsComponent, PqGendersComponent, PqCrossingsComponent],
   templateUrl: './pq.page.html', styleUrl: './pq.page.scss',
 })
 export class PqPage implements OnInit {
+  readonly institutionRegions = INSTITUTION_REGION;
   private readonly http = inject(HttpClient);
   private readonly endpoint = 'https://cip.brapci.inf.br/api/pq';
   readonly activeTab = signal<PqTab>('resumo');

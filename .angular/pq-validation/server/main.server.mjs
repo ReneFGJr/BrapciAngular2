@@ -31379,7 +31379,7 @@ var routes = [
   }, true ? { \u0275entryName: "src/app/pages/doc/doc.page.ts" } : {}),
   __spreadValues({
     path: "pq",
-    loadComponent: () => import("./chunk-CETBA47F.mjs").then((m) => m.PqPage)
+    loadComponent: () => import("./chunk-QG2YLA4A.mjs").then((m) => m.PqPage)
   }, true ? { \u0275entryName: "src/app/pages/pq/pq.page.ts" } : {}),
   __spreadValues({
     path: "revistas",

@@ -1,0 +1,55 @@
+<section aria-labelledby="crossings-title">
+  <header><span class="eyebrow">Exploração dos dados</span><h2 id="crossings-title">Cruzamentos por nível da bolsa</h2><p>Compare o perfil dos bolsistas por gênero, região ou instituição.</p></header>
+  <div class="filters-panel">
+    <div class="selectors">
+      <label>Dimensão<select class="form-select" [ngModel]="dimension()" (ngModelChange)="dimension.set($event)"><option value="genero">Gênero</option><option value="regiao">Região</option><option value="instituicao">Instituição</option></select></label>
+      <label>Período de referência<select class="form-select" [ngModel]="period()" (ngModelChange)="setPeriod($event)"><option value="atual">Consulta atual — {{ currentYear }}</option>@for (year of periods(); track year) {<option [value]="year">{{ year }} — 31 de dezembro</option>}</select></label>
+      <label>Classificação<select class="form-select" [ngModel]="scheme()" (ngModelChange)="setScheme($event)"><option value="todos">Todos os níveis originais</option><option value="atual">Atual — A, B e C</option><option value="antiga">Antiga — níveis 1 e 2</option><option value="outros">Outros / não informado</option></select></label>
+      <label>Apresentação<select class="form-select" [ngModel]="presentation()" (ngModelChange)="presentation.set($event)"><option value="absolutos">Números absolutos</option><option value="percentuais">Percentuais por categoria</option></select></label>
+    </div>
+    <fieldset><legend>Níveis da bolsa</legend><div class="level-options">@for (level of levels(); track level) {<label><input type="checkbox" [checked]="visibleLevels().includes(level)" (change)="toggleLevel(level)" /><i [style.background]="color(level)"></i>{{ level }}</label>}<button type="button" (click)="selectedLevels.set(null)">Selecionar todos</button><button type="button" (click)="selectedLevels.set([])">Limpar seleção</button></div></fieldset>
+    <details><summary>Como os níveis e o período são tratados</summary><p>Os níveis originais são preservados. A/B/C são exibidos somente quando registrados assim na base. Os níveis antigos não são convertidos: não foi confirmada uma correspondência completa para todos os códigos históricos disponíveis, incluindo 2A, 2B e 2C. Não há agrupamento entre classificações.</p><p><a [href]="source" target="_blank" rel="noopener noreferrer">Fonte oficial: critérios do CNPq para o CA-AC, 2024–2026</a>.</p><p>A consulta atual usa a lista de bolsistas ativos da API. Anos anteriores usam bolsas vigentes em 31 de dezembro, conforme início e fim registrados no histórico disponível. Cada pessoa é contada uma vez por período; em sobreposição, vale a bolsa com início mais recente. A identificação usa o nome normalizado. O histórico pode ser incompleto.</p><p>A região é obtida pelo vínculo institucional e pelo mapeamento disponível na base. Instituições não mapeadas permanecem identificadas como sem informação de região. Não são inferidos gêneros ausentes.</p></details>
+  </div>
+  <div class="result-summary" role="status" aria-live="polite"><strong>{{ total() }} bolsista(s)</strong><span>{{ missingCount() }} com nível ou dimensão sem informação</span></div>
+  <p class="base-note">Base dos percentuais: total de bolsistas de cada categoria no período e nos níveis selecionados, incluindo registros sem informação. Cada categoria soma 100%. Os filtros alteram essa base.</p>
+  @if (period() !== 'atual' && invalidHistory() > 0) {<p class="base-note">{{ invalidHistory() }} registro(s) históricos com vigência ausente ou inválida não permitem determinar o período e foram excluídos da seleção histórica.</p>}
+  @if (total() === 0) {
+    <div class="empty" role="status">Nenhum bolsista encontrado para os filtros selecionados. Selecione outros níveis, classificação ou período.</div>
+  } @else {
+    <article class="chart-panel" aria-labelledby="crossings-chart-title">
+      <h3 id="crossings-chart-title">Radar: nível × {{ dimension() === 'genero' ? 'gênero' : dimension() === 'regiao' ? 'região' : 'instituição' }}</h3>
+      <div class="legend" aria-label="Legenda dos níveis">@for (level of visibleLevels(); track level) {<span><i [style.background]="color(level)"></i>Nível {{ level }}</span>}</div>
+      <p class="scale">Cada eixo representa uma categoria; cada cor representa um nível. Escala radial: {{ presentation() === 'percentuais' ? '0 a 100% por categoria' : '0 a ' + maximum() + ' bolsistas' }}.</p>
+      @if (rows().length < 3) {<p class="base-note">Este recorte tem menos de três categorias: o radar mostra pontos e linhas, sem formar uma área.</p>}
+      <div class="radar-scroll">
+        <svg class="radar" viewBox="0 0 1000 800" role="group" aria-labelledby="radar-title radar-desc">
+          <title id="radar-title">Cruzamentos dos níveis de bolsa em gráfico radar</title>
+          <desc id="radar-desc">Eixos por categoria, séries por nível. O centro representa zero. Os valores e as bases dos percentuais estão disponíveis nos pontos e na tabela abaixo.</desc>
+          @for (ring of radarRings; track ring) {
+            <circle class="radar-grid" cx="500" cy="400" [attr.r]="260 * ring / 100"></circle>
+            <text class="radar-tick" x="508" [attr.y]="400 - 260 * ring / 100 - 5">{{ ringLabel(ring) }}</text>
+          }
+          @for (axis of radarAxes(); track axis.label) {
+            <line class="radar-axis" x1="500" y1="400" [attr.x2]="axis.end.x" [attr.y2]="axis.end.y"></line>
+            <text class="radar-label" [attr.x]="axis.labelPosition.x" [attr.y]="axis.labelPosition.y" [attr.text-anchor]="axis.labelPosition.x < 490 ? 'end' : axis.labelPosition.x > 510 ? 'start' : 'middle'">
+              <title>{{ axis.label }}: {{ axis.total }} bolsista(s)</title>
+              <tspan [attr.x]="axis.labelPosition.x">{{ axisLabel(axis.label) }}</tspan>
+              <tspan class="radar-label-total" [attr.x]="axis.labelPosition.x" dy="18">{{ axis.total }} bolsista(s)</tspan>
+            </text>
+          }
+          @for (series of radarSeries(); track series.level) {
+            <polygon class="radar-polygon" [attr.points]="series.polygon" [attr.stroke]="color(series.level)" [attr.fill]="rows().length >= 3 ? color(series.level) : 'none'"></polygon>
+          }
+          @for (series of radarSeries(); track series.level) {
+            @for (point of series.points; track point.category) {
+              <circle class="radar-point" [attr.cx]="point.x" [attr.cy]="point.y" r="6" [attr.fill]="color(series.level)" tabindex="0" [attr.aria-label]="point.description"
+                (mouseenter)="highlighted.set(point)" (mouseleave)="highlighted.set(null)" (focus)="highlighted.set(point)" (blur)="highlighted.set(null)" (click)="highlighted.set(point)"><title>{{ point.description }}</title></circle>
+            }
+          }
+        </svg>
+      </div>
+      <div class="radar-detail" role="status" aria-live="polite">{{ radarDetail() }}</div>
+    </article>
+    <details class="data-table"><summary>Ver quantidades e percentuais em tabela</summary><div class="table-responsive"><table class="table"><caption>Percentuais sobre o total de cada categoria nos níveis selecionados.</caption><thead><tr><th scope="col">Categoria</th><th scope="col">Nível original</th><th scope="col">Bolsistas</th><th scope="col">Percentual</th><th scope="col">Base</th></tr></thead><tbody>@for (row of rows(); track row.label) {@for (cell of row.cells; track cell.level) {<tr><th scope="row">{{ row.label }}</th><td>{{ cell.level }}</td><td>{{ cell.count }}</td><td>{{ formatPercentage(cell.percentage) }}</td><td>{{ row.total }}</td></tr>}}</tbody></table></div></details>
+  }
+</section>

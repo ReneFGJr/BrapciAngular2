@@ -19,9 +19,13 @@
         <button type="button" role="tab" [attr.aria-selected]="activeTab() === 'regioes'" [class.active]="activeTab() === 'regioes'" (click)="setTab('regioes')"><i class="bi bi-geo-alt" aria-hidden="true"></i><span>Regiões</span></button>
         <button type="button" role="tab" [attr.aria-selected]="activeTab() === 'mapa'" [class.active]="activeTab() === 'mapa'" (click)="setTab('mapa')"><i class="bi bi-map" aria-hidden="true"></i><span>Mapa</span></button>
         <button type="button" role="tab" [attr.aria-selected]="activeTab() === 'concessoes'" [class.active]="activeTab() === 'concessoes'" (click)="setTab('concessoes')"><i class="bi bi-award" aria-hidden="true"></i><span>Concessões</span></button>
+        <button type="button" role="tab" [attr.aria-selected]="activeTab() === 'cruzamentos'" [class.active]="activeTab() === 'cruzamentos'" (click)="setTab('cruzamentos')"><i class="bi bi-bar-chart" aria-hidden="true"></i><span>Cruzamentos</span></button>
       </nav>
 
       <div class="tab-content" role="tabpanel">
+        @if (activeTab() === 'cruzamentos') {
+          <app-pq-crossings [active]="scholars()" [history]="response()?.applications" [institutionRegions]="institutionRegions"></app-pq-crossings>
+        }
         @if (activeTab() === 'generos') {
           <app-pq-genders [active]="scholars()" [all]="allScholars()" [history]="response()?.applications"></app-pq-genders>
         }
