@@ -1,0 +1,7 @@
+{
+  "version": 3,
+  "sources": ["src/app/components/view-event/view-event.component.scss"],
+  "sourcesContent": [".view-card {\r\n  background: var(--theme-card-bg);\r\n  border: 1px solid var(--theme-line);\r\n  border-radius: 0.9rem;\r\n}\r\n\r\n.tab-nav {\r\n  display: flex;\r\n  flex-wrap: wrap;\r\n  gap: 0.5rem;\r\n}\r\n\r\n.tab-btn {\r\n  background: transparent;\r\n  border: 1px solid var(--theme-line);\r\n  border-radius: 999px;\r\n  color: var(--theme-ink);\r\n  cursor: pointer;\r\n  font-size: 0.9rem;\r\n  padding: 0.35rem 0.7rem;\r\n}\r\n\r\n.tab-btn.active {\r\n  background: var(--theme-sand);\r\n  border-color: var(--theme-hint);\r\n  font-weight: 600;\r\n}\r\n\r\n.tab-panel {\r\n  background: rgb(255 255 255 / 28%);\r\n  border: 1px solid var(--theme-line);\r\n  border-radius: 0.6rem;\r\n  padding: 0.85rem;\r\n}\r\n\r\n.json-block {\r\n  background: var(--theme-sand);\r\n  border-radius: 0.45rem;\r\n  max-height: 420px;\r\n  overflow: auto;\r\n  padding: 0.7rem;\r\n}\r\n"],
+  "mappings": ";AAAA,CAAA;AACE,cAAA,IAAA;AACA,UAAA,IAAA,MAAA,IAAA;AACA,iBAAA;;AAGF,CAAA;AACE,WAAA;AACA,aAAA;AACA,OAAA;;AAGF,CAAA;AACE,cAAA;AACA,UAAA,IAAA,MAAA,IAAA;AACA,iBAAA;AACA,SAAA,IAAA;AACA,UAAA;AACA,aAAA;AACA,WAAA,QAAA;;AAGF,CAVA,OAUA,CAAA;AACE,cAAA,IAAA;AACA,gBAAA,IAAA;AACA,eAAA;;AAGF,CAAA;AACE,cAAA,KAAA,GAAA,EAAA,GAAA,EAAA,GAAA,EAAA;AACA,UAAA,IAAA,MAAA,IAAA;AACA,iBAAA;AACA,WAAA;;AAGF,CAAA;AACE,cAAA,IAAA;AACA,iBAAA;AACA,cAAA;AACA,YAAA;AACA,WAAA;;",
+  "names": []
+}

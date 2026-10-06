@@ -34,6 +34,9 @@
           @if (response()?.actives_by_year; as history) {
             <app-pq-active-by-year [data]="history"></app-pq-active-by-year>
           }
+          @if (response()?.applications; as applications) {
+            <app-pq-applications [data]="applications" [activeOnly]="true"></app-pq-applications>
+          }
           <div class="content-grid">
             <article class="panel"><div class="panel-heading"><div><span class="eyebrow">Perfil das bolsas</span><h2>Modalidades</h2></div><span class="total-label">{{ scholars().length }} bolsistas</span></div><div class="level-list">
               @for (item of levelCounts(); track item.label) {<div class="level-row"><span class="level-badge">{{ item.label }}</span><div class="level-progress" role="img" [attr.aria-label]="'Nível ' + item.label + ': ' + item.count + ' bolsistas'"><span [style.width.%]="item.percentage"></span></div><strong>{{ item.count }}</strong></div>}

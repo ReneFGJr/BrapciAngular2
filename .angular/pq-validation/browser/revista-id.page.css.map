@@ -1,0 +1,7 @@
+{
+  "version": 3,
+  "sources": ["src/app/pages/revista-id/revista-id.page.scss"],
+  "sourcesContent": [".revista-detail {\r\n  min-height: calc(100vh - 120px);\r\n}\r\n\r\n.back-link {\r\n  color: #0d6efd;\r\n  font-weight: 500;\r\n  text-decoration: none;\r\n}\r\n\r\n.back-link:hover {\r\n  text-decoration: underline;\r\n}\r\n\r\n.revista-card {\r\n  border-radius: 12px;\r\n}\r\n\r\n.cover {\r\n  width: 100%;\r\n  max-height: 360px;\r\n  object-fit: cover;\r\n  border-radius: 8px;\r\n  background: #f4f4f4;\r\n}\r\n\r\n.cover-placeholder {\r\n  height: 220px;\r\n  border-radius: 8px;\r\n  background: #f4f4f4;\r\n  color: #666;\r\n  display: flex;\r\n  align-items: center;\r\n  justify-content: center;\r\n  font-size: 0.95rem;\r\n}\r\n\r\n.meta-grid p {\r\n  margin-bottom: 0.5rem;\r\n}\r\n\r\n.external-link {\r\n  color: #0d6efd;\r\n  font-weight: 500;\r\n  text-decoration: none;\r\n}\r\n\r\n.external-link:hover {\r\n  text-decoration: underline;\r\n}\r\n"],
+  "mappings": ";AAAA,CAAA;AACE,cAAA,KAAA,MAAA,EAAA;;AAGF,CAAA;AACE,SAAA;AACA,eAAA;AACA,mBAAA;;AAGF,CANA,SAMA;AACE,mBAAA;;AAGF,CAAA;AACE,iBAAA;;AAGF,CAAA;AACE,SAAA;AACA,cAAA;AACA,cAAA;AACA,iBAAA;AACA,cAAA;;AAGF,CAAA;AACE,UAAA;AACA,iBAAA;AACA,cAAA;AACA,SAAA;AACA,WAAA;AACA,eAAA;AACA,mBAAA;AACA,aAAA;;AAGF,CAAA,UAAA;AACE,iBAAA;;AAGF,CAAA;AACE,SAAA;AACA,eAAA;AACA,mBAAA;;AAGF,CANA,aAMA;AACE,mBAAA;;",
+  "names": []
+}

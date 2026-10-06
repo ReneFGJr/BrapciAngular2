@@ -50,6 +50,7 @@ interface ActiveScholarshipItem {
 })
 export class PqApplicationsComponent implements OnChanges {
   @Input({ required: true }) data: PqApplications = {};
+  @Input() activeOnly = false;
   readonly years = signal<ApplicationItem[]>([]);
   readonly selectedYear = signal('');
   readonly expandedYear = signal<string | null>(null);

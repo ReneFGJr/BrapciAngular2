@@ -1,0 +1,467 @@
+{
+  "nome_grupo_api": "PQ — Bolsas de Produtividade em Pesquisa",
+  "descricao": "API pública utilizada pelo painel /pq. Fornece bolsas, instituições, distribuição por ano de início e histórico de concessões. O frontend consulta https://cip.brapci.inf.br/api/pq mesmo quando executado em localhost:4200. As consultas não recebem filtros nem paginação: busca por nome, filtros por nível, instituições, regiões e mapa são calculados no navegador. O parâmetro type é lido pelo backend, mas não altera o resultado. As contagens representam registros de bolsas, não necessariamente pesquisadores únicos. IDs podem chegar como strings. Datas usam YYYY-MM-DD. Coleções vazias podem ser [] mesmo quando normalmente são objetos indexados por ano. A rota vigente não está incluída porque o código chama collections() em Bolsas, método não implementado nesse modelo. No resumo /api/pq, bs_genero ausente (nulo, vazio ou somente espaços) é identificado na resposta por /api/gender/check_genere: primeiro RDF, depois nome. Os códigos são M, F e X (indefinido). Quando bs_genero é NULL, /api/pq salva o resultado em bolsistas pelo id_bs, com condição bs_genero IS NULL para preservar valores cadastrados. O endpoint /actives continua retornando os valores cadastrados.",
+  "versao_documento": "1.0",
+  "endpoints": [
+    {
+      "nome": "Resumo do painel PQ",
+      "metodo_servico": "PqPage.loadData() — HttpClient.get<PqResponse>()",
+      "endpoint_api": {
+        "metodo": "GET",
+        "url": "https://cip.brapci.inf.br/api/pq",
+        "endpoint_relativo": "/api/pq",
+        "content_type_requisicao": null,
+        "content_type_resposta": "application/json"
+      },
+      "precisa_apikey": false,
+      "autenticacao": "Consulta pública, sem APIKEY ou sessão de login.",
+      "variaveis_api": [],
+      "exemplo_requisicao": "curl \"https://cip.brapci.inf.br/api/pq\"\n\nfetch(\"https://cip.brapci.inf.br/api/pq\")\n  .then(response => { if (!response.ok) throw new Error(`HTTP ${response.status}`); return response.json(); })\n  .then(data => console.log(data));",
+      "resultado_api": {
+        "descricao": "Objeto com status lógico '200', mensagem 'Resume', quantidade de bolsas e instituições distintas (BS_IES após trim), lista de bolsas e históricos. data inclui somente bolsas com bs_start <= data atual do servidor e bs_finish >= essa mesma data, incluindo os dias de início e término. actives_by_year agrupa o histórico com início anterior à data atual por ano de início e modalidade + nível; não é uma contagem de todas as bolsas vigentes em cada ano. applications classifica, por pesquisador, primeira concessão, reconcessão com continuidade até um dia após o término anterior e nova concessão após interrupção. O campo status é do JSON e não substitui o status HTTP. Exemplo ilustrativo com dados fictícios.",
+        "exemplo": {
+          "status": "200",
+          "message": "Resume",
+          "actives": 1,
+          "institutions": 1,
+          "data": [
+            {
+              "id_bb": "100",
+              "bb_person": "10",
+              "bs_nome": "Pesquisador de exemplo",
+              "bs_nivel": "2",
+              "bs_start": "2025-03-01",
+              "bs_finish": "2028-02-29",
+              "BS_IES": "UFRGS",
+              "bs_lattes": "0000000000000000",
+              "bs_rdf_id": "12345",
+              "bd_brapci": "12345",
+              "mod_sigla": "PQ",
+              "mod_descricao": "Produtividade em Pesquisa",
+              "bs_tipo": "1",
+              "bs_ativo": "1",
+              "bs_genero": "F"
+            }
+          ],
+          "actives_by_year": {
+            "2025": {
+              "PQ2": 1
+            }
+          },
+          "applications": {
+            "2025": {
+              "novas": [
+                {
+                  "id_bb": "12345",
+                  "nome": "Pesquisador de exemplo",
+                  "nivel": "2",
+                  "ies": "UFRGS",
+                  "inicio": "2025-03-01",
+                  "fim": "2028-02-29",
+                  "tipo": "nova",
+                  "bs_genero": "F"
+                }
+              ],
+              "reconcedidas": [],
+              "novas_apos_interrupcao": []
+            }
+          }
+        }
+      },
+      "variaveis_retorno_api": [
+        {
+          "nome": "status",
+          "tipo": "string",
+          "descricao": "Status lógico da resposta; no resumo, '200'."
+        },
+        {
+          "nome": "message",
+          "tipo": "string",
+          "descricao": "Mensagem do resumo: 'Resume'."
+        },
+        {
+          "nome": "actives",
+          "tipo": "integer",
+          "descricao": "Número de registros retornados em data."
+        },
+        {
+          "nome": "institutions",
+          "tipo": "integer",
+          "descricao": "Quantidade de siglas BS_IES distintas após trim."
+        },
+        {
+          "nome": "data",
+          "tipo": "array<object>",
+          "descricao": "Bolsas vigentes: bs_start <= data atual do servidor e bs_finish >= essa mesma data, com dados do bolsista e modalidade."
+        },
+        {
+          "nome": "data[].id_bb",
+          "tipo": "string | integer",
+          "descricao": "Identificador da bolsa."
+        },
+        {
+          "nome": "data[].bb_person",
+          "tipo": "string | integer",
+          "descricao": "Identificador interno do bolsista."
+        },
+        {
+          "nome": "data[].bs_nome",
+          "tipo": "string",
+          "descricao": "Nome do pesquisador."
+        },
+        {
+          "nome": "data[].bs_nivel",
+          "tipo": "string",
+          "descricao": "Nível da bolsa, como 1A, 1B, 1C, 1D ou 2."
+        },
+        {
+          "nome": "data[].bs_start",
+          "tipo": "string (YYYY-MM-DD)",
+          "descricao": "Data de início da bolsa."
+        },
+        {
+          "nome": "data[].bs_finish",
+          "tipo": "string (YYYY-MM-DD)",
+          "descricao": "Data de término da bolsa."
+        },
+        {
+          "nome": "data[].BS_IES",
+          "tipo": "string",
+          "descricao": "Sigla da instituição; o nome do campo usa maiúsculas."
+        },
+        {
+          "nome": "data[].bs_lattes",
+          "tipo": "string",
+          "descricao": "Identificador do currículo Lattes."
+        },
+        {
+          "nome": "data[].bs_rdf_id",
+          "tipo": "string | integer",
+          "descricao": "Identificador do pesquisador na Brapci."
+        },
+        {
+          "nome": "data[].bd_brapci",
+          "tipo": "string | integer | null",
+          "descricao": "Vínculo adicional com a Brapci, quando cadastrado."
+        },
+        {
+          "nome": "data[].mod_sigla",
+          "tipo": "string",
+          "descricao": "Sigla da modalidade."
+        },
+        {
+          "nome": "data[].mod_descricao",
+          "tipo": "string",
+          "descricao": "Descrição da modalidade."
+        },
+        {
+          "nome": "data[].bs_tipo",
+          "tipo": "string | integer",
+          "descricao": "Identificador da modalidade."
+        },
+        {
+          "nome": "data[].bs_ativo",
+          "tipo": "string | integer",
+          "descricao": "Indicador cadastral da bolsa; não é o filtro usado por activesPQ()."
+        },
+        {
+          "nome": "actives_by_year",
+          "tipo": "object | array",
+          "descricao": "Mapa ano de início → modalidade concatenada ao nível → quantidade; histórico com bs_start anterior à data atual."
+        },
+        {
+          "nome": "applications",
+          "tipo": "object | array",
+          "descricao": "Mapa ano de início → novas, reconcedidas e novas_apos_interrupcao."
+        },
+        {
+          "nome": "applications.{ano}.novas",
+          "tipo": "array<object>",
+          "descricao": "Primeiras concessões no histórico disponível."
+        },
+        {
+          "nome": "applications.{ano}.reconcedidas",
+          "tipo": "array<object>",
+          "descricao": "Concessões com início até um dia após o término da anterior, incluindo sobreposição."
+        },
+        {
+          "nome": "applications.{ano}.novas_apos_interrupcao",
+          "tipo": "array<object>",
+          "descricao": "Concessões cujo início excede esse limite de continuidade."
+        },
+        {
+          "nome": "applications.{ano}.{categoria}[].id_bb",
+          "tipo": "string | integer | null",
+          "descricao": "Apesar do nome, preenchido com bs_rdf_id da concessão atual; não confundir com data[].id_bb."
+        },
+        {
+          "nome": "applications.{ano}.{categoria}[].nome",
+          "tipo": "string | null",
+          "descricao": "Nome do pesquisador."
+        },
+        {
+          "nome": "applications.{ano}.{categoria}[].nivel",
+          "tipo": "string",
+          "descricao": "Nível da bolsa."
+        },
+        {
+          "nome": "applications.{ano}.{categoria}[].ies",
+          "tipo": "string | null",
+          "descricao": "Sigla da instituição."
+        },
+        {
+          "nome": "applications.{ano}.{categoria}[].inicio",
+          "tipo": "string (YYYY-MM-DD)",
+          "descricao": "Início da concessão."
+        },
+        {
+          "nome": "applications.{ano}.{categoria}[].fim",
+          "tipo": "string (YYYY-MM-DD)",
+          "descricao": "Término da concessão."
+        },
+        {
+          "nome": "applications.{ano}.{categoria}[].tipo",
+          "tipo": "string",
+          "descricao": "nova, reconcedida ou nova_apos_interrupcao."
+        },
+        {
+          "nome": "applications.{ano}.{categoria}[].bolsa_anterior",
+          "tipo": "object (opcional)",
+          "descricao": "Nas concessões posteriores à primeira: id_bb (ID da bolsa anterior), nivel, inicio e fim."
+        },
+        {
+          "nome": "applications.{ano}.{categoria}[].dias_interrupcao",
+          "tipo": "integer (opcional)",
+          "descricao": "Dias entre as concessões descontando o dia de início; zero para sobreposição."
+        },
+        {
+          "nome": "data[].bs_genero",
+          "tipo": "string | null",
+          "descricao": "Valor do campo bs_genero da tabela bolsistas, sem conversão. Quando ausente no cadastro, o resumo retorna a identificação calculada (M/F/X), O resumo salva em bolsistas somente quando o campo original é NULL; vazios e espaços continuam sendo preenchidos apenas na resposta."
+        },
+        {
+          "nome": "applications.{ano}.{categoria}[].bs_genero",
+          "tipo": "string | null",
+          "descricao": "Gênero cadastrado em bolsistas; incluído na exportação CSV de concessões. Sem valor, a célula do CSV fica vazia. Quando ausente no cadastro, o resumo retorna a identificação calculada (M/F/X), O resumo salva em bolsistas somente quando o campo original é NULL; vazios e espaços continuam sendo preenchidos apenas na resposta."
+        }
+      ]
+    },
+    {
+      "nome": "Listar bolsas vigentes",
+      "endpoint_api": {
+        "metodo": "GET",
+        "url": "https://cip.brapci.inf.br/api/pq/actives",
+        "endpoint_relativo": "/api/pq/actives",
+        "content_type_requisicao": null,
+        "content_type_resposta": "application/json"
+      },
+      "precisa_apikey": false,
+      "autenticacao": "Consulta pública, sem APIKEY ou sessão de login.",
+      "variaveis_api": [],
+      "exemplo_requisicao": "curl \"https://cip.brapci.inf.br/api/pq/actives\"\n\nfetch(\"https://cip.brapci.inf.br/api/pq/actives\")\n  .then(response => { if (!response.ok) throw new Error(`HTTP ${response.status}`); return response.json(); })\n  .then(data => console.log(data));",
+      "resultado_api": {
+        "descricao": "Array direto, sem envelope status/data. Retorna somente bolsas com bs_start <= data atual do servidor e bs_finish >= essa mesma data. Os dias de início e término são incluídos; bolsas futuras e encerradas são excluídas. Exemplo ilustrativo com dados fictícios.",
+        "exemplo": [
+          {
+            "id_bb": "100",
+            "bb_person": "10",
+            "bs_nome": "Pesquisador de exemplo",
+            "bs_nivel": "2",
+            "bs_start": "2025-03-01",
+            "bs_finish": "2028-02-29",
+            "BS_IES": "UFRGS",
+            "bs_lattes": "0000000000000000",
+            "bs_rdf_id": "12345",
+            "bd_brapci": "12345",
+            "mod_sigla": "PQ",
+            "mod_descricao": "Produtividade em Pesquisa",
+            "bs_tipo": "1",
+            "bs_ativo": "1",
+            "bs_genero": "F"
+          }
+        ]
+      },
+      "variaveis_retorno_api": [
+        {
+          "nome": "[].id_bb",
+          "tipo": "string | integer",
+          "descricao": "Identificador da bolsa."
+        },
+        {
+          "nome": "[].bb_person",
+          "tipo": "string | integer",
+          "descricao": "Identificador interno do bolsista."
+        },
+        {
+          "nome": "[].bs_nome",
+          "tipo": "string",
+          "descricao": "Nome do pesquisador."
+        },
+        {
+          "nome": "[].bs_nivel",
+          "tipo": "string",
+          "descricao": "Nível da bolsa, como 1A, 1B, 1C, 1D ou 2."
+        },
+        {
+          "nome": "[].bs_start",
+          "tipo": "string (YYYY-MM-DD)",
+          "descricao": "Data de início da bolsa."
+        },
+        {
+          "nome": "[].bs_finish",
+          "tipo": "string (YYYY-MM-DD)",
+          "descricao": "Data de término da bolsa."
+        },
+        {
+          "nome": "[].BS_IES",
+          "tipo": "string",
+          "descricao": "Sigla da instituição; o nome do campo usa maiúsculas."
+        },
+        {
+          "nome": "[].bs_lattes",
+          "tipo": "string",
+          "descricao": "Identificador do currículo Lattes."
+        },
+        {
+          "nome": "[].bs_rdf_id",
+          "tipo": "string | integer",
+          "descricao": "Identificador do pesquisador na Brapci."
+        },
+        {
+          "nome": "[].bd_brapci",
+          "tipo": "string | integer | null",
+          "descricao": "Vínculo adicional com a Brapci, quando cadastrado."
+        },
+        {
+          "nome": "[].mod_sigla",
+          "tipo": "string",
+          "descricao": "Sigla da modalidade."
+        },
+        {
+          "nome": "[].mod_descricao",
+          "tipo": "string",
+          "descricao": "Descrição da modalidade."
+        },
+        {
+          "nome": "[].bs_tipo",
+          "tipo": "string | integer",
+          "descricao": "Identificador da modalidade."
+        },
+        {
+          "nome": "[].bs_ativo",
+          "tipo": "string | integer",
+          "descricao": "Indicador cadastral da bolsa; não é o filtro usado por activesPQ()."
+        },
+        {
+          "nome": "[].bs_genero",
+          "tipo": "string | null",
+          "descricao": "Valor do campo bs_genero da tabela bolsistas, sem conversão."
+        }
+      ]
+    },
+    {
+      "nome": "Quantidade de bolsas por ano",
+      "endpoint_api": {
+        "metodo": "GET",
+        "url": "https://cip.brapci.inf.br/api/pq/bolsa_ano",
+        "endpoint_relativo": "/api/pq/bolsa_ano",
+        "content_type_requisicao": null,
+        "content_type_resposta": "application/json"
+      },
+      "precisa_apikey": false,
+      "autenticacao": "Consulta pública, sem APIKEY ou sessão de login.",
+      "variaveis_api": [],
+      "exemplo_requisicao": "curl \"https://cip.brapci.inf.br/api/pq/bolsa_ano\"\n\nfetch(\"https://cip.brapci.inf.br/api/pq/bolsa_ano\")\n  .then(response => { if (!response.ok) throw new Error(`HTTP ${response.status}`); return response.json(); })\n  .then(data => console.log(data));",
+      "resultado_api": {
+        "descricao": "Mapa ano → quantidade, considerando registros com bs_ativo = 1. Percorre anos do início até antes do ano de término e até o ano atual do servidor. A implementação limita o percurso a 12 anos por bolsa; por isso não equivale à distribuição actives_by_year do resumo. Exemplo ilustrativo com dados fictícios.",
+        "exemplo": {
+          "2024": 2,
+          "2025": 3
+        }
+      },
+      "variaveis_retorno_api": [
+        {
+          "nome": "{ano}",
+          "tipo": "integer",
+          "descricao": "Quantidade de bolsas contadas no ano; o ano de término não é incluído."
+        }
+      ]
+    },
+    {
+      "nome": "Distribuição anual por nível",
+      "endpoint_api": {
+        "metodo": "GET",
+        "url": "https://cip.brapci.inf.br/api/pq/bolsa_ano_tipo",
+        "endpoint_relativo": "/api/pq/bolsa_ano_tipo",
+        "content_type_requisicao": null,
+        "content_type_resposta": "application/json"
+      },
+      "precisa_apikey": false,
+      "autenticacao": "Consulta pública, sem APIKEY ou sessão de login.",
+      "variaveis_api": [],
+      "exemplo_requisicao": "curl \"https://cip.brapci.inf.br/api/pq/bolsa_ano_tipo\"\n\nfetch(\"https://cip.brapci.inf.br/api/pq/bolsa_ano_tipo\")\n  .then(response => { if (!response.ok) throw new Error(`HTTP ${response.status}`); return response.json(); })\n  .then(data => console.log(data));",
+      "resultado_api": {
+        "descricao": "Objeto label/data para gráficos. label lista anos de 1990 até o ano atual do servidor. data usa bs_nivel como chave (apesar do nome da rota, não usa a modalidade). Cada array acompanha os índices de label. Considera bs_ativo = 1 e exclui o ano de término. A implementação limita o percurso a 12 anos por bolsa. O exemplo vazio mostra o formato quando não há níveis com registros. Exemplo ilustrativo com dados fictícios.",
+        "exemplo": {
+          "label": [
+            1990,
+            1991,
+            1992,
+            1993,
+            1994,
+            1995,
+            1996,
+            1997,
+            1998,
+            1999,
+            2000,
+            2001,
+            2002,
+            2003,
+            2004,
+            2005,
+            2006,
+            2007,
+            2008,
+            2009,
+            2010,
+            2011,
+            2012,
+            2013,
+            2014,
+            2015,
+            2016,
+            2017,
+            2018,
+            2019,
+            2020,
+            2021,
+            2022,
+            2023,
+            2024,
+            2025,
+            2026
+          ],
+          "data": []
+        }
+      },
+      "variaveis_retorno_api": [
+        {
+          "nome": "label",
+          "tipo": "array<integer>",
+          "descricao": "Anos de 1990 até o ano atual do servidor, em ordem crescente."
+        },
+        {
+          "nome": "data",
+          "tipo": "object | array",
+          "descricao": "Mapa nível → array de contagens; sem registros, pode retornar []."
+        },
+        {
+          "nome": "data.{nivel}",
+          "tipo": "array<integer>",
+          "descricao": "Contagens alinhadas por índice aos anos em label."
+        }
+      ]
+    }
+  ]
+}

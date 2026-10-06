@@ -1,0 +1,33 @@
+{
+  "routes": {
+    "/": {},
+    "/501": {},
+    "/autoridade": {},
+    "/basket/selected": {},
+    "/cited": {},
+    "/doc": {},
+    "/eventos": {},
+    "/livros": {},
+    "/livros/submit": {},
+    "/monitor": {},
+    "/painel": {},
+    "/perfil": {},
+    "/pq": {},
+    "/revistas": {},
+    "/revistas/avaliation": {},
+    "/revistas/timeline": {},
+    "/signin": {},
+    "/small_world": {},
+    "/sobre/brapci": {},
+    "/statistics": {},
+    "/tools/halflive": {},
+    "/tools/normalize_cites": {},
+    "/tools/term4net": {},
+    "/tools/txt4net": {},
+    "/tools/txt4network": {},
+    "/tools_bibliografics": {},
+    "/tools_bibliometric": {},
+    "/tools_text": {},
+    "/tools_text/specialist": {}
+  }
+}

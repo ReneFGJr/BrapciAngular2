@@ -1,4 +1,5 @@
-<section aria-labelledby="applications-title">
+<section [attr.aria-labelledby]="activeOnly ? 'active-scholarships-title' : 'applications-title'" [class.active-only]="activeOnly">
+  @if (!activeOnly) {
   <div class="applications-heading">
     <div><span class="applications-eyebrow">Série histórica</span><h2 id="applications-title">Concessões por ano</h2></div>
     @if (selected(); as current) {<div class="selected-total" aria-live="polite"><strong>{{ current.total }}</strong><span>concessões em {{ current.year }}</span></div>}
@@ -26,6 +27,8 @@
     <div class="legend"><span><i class="dot new"></i>Novas</span><span><i class="dot renewed"></i>Reconcedidas</span><span><i class="dot returned"></i>Novas após interrupção</span></div>
   </article>
 
+  }
+
   <div class="applications-heading active-heading">
     <div><span class="applications-eyebrow">Série histórica</span><h2 id="active-scholarships-title">Bolsas vigentes acumuladas por ano</h2></div>
   </div>
@@ -50,6 +53,7 @@
     </div>
   </article>
 
+  @if (!activeOnly) {
   @if (selected(); as current) {
     <div class="selected-detail"><strong>{{ current.year }}</strong><span><i class="dot new"></i>Novas <b>{{ current.novas }}</b></span><span><i class="dot renewed"></i>Reconcedidas <b>{{ current.reconcedidas }}</b></span><span><i class="dot returned"></i>Após interrupção <b>{{ current.novas_apos_interrupcao }}</b></span><span>Total <b>{{ current.total }}</b></span></div>
   }
@@ -82,4 +86,5 @@
       </table>
     </div>
   </section>
+  }
 </section>
