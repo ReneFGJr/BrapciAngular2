@@ -16,6 +16,62 @@ export class PqCrossingsComponent {
   @Input() set history(value: PqApplications | undefined) { this.historyRecords.set(historicalRecords(value ?? {})); }
   @Input() set institutionRegions(value: Record<string, string>) { this.regions.set(value); }
   readonly dimension = signal<CrossingDimension>('genero');
+  readonly chartTab = signal<'radar' | 'heatmap'>('radar');
+  readonly genderFilter = signal('');
+  readonly regionFilter = signal('');
+  gender(item: CrossingScholar): string {
+    const code = clean(item.bs_genero).toUpperCase();
+    return code === 'F' ? 'Feminino' : code === 'M' ? 'Masculino' : `${MISSING} / indefinido`;
+  }
+  region(item: CrossingScholar): string {
+    const institution = clean(item.BS_IES);
+    return Object.entries(this.regions()).find(([key]) => key.toUpperCase() === institution.toUpperCase())?.[1] ?? `${MISSING} / instituição sem região mapeada`;
+  }
+  readonly genders = computed(() => [...new Set(this.records().map(item => this.gender(item)))].sort());
+  readonly regionOptions = computed(() => [...new Set(this.records().map(item => this.region(item)))].sort((a, b) => a.localeCompare(b, 'pt-BR')));
+  readonly heatmapGroups = computed(() => {
+    const groups = new Map<string, { gender: string; region: string; level: string; count: number }>();
+    for (const item of this.records()) {
+      const gender = this.gender(item), region = this.region(item);
+      const originalLevel = clean(item.bs_nivel);
+      const level = originalLevel === MISSING ? MISSING : originalLevel.toUpperCase();
+      if (!this.visibleLevels().includes(level) ||
+        (this.genderFilter() && gender !== this.genderFilter()) || (this.regionFilter() && region !== this.regionFilter())) continue;
+      const key = JSON.stringify([gender, region, level]);
+      const group = groups.get(key) ?? { gender, region, level, count: 0 };
+      group.count++;
+      groups.set(key, group);
+    }
+    return [...groups.values()].sort((a, b) => b.count - a.count || a.region.localeCompare(b.region, 'pt-BR'));
+  });
+  readonly heatmapTotal = computed(() => this.heatmapGroups().reduce((sum, group) => sum + group.count, 0));
+  readonly heatmapPresentation = signal<'absolutos' | 'percentuais'>('absolutos');
+  readonly heatmapRegions = computed(() => this.regionOptions().filter(region => !this.regionFilter() || region === this.regionFilter()));
+  readonly heatmapPanels = computed(() => {
+    const groups = new Map(this.heatmapGroups().map(group => [JSON.stringify([group.gender, group.region, group.level]), group.count]));
+    return this.genders().filter(gender => !this.genderFilter() || gender === this.genderFilter()).map(gender => {
+      const rows = this.heatmapRegions().map(region => ({
+        region,
+        cells: this.visibleLevels().map(level => {
+          const count = groups.get(JSON.stringify([gender, region, level])) ?? 0;
+          const percentage = this.heatmapTotal() ? count / this.heatmapTotal() * 100 : 0;
+          return { level, count, percentage, description: gender + ' × ' + region + ' × Bolsa ' + level + ': ' + count + ' bolsista(s), ' + this.formatPercentage(percentage) + ' do total filtrado (' + this.heatmapTotal() + ').' };
+        }),
+      }));
+      return { gender, rows, total: rows.reduce((sum, row) => sum + row.cells.reduce((subtotal, cell) => subtotal + cell.count, 0), 0) };
+    });
+  });
+  readonly heatmapMaximum = computed(() => Math.max(0, ...this.heatmapGroups().map(group => group.count)));
+  readonly heatmapScaleMaximum = computed(() => this.heatmapPresentation() === 'percentuais'
+    ? (this.heatmapTotal() ? this.heatmapMaximum() / this.heatmapTotal() * 100 : 0) : this.heatmapMaximum());
+  heatmapIntensity(count: number): number { return this.heatmapMaximum() ? count / this.heatmapMaximum() : 0; }
+  heatmapColor(count: number): string {
+    const intensity = this.heatmapIntensity(count);
+    return 'rgb(' + [239, 246, 255].map((light, index) => Math.round(light + ([23, 105, 170][index] - light) * intensity)).join(',') + ')';
+  }
+  heatmapValue(cell: { count: number; percentage: number }): string {
+    return this.heatmapPresentation() === 'percentuais' ? this.formatPercentage(cell.percentage) : cell.count.toLocaleString('pt-BR');
+  }
   readonly period = signal('atual');
   readonly scheme = signal<LevelClassification>('todos');
   readonly presentation = signal<'absolutos' | 'percentuais'>('absolutos');

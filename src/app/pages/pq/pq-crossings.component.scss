@@ -1,4 +1,7 @@
 :host { display:block; color:var(--theme-ink); }
+.chart-tabs { display:flex; gap:.5rem; margin:1.2rem 0; }
+.chart-tabs button { padding:.65rem 1.2rem; font-weight:700; }
+.chart-tabs button.active { background:#1769aa; color:white; border-color:#1769aa; }
 h2,h3,h4 { font-family:'Bitter',serif; }
 h2 { font-size:1.5rem; }
 h3 { font-size:1.15rem; }
@@ -39,3 +42,21 @@ a { color:var(--theme-hint); }
 caption { color:var(--theme-muted); }
 @media(max-width:991px) { .selectors { grid-template-columns:repeat(2,minmax(0,1fr)); } }
 @media(max-width:575px) { .selectors { grid-template-columns:1fr; } .filters-panel,.chart-panel { padding:1rem; } }
+
+.chart-tabs { flex-wrap:wrap; }
+.selectors.heatmap-filters { margin:1.3rem 0; grid-template-columns:repeat(3,minmax(0,1fr)); }
+.heatmap-legend { display:flex; align-items:center; gap:.75rem; margin:1.2rem 0; font-size:.8rem; }
+.heatmap-gradient { width:180px; max-width:40%; height:14px; border-radius:4px; background:linear-gradient(to right,rgb(239,246,255),rgb(23,105,170)); border:1px solid var(--theme-line); }
+.heatmap-panels { display:grid; grid-template-columns:repeat(auto-fit,minmax(min(100%,320px),1fr)); gap:1rem; align-items:start; }
+.heatmap-card { min-width:0; border:1px solid var(--theme-line); border-radius:.7rem; overflow:hidden; }
+.heatmap-card-header { display:flex; flex-wrap:wrap; align-items:center; justify-content:space-between; gap:.4rem; padding:1rem; background:var(--theme-sand); }
+.heatmap-card-header h4 { margin:0; font-size:1rem; }
+.heatmap-card-header span { font-size:.8rem; color:var(--theme-muted); }
+.heatmap-table { width:100%; border-collapse:separate; border-spacing:4px; font-size:.8rem; }
+.heatmap-table caption { padding:.6rem; font-size:.75rem; }
+.heatmap-table th { padding:.5rem; text-align:center; font-weight:700; }
+.heatmap-table tbody th { text-align:left; min-width:100px; max-width:150px; overflow-wrap:anywhere; }
+.heatmap-table td { padding:0; text-align:center; }
+.heatmap-cell { display:block; min-width:48px; padding:.75rem .45rem; border-radius:4px; font-weight:700; font-variant-numeric:tabular-nums; }
+.heatmap-cell:focus-visible { outline:3px solid var(--theme-hint); outline-offset:1px; }
+@media(max-width:575px) { .selectors.heatmap-filters { grid-template-columns:1fr; } }

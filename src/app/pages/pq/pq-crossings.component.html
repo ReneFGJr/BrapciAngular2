@@ -1,15 +1,59 @@
 <section aria-labelledby="crossings-title">
   <header><span class="eyebrow">Exploração dos dados</span><h2 id="crossings-title">Cruzamentos por nível da bolsa</h2><p>Compare o perfil dos bolsistas por gênero, região ou instituição.</p></header>
+  <div class="chart-tabs" role="tablist" aria-label="Visualização dos cruzamentos">
+    <button id="radar-tab" type="button" role="tab" aria-controls="radar-panel" [attr.aria-selected]="chartTab() === 'radar'" [class.active]="chartTab() === 'radar'" (click)="chartTab.set('radar')">RADAR</button>
+    <button id="heatmap-tab" type="button" role="tab" aria-controls="heatmap-panel" [attr.aria-selected]="chartTab() === 'heatmap'" [class.active]="chartTab() === 'heatmap'" (click)="chartTab.set('heatmap')">Gênero × Região × Bolsa</button>
+  </div>
   <div class="filters-panel">
     <div class="selectors">
-      <label>Dimensão<select class="form-select" [ngModel]="dimension()" (ngModelChange)="dimension.set($event)"><option value="genero">Gênero</option><option value="regiao">Região</option><option value="instituicao">Instituição</option></select></label>
+      @if (chartTab() === 'radar') {<label>Dimensão<select class="form-select" [ngModel]="dimension()" (ngModelChange)="dimension.set($event)"><option value="genero">Gênero</option><option value="regiao">Região</option><option value="instituicao">Instituição</option></select></label>}
       <label>Período de referência<select class="form-select" [ngModel]="period()" (ngModelChange)="setPeriod($event)"><option value="atual">Consulta atual — {{ currentYear }}</option>@for (year of periods(); track year) {<option [value]="year">{{ year }} — 31 de dezembro</option>}</select></label>
       <label>Classificação<select class="form-select" [ngModel]="scheme()" (ngModelChange)="setScheme($event)"><option value="todos">Todos os níveis originais</option><option value="atual">Atual — A, B e C</option><option value="antiga">Antiga — níveis 1 e 2</option><option value="outros">Outros / não informado</option></select></label>
-      <label>Apresentação<select class="form-select" [ngModel]="presentation()" (ngModelChange)="presentation.set($event)"><option value="absolutos">Números absolutos</option><option value="percentuais">Percentuais por categoria</option></select></label>
+      @if (chartTab() === 'radar') {<label>Apresentação<select class="form-select" [ngModel]="presentation()" (ngModelChange)="presentation.set($event)"><option value="absolutos">Números absolutos</option><option value="percentuais">Percentuais por categoria</option></select></label>}
     </div>
     <fieldset><legend>Níveis da bolsa</legend><div class="level-options">@for (level of levels(); track level) {<label><input type="checkbox" [checked]="visibleLevels().includes(level)" (change)="toggleLevel(level)" /><i [style.background]="color(level)"></i>{{ level }}</label>}<button type="button" (click)="selectedLevels.set(null)">Selecionar todos</button><button type="button" (click)="selectedLevels.set([])">Limpar seleção</button></div></fieldset>
     <details><summary>Como os níveis e o período são tratados</summary><p>Os níveis originais são preservados. A/B/C são exibidos somente quando registrados assim na base. Os níveis antigos não são convertidos: não foi confirmada uma correspondência completa para todos os códigos históricos disponíveis, incluindo 2A, 2B e 2C. Não há agrupamento entre classificações.</p><p><a [href]="source" target="_blank" rel="noopener noreferrer">Fonte oficial: critérios do CNPq para o CA-AC, 2024–2026</a>.</p><p>A consulta atual usa a lista de bolsistas ativos da API. Anos anteriores usam bolsas vigentes em 31 de dezembro, conforme início e fim registrados no histórico disponível. Cada pessoa é contada uma vez por período; em sobreposição, vale a bolsa com início mais recente. A identificação usa o nome normalizado. O histórico pode ser incompleto.</p><p>A região é obtida pelo vínculo institucional e pelo mapeamento disponível na base. Instituições não mapeadas permanecem identificadas como sem informação de região. Não são inferidos gêneros ausentes.</p></details>
   </div>
+  @if (chartTab() === 'heatmap') {
+    <div id="heatmap-panel" role="tabpanel" aria-labelledby="heatmap-tab">
+      <div class="selectors heatmap-filters">
+        <label>Gênero<select class="form-select" [ngModel]="genderFilter()" (ngModelChange)="genderFilter.set($event)"><option value="">Todos os gêneros</option>@for (gender of genders(); track gender) {<option [value]="gender">{{ gender }}</option>}</select></label>
+        <label>Região<select class="form-select" [ngModel]="regionFilter()" (ngModelChange)="regionFilter.set($event)"><option value="">Todas as regiões</option>@for (region of regionOptions(); track region) {<option [value]="region">{{ region }}</option>}</select></label>
+        <label>Visualização<select class="form-select" [ngModel]="heatmapPresentation()" (ngModelChange)="heatmapPresentation.set($event)"><option value="absolutos">Quantidade</option><option value="percentuais">Percentual do total filtrado</option></select></label>
+      </div>
+      <div class="result-summary" role="status" aria-live="polite"><strong>{{ heatmapTotal() }} bolsista(s)</strong><span>{{ heatmapGroups().length }} combinações de gênero, região e bolsa</span></div>
+      @if (heatmapTotal() === 0) {
+        <div class="empty" role="status">Nenhum bolsista encontrado para os filtros selecionados.</div>
+      } @else {
+        <article class="chart-panel" aria-labelledby="heatmap-title">
+          <h3 id="heatmap-title">Mapa de calor: gênero × região × nível da bolsa</h3>
+          <p class="scale">Compare os painéis por gênero: as linhas representam regiões e as colunas, níveis da bolsa. Quanto mais escura a célula, maior o valor. Todos os painéis usam a mesma escala e a mesma ordem de linhas e colunas.</p>
+          <p class="base-note">Base dos percentuais: {{ heatmapTotal() }} bolsista(s) no período, classificação e filtros selecionados, incluindo registros sem informação. Os percentuais de todas as células, somados entre os painéis, totalizam 100%, antes do arredondamento. Zero indica ausência de bolsistas nessa combinação.</p>
+          <div class="heatmap-legend" aria-label="Escala de cores compartilhada">
+            <span>{{ heatmapPresentation() === 'percentuais' ? '0%' : '0' }}</span><span class="heatmap-gradient" aria-hidden="true"></span><strong>{{ heatmapPresentation() === 'percentuais' ? formatPercentage(heatmapScaleMaximum()) : heatmapScaleMaximum() }}{{ heatmapPresentation() === 'absolutos' ? ' bolsista(s)' : '' }}</strong>
+          </div>
+          <div class="heatmap-panels">
+            @for (panel of heatmapPanels(); track panel.gender) {
+              <section class="heatmap-card" [attr.aria-label]="panel.gender">
+                <header class="heatmap-card-header"><h4>{{ panel.gender }}</h4><span>{{ panel.total }} bolsista(s)</span></header>
+                <div class="table-responsive"><table class="heatmap-table">
+                  <caption>{{ panel.gender }} — {{ heatmapPresentation() === 'percentuais' ? 'percentual do total filtrado' : 'quantidade de bolsistas' }}</caption>
+                  <thead><tr><th scope="col">Região / Bolsa</th>@for (level of visibleLevels(); track level) {<th scope="col">{{ level }}</th>}</tr></thead>
+                  <tbody>@for (row of panel.rows; track row.region) {
+                    <tr><th scope="row">{{ row.region }}</th>@for (cell of row.cells; track cell.level) {
+                      <td><span class="heatmap-cell" tabindex="0" [style.background-color]="heatmapColor(cell.count)" [style.color]="heatmapIntensity(cell.count) >= .65 ? '#fff' : '#17324d'" [attr.title]="cell.description" [attr.aria-label]="cell.description">{{ heatmapValue(cell) }}</span></td>
+                    }</tr>
+                  }</tbody>
+                </table></div>
+              </section>
+            }
+          </div>
+        </article>
+        <details class="data-table"><summary>Ver cruzamentos das três variáveis em tabela</summary><div class="table-responsive"><table class="table"><caption>Percentuais sobre {{ heatmapTotal() }} bolsista(s) após aplicar os filtros de gênero, região e bolsa.</caption><thead><tr><th scope="col">Gênero</th><th scope="col">Região</th><th scope="col">Bolsa</th><th scope="col">Bolsistas</th><th scope="col">Percentual</th></tr></thead><tbody>@for (group of heatmapGroups(); track $index) {<tr><th scope="row">{{ group.gender }}</th><td>{{ group.region }}</td><td>{{ group.level }}</td><td>{{ group.count }}</td><td>{{ formatPercentage(group.count / heatmapTotal() * 100) }}</td></tr>}</tbody></table></div></details>
+      }
+    </div>
+  } @else {
+  <div id="radar-panel" role="tabpanel" aria-labelledby="radar-tab">
   <div class="result-summary" role="status" aria-live="polite"><strong>{{ total() }} bolsista(s)</strong><span>{{ missingCount() }} com nível ou dimensão sem informação</span></div>
   <p class="base-note">Base dos percentuais: total de bolsistas de cada categoria no período e nos níveis selecionados, incluindo registros sem informação. Cada categoria soma 100%. Os filtros alteram essa base.</p>
   @if (period() !== 'atual' && invalidHistory() > 0) {<p class="base-note">{{ invalidHistory() }} registro(s) históricos com vigência ausente ou inválida não permitem determinar o período e foram excluídos da seleção histórica.</p>}
@@ -51,5 +95,7 @@
       <div class="radar-detail" role="status" aria-live="polite">{{ radarDetail() }}</div>
     </article>
     <details class="data-table"><summary>Ver quantidades e percentuais em tabela</summary><div class="table-responsive"><table class="table"><caption>Percentuais sobre o total de cada categoria nos níveis selecionados.</caption><thead><tr><th scope="col">Categoria</th><th scope="col">Nível original</th><th scope="col">Bolsistas</th><th scope="col">Percentual</th><th scope="col">Base</th></tr></thead><tbody>@for (row of rows(); track row.label) {@for (cell of row.cells; track cell.level) {<tr><th scope="row">{{ row.label }}</th><td>{{ cell.level }}</td><td>{{ cell.count }}</td><td>{{ formatPercentage(cell.percentage) }}</td><td>{{ row.total }}</td></tr>}}</tbody></table></div></details>
+  }
+  </div>
   }
 </section>
