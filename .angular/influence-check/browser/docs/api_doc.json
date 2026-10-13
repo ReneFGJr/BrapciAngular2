@@ -1,0 +1,80 @@
+{
+  "nome_grupo_api": "Small World",
+  "descricao": "Consulta o menor caminho de colaboração entre dois autores cadastrados na Brapci.",
+  "endpoint_api": {
+    "metodo": "GET",
+    "url": "https://cip.brapci.inf.br/api/tools/dijkstra",
+    "endpoint_relativo": "/tools/dijkstra",
+    "content_type_resposta": "application/json"
+  },
+  "precisa_apikey": false,
+  "apikey": {
+    "obrigatoria": false,
+    "descricao": "O endpoint não exige APIKEY para consulta pública."
+  },
+  "variaveis_api": [
+    {
+      "nome": "source",
+      "local": "query_string",
+      "tipo": "string",
+      "obrigatoria": true,
+      "descricao": "Nome completo do autor de origem, previamente selecionado no autocomplete de autores.",
+      "exemplo": "Rene Faustino Gabriel Junior"
+    },
+    {
+      "nome": "target",
+      "local": "query_string",
+      "tipo": "string",
+      "obrigatoria": true,
+      "descricao": "Nome completo do autor de destino, previamente selecionado no autocomplete de autores.",
+      "exemplo": "Rene Faustino Gabriel Junior"
+    }
+  ],
+  "exemplo_requisicao": "https://cip.brapci.inf.br/api/tools/dijkstra?source=Rene%20Faustino%20Gabriel%20Junior&target=Rene%20Faustino%20Gabriel%20Junior",
+  "resultado_api": {
+    "descricao": "Objeto JSON com o caminho encontrado, a distância entre os autores e os nomes de origem e destino.",
+    "exemplo": {
+      "path": [
+        {
+          "step": 1,
+          "node": "Rene Faustino Gabriel Junior"
+        }
+      ],
+      "distance": 0,
+      "origin": "Rene Faustino Gabriel Junior",
+      "target": "Rene Faustino Gabriel Junior"
+    }
+  },
+  "variaveis_retorno_api": [
+    {
+      "nome": "path",
+      "tipo": "array<object>",
+      "descricao": "Sequência ordenada dos autores que formam o caminho de colaboração."
+    },
+    {
+      "nome": "path[].step",
+      "tipo": "integer",
+      "descricao": "Posição do autor dentro do caminho retornado."
+    },
+    {
+      "nome": "path[].node",
+      "tipo": "string",
+      "descricao": "Nome do autor correspondente à etapa do caminho."
+    },
+    {
+      "nome": "distance",
+      "tipo": "integer",
+      "descricao": "Número de conexões entre o autor de origem e o autor de destino."
+    },
+    {
+      "nome": "origin",
+      "tipo": "string",
+      "descricao": "Nome do autor de origem reconhecido pela API."
+    },
+    {
+      "nome": "target",
+      "tipo": "string",
+      "descricao": "Nome do autor de destino reconhecido pela API."
+    }
+  ]
+}

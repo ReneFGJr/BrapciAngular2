@@ -228,6 +228,7 @@
     <!-- Citations Granted Tab Content -->
     @if (selectedTab() === 'citationsGranted') {
       <div class="citations-granted-tab-content mt-2">
+        <app-thinker-influence-timeline [authorId]="authorId" [authorName]="authorName" />
         @if (citationsLoading()) {
           <app-loading-spinner></app-loading-spinner>
         } @else if (citationsError()) {

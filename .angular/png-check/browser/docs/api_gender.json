@@ -1,0 +1,106 @@
+{
+  "nome_grupo_api": "Gênero — Genere::index",
+  "descricao": "Documentação de App\\Models\\Api\\Endpoint\\Genere::index($d1 = '', $d2 = '', $d3 = ''). A rota /api/gender é encaminhada pelo Api\\Index para essa classe: $d1 recebe gender, $d2 seleciona check_genere quando esse segmento está presente e $d3 não é usado. Os argumentos posicionais são definidos pelo roteamento, não são parâmetros query. As operações são públicas, sem APIKEY. A identificação por nome é uma estimativa baseada em frequências, não uma confirmação do gênero da pessoa. A operação check_genere lê hasGender em RDF2/rdf_literal, usa o nome como alternativa e não grava dados. O resumo /api/pq utiliza essa operação para bs_genero ausente e salva M/F/X na tabela bolsistas somente quando bs_genero é NULL. A atualização usa id_bs e bs_genero IS NULL. Valores vazios ou com espaços são preenchidos apenas na resposta; valores cadastrados são preservados.",
+  "endpoints": [
+    {
+      "nome": "Identificar gênero por RDF ou nome",
+      "metodo_servico": "App\\Models\\Api\\Endpoint\\Genere::index('gender', 'check_genere', '')",
+      "endpoint_api": {
+        "metodo": "GET",
+        "url": "https://cip.brapci.inf.br/api/gender/check_genere",
+        "endpoint_relativo": "/api/gender/check_genere",
+        "content_type_requisicao": null,
+        "content_type_resposta": "application/json"
+      },
+      "precisa_apikey": false,
+      "autenticacao": "Consulta pública, sem APIKEY.",
+      "variaveis_api": [
+        {
+          "nome": "rdf",
+          "local": "query_string",
+          "tipo": "integer positivo",
+          "obrigatoria": false,
+          "descricao": "ID RDF da pessoa. Pelo menos rdf positivo ou name não vazio deve ser informado. Consulta os valores hasGender antes de recorrer ao nome.",
+          "exemplo": "12345"
+        },
+        {
+          "nome": "name",
+          "local": "query_string",
+          "tipo": "string",
+          "obrigatoria": false,
+          "descricao": "Nome da pessoa, usado quando o RDF não identifica M/F. Se informado somente rdf e não houver gênero definido, retorna X.",
+          "exemplo": "Nome de exemplo"
+        }
+      ],
+      "exemplo_requisicao": "curl --get \"https://cip.brapci.inf.br/api/gender/check_genere\" --data-urlencode \"name=Nome de exemplo\"\n\ncurl \"https://cip.brapci.inf.br/api/gender/check_genere?rdf=12345\"\n\nfetch(\"https://cip.brapci.inf.br/api/gender/check_genere?name=\" + encodeURIComponent(\"Nome de exemplo\"))\n  .then(response => response.json())\n  .then(result => console.log(result.status, result.gender));",
+      "resultado_api": {
+        "descricao": "Objeto JSON com status lógico e código de gênero: M, F ou X (indefinido). RDF: maioria estrita de M/F em relação às demais categorias; empates ou falta de dados resultam em X e permitem o fallback por nome. A identificação por nome usa o classificador existente e seu limiar superior a 90%. Parâmetros inválidos ou ausência de nome e RDF positivo retornam HTTP 422 com {status:'422', message:'Informe name ou rdf válidos.'}. Exemplo ilustrativo.",
+        "exemplo": {
+          "status": "200",
+          "gender": "X"
+        }
+      },
+      "variaveis_retorno_api": [
+        {
+          "nome": "status",
+          "tipo": "string",
+          "descricao": "200 para consulta concluída; 422 para entrada inválida."
+        },
+        {
+          "nome": "gender",
+          "tipo": "string",
+          "descricao": "M: masculino; F: feminino; X: indefinido. Presente em consultas concluídas."
+        },
+        {
+          "nome": "message",
+          "tipo": "string (opcional)",
+          "descricao": "Descrição da validação em respostas de erro."
+        }
+      ]
+    },
+    {
+      "nome": "Identificar gênero pelo nome — /api/gender",
+      "endpoint_api": {
+        "metodo": "GET",
+        "url": "https://cip.brapci.inf.br/api/gender",
+        "endpoint_relativo": "/api/gender",
+        "content_type_requisicao": null,
+        "content_type_resposta": "text/plain (corpo legado; cabeçalho atual application/json)"
+      },
+      "precisa_apikey": false,
+      "autenticacao": "Consulta pública, sem APIKEY.",
+      "variaveis_api": [
+        {
+          "nome": "name",
+          "local": "query_string",
+          "tipo": "string",
+          "obrigatoria": false,
+          "descricao": "Nome a identificar. Sem nome, o backend usa NaN.",
+          "exemplo": "Nome de exemplo"
+        },
+        {
+          "nome": "debug",
+          "local": "query_string",
+          "tipo": "string",
+          "obrigatoria": false,
+          "descricao": "Somente no endpoint por nome: qualquer valor não vazio ativa saída de diagnóstico, podendo adicionar HTML ao corpo. Omitir nas integrações. Na operação check_genere, o diagnóstico está desativado.",
+          "exemplo": "1"
+        }
+      ],
+      "exemplo_requisicao": "curl --get \"https://cip.brapci.inf.br/api/gender\" --data-urlencode \"name=Nome de exemplo\"\n\nfetch(\"https://cip.brapci.inf.br/api/gender?name=\" + encodeURIComponent(\"Nome de exemplo\"))\n  .then(response => { if (!response.ok) throw new Error(`HTTP ${response.status}`); return response.text(); })\n  .then(gender => console.log(gender));",
+      "resultado_api": {
+        "descricao": "Retorna texto sem aspas JSON: masculino, feminino ou indefinido. Consumir com response.text(), e não response.json(). Este endpoint legado identifica pelo nome; a operação /check_genere combina RDF e nome. Exemplo ilustrativo.",
+        "exemplo": "indefinido"
+      },
+      "variaveis_retorno_api": [
+        {
+          "nome": "corpo",
+          "tipo": "string",
+          "descricao": "masculino, feminino ou indefinido."
+        }
+      ],
+      "metodo_servico": "App\\Models\\Api\\Endpoint\\Genere::index('gender', '', '') → getGenere(name)"
+    }
+  ],
+  "versao_documento": "1.1"
+}

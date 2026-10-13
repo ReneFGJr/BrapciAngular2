@@ -1,0 +1,184 @@
+{
+  "nome_grupo_api": "Curtidas",
+  "descricao": "Consulta e atualização da curtida de um registro por usuário: /api/like/{action}/{ID}.",
+  "versao_documento": "1.0",
+  "observacoes": [
+    "Ações válidas: getLike, liked e disliked. Os nomes diferenciam maiúsculas e minúsculas.",
+    "Envie user com o token/APIKEY recebido no login, não com o ID numérico ou e-mail do usuário.",
+    "Envie também id no corpo, com o mesmo valor de {ID}: a implementação atual lê o parâmetro id, e não o segmento da URL.",
+    "Os exemplos usam POST com application/x-www-form-urlencoded. Nunca use um token real na documentação.",
+    "O campo status da resposta é um código da aplicação; não representa necessariamente o status HTTP.",
+    "getLike retorna liked: 0 tanto para ausência de curtida quanto para um token sem usuário correspondente.",
+    "Repetir liked ou disliked mantém o estado desejado."
+  ],
+  "endpoints": [
+    {
+      "nome": "Consultar curtida",
+      "endpoint_api": {
+        "metodo": "POST",
+        "url": "https://cip.brapci.inf.br/api/like/getLike/{ID}",
+        "endpoint_relativo": "/api/like/getLike/{ID}",
+        "content_type_requisicao": "application/x-www-form-urlencoded",
+        "content_type_resposta": "JSON (o backend atual não define explicitamente Content-Type)"
+      },
+      "precisa_apikey": true,
+      "autenticacao": "Token/APIKEY do usuário no campo user do corpo da requisição.",
+      "variaveis_api": [
+        {
+          "nome": "ID",
+          "local": "path",
+          "tipo": "integer",
+          "obrigatoria": true,
+          "descricao": "Identificador do registro Brapci.",
+          "exemplo": 466086
+        },
+        {
+          "nome": "id",
+          "local": "body",
+          "tipo": "integer",
+          "obrigatoria": true,
+          "descricao": "Mesmo identificador informado na URL; obrigatório na implementação atual.",
+          "exemplo": 466086
+        },
+        {
+          "nome": "user",
+          "local": "body",
+          "tipo": "string",
+          "obrigatoria": true,
+          "descricao": "Token/APIKEY retornado pelo login.",
+          "exemplo": "SEU_TOKEN"
+        }
+      ],
+      "exemplo_requisicao": "curl -X POST 'https://cip.brapci.inf.br/api/like/getLike/466086' --data-urlencode 'id=466086' --data-urlencode 'user=SEU_TOKEN'",
+      "resultado_api": {
+        "descricao": "liked igual a 1 ou \"1\" indica curtida; 0 ou \"0\" indica coração vazado.",
+        "exemplo": {
+          "liked": 1
+        }
+      },
+      "variaveis_retorno_api": [
+        {
+          "nome": "liked",
+          "tipo": "number|string",
+          "descricao": "1: curtido; 0: não curtido ou usuário não encontrado."
+        }
+      ]
+    },
+    {
+      "nome": "Curtir registro",
+      "endpoint_api": {
+        "metodo": "POST",
+        "url": "https://cip.brapci.inf.br/api/like/liked/{ID}",
+        "endpoint_relativo": "/api/like/liked/{ID}",
+        "content_type_requisicao": "application/x-www-form-urlencoded",
+        "content_type_resposta": "JSON (o backend atual não define explicitamente Content-Type)"
+      },
+      "precisa_apikey": true,
+      "autenticacao": "Token/APIKEY do usuário no campo user do corpo da requisição.",
+      "variaveis_api": [
+        {
+          "nome": "ID",
+          "local": "path",
+          "tipo": "integer",
+          "obrigatoria": true,
+          "descricao": "Identificador do registro Brapci.",
+          "exemplo": 466086
+        },
+        {
+          "nome": "id",
+          "local": "body",
+          "tipo": "integer",
+          "obrigatoria": true,
+          "descricao": "Mesmo identificador informado na URL; obrigatório na implementação atual.",
+          "exemplo": 466086
+        },
+        {
+          "nome": "user",
+          "local": "body",
+          "tipo": "string",
+          "obrigatoria": true,
+          "descricao": "Token/APIKEY retornado pelo login.",
+          "exemplo": "SEU_TOKEN"
+        }
+      ],
+      "exemplo_requisicao": "curl -X POST 'https://cip.brapci.inf.br/api/like/liked/466086' --data-urlencode 'id=466086' --data-urlencode 'user=SEU_TOKEN'",
+      "resultado_api": {
+        "descricao": "Sucesso: status \"200\". Usuário inválido: {\"status\":\"500\",\"message\":\"Usuário inválido (apikey)\"}. Só altere o coração após confirmação de sucesso.",
+        "exemplo": {
+          "status": "200",
+          "message": "Success - Marked 466086"
+        }
+      },
+      "variaveis_retorno_api": [
+        {
+          "nome": "status",
+          "tipo": "string",
+          "descricao": "\"200\": sucesso; \"500\": usuário inválido."
+        },
+        {
+          "nome": "message",
+          "tipo": "string",
+          "descricao": "Descrição do resultado da operação."
+        }
+      ]
+    },
+    {
+      "nome": "Descurtir registro",
+      "endpoint_api": {
+        "metodo": "POST",
+        "url": "https://cip.brapci.inf.br/api/like/disliked/{ID}",
+        "endpoint_relativo": "/api/like/disliked/{ID}",
+        "content_type_requisicao": "application/x-www-form-urlencoded",
+        "content_type_resposta": "JSON (o backend atual não define explicitamente Content-Type)"
+      },
+      "precisa_apikey": true,
+      "autenticacao": "Token/APIKEY do usuário no campo user do corpo da requisição.",
+      "variaveis_api": [
+        {
+          "nome": "ID",
+          "local": "path",
+          "tipo": "integer",
+          "obrigatoria": true,
+          "descricao": "Identificador do registro Brapci.",
+          "exemplo": 466086
+        },
+        {
+          "nome": "id",
+          "local": "body",
+          "tipo": "integer",
+          "obrigatoria": true,
+          "descricao": "Mesmo identificador informado na URL; obrigatório na implementação atual.",
+          "exemplo": 466086
+        },
+        {
+          "nome": "user",
+          "local": "body",
+          "tipo": "string",
+          "obrigatoria": true,
+          "descricao": "Token/APIKEY retornado pelo login.",
+          "exemplo": "SEU_TOKEN"
+        }
+      ],
+      "exemplo_requisicao": "curl -X POST 'https://cip.brapci.inf.br/api/like/disliked/466086' --data-urlencode 'id=466086' --data-urlencode 'user=SEU_TOKEN'",
+      "resultado_api": {
+        "descricao": "Sucesso: status \"200\". Usuário inválido: {\"status\":\"500\",\"message\":\"Usuário inválido (apikey)\"}. Só altere o coração após confirmação de sucesso.",
+        "exemplo": {
+          "status": "200",
+          "message": "Success - Dismarked 466086"
+        }
+      },
+      "variaveis_retorno_api": [
+        {
+          "nome": "status",
+          "tipo": "string",
+          "descricao": "\"200\": sucesso; \"500\": usuário inválido."
+        },
+        {
+          "nome": "message",
+          "tipo": "string",
+          "descricao": "Descrição do resultado da operação."
+        }
+      ]
+    }
+  ]
+}

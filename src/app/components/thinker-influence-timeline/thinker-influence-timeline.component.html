@@ -1,0 +1,57 @@
+<section class="influence-timeline mt-4" aria-labelledby="influence-timeline-title">
+  <div class="timeline-heading">
+    <h3 id="influence-timeline-title">Influências dos pensadores ao longo dos anos</h3>
+    @if (!loading() && !error() && years().length) {
+      <button type="button" class="btn btn-outline-primary btn-sm" [disabled]="exporting()" (click)="exportPng()">
+        <i class="bi bi-download" aria-hidden="true"></i> {{ exporting() ? 'Exportando...' : 'Exportar PNG' }}
+      </button>
+    }
+  </div>
+  <p class="timeline-author">Autor: <strong>{{ authorName || '#' + authorId }}</strong></p>
+  @if (exportError()) {
+    <p class="text-danger" role="alert">Não foi possível exportar o gráfico. Tente novamente.</p>
+  }
+  <p class="timeline-description">Cada ponto indica citações a um pensador nas publicações do autor naquele ano. Quanto maior a bolinha, mais citações no ano. As linhas estão ordenadas pelos mais citados.</p>
+  @if (loading()) {
+    <app-loading-spinner />
+  } @else if (error()) {
+    <div class="alert alert-warning" role="alert">
+      Não foi possível carregar a timeline.
+      <button class="btn btn-outline-primary btn-sm ms-2" type="button" (click)="load()">Tentar novamente</button>
+    </div>
+  } @else if (!years().length) {
+    <p>Não há citações com ano de publicação disponível.</p>
+  } @else {
+    <div class="timeline-scroll" tabindex="0" role="region" aria-label="Timeline de citações por ano">
+      <div class="timeline-chart" [style.min-width.px]="220 + years().length * 22">
+        <div class="timeline-row timeline-axis">
+          <span>Pensador · citações</span>
+          <div class="timeline-track">
+            @for (year of years(); track year) {
+              <span class="year-label" [style.left.%]="position(year)">{{ year }}</span>
+            }
+          </div>
+        </div>
+        @for (thinker of thinkers(); track thinker.id) {
+          <div class="timeline-row">
+            <a class="thinker-label" [routerLink]="['/pensadores', thinker.id]">{{ thinker.nome }} <span class="badge rounded-pill text-bg-secondary">{{ thinker.total }}</span></a>
+            <div class="timeline-track">
+              @for (year of years(); track year) {
+                <span class="year-guide" [style.left.%]="position(year)" aria-hidden="true"></span>
+              }
+              <div class="timeline-bar" aria-hidden="true"></div>
+              @for (point of thinker.years; track point.year) {
+                <button type="button" class="timeline-dot" [style.left.%]="position(point.year)" [style.width.px]="dotSize(point.total)" [style.height.px]="dotSize(point.total)" [attr.aria-label]="thinker.nome + ', ' + point.year + ': ' + point.total + ' citações'">
+                  <span class="dot-details">{{ point.year }} · {{ point.total }} citações</span>
+                </button>
+              }
+            </div>
+          </div>
+        }
+      </div>
+    </div>
+  }
+  @if (!loading() && !error() && unknownYears()) {
+    <p class="timeline-description mt-2">{{ unknownYears() }} citações sem ano de publicação não aparecem nos marcadores.</p>
+  }
+</section>

@@ -1,0 +1,21 @@
+:host { display: block; }
+h3 { font-size: 1.2rem; }
+.timeline-heading { display: flex; flex-wrap: wrap; justify-content: space-between; align-items: center; gap: 0.75rem; margin-bottom: 0.5rem; }
+.timeline-heading h3 { margin: 0; }
+.timeline-author { margin: 0 0 0.5rem; font-size: 0.95rem; }
+.timeline-description { font-size: 0.9rem; color: inherit; opacity: 0.8; }
+.timeline-scroll { overflow-x: auto; padding: 0.75rem 1rem; border: 1px solid var(--theme-sand, #ddd); border-radius: 0.75rem; }
+.timeline-row { display: grid; grid-template-columns: 180px minmax(0, 1fr); gap: 0.75rem; align-items: center; min-height: 36px; border-bottom: 1px solid rgb(127 127 127 / 15%); }
+.timeline-row:last-child { border-bottom: 0; }
+.timeline-axis { min-height: 62px; font-size: 0.75rem; font-weight: 700; }
+.timeline-axis .timeline-track { height: 62px; }
+.timeline-track { position: relative; height: 34px; margin-inline: 20px; }
+.timeline-bar { position: absolute; inset: 16px 0 auto; height: 2px; background: #93b6ae; }
+.year-guide { position: absolute; top: -12px; bottom: -12px; width: 0; border-left: 0.5px solid rgb(127 127 127 / 25%); pointer-events: none; }
+.year-label { position: absolute; top: 26px; transform: translateX(-50%) rotate(-60deg); white-space: nowrap; }
+.thinker-label { color: inherit; font-size: 0.85rem; font-weight: 600; text-decoration: none; }
+.thinker-label:hover { text-decoration: underline; }
+.timeline-dot { position: absolute; top: 17px; width: 14px; height: 14px; padding: 0; border: 2px solid #fff; border-radius: 50%; background: #236c64; box-shadow: 0 0 0 1px #236c64; transform: translate(-50%, -50%); }
+.timeline-dot:focus-visible { outline: 3px solid #d6a52a; outline-offset: 3px; }
+.dot-details { display: none; position: absolute; bottom: 20px; left: 50%; transform: translateX(-50%); z-index: 2; padding: 0.35rem 0.5rem; border-radius: 0.3rem; background: #17252a; color: #fff; white-space: nowrap; font-size: 0.75rem; }
+.timeline-dot:hover .dot-details, .timeline-dot:focus .dot-details { display: block; }

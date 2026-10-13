@@ -4,6 +4,7 @@ import { RouterLink } from '@angular/router';
 import { Subscription, forkJoin } from 'rxjs';
 import { BrapciApiService } from '../../core/services/brapci-api.service';
 import { LoadingSpinnerComponent } from '../loading-spinner/loading-spinner.component';
+import { ThinkerInfluenceTimelineComponent } from '../thinker-influence-timeline/thinker-influence-timeline.component';
 import { TranslateModule } from '@ngx-translate/core';
 import { CoauthorsListComponent } from '../coauthors-list/coauthors-list.component';
 import { NetworkGraph3dComponent } from '../network-graph-3d/network-graph-3d.component';
@@ -67,7 +68,7 @@ export type AuthorContentTab = {
 
 @Component({
   selector: 'app-author-works',
-  imports: [CommonModule, TranslateModule, RouterLink, LoadingSpinnerComponent, CoauthorsListComponent, NetworkGraph3dComponent, RedeCircleComponent, AuthorClustersSankeyComponent, AuthorClustersOverviewComponent],
+  imports: [CommonModule, TranslateModule, RouterLink, LoadingSpinnerComponent, ThinkerInfluenceTimelineComponent, CoauthorsListComponent, NetworkGraph3dComponent, RedeCircleComponent, AuthorClustersSankeyComponent, AuthorClustersOverviewComponent],
   templateUrl: './author-works.component.html',
   styleUrl: './author-works.component.scss'
 })
@@ -77,6 +78,7 @@ export class AuthorWorksComponent implements OnChanges, OnDestroy {
   private citationsRequest?: Subscription;
   private citationsLoaded = false;
   @Input() authorId = '';
+  @Input() authorName = '';
   readonly citedThinkers = signal<CitedThinker[]>([]);
   readonly citationsLoading = signal(false);
   readonly citationsError = signal(false);

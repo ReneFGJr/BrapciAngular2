@@ -1,0 +1,1099 @@
+{
+  "nome_grupo_api": "Brapci",
+  "descricao": "Documentação de /api/brapci organizada por subgrupos. Baseada no despachante Brapci3.1; ações delegadas indicam limites do contrato. Códigos status no JSON não equivalem necessariamente ao status HTTP.",
+  "endpoints": [
+    {
+      "subgrupo": "Busca e recuperação",
+      "nome": "Buscar registros",
+      "endpoint_api": {
+        "metodo": "GET",
+        "url": "https://cip.brapci.inf.br/api/brapci/search/{version}",
+        "endpoint_relativo": "/api/brapci/search/{version}",
+        "content_type_requisicao": null,
+        "content_type_resposta": "application/json (ver ressalvas na descrição)"
+      },
+      "precisa_apikey": false,
+      "autenticacao": "O despachante inspecionado não valida APIKEY nesta ação; controles adicionais podem existir no módulo delegado.",
+      "variaveis_api": [
+        {
+          "nome": "version",
+          "local": "path",
+          "tipo": "string",
+          "obrigatoria": true,
+          "descricao": "Parâmetro version; consulte as regras da operação."
+        },
+        {
+          "nome": "q",
+          "local": "query_string",
+          "tipo": "string",
+          "obrigatoria": false,
+          "descricao": "Termo de busca (ou IDs, na cesta)."
+        },
+        {
+          "nome": "term",
+          "local": "query_string",
+          "tipo": "string",
+          "obrigatoria": false,
+          "descricao": "Alternativa a q para busca."
+        }
+      ],
+      "resultado_api": {
+        "descricao": "Versões: a1, v3, v4 e v5. q tem precedência sobre term. Sem termo retorna []. O formato depende da versão. Exemplo ilustrativo baseado no código local; não representa dados de produção.",
+        "exemplo": []
+      },
+      "variaveis_retorno_api": []
+    },
+    {
+      "subgrupo": "Busca e recuperação",
+      "nome": "Consultar registro",
+      "endpoint_api": {
+        "metodo": "GET",
+        "url": "https://cip.brapci.inf.br/api/brapci/get/{version}/{ID}",
+        "endpoint_relativo": "/api/brapci/get/{version}/{ID}",
+        "content_type_requisicao": null,
+        "content_type_resposta": "application/json (ver ressalvas na descrição)"
+      },
+      "precisa_apikey": false,
+      "autenticacao": "O despachante inspecionado não valida APIKEY nesta ação; controles adicionais podem existir no módulo delegado.",
+      "variaveis_api": [
+        {
+          "nome": "version",
+          "local": "path",
+          "tipo": "string",
+          "obrigatoria": true,
+          "descricao": "Parâmetro version; consulte as regras da operação."
+        },
+        {
+          "nome": "ID",
+          "local": "path",
+          "tipo": "string",
+          "obrigatoria": true,
+          "descricao": "Parâmetro ID; consulte as regras da operação."
+        }
+      ],
+      "resultado_api": {
+        "descricao": "v1 e v2 usam os mesmos metadados. Retorna diretamente os metadados, Class, Views, Download, Likes e cited. Registra visualização; pode importar metadados ausentes. Exemplo ilustrativo baseado no código local; não representa dados de produção.",
+        "exemplo": {
+          "Class": "Article",
+          "cited": {
+            "abnt": "Referência ilustrativa",
+            "apa": "Referência ilustrativa",
+            "vancouver": "Referência ilustrativa"
+          }
+        }
+      },
+      "variaveis_retorno_api": []
+    },
+    {
+      "subgrupo": "Busca e recuperação",
+      "nome": "Recuperar referências selecionadas",
+      "endpoint_api": {
+        "metodo": "GET",
+        "url": "https://cip.brapci.inf.br/api/brapci/basket",
+        "endpoint_relativo": "/api/brapci/basket",
+        "content_type_requisicao": null,
+        "content_type_resposta": "application/json (ver ressalvas na descrição)"
+      },
+      "precisa_apikey": false,
+      "autenticacao": "O despachante inspecionado não valida APIKEY nesta ação; controles adicionais podem existir no módulo delegado.",
+      "variaveis_api": [
+        {
+          "nome": "row",
+          "local": "query_string",
+          "tipo": "string",
+          "obrigatoria": false,
+          "descricao": "IDs separados por vírgula."
+        },
+        {
+          "nome": "q",
+          "local": "query_string",
+          "tipo": "string",
+          "obrigatoria": false,
+          "descricao": "Termo de busca (ou IDs, na cesta)."
+        }
+      ],
+      "resultado_api": {
+        "descricao": "Concatena row e q e separa IDs por vírgula; prefira enviar somente row. Retorna row e ABNT. Exemplo ilustrativo baseado no código local; não representa dados de produção.",
+        "exemplo": {
+          "row": "227414,466086",
+          "ABNT": []
+        }
+      },
+      "variaveis_retorno_api": []
+    },
+    {
+      "subgrupo": "Busca e recuperação",
+      "nome": "Exportar seleção",
+      "endpoint_api": {
+        "metodo": "GET",
+        "url": "https://cip.brapci.inf.br/api/brapci/export/{format}",
+        "endpoint_relativo": "/api/brapci/export/{format}",
+        "content_type_requisicao": null,
+        "content_type_resposta": "application/json (ver ressalvas na descrição)"
+      },
+      "precisa_apikey": false,
+      "autenticacao": "O despachante inspecionado não valida APIKEY nesta ação; controles adicionais podem existir no módulo delegado.",
+      "variaveis_api": [
+        {
+          "nome": "format",
+          "local": "path",
+          "tipo": "string",
+          "obrigatoria": true,
+          "descricao": "Parâmetro format; consulte as regras da operação."
+        }
+      ],
+      "resultado_api": {
+        "descricao": "Delega a ElasticSearch/Index::export. Formatos, parâmetros adicionais e conteúdo dependem do exportador; não há contrato JSON uniforme. Exemplo não disponível: contrato delegado, sem resposta verificada.",
+        "exemplo": null
+      },
+      "variaveis_retorno_api": []
+    },
+    {
+      "subgrupo": "Busca e recuperação",
+      "nome": "Obter texto completo",
+      "endpoint_api": {
+        "metodo": "GET",
+        "url": "https://cip.brapci.inf.br/api/brapci/getText/{ID}",
+        "endpoint_relativo": "/api/brapci/getText/{ID}",
+        "content_type_requisicao": null,
+        "content_type_resposta": "application/json (ver ressalvas na descrição)"
+      },
+      "precisa_apikey": false,
+      "autenticacao": "O despachante inspecionado não valida APIKEY nesta ação; controles adicionais podem existir no módulo delegado.",
+      "variaveis_api": [
+        {
+          "nome": "ID",
+          "local": "path",
+          "tipo": "string",
+          "obrigatoria": true,
+          "descricao": "Parâmetro ID; consulte as regras da operação."
+        }
+      ],
+      "resultado_api": {
+        "descricao": "Delega a Base/Download::getText; formato definido pelo módulo de texto. Exemplo não disponível: contrato delegado, sem resposta verificada.",
+        "exemplo": null
+      },
+      "variaveis_retorno_api": []
+    },
+    {
+      "subgrupo": "Fontes, fascículos e livros",
+      "nome": "Listar fontes",
+      "endpoint_api": {
+        "metodo": "GET",
+        "url": "https://cip.brapci.inf.br/api/brapci/source/{type}",
+        "endpoint_relativo": "/api/brapci/source/{type}",
+        "content_type_requisicao": null,
+        "content_type_resposta": "application/json (ver ressalvas na descrição)"
+      },
+      "precisa_apikey": false,
+      "autenticacao": "O despachante inspecionado não valida APIKEY nesta ação; controles adicionais podem existir no módulo delegado.",
+      "variaveis_api": [
+        {
+          "nome": "type",
+          "local": "path",
+          "tipo": "string",
+          "obrigatoria": true,
+          "descricao": "Parâmetro type; consulte as regras da operação."
+        }
+      ],
+      "resultado_api": {
+        "descricao": "Tipos: journal (aliases J e R), proceddings (grafia legada; alias E). Sem tipo específico lista todas. Retorna array com dados das fontes e capa. Exemplo ilustrativo baseado no código local; não representa dados de produção.",
+        "exemplo": []
+      },
+      "variaveis_retorno_api": []
+    },
+    {
+      "subgrupo": "Fontes, fascículos e livros",
+      "nome": "Consultar fascículo",
+      "endpoint_api": {
+        "metodo": "GET",
+        "url": "https://cip.brapci.inf.br/api/brapci/issue/{ID}",
+        "endpoint_relativo": "/api/brapci/issue/{ID}",
+        "content_type_requisicao": null,
+        "content_type_resposta": "application/json (ver ressalvas na descrição)"
+      },
+      "precisa_apikey": false,
+      "autenticacao": "O despachante inspecionado não valida APIKEY nesta ação; controles adicionais podem existir no módulo delegado.",
+      "variaveis_api": [
+        {
+          "nome": "ID",
+          "local": "path",
+          "tipo": "string",
+          "obrigatoria": true,
+          "descricao": "Parâmetro ID; consulte as regras da operação."
+        }
+      ],
+      "resultado_api": {
+        "descricao": "Alias de issueV2. Retorna dados do fascículo e suas seções. Se inexistente, a implementação pode responder texto/HTML em vez de JSON. Exemplo não disponível: contrato delegado, sem resposta verificada.",
+        "exemplo": null
+      },
+      "variaveis_retorno_api": []
+    },
+    {
+      "subgrupo": "Fontes, fascículos e livros",
+      "nome": "Consultar fascículo detalhado",
+      "endpoint_api": {
+        "metodo": "GET",
+        "url": "https://cip.brapci.inf.br/api/brapci/issueV2/{ID}",
+        "endpoint_relativo": "/api/brapci/issueV2/{ID}",
+        "content_type_requisicao": null,
+        "content_type_resposta": "application/json (ver ressalvas na descrição)"
+      },
+      "precisa_apikey": false,
+      "autenticacao": "O despachante inspecionado não valida APIKEY nesta ação; controles adicionais podem existir no módulo delegado.",
+      "variaveis_api": [
+        {
+          "nome": "ID",
+          "local": "path",
+          "tipo": "string",
+          "obrigatoria": true,
+          "descricao": "Parâmetro ID; consulte as regras da operação."
+        }
+      ],
+      "resultado_api": {
+        "descricao": "Retorna ID, source, nr, vol, legend, year e dados de trabalhos/autores. Exemplo ilustrativo baseado no código local; não representa dados de produção.",
+        "exemplo": {
+          "ID": 123,
+          "source": {
+            "name": "Periódico ilustrativo"
+          },
+          "year": 2026
+        }
+      },
+      "variaveis_retorno_api": []
+    },
+    {
+      "subgrupo": "Fontes, fascículos e livros",
+      "nome": "Linha do tempo de fontes",
+      "endpoint_api": {
+        "metodo": "GET",
+        "url": "https://cip.brapci.inf.br/api/brapci/timeline/{type}",
+        "endpoint_relativo": "/api/brapci/timeline/{type}",
+        "content_type_requisicao": null,
+        "content_type_resposta": "application/json (ver ressalvas na descrição)"
+      },
+      "precisa_apikey": false,
+      "autenticacao": "O despachante inspecionado não valida APIKEY nesta ação; controles adicionais podem existir no módulo delegado.",
+      "variaveis_api": [
+        {
+          "nome": "type",
+          "local": "path",
+          "tipo": "string",
+          "obrigatoria": true,
+          "descricao": "Parâmetro type; consulte as regras da operação."
+        }
+      ],
+      "resultado_api": {
+        "descricao": "Delega a Base/Sources::timeline; argumento repassado ao módulo. Exemplo não disponível: contrato delegado, sem resposta verificada.",
+        "exemplo": null
+      },
+      "variaveis_retorno_api": []
+    },
+    {
+      "subgrupo": "Fontes, fascículos e livros",
+      "nome": "Avaliações de periódicos",
+      "endpoint_api": {
+        "metodo": "GET",
+        "url": "https://cip.brapci.inf.br/api/brapci/avaliations",
+        "endpoint_relativo": "/api/brapci/avaliations",
+        "content_type_requisicao": null,
+        "content_type_resposta": "application/json (ver ressalvas na descrição)"
+      },
+      "precisa_apikey": false,
+      "autenticacao": "O despachante inspecionado não valida APIKEY nesta ação; controles adicionais podem existir no módulo delegado.",
+      "variaveis_api": [],
+      "resultado_api": {
+        "descricao": "Retorna data agrupado por fonte de avaliação e área. A mensagem ainda indica endpoint em construção. Exemplo ilustrativo baseado no código local; não representa dados de produção.",
+        "exemplo": {
+          "status": "200",
+          "message": "Avaliations endpoint is under construction",
+          "data": {}
+        }
+      },
+      "variaveis_retorno_api": []
+    },
+    {
+      "subgrupo": "Fontes, fascículos e livros",
+      "nome": "Vitrine de livros",
+      "endpoint_api": {
+        "metodo": "GET",
+        "url": "https://cip.brapci.inf.br/api/brapci/book",
+        "endpoint_relativo": "/api/brapci/book",
+        "content_type_requisicao": null,
+        "content_type_resposta": "application/json (ver ressalvas na descrição)"
+      },
+      "precisa_apikey": false,
+      "autenticacao": "O despachante inspecionado não valida APIKEY nesta ação; controles adicionais podem existir no módulo delegado.",
+      "variaveis_api": [
+        {
+          "nome": "row",
+          "local": "query_string",
+          "tipo": "string",
+          "obrigatoria": false,
+          "descricao": "IDs separados por vírgula."
+        },
+        {
+          "nome": "q",
+          "local": "query_string",
+          "tipo": "string",
+          "obrigatoria": false,
+          "descricao": "Termo de busca (ou IDs, na cesta)."
+        }
+      ],
+      "resultado_api": {
+        "descricao": "Sem subação chama Book::vitrine com row concatenado a q. Subações /book/{action}/{ID} são delegadas a Book::index. Exemplo não disponível: contrato delegado, sem resposta verificada.",
+        "exemplo": null
+      },
+      "variaveis_retorno_api": []
+    },
+    {
+      "subgrupo": "Citações e palavras-chave",
+      "nome": "Buscar citações",
+      "endpoint_api": {
+        "metodo": "GET",
+        "url": "https://cip.brapci.inf.br/api/brapci/cited-search",
+        "endpoint_relativo": "/api/brapci/cited-search",
+        "content_type_requisicao": null,
+        "content_type_resposta": "application/json (ver ressalvas na descrição)"
+      },
+      "precisa_apikey": false,
+      "autenticacao": "O despachante inspecionado não valida APIKEY nesta ação; controles adicionais podem existir no módulo delegado.",
+      "variaveis_api": [
+        {
+          "nome": "q",
+          "local": "query_string",
+          "tipo": "string",
+          "obrigatoria": true,
+          "descricao": "Termo de busca (ou IDs, na cesta)."
+        }
+      ],
+      "resultado_api": {
+        "descricao": "q é obrigatório. Retorna status, status_message e works. Exemplo ilustrativo baseado no código local; não representa dados de produção.",
+        "exemplo": {
+          "status": "200",
+          "status_message": "Busca realizada com sucesso",
+          "works": []
+        }
+      },
+      "variaveis_retorno_api": []
+    },
+    {
+      "subgrupo": "Citações e palavras-chave",
+      "nome": "Associar citação",
+      "endpoint_api": {
+        "metodo": "POST",
+        "url": "https://cip.brapci.inf.br/api/brapci/cited",
+        "endpoint_relativo": "/api/brapci/cited",
+        "content_type_requisicao": "application/x-www-form-urlencoded",
+        "content_type_resposta": "application/json (ver ressalvas na descrição)"
+      },
+      "precisa_apikey": true,
+      "autenticacao": "Obrigatório enviar userAPIKEY com o token ativo do usuário. A validação ocorre antes da associação.",
+      "variaveis_api": [
+        {
+          "nome": "idz",
+          "local": "body",
+          "tipo": "string",
+          "obrigatoria": true,
+          "descricao": "Parâmetro idz; consulte as regras da operação."
+        },
+        {
+          "nome": "ida",
+          "local": "body",
+          "tipo": "string",
+          "obrigatoria": true,
+          "descricao": "Parâmetro ida; consulte as regras da operação."
+        },
+        {
+          "nome": "userAPIKEY",
+          "local": "body",
+          "tipo": "string",
+          "obrigatoria": true,
+          "descricao": "APIKEY ativa retornada pelo login. Não enviar e-mail ou ID do usuário.",
+          "exemplo": "SEU_TOKEN"
+        }
+      ],
+      "resultado_api": {
+        "descricao": "Associa idz e ida via joinCited somente após validar userAPIKEY. Chave ausente, desconhecida ou inativa retorna HTTP 401, sem modificar citações. A resposta de sucesso continua sendo a do módulo de citações. Exemplo abaixo: falha de autenticação.",
+        "exemplo": {
+          "status": "401",
+          "message": "userAPIKEY ausente, invalida ou inativa"
+        }
+      },
+      "variaveis_retorno_api": [],
+      "exemplo_requisicao": "curl -X POST 'https://cip.brapci.inf.br/api/brapci/cited' --data-urlencode 'idz=ID_CITACAO' --data-urlencode 'ida=ID_TRABALHO' --data-urlencode 'userAPIKEY=SEU_TOKEN'"
+    },
+    {
+      "subgrupo": "Citações e palavras-chave",
+      "nome": "Bloquear citações",
+      "endpoint_api": {
+        "metodo": "POST",
+        "url": "https://cip.brapci.inf.br/api/brapci/citedLock",
+        "endpoint_relativo": "/api/brapci/citedLock",
+        "content_type_requisicao": "application/x-www-form-urlencoded",
+        "content_type_resposta": "application/json (ver ressalvas na descrição)"
+      },
+      "precisa_apikey": true,
+      "autenticacao": "userAPIKEY ativa obrigatória; validada antes de qualquer alteração.",
+      "variaveis_api": [
+        {
+          "nome": "idz",
+          "local": "body",
+          "tipo": "string",
+          "obrigatoria": true,
+          "descricao": "Parâmetro idz; consulte as regras da operação."
+        },
+        {
+          "nome": "userAPIKEY",
+          "local": "body",
+          "tipo": "string",
+          "obrigatoria": true,
+          "descricao": "Token ativo do usuário retornado pelo login.",
+          "exemplo": "SEU_TOKEN"
+        }
+      ],
+      "resultado_api": {
+        "descricao": "Operação de escrita: define ca_blocked=1 para ca_rdf igual a idz. Exemplo ilustrativo baseado no código local; não representa dados de produção. Chave ausente, inválida ou inativa retorna HTTP 401 com status \"401\" e message \"userAPIKEY ausente, invalida ou inativa\", sem modificar dados.",
+        "exemplo": {
+          "status": "200",
+          "message": "Citações bloqueadas com sucesso"
+        }
+      },
+      "variaveis_retorno_api": [],
+      "exemplo_requisicao": "curl -X POST 'https://cip.brapci.inf.br/api/brapci/citedLock' --data-urlencode 'idz=ID_ALVO' --data-urlencode 'userAPIKEY=SEU_TOKEN'"
+    },
+    {
+      "subgrupo": "Citações e palavras-chave",
+      "nome": "Desbloquear citações",
+      "endpoint_api": {
+        "metodo": "POST",
+        "url": "https://cip.brapci.inf.br/api/brapci/citedUnLock",
+        "endpoint_relativo": "/api/brapci/citedUnLock",
+        "content_type_requisicao": "application/x-www-form-urlencoded",
+        "content_type_resposta": "application/json (ver ressalvas na descrição)"
+      },
+      "precisa_apikey": true,
+      "autenticacao": "userAPIKEY ativa obrigatória; validada antes de qualquer alteração.",
+      "variaveis_api": [
+        {
+          "nome": "idz",
+          "local": "body",
+          "tipo": "string",
+          "obrigatoria": true,
+          "descricao": "Parâmetro idz; consulte as regras da operação."
+        },
+        {
+          "nome": "userAPIKEY",
+          "local": "body",
+          "tipo": "string",
+          "obrigatoria": true,
+          "descricao": "Token ativo do usuário retornado pelo login.",
+          "exemplo": "SEU_TOKEN"
+        }
+      ],
+      "resultado_api": {
+        "descricao": "Operação de escrita: define ca_blocked=0 para ca_rdf igual a idz. Exemplo ilustrativo baseado no código local; não representa dados de produção. Chave ausente, inválida ou inativa retorna HTTP 401 com status \"401\" e message \"userAPIKEY ausente, invalida ou inativa\", sem modificar dados.",
+        "exemplo": {
+          "status": "200",
+          "message": "Citações desbloqueadas com sucesso"
+        }
+      },
+      "variaveis_retorno_api": [],
+      "exemplo_requisicao": "curl -X POST 'https://cip.brapci.inf.br/api/brapci/citedUnLock' --data-urlencode 'idz=ID_ALVO' --data-urlencode 'userAPIKEY=SEU_TOKEN'"
+    },
+    {
+      "subgrupo": "Citações e palavras-chave",
+      "nome": "Excluir referência",
+      "endpoint_api": {
+        "metodo": "POST",
+        "url": "https://cip.brapci.inf.br/api/brapci/citedDelete",
+        "endpoint_relativo": "/api/brapci/citedDelete",
+        "content_type_requisicao": "application/x-www-form-urlencoded",
+        "content_type_resposta": "application/json (ver ressalvas na descrição)"
+      },
+      "precisa_apikey": true,
+      "autenticacao": "userAPIKEY ativa obrigatória; validada antes de qualquer alteração.",
+      "variaveis_api": [
+        {
+          "nome": "idz",
+          "local": "body",
+          "tipo": "string",
+          "obrigatoria": true,
+          "descricao": "Parâmetro idz; consulte as regras da operação."
+        },
+        {
+          "nome": "userAPIKEY",
+          "local": "body",
+          "tipo": "string",
+          "obrigatoria": true,
+          "descricao": "Token ativo do usuário retornado pelo login.",
+          "exemplo": "SEU_TOKEN"
+        }
+      ],
+      "resultado_api": {
+        "descricao": "Operação destrutiva: idz é o ID da citação (caId), não o ID RDF do registro. ID inválido retorna status 400. Exemplo ilustrativo baseado no código local; não representa dados de produção. Chave ausente, inválida ou inativa retorna HTTP 401 com status \"401\" e message \"userAPIKEY ausente, invalida ou inativa\", sem modificar dados.",
+        "exemplo": {
+          "status": "200",
+          "message": "Referência deletada com sucesso"
+        }
+      },
+      "variaveis_retorno_api": [],
+      "exemplo_requisicao": "curl -X POST 'https://cip.brapci.inf.br/api/brapci/citedDelete' --data-urlencode 'idz=ID_ALVO' --data-urlencode 'userAPIKEY=SEU_TOKEN'"
+    },
+    {
+      "subgrupo": "Citações e palavras-chave",
+      "nome": "Consultar palavras-chave",
+      "endpoint_api": {
+        "metodo": "GET",
+        "url": "https://cip.brapci.inf.br/api/brapci/keyword/get",
+        "endpoint_relativo": "/api/brapci/keyword/get",
+        "content_type_requisicao": null,
+        "content_type_resposta": "application/json (ver ressalvas na descrição)"
+      },
+      "precisa_apikey": false,
+      "autenticacao": "O despachante inspecionado não valida APIKEY nesta ação; controles adicionais podem existir no módulo delegado.",
+      "variaveis_api": [
+        {
+          "nome": "idz",
+          "local": "query_string",
+          "tipo": "string",
+          "obrigatoria": true,
+          "descricao": "Parâmetro idz; consulte as regras da operação."
+        }
+      ],
+      "resultado_api": {
+        "descricao": "Alias keywords/get. Exige idz; a ausência resulta em status 500. Exemplo não disponível: contrato delegado, sem resposta verificada.",
+        "exemplo": null
+      },
+      "variaveis_retorno_api": []
+    },
+    {
+      "subgrupo": "Citações e palavras-chave",
+      "nome": "Corrigir palavra-chave",
+      "endpoint_api": {
+        "metodo": "POST",
+        "url": "https://cip.brapci.inf.br/api/brapci/keyword/fix",
+        "endpoint_relativo": "/api/brapci/keyword/fix",
+        "content_type_requisicao": "application/x-www-form-urlencoded",
+        "content_type_resposta": "application/json (ver ressalvas na descrição)"
+      },
+      "precisa_apikey": true,
+      "autenticacao": "APIKEY no parâmetro apikey.",
+      "variaveis_api": [
+        {
+          "nome": "idz",
+          "local": "body",
+          "tipo": "string",
+          "obrigatoria": true,
+          "descricao": "Parâmetro idz; consulte as regras da operação."
+        },
+        {
+          "nome": "idfix",
+          "local": "body",
+          "tipo": "string",
+          "obrigatoria": true,
+          "descricao": "Parâmetro idfix; consulte as regras da operação."
+        },
+        {
+          "nome": "apikey",
+          "local": "body",
+          "tipo": "string",
+          "obrigatoria": true,
+          "descricao": "Token do usuário autenticado.",
+          "exemplo": "SEU_TOKEN"
+        }
+      ],
+      "resultado_api": {
+        "descricao": "Alias keywords/fix. Operação de escrita com idz, idfix e apikey; delegada ao módulo keywords. Exemplo não disponível: contrato delegado, sem resposta verificada.",
+        "exemplo": null
+      },
+      "variaveis_retorno_api": []
+    },
+    {
+      "subgrupo": "Metadados e RDF",
+      "nome": "Consultar relação RDF",
+      "endpoint_api": {
+        "metodo": "GET",
+        "url": "https://cip.brapci.inf.br/api/brapci/data/{ID}",
+        "endpoint_relativo": "/api/brapci/data/{ID}",
+        "content_type_requisicao": null,
+        "content_type_resposta": "application/json (ver ressalvas na descrição)"
+      },
+      "precisa_apikey": false,
+      "autenticacao": "O despachante inspecionado não valida APIKEY nesta ação; controles adicionais podem existir no módulo delegado.",
+      "variaveis_api": [
+        {
+          "nome": "ID",
+          "local": "path",
+          "tipo": "string",
+          "obrigatoria": true,
+          "descricao": "Parâmetro ID; consulte as regras da operação."
+        }
+      ],
+      "resultado_api": {
+        "descricao": "ID identifica id_d. Retorna result com concept, resource e Property. Exemplo ilustrativo baseado no código local; não representa dados de produção.",
+        "exemplo": {
+          "status": "200",
+          "result": {
+            "concept": "Conceito ilustrativo",
+            "resource": "Literal ilustrativo",
+            "Property": "Propriedade"
+          }
+        }
+      },
+      "variaveis_retorno_api": []
+    },
+    {
+      "subgrupo": "Metadados e RDF",
+      "nome": "Consultar classe RDF",
+      "endpoint_api": {
+        "metodo": "GET",
+        "url": "https://cip.brapci.inf.br/api/brapci/rdf/get/{ID}",
+        "endpoint_relativo": "/api/brapci/rdf/get/{ID}",
+        "content_type_requisicao": null,
+        "content_type_resposta": "application/json (ver ressalvas na descrição)"
+      },
+      "precisa_apikey": false,
+      "autenticacao": "O despachante inspecionado não valida APIKEY nesta ação; controles adicionais podem existir no módulo delegado.",
+      "variaveis_api": [
+        {
+          "nome": "ID",
+          "local": "path",
+          "tipo": "string",
+          "obrigatoria": true,
+          "descricao": "Parâmetro ID; consulte as regras da operação."
+        }
+      ],
+      "resultado_api": {
+        "descricao": "Delega a RDFclass::get. Exemplo não disponível: contrato delegado, sem resposta verificada.",
+        "exemplo": null
+      },
+      "variaveis_retorno_api": []
+    },
+    {
+      "subgrupo": "Metadados e RDF",
+      "nome": "Listar ontologia",
+      "endpoint_api": {
+        "metodo": "GET",
+        "url": "https://cip.brapci.inf.br/api/brapci/rdf",
+        "endpoint_relativo": "/api/brapci/rdf",
+        "content_type_requisicao": null,
+        "content_type_resposta": "application/json (ver ressalvas na descrição)"
+      },
+      "precisa_apikey": false,
+      "autenticacao": "O despachante inspecionado não valida APIKEY nesta ação; controles adicionais podem existir no módulo delegado.",
+      "variaveis_api": [],
+      "resultado_api": {
+        "descricao": "Retorna Classes, Properties e time. Exemplo ilustrativo baseado no código local; não representa dados de produção.",
+        "exemplo": {
+          "200": "Success",
+          "time": "2026-09-17T12:00:00",
+          "Classes": [],
+          "Properties": []
+        }
+      },
+      "variaveis_retorno_api": []
+    },
+    {
+      "subgrupo": "Metadados e RDF",
+      "nome": "Índice alfabético",
+      "endpoint_api": {
+        "metodo": "GET",
+        "url": "https://cip.brapci.inf.br/api/brapci/indexs/{type}/{letter}",
+        "endpoint_relativo": "/api/brapci/indexs/{type}/{letter}",
+        "content_type_requisicao": null,
+        "content_type_resposta": "application/json (ver ressalvas na descrição)"
+      },
+      "precisa_apikey": false,
+      "autenticacao": "O despachante inspecionado não valida APIKEY nesta ação; controles adicionais podem existir no módulo delegado.",
+      "variaveis_api": [
+        {
+          "nome": "type",
+          "local": "path",
+          "tipo": "string",
+          "obrigatoria": true,
+          "descricao": "Parâmetro type; consulte as regras da operação."
+        },
+        {
+          "nome": "letter",
+          "local": "path",
+          "tipo": "string",
+          "obrigatoria": true,
+          "descricao": "Parâmetro letter; consulte as regras da operação."
+        }
+      ],
+      "resultado_api": {
+        "descricao": "Tipos: subject, author e bodycompany. Letra padrão A; tipo desconhecido retorna status 404. Exemplo ilustrativo baseado no código local; não representa dados de produção.",
+        "exemplo": {
+          "data": []
+        }
+      },
+      "variaveis_retorno_api": []
+    },
+    {
+      "subgrupo": "Metadados e RDF",
+      "nome": "Alterar idioma de termo",
+      "endpoint_api": {
+        "metodo": "POST",
+        "url": "https://cip.brapci.inf.br/api/brapci/setTermLang/{ID}/{language}",
+        "endpoint_relativo": "/api/brapci/setTermLang/{ID}/{language}",
+        "content_type_requisicao": "application/x-www-form-urlencoded",
+        "content_type_resposta": "application/json (ver ressalvas na descrição)"
+      },
+      "precisa_apikey": false,
+      "autenticacao": "O despachante inspecionado não valida APIKEY nesta ação; controles adicionais podem existir no módulo delegado.",
+      "variaveis_api": [
+        {
+          "nome": "ID",
+          "local": "path",
+          "tipo": "string",
+          "obrigatoria": true,
+          "descricao": "Parâmetro ID; consulte as regras da operação."
+        },
+        {
+          "nome": "language",
+          "local": "path",
+          "tipo": "string",
+          "obrigatoria": true,
+          "descricao": "Parâmetro language; consulte as regras da operação."
+        }
+      ],
+      "resultado_api": {
+        "descricao": "Operação de escrita delegada a RDFliteral::setTermLang. Exemplo não disponível: contrato delegado, sem resposta verificada.",
+        "exemplo": null
+      },
+      "variaveis_retorno_api": []
+    },
+    {
+      "subgrupo": "Metadados e RDF",
+      "nome": "Operações OAI",
+      "endpoint_api": {
+        "metodo": "GET",
+        "url": "https://cip.brapci.inf.br/api/brapci/oai/{verb}/{issue}",
+        "endpoint_relativo": "/api/brapci/oai/{verb}/{issue}",
+        "content_type_requisicao": null,
+        "content_type_resposta": "application/json (ver ressalvas na descrição)"
+      },
+      "precisa_apikey": false,
+      "autenticacao": "O despachante inspecionado não valida APIKEY nesta ação; controles adicionais podem existir no módulo delegado.",
+      "variaveis_api": [
+        {
+          "nome": "verb",
+          "local": "path",
+          "tipo": "string",
+          "obrigatoria": true,
+          "descricao": "Parâmetro verb; consulte as regras da operação."
+        },
+        {
+          "nome": "issue",
+          "local": "path",
+          "tipo": "string",
+          "obrigatoria": true,
+          "descricao": "Parâmetro issue; consulte as regras da operação."
+        }
+      ],
+      "resultado_api": {
+        "descricao": "Delega a Oaipmh/Index::api e acrescenta verb. Verbos e resposta dependem do módulo OAI. Exemplo não disponível: contrato delegado, sem resposta verificada.",
+        "exemplo": null
+      },
+      "variaveis_retorno_api": []
+    },
+    {
+      "subgrupo": "Informações e indicadores",
+      "nome": "Catálogo de serviços",
+      "endpoint_api": {
+        "metodo": "GET",
+        "url": "https://cip.brapci.inf.br/api/brapci/services",
+        "endpoint_relativo": "/api/brapci/services",
+        "content_type_requisicao": null,
+        "content_type_resposta": "application/json (ver ressalvas na descrição)"
+      },
+      "precisa_apikey": false,
+      "autenticacao": "O despachante inspecionado não valida APIKEY nesta ação; controles adicionais podem existir no módulo delegado.",
+      "variaveis_api": [],
+      "resultado_api": {
+        "descricao": "Também é a resposta padrão de /api/brapci. Retorna services e verb. Exemplo ilustrativo baseado no código local; não representa dados de produção.",
+        "exemplo": {
+          "status": "200",
+          "services": {
+            "livros": {
+              "name": "Livros",
+              "link": "books",
+              "icone": "icone",
+              "issue": "issue"
+            }
+          },
+          "verb": "services"
+        }
+      },
+      "variaveis_retorno_api": []
+    },
+    {
+      "subgrupo": "Informações e indicadores",
+      "nome": "Estatísticas da base",
+      "endpoint_api": {
+        "metodo": "GET",
+        "url": "https://cip.brapci.inf.br/api/brapci/statistics",
+        "endpoint_relativo": "/api/brapci/statistics",
+        "content_type_requisicao": null,
+        "content_type_resposta": "application/json (ver ressalvas na descrição)"
+      },
+      "precisa_apikey": false,
+      "autenticacao": "O despachante inspecionado não valida APIKEY nesta ação; controles adicionais podem existir no módulo delegado.",
+      "variaveis_api": [],
+      "resultado_api": {
+        "descricao": "Retorna diretamente data e update; os totais são textos formatados. Exemplo ilustrativo baseado no código local; não representa dados de produção.",
+        "exemplo": {
+          "data": [
+            {
+              "name": "Indicador ilustrativo",
+              "total": "1.000"
+            }
+          ],
+          "update": "2026-09-17"
+        }
+      },
+      "variaveis_retorno_api": []
+    },
+    {
+      "subgrupo": "Informações e indicadores",
+      "nome": "Resumo das coleções",
+      "endpoint_api": {
+        "metodo": "GET",
+        "url": "https://cip.brapci.inf.br/api/brapci/resume",
+        "endpoint_relativo": "/api/brapci/resume",
+        "content_type_requisicao": null,
+        "content_type_resposta": "application/json (ver ressalvas na descrição)"
+      },
+      "precisa_apikey": false,
+      "autenticacao": "O despachante inspecionado não valida APIKEY nesta ação; controles adicionais podem existir no módulo delegado.",
+      "variaveis_api": [],
+      "resultado_api": {
+        "descricao": "Retorna publications com contagens por tipo; categorias com zero são omitidas. Exemplo ilustrativo baseado no código local; não representa dados de produção.",
+        "exemplo": {
+          "publications": {
+            "Revistas": 10
+          }
+        }
+      },
+      "variaveis_retorno_api": []
+    },
+    {
+      "subgrupo": "Informações e indicadores",
+      "nome": "Notícias",
+      "endpoint_api": {
+        "metodo": "GET",
+        "url": "https://cip.brapci.inf.br/api/brapci/news",
+        "endpoint_relativo": "/api/brapci/news",
+        "content_type_requisicao": null,
+        "content_type_resposta": "application/json (ver ressalvas na descrição)"
+      },
+      "precisa_apikey": false,
+      "autenticacao": "O despachante inspecionado não valida APIKEY nesta ação; controles adicionais podem existir no módulo delegado.",
+      "variaveis_api": [],
+      "resultado_api": {
+        "descricao": "Delega a Base/News::news. Pode receber dois segmentos adicionais; resposta definida pelo módulo. Exemplo não disponível: contrato delegado, sem resposta verificada.",
+        "exemplo": null
+      },
+      "variaveis_retorno_api": []
+    },
+    {
+      "subgrupo": "Informações e indicadores",
+      "nome": "Conteúdo institucional",
+      "endpoint_api": {
+        "metodo": "GET",
+        "url": "https://cip.brapci.inf.br/api/brapci/page/{page}",
+        "endpoint_relativo": "/api/brapci/page/{page}",
+        "content_type_requisicao": null,
+        "content_type_resposta": "application/json (ver ressalvas na descrição)"
+      },
+      "precisa_apikey": false,
+      "autenticacao": "O despachante inspecionado não valida APIKEY nesta ação; controles adicionais podem existir no módulo delegado.",
+      "variaveis_api": [
+        {
+          "nome": "page",
+          "local": "path",
+          "tipo": "string",
+          "obrigatoria": true,
+          "descricao": "Parâmetro page; consulte as regras da operação."
+        }
+      ],
+      "resultado_api": {
+        "descricao": "Páginas como brapci, benancib, brapcilivros, how_index e team. Retorna lista de blocos row e lang. Exemplo ilustrativo baseado no código local; não representa dados de produção.",
+        "exemplo": [
+          {
+            "row": "<h1>Equipe</h1>",
+            "lang": "pt"
+          }
+        ]
+      },
+      "variaveis_retorno_api": []
+    },
+    {
+      "subgrupo": "Informações e indicadores",
+      "nome": "Análise de registro",
+      "endpoint_api": {
+        "metodo": "GET",
+        "url": "https://cip.brapci.inf.br/api/brapci/analysis/{ID}",
+        "endpoint_relativo": "/api/brapci/analysis/{ID}",
+        "content_type_requisicao": null,
+        "content_type_resposta": "application/json (ver ressalvas na descrição)"
+      },
+      "precisa_apikey": false,
+      "autenticacao": "O despachante inspecionado não valida APIKEY nesta ação; controles adicionais podem existir no módulo delegado.",
+      "variaveis_api": [
+        {
+          "nome": "ID",
+          "local": "path",
+          "tipo": "string",
+          "obrigatoria": true,
+          "descricao": "Parâmetro ID; consulte as regras da operação."
+        }
+      ],
+      "resultado_api": {
+        "descricao": "Delega a Base/Analysis::analysis. Exemplo não disponível: contrato delegado, sem resposta verificada.",
+        "exemplo": null
+      },
+      "variaveis_retorno_api": []
+    },
+    {
+      "subgrupo": "Informações e indicadores",
+      "nome": "Atividades",
+      "endpoint_api": {
+        "metodo": "GET",
+        "url": "https://cip.brapci.inf.br/api/brapci/activities/{action}",
+        "endpoint_relativo": "/api/brapci/activities/{action}",
+        "content_type_requisicao": null,
+        "content_type_resposta": "application/json (ver ressalvas na descrição)"
+      },
+      "precisa_apikey": false,
+      "autenticacao": "O despachante inspecionado não valida APIKEY nesta ação; controles adicionais podem existir no módulo delegado.",
+      "variaveis_api": [
+        {
+          "nome": "action",
+          "local": "path",
+          "tipo": "string",
+          "obrigatoria": true,
+          "descricao": "Parâmetro action; consulte as regras da operação."
+        }
+      ],
+      "resultado_api": {
+        "descricao": "Delega a Functions/Views::getActivities. Contrato depende da ação. Exemplo não disponível: contrato delegado, sem resposta verificada.",
+        "exemplo": null
+      },
+      "variaveis_retorno_api": []
+    },
+    {
+      "subgrupo": "Informações e indicadores",
+      "nome": "Contadores",
+      "endpoint_api": {
+        "metodo": "GET",
+        "url": "https://cip.brapci.inf.br/api/brapci/counter/{action}",
+        "endpoint_relativo": "/api/brapci/counter/{action}",
+        "content_type_requisicao": null,
+        "content_type_resposta": "application/json (ver ressalvas na descrição)"
+      },
+      "precisa_apikey": false,
+      "autenticacao": "O despachante inspecionado não valida APIKEY nesta ação; controles adicionais podem existir no módulo delegado.",
+      "variaveis_api": [
+        {
+          "nome": "action",
+          "local": "path",
+          "tipo": "string",
+          "obrigatoria": true,
+          "descricao": "Parâmetro action; consulte as regras da operação."
+        }
+      ],
+      "resultado_api": {
+        "descricao": "Delega a Tools/Counter::counter. Contrato depende da ação. Exemplo não disponível: contrato delegado, sem resposta verificada.",
+        "exemplo": null
+      },
+      "variaveis_retorno_api": []
+    },
+    {
+      "subgrupo": "Informações e indicadores",
+      "nome": "Identificador de navegação",
+      "endpoint_api": {
+        "metodo": "GET",
+        "url": "https://cip.brapci.inf.br/api/brapci/setCookie",
+        "endpoint_relativo": "/api/brapci/setCookie",
+        "content_type_requisicao": null,
+        "content_type_resposta": "application/json (ver ressalvas na descrição)"
+      },
+      "precisa_apikey": false,
+      "autenticacao": "O despachante inspecionado não valida APIKEY nesta ação; controles adicionais podem existir no módulo delegado.",
+      "variaveis_api": [],
+      "resultado_api": {
+        "descricao": "Retorna o MD5 do cabeçalho Cookie ou de data/hora quando não há cookie. Não estabelece autenticação. Exemplo ilustrativo baseado no código local; não representa dados de produção.",
+        "exemplo": {
+          "status": "200",
+          "cookie": "hash ilustrativo"
+        }
+      },
+      "variaveis_retorno_api": []
+    },
+    {
+      "subgrupo": "Manutenção e envio",
+      "nome": "Registrar problema",
+      "endpoint_api": {
+        "metodo": "POST",
+        "url": "https://cip.brapci.inf.br/api/brapci/bug",
+        "endpoint_relativo": "/api/brapci/bug",
+        "content_type_requisicao": "application/x-www-form-urlencoded",
+        "content_type_resposta": "application/json (ver ressalvas na descrição)"
+      },
+      "precisa_apikey": false,
+      "autenticacao": "O despachante inspecionado não valida APIKEY nesta ação; controles adicionais podem existir no módulo delegado.",
+      "variaveis_api": [
+        {
+          "nome": "id",
+          "local": "body",
+          "tipo": "string",
+          "obrigatoria": true,
+          "descricao": "Parâmetro id; consulte as regras da operação."
+        },
+        {
+          "nome": "bugs",
+          "local": "body",
+          "tipo": "string",
+          "obrigatoria": true,
+          "descricao": "Parâmetro bugs; consulte as regras da operação."
+        }
+      ],
+      "resultado_api": {
+        "descricao": "Operação de escrita: registra um problema associado ao ID. Exemplo não disponível: contrato delegado, sem resposta verificada.",
+        "exemplo": null
+      },
+      "variaveis_retorno_api": []
+    },
+    {
+      "subgrupo": "Manutenção e envio",
+      "nome": "Enviar arquivo",
+      "endpoint_api": {
+        "metodo": "POST",
+        "url": "https://cip.brapci.inf.br/api/brapci/upload",
+        "endpoint_relativo": "/api/brapci/upload",
+        "content_type_requisicao": "multipart/form-data",
+        "content_type_resposta": "application/json (ver ressalvas na descrição)"
+      },
+      "precisa_apikey": false,
+      "autenticacao": "O despachante inspecionado não valida APIKEY nesta ação; controles adicionais podem existir no módulo delegado.",
+      "variaveis_api": [
+        {
+          "nome": "file",
+          "local": "body",
+          "tipo": "file",
+          "obrigatoria": true,
+          "descricao": "Parâmetro file; consulte as regras da operação."
+        }
+      ],
+      "resultado_api": {
+        "descricao": "Recebe file em multipart/form-data. A função upload monta uma resposta, mas o despachante atual não atribui seu retorno a RSP: não confiar nos detalhes do retorno. Exemplo ilustrativo baseado no código local; não representa dados de produção.",
+        "exemplo": {
+          "status": "200"
+        }
+      },
+      "variaveis_retorno_api": []
+    }
+  ]
+}
