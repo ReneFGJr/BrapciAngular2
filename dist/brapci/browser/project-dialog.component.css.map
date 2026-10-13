@@ -1,7 +1,0 @@
-{
-  "version": 3,
-  "sources": ["src/app/chat/components/project-dialog/project-dialog.component.ts"],
-  "sourcesContent": [".shade{position:fixed;inset:0;display:grid;place-items:center;padding:1rem;background:rgb(0 0 0/.5);z-index:50}.dialog{width:min(34rem,100%);background:var(--theme-card-bg);color:var(--theme-ink);border-radius:1rem;padding:1.25rem;box-shadow:0 1rem 4rem rgb(0 0 0/.25)}header,footer{display:flex;align-items:center;justify-content:space-between;gap:.7rem}h2{font-size:1.2rem;margin:0}header button{border:0;background:transparent;color:inherit}label{display:grid;gap:.3rem;margin-top:1rem;font-size:.8rem;font-weight:600}input,textarea{background:var(--theme-bg);color:var(--theme-ink);border-color:var(--theme-line)}footer{justify-content:flex-end;margin-top:1.2rem}"],
-  "mappings": ";AAAA,CAAA;AAAO,YAAA;AAAe,SAAA;AAAQ,WAAA;AAAa,eAAA;AAAmB,WAAA;AAAa,cAAA,KAAA,CAAA,EAAA,CAAA,EAAA,CAAA,EAAA;AAAyB,WAAA;;AAAW,CAAA;AAAQ,SAAA,IAAA,KAAA,EAAA;AAAsB,cAAA,IAAA;AAAgC,SAAA,IAAA;AAAuB,iBAAA;AAAmB,WAAA;AAAgB,cAAA,EAAA,KAAA,KAAA,KAAA,CAAA,EAAA,CAAA,EAAA,CAAA,EAAA;;AAAsC;AAAA;AAAc,WAAA;AAAa,eAAA;AAAmB,mBAAA;AAA8B,OAAA;;AAAU;AAAG,aAAA;AAAiB,UAAA;;AAAS,OAAA;AAAc,UAAA;AAAS,cAAA;AAAuB,SAAA;;AAAc;AAAM,WAAA;AAAa,OAAA;AAAU,cAAA;AAAgB,aAAA;AAAgB,eAAA;;AAAgB;AAAA;AAAe,cAAA,IAAA;AAA2B,SAAA,IAAA;AAAuB,gBAAA,IAAA;;AAA+B;AAAO,mBAAA;AAAyB,cAAA;;",
-  "names": []
-}

@@ -1,7 +1,0 @@
-{
-  "version": 3,
-  "sources": ["src/app/components/loading-spinner/loading-spinner.component.ts"],
-  "sourcesContent": ["import { Component } from '@angular/core';\n\n@Component({\n  selector: 'app-loading-spinner',\n  standalone: true,\n  template: `\n    <div class=\"d-flex justify-content-center align-items-center gap-2 py-4\" role=\"status\">\n      <span class=\"spinner-border text-primary\" aria-hidden=\"true\"></span>\n      <span>Processando...</span>\n    </div>\n  `,\n})\nexport class LoadingSpinnerComponent {}\n"],
-  "mappings": ";;;;;;;;;;;;;AAYM,IAAO,0BAAP,MAAO,yBAAuB;;qCAAvB,0BAAuB;EAAA;yEAAvB,0BAAuB,WAAA,CAAA,CAAA,qBAAA,CAAA,GAAA,OAAA,GAAA,MAAA,GAAA,QAAA,CAAA,CAAA,QAAA,UAAA,GAAA,UAAA,0BAAA,sBAAA,SAAA,MAAA,GAAA,CAAA,eAAA,QAAA,GAAA,kBAAA,cAAA,CAAA,GAAA,UAAA,SAAA,iCAAA,IAAA,KAAA;AAAA,QAAA,KAAA,GAAA;AANhC,MAAA,4BAAA,GAAA,OAAA,CAAA;AACE,MAAA,uBAAA,GAAA,QAAA,CAAA;AACA,MAAA,4BAAA,GAAA,MAAA;AAAM,MAAA,iBAAA,GAAA,gBAAA;AAAc,MAAA,0BAAA,EAAO;;;;;sEAIpB,yBAAuB,CAAA;UAVnC;WAAU;MACT,UAAU;MACV,YAAY;MACZ,UAAU;;;;;;KAMX;;;;6EACY,yBAAuB,EAAA,WAAA,2BAAA,UAAA,mEAAA,YAAA,GAAA,CAAA;AAAA,GAAA;",
-  "names": []
-}

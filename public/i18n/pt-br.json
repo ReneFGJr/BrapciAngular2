@@ -416,6 +416,7 @@
     "toolsBibliographics": "Ferramentas bibliograficas",
     "toolsBibliometric": "Ferramentas bibliometricas",
     "toolsText": "Ferramentas textuais",
+    "toolsThinkers": "Pensadores na CI",
     "navbar": {
       "authorities": "Autoridades",
       "magazines": "Revistas",
@@ -843,5 +844,10 @@
   "copy": "Copiar nome",
   "copied": "Nome copiado.",
   "failed": "Não foi possível copiar o nome."
-}
+},
+  "thinkerWorks": {
+    "title": "Obras relacionadas",
+    "betaButton": "Beta",
+    "betaNotice": "Este produto ainda está em testes (beta). Nem todas as citações da base foram contabilizadas."
+  }
 }

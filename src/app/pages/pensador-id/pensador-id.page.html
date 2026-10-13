@@ -32,9 +32,9 @@
 
           @if (item.dados; as dados) {
             <dl>
-              @if (dados['data_nascimento']) { <div><dt>Nascimento</dt><dd>{{ dados['data_nascimento'] }}</dd></div> }
-              @if (dados['data_falecimento']) { <div><dt>Falecimento</dt><dd>{{ dados['data_falecimento'] }}</dd></div> }
-              @if (dados['local_nascimento']) { <div><dt>Local de nascimento</dt><dd>{{ dados['local_nascimento'] }}</dd></div> }
+              @if (dados['data_nascimento']) { <div><dt><abbr title="Nascimento">Nasc.</abbr></dt><dd>{{ dados['data_nascimento'] }}</dd></div> }
+              @if (dados['local_nascimento']) { <div><dt><abbr title="Local de nascimento">Local nasc.</abbr></dt><dd>{{ dados['local_nascimento'] }}</dd></div> }
+              @if (dados['data_falecimento']) { <div><dt><abbr title="Falecimento">Falec.</abbr></dt><dd>{{ dados['data_falecimento'] }}</dd></div> }
               @if (dados['pais_nascimento']) { <div><dt>País</dt><dd>{{ dados['pais_nascimento'] }}</dd></div> }
             </dl>
           }
@@ -54,14 +54,25 @@
         <div class="works-heading">
           <div>
             <p class="eyebrow mb-1">Produção relacionada</p>
-            <h2 id="related-works-title">Obras relacionadas</h2>
+            <div class="works-title-row">
+              <h2 id="related-works-title">{{ 'thinkerWorks.title' | translate }}</h2>
+              <button type="button" class="beta-button" [attr.aria-expanded]="betaNoticeOpen()" aria-controls="works-beta-notice" (click)="betaNoticeOpen.set(!betaNoticeOpen())">
+                <i class="bi bi-exclamation-triangle" aria-hidden="true"></i>
+                {{ 'thinkerWorks.betaButton' | translate }}
+              </button>
+            </div>
+            <p class="works-description">Ordenadas pelas mais citadas</p>
           </div>
           <span class="works-total">{{ item.obras?.length ?? 0 }}</span>
         </div>
 
+        <div id="works-beta-notice" class="alert alert-warning beta-notice" [hidden]="!betaNoticeOpen()">
+          {{ 'thinkerWorks.betaNotice' | translate }}
+        </div>
+
         @if (item.obras?.length) {
           <div class="works-list">
-            @for (obra of item.obras; track obra.id_ca) {
+            @for (obra of obrasOrdenadas(); track obra.id_ca) {
               <article class="work-card">
                 <div class="work-meta">
                   <span>Referência #{{ obra.id_ca }}</span>
@@ -80,7 +91,7 @@
                     </a>
                   }
                   @if (obra.cited_by !== null && obra.cited_by !== undefined) {
-                    <span>Citado por {{ obra.cited_by }}</span>
+                    <span class="citation-count"><i class="bi bi-quote" aria-hidden="true"></i> {{ citationCount(obra) }} {{ citationCount(obra) === 1 ? 'citação' : 'citações' }}</span>
                   }
                 </div>
               </article>

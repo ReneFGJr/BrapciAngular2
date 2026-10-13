@@ -1,7 +1,0 @@
-{
-  "version": 3,
-  "sources": ["src/app/components/bug-panel/bug-panel.component.ts"],
-  "sourcesContent": ["\n    .bug-backdrop { position: fixed; inset: 0; z-index: 1100; background: #0008; display: flex; align-items: center; justify-content: center; padding: 1rem; }\n    .bug-panel { width: 100%; max-width: 520px; max-height: 90vh; overflow-y: auto; padding: 1.5rem; border-radius: .75rem; background: var(--bs-body-bg, white); color: var(--bs-body-color, #212529); box-shadow: 0 1rem 3rem #0004; }\n  "],
-  "mappings": ";AACI,CAAA;AAAgB,YAAA;AAAiB,SAAA;AAAU,WAAA;AAAe,cAAA,KAAA,CAAA,EAAA,CAAA,EAAA,CAAA,EAAA;AAAmB,WAAA;AAAe,eAAA;AAAqB,mBAAA;AAAyB,WAAA;;AAC1I,CAAA;AAAa,SAAA;AAAa,aAAA;AAAkB,cAAA;AAAkB,cAAA;AAAkB,WAAA;AAAiB,iBAAA;AAAuB,cAAA,IAAA,YAAA,EAAA;AAAsC,SAAA,IAAA,eAAA,EAAA;AAAsC,cAAA,EAAA,KAAA,KAAA,KAAA,CAAA,EAAA,CAAA,EAAA,CAAA,EAAA;;",
-  "names": []
-}

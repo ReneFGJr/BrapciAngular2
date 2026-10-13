@@ -494,5 +494,10 @@
     "deleteTitle": "Eliminar dato",
     "deleteConfirm": "¿Confirma la eliminación de {{name}}?",
     "deleting": "Eliminando..."
+  },
+  "thinkerWorks": {
+    "title": "Obras relacionadas",
+    "betaButton": "Beta",
+    "betaNotice": "Este producto aún está en pruebas (beta). Todavía no se han contabilizado todas las citas de la base de datos."
   }
 }

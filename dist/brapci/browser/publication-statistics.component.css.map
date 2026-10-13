@@ -1,7 +1,0 @@
-{
-  "version": 3,
-  "sources": ["src/app/components/publication-statistics/publication-statistics.component.scss"],
-  "sourcesContent": [":host {\r\n  display: block;\r\n}\r\n\r\n.tab-btn {\r\n  background: transparent;\r\n  border: 1px solid var(--theme-line);\r\n  border-radius: 999px;\r\n  color: var(--theme-ink);\r\n  cursor: pointer;\r\n  font-size: 0.9rem;\r\n  padding: 0.35rem 0.7rem;\r\n}\r\n\r\n.publication-authors-table {\r\n  max-height: 36rem;\r\n  overflow: auto;\r\n\r\n  th, td {\r\n    padding: 0.65rem;\r\n    border-bottom: 1px solid var(--theme-line);\r\n    color: var(--theme-ink);\r\n  }\r\n\r\n  th {\r\n    position: sticky;\r\n    top: 0;\r\n    background: var(--theme-card-bg);\r\n  }\r\n}\r\n\r\n.tab-btn:disabled {\r\n  cursor: default;\r\n  opacity: 0.5;\r\n}\r\n"],
-  "mappings": ";AAAA;AACE,WAAA;;AAGF,CAAA;AACE,cAAA;AACA,UAAA,IAAA,MAAA,IAAA;AACA,iBAAA;AACA,SAAA,IAAA;AACA,UAAA;AACA,aAAA;AACA,WAAA,QAAA;;AAGF,CAAA;AACE,cAAA;AACA,YAAA;;AAEA,CAJF,0BAIE;AAAA,CAJF,0BAIE;AACE,WAAA;AACA,iBAAA,IAAA,MAAA,IAAA;AACA,SAAA,IAAA;;AAGF,CAVF,0BAUE;AACE,YAAA;AACA,OAAA;AACA,cAAA,IAAA;;AAIJ,CA3BA,OA2BA;AACE,UAAA;AACA,WAAA;;",
-  "names": []
-}

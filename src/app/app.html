@@ -73,6 +73,9 @@
               <li>
                 <a class="dropdown-item"  routerLink="/small_world" (click)="closeToolsMenu()">{{ 'menu.navbar.worldSmall' | translate }}</a>
               </li>
+              <li>
+                <a class="dropdown-item" routerLink="/pensadores" (click)="closeToolsMenu()">{{ 'menu.toolsThinkers' | translate }}</a>
+              </li>
             </ul>
           </li>
         }
@@ -106,12 +109,6 @@
             </li>
             <li>
               <a class="dropdown-item" routerLink="/statistics" (click)="closeDocsMenu()">{{ 'menu.navbar.databaseStatistics' | translate }}</a>
-            </li>
-            <li>
-              <a class="dropdown-item" href="#" (click)="closeDocsMenu()">{{ 'menu.navbar.productionIndicator' | translate }}</a>
-            </li>
-            <li>
-              <a class="dropdown-item" href="#" (click)="closeDocsMenu()">{{ 'menu.navbar.searchIndicator' | translate }}</a>
             </li>
             <li>
               <a class="dropdown-item" routerLink="/doc" (click)="closeDocsMenu()">{{ 'menu.navbar.apiDoc' | translate }}</a>

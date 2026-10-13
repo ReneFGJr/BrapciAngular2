@@ -1,7 +1,0 @@
-{
-  "version": 3,
-  "sources": ["src/app/components/author-gender/author-gender.component.ts"],
-  "sourcesContent": ["\n    :host { display: inline-flex; }\n    .author-gender { align-items: center; display: inline-flex; gap: .4rem; }\n    .author-gender .big { color: var(--theme-ink); display: inline-block; font-size: 1.5rem; line-height: 1; }\n  "],
-  "mappings": ";AACI;AAAQ,WAAA;;AACR,CAAA;AAAiB,eAAA;AAAqB,WAAA;AAAsB,OAAA;;AAC5D,CADA,cACA,CAAA;AAAsB,SAAA,IAAA;AAAyB,WAAA;AAAuB,aAAA;AAAmB,eAAA;;",
-  "names": []
-}

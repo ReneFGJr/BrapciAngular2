@@ -1,6 +1,7 @@
 import { CommonModule } from '@angular/common';
-import { Component, inject, signal } from '@angular/core';
+import { Component, computed, inject, signal } from '@angular/core';
 import { ActivatedRoute, RouterLink } from '@angular/router';
+import { TranslateModule } from '@ngx-translate/core';
 import { BreadcrumbsComponent } from '../../components/breadcrumbs/breadcrumbs.component';
 import { BrapciApiService } from '../../core/services/brapci-api.service';
 
@@ -28,7 +29,7 @@ type ObraRelacionada = {
 
 @Component({
   selector: 'app-pensador-id-page',
-  imports: [CommonModule, RouterLink, BreadcrumbsComponent],
+  imports: [CommonModule, RouterLink, BreadcrumbsComponent, TranslateModule],
   templateUrl: './pensador-id.page.html',
   styleUrl: './pensador-id.page.scss',
 })
@@ -38,7 +39,18 @@ export class PensadorIdPage {
 
   readonly loading = signal(true);
   readonly error = signal('');
+  readonly betaNoticeOpen = signal(false);
   readonly pensador = signal<PensadorDetalhe | null>(null);
+  readonly obrasOrdenadas = computed(() =>
+    [...(this.pensador()?.obras ?? [])].sort(
+      (a, b) => this.citationCount(b) - this.citationCount(a),
+    ),
+  );
+
+  citationCount(obra: ObraRelacionada): number {
+    const count = Number(obra.cited_by ?? 0);
+    return Number.isFinite(count) ? Math.max(0, count) : 0;
+  }
 
   constructor() {
     const id = this.route.snapshot.paramMap.get('id');

@@ -413,6 +413,7 @@
     "toolsBibliographics": "Herramientas bibliograficas",
     "toolsBibliometric": "Herramientas bibliometricas",
     "toolsText": "Herramientas textuales",
+    "toolsThinkers": "Pensadores en Ciencia de la Información",
     "navbar": {
       "authorities": "Autoridades",
       "magazines": "Revistas",
@@ -838,5 +839,10 @@
   "copy": "Copiar nombre",
   "copied": "Nombre copiado.",
   "failed": "No se pudo copiar el nombre."
-}
+},
+  "thinkerWorks": {
+    "title": "Obras relacionadas",
+    "betaButton": "Beta",
+    "betaNotice": "Este producto aún está en pruebas (beta). Todavía no se han contabilizado todas las citas de la base de datos."
+  }
 }

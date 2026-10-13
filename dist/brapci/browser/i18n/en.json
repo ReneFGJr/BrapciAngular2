@@ -413,6 +413,7 @@
     "toolsBibliographics": "Bibliographic tools",
     "toolsBibliometric": "Bibliometric tools",
     "toolsText": "Text tools",
+    "toolsThinkers": "Thinkers in Information Science",
     "navbar": {
       "authorities": "Authorities",
       "magazines": "Journals",
@@ -838,5 +839,10 @@
   "copy": "Copy name",
   "copied": "Name copied.",
   "failed": "Unable to copy the name."
-}
+},
+  "thinkerWorks": {
+    "title": "Related works",
+    "betaButton": "Beta",
+    "betaNotice": "This product is still being tested (beta). Not all citations in the database have been counted yet."
+  }
 }

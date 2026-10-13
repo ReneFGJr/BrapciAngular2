@@ -1,55 +1,55 @@
 
 export default {
   bootstrap: () => import('./main.server.mjs').then(m => m.default),
-  inlineCriticalCss: false,
+  inlineCriticalCss: true,
   baseHref: '/',
   locale: undefined,
   routes: [
   {
     "renderMode": 2,
     "preload": [
-      "chunk-GWXYRNVO.js"
+      "chunk-64CRT5RY.js"
     ],
     "route": "/"
   },
   {
     "renderMode": 2,
     "preload": [
-      "chunk-K276RYVV.js"
+      "chunk-RFIRDMY6.js"
     ],
     "route": "/501"
   },
   {
     "renderMode": 1,
     "preload": [
-      "chunk-GOOM66LD.js",
-      "chunk-JAUSVNYO.js"
+      "chunk-QXAIWKGG.js",
+      "chunk-R4UZNDKT.js"
     ],
     "route": "/chat"
   },
   {
     "renderMode": 2,
     "preload": [
-      "chunk-3T2KXSKR.js",
-      "chunk-BU6M5KF3.js"
+      "chunk-I4CVTH4F.js",
+      "chunk-CFLJ5ALR.js"
     ],
     "route": "/autoridade"
   },
   {
     "renderMode": 0,
     "preload": [
-      "chunk-E36AJYFQ.js",
-      "chunk-EBQUONQV.js",
-      "chunk-NRHQYV2G.js",
-      "chunk-6R3NEF53.js",
-      "chunk-BU6M5KF3.js"
+      "chunk-D3KU6GUW.js",
+      "chunk-3UMVKPLE.js",
+      "chunk-UYJP47CO.js",
+      "chunk-V4GPSLXE.js",
+      "chunk-CFLJ5ALR.js"
     ],
     "route": "/v/*"
   },
   {
     "renderMode": 1,
     "preload": [
-      "chunk-OQASVSNB.js"
+      "chunk-6UU3NOPF.js"
     ],
     "route": "/admin/a/*"
   },
@@ -61,271 +61,272 @@ export default {
   {
     "renderMode": 2,
     "preload": [
-      "chunk-42MMNOKX.js"
+      "chunk-6MYGVJ4M.js"
     ],
     "route": "/basket/selected"
   },
   {
     "renderMode": 2,
     "preload": [
-      "chunk-X7NYYC7T.js",
-      "chunk-6R3NEF53.js"
+      "chunk-UKQ6Y62D.js",
+      "chunk-V4GPSLXE.js"
     ],
     "route": "/painel"
   },
   {
     "renderMode": 0,
     "preload": [
-      "chunk-3XBBQB27.js",
-      "chunk-BU6M5KF3.js"
+      "chunk-XRJVJQUD.js",
+      "chunk-CFLJ5ALR.js"
     ],
     "route": "/about/*"
   },
   {
     "renderMode": 2,
     "preload": [
-      "chunk-7EDVJRES.js",
-      "chunk-BU6M5KF3.js"
+      "chunk-DXN3AJPL.js",
+      "chunk-CFLJ5ALR.js"
     ],
     "route": "/doc"
   },
   {
     "renderMode": 2,
     "preload": [
-      "chunk-5AK4DRAD.js",
-      "chunk-NRHQYV2G.js",
-      "chunk-BU6M5KF3.js"
+      "chunk-JJUSGAGO.js",
+      "chunk-UYJP47CO.js",
+      "chunk-CFLJ5ALR.js"
     ],
     "route": "/pq"
   },
   {
     "renderMode": 2,
     "preload": [
-      "chunk-Z6VG4UUF.js",
-      "chunk-BU6M5KF3.js"
+      "chunk-XIS35Y5D.js",
+      "chunk-CFLJ5ALR.js"
     ],
     "route": "/revistas"
   },
   {
     "renderMode": 2,
     "preload": [
-      "chunk-6QKVKLM7.js",
-      "chunk-6R3NEF53.js",
-      "chunk-BU6M5KF3.js"
+      "chunk-ZK4GPS6O.js",
+      "chunk-V4GPSLXE.js",
+      "chunk-CFLJ5ALR.js"
     ],
     "route": "/revistas/avaliation"
   },
   {
     "renderMode": 2,
     "preload": [
-      "chunk-YOEHCVO5.js",
-      "chunk-BU6M5KF3.js"
+      "chunk-E7JJWFFY.js",
+      "chunk-CFLJ5ALR.js"
     ],
     "route": "/revistas/timeline"
   },
   {
     "renderMode": 2,
     "preload": [
-      "chunk-UXW6R2SS.js",
-      "chunk-BU6M5KF3.js"
+      "chunk-DUCQRWQQ.js",
+      "chunk-CFLJ5ALR.js"
     ],
     "route": "/eventos"
   },
   {
     "renderMode": 2,
     "preload": [
-      "chunk-3X23EI3E.js",
-      "chunk-BU6M5KF3.js"
+      "chunk-2OSY2CTY.js",
+      "chunk-CFLJ5ALR.js"
     ],
     "route": "/pensadores"
   },
   {
     "renderMode": 0,
     "preload": [
-      "chunk-XHGPUR5I.js",
-      "chunk-BU6M5KF3.js"
+      "chunk-52QUVUWA.js",
+      "chunk-CFLJ5ALR.js"
     ],
     "route": "/pensadores/*"
   },
   {
     "renderMode": 2,
     "preload": [
-      "chunk-MJ6FPQEI.js",
-      "chunk-R3FKZMDD.js",
-      "chunk-EBQUONQV.js",
-      "chunk-BU6M5KF3.js"
+      "chunk-XNQ4IX56.js",
+      "chunk-VZWU7G4X.js",
+      "chunk-3UMVKPLE.js",
+      "chunk-CFLJ5ALR.js"
     ],
     "route": "/livros"
   },
   {
     "renderMode": 2,
     "preload": [
-      "chunk-3RBAWBCZ.js",
-      "chunk-YGVINJFQ.js",
-      "chunk-R3FKZMDD.js",
-      "chunk-BU6M5KF3.js"
+      "chunk-DDZDTVCO.js",
+      "chunk-4YVL3FRT.js",
+      "chunk-VZWU7G4X.js",
+      "chunk-CFLJ5ALR.js"
     ],
     "route": "/livros/submit"
   },
   {
     "renderMode": 1,
     "preload": [
-      "chunk-LKWP5TAO.js",
-      "chunk-YGVINJFQ.js",
-      "chunk-R3FKZMDD.js",
-      "chunk-BU6M5KF3.js"
+      "chunk-VEWULQX5.js",
+      "chunk-4YVL3FRT.js",
+      "chunk-VZWU7G4X.js",
+      "chunk-CFLJ5ALR.js"
     ],
     "route": "/books/disclaimer/*/*"
   },
   {
     "renderMode": 2,
     "preload": [
-      "chunk-ZW6B3BM4.js"
+      "chunk-7GEND6AF.js"
     ],
     "route": "/signin"
   },
   {
     "renderMode": 2,
     "preload": [
-      "chunk-RYSDKM55.js",
-      "chunk-BU6M5KF3.js"
+      "chunk-GI6V5BNZ.js",
+      "chunk-CFLJ5ALR.js"
     ],
     "route": "/perfil"
   },
   {
     "renderMode": 2,
     "preload": [
-      "chunk-UDOID36A.js",
-      "chunk-BU6M5KF3.js"
+      "chunk-WFBI74A6.js",
+      "chunk-CFLJ5ALR.js"
     ],
     "route": "/tools/txt4net"
   },
   {
     "renderMode": 2,
     "preload": [
-      "chunk-I3IB3TGY.js",
-      "chunk-BU6M5KF3.js"
+      "chunk-KJEHL5LB.js",
+      "chunk-CFLJ5ALR.js"
     ],
     "route": "/tools/txt4network"
   },
   {
     "renderMode": 2,
     "preload": [
-      "chunk-ETR56VTH.js",
-      "chunk-BU6M5KF3.js"
+      "chunk-LWGLJTWG.js",
+      "chunk-CFLJ5ALR.js"
     ],
     "route": "/tools/term4net"
   },
   {
     "renderMode": 2,
     "preload": [
-      "chunk-GXT4CR5I.js",
-      "chunk-BU6M5KF3.js"
+      "chunk-P4DQ4MT6.js",
+      "chunk-CFLJ5ALR.js"
     ],
     "route": "/tools/normalize_cites"
   },
   {
     "renderMode": 2,
     "preload": [
-      "chunk-BYLAH7JC.js",
-      "chunk-BU6M5KF3.js"
+      "chunk-EIDLT2VD.js",
+      "chunk-CFLJ5ALR.js"
     ],
     "route": "/tools/halflive"
   },
   {
     "renderMode": 2,
     "preload": [
-      "chunk-2TXZXHHW.js",
-      "chunk-BU6M5KF3.js"
+      "chunk-3VRFOY6U.js",
+      "chunk-CFLJ5ALR.js"
     ],
     "route": "/tools_bibliografics"
   },
   {
     "renderMode": 2,
     "preload": [
-      "chunk-3EAX6KI7.js",
-      "chunk-BU6M5KF3.js"
+      "chunk-IG35GLEY.js",
+      "chunk-CFLJ5ALR.js"
     ],
     "route": "/tools_bibliometric"
   },
   {
     "renderMode": 2,
     "preload": [
-      "chunk-3Z672BML.js",
-      "chunk-BU6M5KF3.js"
+      "chunk-U3BHYE7E.js",
+      "chunk-CFLJ5ALR.js"
     ],
     "route": "/tools_text"
   },
   {
     "renderMode": 2,
     "preload": [
-      "chunk-SOFHP73F.js",
-      "chunk-BU6M5KF3.js"
+      "chunk-ZMQEN7T5.js",
+      "chunk-CFLJ5ALR.js"
     ],
     "route": "/tools_text/specialist"
   },
   {
     "renderMode": 2,
     "preload": [
-      "chunk-3F6OSVXF.js"
+      "chunk-FVZVNEAC.js"
     ],
     "route": "/cited"
   },
   {
     "renderMode": 2,
     "preload": [
-      "chunk-6JKSTQSO.js",
-      "chunk-BU6M5KF3.js"
+      "chunk-VA3UEW7V.js",
+      "chunk-CFLJ5ALR.js"
     ],
     "route": "/small_world"
   },
   {
     "renderMode": 2,
     "preload": [
-      "chunk-GWEN4G7J.js"
+      "chunk-CMCNNNFR.js"
     ],
     "route": "/statistics"
   },
   {
     "renderMode": 2,
     "preload": [
-      "chunk-K754GBG5.js"
+      "chunk-ZQN7BCQN.js"
     ],
     "route": "/monitor"
   }
 ],
   entryPointToBrowserMapping: undefined,
   assets: {
-    'index.csr.html': {size: 2052, hash: 'ed0fa1e1c11415adbf3a9ff631025568ea95253ec82e525eb9d31c626dcb5ff7', text: () => import('./assets-chunks/index_csr_html.mjs').then(m => m.default)},
-    'index.server.html': {size: 2592, hash: 'f6af02b8432d7e83d8bcd6f7e4e8ba06d5d945cda45269f158372123a0bad5f1', text: () => import('./assets-chunks/index_server_html.mjs').then(m => m.default)},
-    'index.html': {size: 45044, hash: 'a837fd51b94f1f892e9296d5136f69405740006810b86b447dfbadc74505d045', text: () => import('./assets-chunks/index_html.mjs').then(m => m.default)},
-    '501/index.html': {size: 47147, hash: 'f22d375e548a4e3fdbcb51a8eb4a70d07daf69876805d7c14fbb4b0699050a5c', text: () => import('./assets-chunks/501_index_html.mjs').then(m => m.default)},
-    'doc/index.html': {size: 385352, hash: '39c3c7b8b1196aa48e157257210e840aa59661d171d4f73437b938741687152b', text: () => import('./assets-chunks/doc_index_html.mjs').then(m => m.default)},
-    'eventos/index.html': {size: 56944, hash: '92b82f13b2fdd50b4e49d3f2b80b9d160adf7aeb551fb26f83eea647cc5a5e34', text: () => import('./assets-chunks/eventos_index_html.mjs').then(m => m.default)},
-    'livros/index.html': {size: 96682, hash: 'ed238f99a127dc66c9fa6bc4e5969a0f8f49fba490f19c85befdc3b9bc5e90d2', text: () => import('./assets-chunks/livros_index_html.mjs').then(m => m.default)},
-    'signin/index.html': {size: 49387, hash: 'a18e0230ae523723b79f21ca2890bec92b4ed0040cd52c6b4d85ef41bd7b5003', text: () => import('./assets-chunks/signin_index_html.mjs').then(m => m.default)},
-    'tools/txt4net/index.html': {size: 48995, hash: 'bf3ed23161ad2507ebfdc9dc94f30b3515c033ab515b74697e687fe7d22ef3c4', text: () => import('./assets-chunks/tools_txt4net_index_html.mjs').then(m => m.default)},
-    'tools/term4net/index.html': {size: 48099, hash: '96dcf5316f044388e5558a687bf9e295abe19b00d94227e1cf8d9c77ea0a2cd1', text: () => import('./assets-chunks/tools_term4net_index_html.mjs').then(m => m.default)},
-    'tools_bibliometric/index.html': {size: 48406, hash: '95d1cda57efed0d7a32e730527850c3bcc5e706c37d5f245a8e28f5aeda3967f', text: () => import('./assets-chunks/tools_bibliometric_index_html.mjs').then(m => m.default)},
-    'tools/halflive/index.html': {size: 56510, hash: '144b991b476e89e4d241db1c37f122b785a6c61ba2a8eefe3e7d8cbf1bdcee27', text: () => import('./assets-chunks/tools_halflive_index_html.mjs').then(m => m.default)},
-    'tools_text/specialist/index.html': {size: 48274, hash: '189269c0528391c59abafede6745f01ccdbf870fd2de087ab1d689891d52b148', text: () => import('./assets-chunks/tools_text_specialist_index_html.mjs').then(m => m.default)},
-    'monitor/index.html': {size: 56795, hash: '1773473fb407a633db8f1a92ad538cd714d3d9e0c73e07d0934ae657f4e63ae2', text: () => import('./assets-chunks/monitor_index_html.mjs').then(m => m.default)},
-    'small_world/index.html': {size: 55830, hash: 'f178847f4a62ea1830b3a6bd33426e20595712878ce775ae2a5c48601df56804', text: () => import('./assets-chunks/small_world_index_html.mjs').then(m => m.default)},
-    'basket/selected/index.html': {size: 47075, hash: '4105a52af98b843cecb1a16f7d54695fd1e73ee02cb0ded1d3bdd16620a57f72', text: () => import('./assets-chunks/basket_selected_index_html.mjs').then(m => m.default)},
-    'livros/submit/index.html': {size: 60737, hash: 'ad5b87a4f85d3d7f84568bf9af602623439cd1b1ccdf5a2c9f04b2387b94f368', text: () => import('./assets-chunks/livros_submit_index_html.mjs').then(m => m.default)},
-    'pq/index.html': {size: 294555, hash: '846375026eeb5f0b08fc7ba335ce8b59b59841054647fd26404610fe604fa2c0', text: () => import('./assets-chunks/pq_index_html.mjs').then(m => m.default)},
-    'tools/txt4network/index.html': {size: 49126, hash: 'f802352485b33ba65a5e93708acb50cffb68c1a4d8574f4d811dc96bd0034326', text: () => import('./assets-chunks/tools_txt4network_index_html.mjs').then(m => m.default)},
-    'tools_bibliografics/index.html': {size: 48583, hash: '30544c83fe96794e43a8393a176299dd0dae2723dae0076d69536ae12bbbec6f', text: () => import('./assets-chunks/tools_bibliografics_index_html.mjs').then(m => m.default)},
-    'cited/index.html': {size: 47683, hash: 'a39b0308b7eef19610360e2ca1b54e26682ef2b8b0cb3e68f3f40dc33e2b8344', text: () => import('./assets-chunks/cited_index_html.mjs').then(m => m.default)},
-    'autoridade/index.html': {size: 49535, hash: '4a49f59a0ff0a41369bc2cbae2edf6bfcbe048b0b8e780193d662a37e842723c', text: () => import('./assets-chunks/autoridade_index_html.mjs').then(m => m.default)},
-    'perfil/index.html': {size: 58793, hash: '058fb7640ea2854f3f5f2bda9f64e66cc6f9252d7edd19a735b7f7310f0e1b95', text: () => import('./assets-chunks/perfil_index_html.mjs').then(m => m.default)},
-    'tools_text/index.html': {size: 47745, hash: '53a27403e84168cf03adc4cd6890becc12b8786c8cdbabcd7aca05f4ed43f422', text: () => import('./assets-chunks/tools_text_index_html.mjs').then(m => m.default)},
-    'revistas/index.html': {size: 151972, hash: 'd8a05e6844c69f7b16857b3c977912b3e5ad3796b4d78da03ef111968b66e23b', text: () => import('./assets-chunks/revistas_index_html.mjs').then(m => m.default)},
-    'painel/index.html': {size: 48569, hash: 'e457fdc33c260051220c0690a0f755d51ec39516554efd203b97fc09ad0085be', text: () => import('./assets-chunks/painel_index_html.mjs').then(m => m.default)},
-    'revistas/avaliation/index.html': {size: 230722, hash: '1cec4ca8eceb1d2716396bd76c451a0def5524cd6a8800578cb37a3328bc4c3e', text: () => import('./assets-chunks/revistas_avaliation_index_html.mjs').then(m => m.default)},
-    'revistas/timeline/index.html': {size: 157162, hash: '0ded5cfc57580ca382bf88b25e7894ad7bb93ef495ef9eed049b1940450ec376', text: () => import('./assets-chunks/revistas_timeline_index_html.mjs').then(m => m.default)},
-    'tools/normalize_cites/index.html': {size: 52772, hash: '2cd0b199787f71e224cbdff31eaae22a35bd8e89a18b6b37ada585231acf2ea9', text: () => import('./assets-chunks/tools_normalize_cites_index_html.mjs').then(m => m.default)},
-    'statistics/index.html': {size: 54846, hash: '353a3ddafcf0fdf58c2b537cbe8ba7a60733c77d6458ee91aa3548c10aeff5a1', text: () => import('./assets-chunks/statistics_index_html.mjs').then(m => m.default)},
-    'pensadores/index.html': {size: 86687, hash: '569bf80b772a1d6dd99f80a29153571c2eb086dd0bb0f842eb9183f18c49a0bc', text: () => import('./assets-chunks/pensadores_index_html.mjs').then(m => m.default)}
+    'index.csr.html': {size: 6520, hash: 'cb00249f371ec5429123c9ef8f8f82938c0111b19e14d1bee90446b6dd150fad', text: () => import('./assets-chunks/index_csr_html.mjs').then(m => m.default)},
+    'index.server.html': {size: 2385, hash: 'f3f8626b1decc8c18f74c7f982ec236753f2717e9cec78719646b94ef32c9934', text: () => import('./assets-chunks/index_server_html.mjs').then(m => m.default)},
+    '501/index.html': {size: 79390, hash: '6a222de4eae988fac9dedce426ad4ac47a18bdaf094f4c76a143f50307fa2b49', text: () => import('./assets-chunks/501_index_html.mjs').then(m => m.default)},
+    'index.html': {size: 73922, hash: 'c2538c0c78a2026d88cfe29b8e65864751b6ee2774f7b82e3f9ca9d9a4d2f6f7', text: () => import('./assets-chunks/index_html.mjs').then(m => m.default)},
+    'eventos/index.html': {size: 86577, hash: '53c598eb3c8a381bd244c980c61ea1548d373debeb0a72f5e6c8a2d79f1c2d2a', text: () => import('./assets-chunks/eventos_index_html.mjs').then(m => m.default)},
+    'pq/index.html': {size: 320031, hash: '7bcad2da68737d868125807923275fc2d80c2a6151b1c5923c0d475ddcebe006', text: () => import('./assets-chunks/pq_index_html.mjs').then(m => m.default)},
+    'livros/index.html': {size: 128654, hash: '1f1681e930a798d162b1a8f7ca6167eb5b00fe0ed4199fe0cd6e30f513f22c96', text: () => import('./assets-chunks/livros_index_html.mjs').then(m => m.default)},
+    'signin/index.html': {size: 86710, hash: '350b0e3fa28b664a8817e320e5394652900af81cab1345ec9f2ca9e8b084c1c9', text: () => import('./assets-chunks/signin_index_html.mjs').then(m => m.default)},
+    'tools/term4net/index.html': {size: 85031, hash: '6dc6872e151497a0a81b6011994c2135a4ec7b6237ff70555173883b480b7293', text: () => import('./assets-chunks/tools_term4net_index_html.mjs').then(m => m.default)},
+    'tools/txt4net/index.html': {size: 86747, hash: '483f9bc77f73da5bd3fed1a5f24ddc25a79fced89fee0e2372c6c6764dcea624', text: () => import('./assets-chunks/tools_txt4net_index_html.mjs').then(m => m.default)},
+    'tools/halflive/index.html': {size: 92264, hash: 'cf24138364ea859bd05452bd22ba2deee668bc08ea877fb5373c02459014da0d', text: () => import('./assets-chunks/tools_halflive_index_html.mjs').then(m => m.default)},
+    'tools_text/specialist/index.html': {size: 85132, hash: 'f28795a4d52e483cee71c6fd47bad86ca78ac9347b1873f603e27a5649e38377', text: () => import('./assets-chunks/tools_text_specialist_index_html.mjs').then(m => m.default)},
+    'tools_bibliometric/index.html': {size: 82399, hash: 'a7dd20324a57c5bfb04bb75a6d27df734fe1349f44a2b78884446b97618a941f', text: () => import('./assets-chunks/tools_bibliometric_index_html.mjs').then(m => m.default)},
+    'small_world/index.html': {size: 91971, hash: '55fc0aaa6009c3ed4df6c4c3aa5b2ff981ee124e03100fe737df014006de6460', text: () => import('./assets-chunks/small_world_index_html.mjs').then(m => m.default)},
+    'monitor/index.html': {size: 87966, hash: '42d11549eae5439b3db40a0ff076888d388838f438970af1a11612afe0af1fb8', text: () => import('./assets-chunks/monitor_index_html.mjs').then(m => m.default)},
+    'basket/selected/index.html': {size: 77332, hash: 'd7d7995eae5dcf3c5a2eff4d9d163f57d82f9419bb034588ce5289dd47d43426', text: () => import('./assets-chunks/basket_selected_index_html.mjs').then(m => m.default)},
+    'livros/submit/index.html': {size: 95035, hash: '6ed10bfaa48b97c1e3022c0e10fa00c8f2c6cb1586eea8e09cbdb91f66954617', text: () => import('./assets-chunks/livros_submit_index_html.mjs').then(m => m.default)},
+    'doc/index.html': {size: 408724, hash: '374c37693face0bd20e2431093449329a0a32e8556cafdbaf0df8b0956f17b43', text: () => import('./assets-chunks/doc_index_html.mjs').then(m => m.default)},
+    'tools/txt4network/index.html': {size: 86739, hash: '75ccb7720f7374d15903d0bf069cac0c2dc6a4d999dedf87a0ae5e759b8e3224', text: () => import('./assets-chunks/tools_txt4network_index_html.mjs').then(m => m.default)},
+    'cited/index.html': {size: 80684, hash: '543c3c9e195d306136a870940968a797eff9ec80875ddbf0a8b39b469c8d293c', text: () => import('./assets-chunks/cited_index_html.mjs').then(m => m.default)},
+    'tools_bibliografics/index.html': {size: 82414, hash: 'f9b7190eaf25bf20fcf892423f749027c380d04f3bcb5a70a48a3e168a03f864', text: () => import('./assets-chunks/tools_bibliografics_index_html.mjs').then(m => m.default)},
+    'revistas/index.html': {size: 186057, hash: '60bab8334eeb0f61377aee35f7005e0409b6fdbe4dd2c3940e8d6f06d202418e', text: () => import('./assets-chunks/revistas_index_html.mjs').then(m => m.default)},
+    'revistas/timeline/index.html': {size: 187899, hash: 'aefdec9d1de418112964b1ad4fff08acdd71a5bfcc4f00f2022d7f8fca04c1a4', text: () => import('./assets-chunks/revistas_timeline_index_html.mjs').then(m => m.default)},
+    'autoridade/index.html': {size: 86793, hash: '16644c524a48405c2501e3e9c7c225f591672191fd5862a8709b0770d85b2fbd', text: () => import('./assets-chunks/autoridade_index_html.mjs').then(m => m.default)},
+    'perfil/index.html': {size: 92640, hash: '9b185cfb0a9e71ffda110eb9bdd3df7ba0686cf4ea08f0ad10ae949f7f6100bb', text: () => import('./assets-chunks/perfil_index_html.mjs').then(m => m.default)},
+    'painel/index.html': {size: 78952, hash: 'd0aea9462dccb2fea12e06072f39b8fa7ec61d4e919c8c97198ec24489cf76a6', text: () => import('./assets-chunks/painel_index_html.mjs').then(m => m.default)},
+    'revistas/avaliation/index.html': {size: 262520, hash: '9127c9bc63d83e714972adc9f50c1093e60a5a696c2c84af340d3ea00bfb1057', text: () => import('./assets-chunks/revistas_avaliation_index_html.mjs').then(m => m.default)},
+    'tools_text/index.html': {size: 81764, hash: '60fcc6d0be4f56a4fcb321ae1e1c86b006fb3c25af8065a6090c5f97c770e62f', text: () => import('./assets-chunks/tools_text_index_html.mjs').then(m => m.default)},
+    'tools/normalize_cites/index.html': {size: 86770, hash: '147e26b8120b7eb002d715309b9f3e2c07a79823d7666cdedb8e810eca956b61', text: () => import('./assets-chunks/tools_normalize_cites_index_html.mjs').then(m => m.default)},
+    'statistics/index.html': {size: 86809, hash: 'd42281178c0e01854c31eb0c4f6106999b88fd047dbb1f0e826851f40a91dcc4', text: () => import('./assets-chunks/statistics_index_html.mjs').then(m => m.default)},
+    'pensadores/index.html': {size: 118401, hash: '5521ad20a24926432f53f49c23a3844a6d35884d692796980eefe06959261445', text: () => import('./assets-chunks/pensadores_index_html.mjs').then(m => m.default)},
+    'styles-XO4RCIET.css': {size: 357134, hash: 'arljsMZxWNo', text: () => import('./assets-chunks/styles-XO4RCIET_css.mjs').then(m => m.default)}
   },
 };
