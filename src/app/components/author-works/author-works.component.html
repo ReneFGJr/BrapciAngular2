@@ -34,7 +34,7 @@
         } @else if (tab.type === 'clusters') {
           <span class="badge badge-menu-outline ms-1">{{ networkData.nodes.length }}</span>
         } @else if (tab.type === 'citationsGranted') {
-          <span class="badge badge-menu-outline ms-1">{{ citationsGrantedItems().length }}</span>
+          <span class="badge badge-menu-outline ms-1">{{ citedThinkers().length }}</span>
         } @else if (tab.type === 'variants') {
           <span class="badge badge-menu-outline ms-1">{{ variants.length }}</span>
         } @else if (tab.type === 'scholarship') {
@@ -228,14 +228,29 @@
     <!-- Citations Granted Tab Content -->
     @if (selectedTab() === 'citationsGranted') {
       <div class="citations-granted-tab-content mt-2">
-        @if (citationsGrantedItems().length === 0) {
+        @if (citationsLoading()) {
+          <app-loading-spinner></app-loading-spinner>
+        } @else if (citationsError()) {
+          <div class="alert alert-warning" role="alert">
+            Não foi possível carregar as citações.
+            <button type="button" class="btn btn-outline-primary btn-sm ms-2" (click)="loadCitations()">Tentar novamente</button>
+          </div>
+        } @else if (citedThinkers().length === 0) {
           <p class="works-empty mb-0">{{ 'author.noRecords' | translate }}</p>
         } @else {
-          <ol class="works-list mb-0">
-            @for (item of citationsGrantedItems(); track $index) {
-              <li [innerHTML]="item"></li>
+          <div class="cited-thinkers-grid">
+            @for (thinker of citedThinkers(); track thinker.id) {
+              <a class="cited-thinker-card" [routerLink]="['/pensadores', thinker.id]">
+                @if (thinker.foto) {
+                  <img [src]="thinker.foto" [alt]="thinker.nome" loading="lazy" />
+                } @else {
+                  <div class="cited-thinker-placeholder" aria-hidden="true">{{ thinker.nome.charAt(0) }}</div>
+                }
+                <h3>{{ thinker.nome }}</h3>
+                <span class="cited-thinker-total"><i class="bi bi-quote" aria-hidden="true"></i> {{ thinker.total }} {{ +thinker.total === 1 ? 'citação' : 'citações' }}</span>
+              </a>
             }
-          </ol>
+          </div>
         }
       </div>
     }

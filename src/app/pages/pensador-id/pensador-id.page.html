@@ -40,6 +40,9 @@
           }
 
           <div class="external-links">
+            @if (brapciId(); as id) {
+              <a [routerLink]="['/v', id]">Brapci <i class="bi bi-arrow-right" aria-hidden="true"></i></a>
+            }
             @if (item.link_wikipedia) {
               <a [href]="item.link_wikipedia" target="_blank" rel="noopener noreferrer">Wikipédia</a>
             }

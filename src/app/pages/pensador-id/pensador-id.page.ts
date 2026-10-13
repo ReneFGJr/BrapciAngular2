@@ -8,6 +8,7 @@ import { BrapciApiService } from '../../core/services/brapci-api.service';
 type PensadorDetalhe = {
   id: number | string;
   nome: string;
+  brapci_id?: number | string | null;
   nome_citacao?: string | null;
   link_wikipedia?: string | null;
   link_wikidata?: string | null;
@@ -41,6 +42,10 @@ export class PensadorIdPage {
   readonly error = signal('');
   readonly betaNoticeOpen = signal(false);
   readonly pensador = signal<PensadorDetalhe | null>(null);
+  readonly brapciId = computed(() => {
+    const id = String(this.pensador()?.brapci_id ?? '').trim();
+    return /^\d+$/.test(id) && Number(id) > 0 ? id : null;
+  });
   readonly obrasOrdenadas = computed(() =>
     [...(this.pensador()?.obras ?? [])].sort(
       (a, b) => this.citationCount(b) - this.citationCount(a),

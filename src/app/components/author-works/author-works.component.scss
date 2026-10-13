@@ -307,3 +307,14 @@
   border-radius: 999px;
   color: #7f7f7f;
 }
+
+.cited-thinkers-grid { display: grid; grid-template-columns: repeat(6, minmax(0, 1fr)); gap: 1rem; }
+.cited-thinker-card { display: flex; flex-direction: column; align-items: center; min-width: 0; padding: 0.75rem; border: 1px solid var(--theme-sand, #dde5e8); border-radius: 0.75rem; color: inherit; text-decoration: none; text-align: center; box-shadow: 0 3px 12px rgb(0 0 0 / 6%); }
+.cited-thinker-card:hover { border-color: #31726a; }
+.cited-thinker-card:focus-visible { outline: 3px solid #31726a; outline-offset: 3px; }
+.cited-thinker-card img, .cited-thinker-placeholder { width: 100%; aspect-ratio: 1; object-fit: cover; object-position: center 25%; border-radius: 0.5rem; }
+.cited-thinker-placeholder { display: grid; place-items: center; background: #dceeea; color: #245c56; font: 3rem Georgia, serif; }
+.cited-thinker-card h3 { margin: 0.75rem 0; font-size: 0.9rem; line-height: 1.4; overflow-wrap: anywhere; }
+.cited-thinker-total { margin-top: auto; padding: 0.3rem 0.5rem; border-radius: 999px; background: #dceeea; color: #245c56; font-size: 0.8rem; font-weight: 700; }
+@media (max-width: 991.98px) { .cited-thinkers-grid { grid-template-columns: repeat(3, minmax(0, 1fr)); } }
+@media (max-width: 575.98px) { .cited-thinkers-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); } }

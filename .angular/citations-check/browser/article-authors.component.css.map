@@ -1,0 +1,7 @@
+{
+  "version": 3,
+  "sources": ["src/app/components/article-authors/article-authors.component.scss"],
+  "sourcesContent": [".article-authors {\r\n  display: inline;\r\n  font-size: 0.95rem;\r\n  line-height: 1.6;\r\n  color: var(--theme-ink);\r\n\r\n  @media (max-width: 768px) {\r\n    font-size: 0.9rem;\r\n  }\r\n\r\n  @media (max-width: 480px) {\r\n    font-size: 0.85rem;\r\n  }\r\n}\r\n\r\n.article-authors__link {\r\n  text-decoration: none;\r\n  color: var(--theme-link);\r\n  font-weight: 500;\r\n  transition: all 0.2s ease;\r\n\r\n  &:hover {\r\n    text-decoration: underline;\r\n    color: var(--theme-hint);\r\n  }\r\n\r\n  &:focus-visible {\r\n    outline: 2px solid var(--theme-link);\r\n    outline-offset: 2px;\r\n    border-radius: 2px;\r\n  }\r\n}\r\n\r\n.article-authors__text {\r\n  color: var(--theme-ink);\r\n  font-weight: 500;\r\n}\r\n\r\n.article-authors__separator {\r\n  margin: 0 0.15em;\r\n  color: var(--theme-muted);\r\n}\r\n\r\n.article-authors__period {\r\n  color: var(--theme-ink);\r\n}\r\n"],
+  "mappings": ";AAAA,CAAA;AACE,WAAA;AACA,aAAA;AACA,eAAA;AACA,SAAA,IAAA;;AAEA,OAAA,CAAA,SAAA,EAAA;AANF,GAAA;AAOI,eAAA;;;AAGF,OAAA,CAAA,SAAA,EAAA;AAVF,GAAA;AAWI,eAAA;;;AAIJ,CAAA;AACE,mBAAA;AACA,SAAA,IAAA;AACA,eAAA;AACA,cAAA,IAAA,KAAA;;AAEA,CANF,qBAME;AACE,mBAAA;AACA,SAAA,IAAA;;AAGF,CAXF,qBAWE;AACE,WAAA,IAAA,MAAA,IAAA;AACA,kBAAA;AACA,iBAAA;;AAIJ,CAAA;AACE,SAAA,IAAA;AACA,eAAA;;AAGF,CAAA;AACE,UAAA,EAAA;AACA,SAAA,IAAA;;AAGF,CAAA;AACE,SAAA,IAAA;;",
+  "names": []
+}

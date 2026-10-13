@@ -30,7 +30,7 @@ dl { display: flex; flex-wrap: nowrap; gap: 1.5rem; margin: 1.25rem 0; padding-b
 dl div { flex: 0 0 auto; padding: 0.35rem 0; }
 dt { color: #65747b; font-size: 0.78rem; text-transform: uppercase; }
 dd { margin: 0.15rem 0 0; color: #24373c; }
-.external-links { display: flex; gap: 0.75rem; }
+.external-links { display: flex; flex-wrap: wrap; gap: 0.75rem; }
 .external-links a { padding: 0.5rem 0.8rem; border-radius: 0.5rem; background: #dceeea; color: #245c56; font-weight: 700; text-decoration: none; }
 
 .works {

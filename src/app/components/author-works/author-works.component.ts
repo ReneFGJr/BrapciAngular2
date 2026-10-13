@@ -1,5 +1,9 @@
 import { CommonModule } from '@angular/common';
-import { Component, Input, computed, inject, signal } from '@angular/core';
+import { Component, Input, OnChanges, OnDestroy, SimpleChanges, computed, inject, signal } from '@angular/core';
+import { RouterLink } from '@angular/router';
+import { Subscription, forkJoin } from 'rxjs';
+import { BrapciApiService } from '../../core/services/brapci-api.service';
+import { LoadingSpinnerComponent } from '../loading-spinner/loading-spinner.component';
 import { TranslateModule } from '@ngx-translate/core';
 import { CoauthorsListComponent } from '../coauthors-list/coauthors-list.component';
 import { NetworkGraph3dComponent } from '../network-graph-3d/network-graph-3d.component';
@@ -15,6 +19,8 @@ export type AuthorWorksGroup = {
   label: string;
   items: string[];
 };
+
+type CitedThinker = { id: number | string; nome: string; total: number | string; foto?: string | null };
 
 type WorkSubTabKey = AuthorWorksGroup['key'] | 'summary';
 
@@ -61,12 +67,55 @@ export type AuthorContentTab = {
 
 @Component({
   selector: 'app-author-works',
-  imports: [CommonModule, TranslateModule, CoauthorsListComponent, NetworkGraph3dComponent, RedeCircleComponent, AuthorClustersSankeyComponent, AuthorClustersOverviewComponent],
+  imports: [CommonModule, TranslateModule, RouterLink, LoadingSpinnerComponent, CoauthorsListComponent, NetworkGraph3dComponent, RedeCircleComponent, AuthorClustersSankeyComponent, AuthorClustersOverviewComponent],
   templateUrl: './author-works.component.html',
   styleUrl: './author-works.component.scss'
 })
-export class AuthorWorksComponent {
+export class AuthorWorksComponent implements OnChanges, OnDestroy {
   private readonly basketService = inject(BasketService);
+  private readonly api = inject(BrapciApiService);
+  private citationsRequest?: Subscription;
+  private citationsLoaded = false;
+  @Input() authorId = '';
+  readonly citedThinkers = signal<CitedThinker[]>([]);
+  readonly citationsLoading = signal(false);
+  readonly citationsError = signal(false);
+
+  ngOnChanges(changes: SimpleChanges): void {
+    if (changes['authorId']) {
+      this.citationsRequest?.unsubscribe();
+      this.citationsLoaded = false;
+      this.citedThinkers.set([]);
+      this.citationsLoading.set(false);
+      this.citationsError.set(false);
+      if (this.selectedTab() === 'citationsGranted') this.loadCitations();
+    }
+  }
+
+  ngOnDestroy(): void { this.citationsRequest?.unsubscribe(); }
+
+  loadCitations(): void {
+    if (!this.authorId || this.citationsLoading() || this.citationsLoaded) return;
+    this.citationsLoading.set(true);
+    this.citationsError.set(false);
+    this.citationsRequest = forkJoin({
+      citations: this.api.get<CitedThinker[]>(`cited/author/${encodeURIComponent(this.authorId)}`),
+      thinkers: this.api.get<CitedThinker[]>('pensadores'),
+    }).subscribe({
+      next: ({ citations, thinkers }) => {
+        const photos = new Map(thinkers.map((thinker) => [String(thinker.id), thinker.foto]));
+        this.citedThinkers.set(citations.map((thinker) => ({
+          ...thinker, foto: thinker.foto || photos.get(String(thinker.id)),
+        })).sort((a, b) => (Number(b.total) || 0) - (Number(a.total) || 0)));
+        this.citationsLoaded = true;
+        this.citationsLoading.set(false);
+      },
+      error: () => {
+        this.citationsError.set(true);
+        this.citationsLoading.set(false);
+      },
+    });
+  }
 
   @Input({ required: true }) groups: AuthorWorksGroup[] = [];
   @Input() dataJour: unknown = null;
@@ -389,6 +438,7 @@ export class AuthorWorksComponent {
       tabId === 'json'
     ) {
       this.selectedTab.set(tabId);
+      if (tabId === 'citationsGranted') this.loadCitations();
     }
   }
 
