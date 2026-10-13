@@ -1,0 +1,81 @@
+:host { display: block; }
+
+.pensador-wrap {
+  min-height: calc(100vh - 70px);
+  background: linear-gradient(180deg, #f8fafc, #eef3f7);
+}
+
+.state { display: flex; justify-content: center; align-items: center; gap: 0.6rem; min-height: 14rem; }
+.back-link { color: #236c64; font-weight: 600; text-decoration: none; }
+.back-link:hover { text-decoration: underline; }
+
+.profile {
+  display: grid;
+  grid-template-columns: minmax(14rem, 22rem) 1fr;
+  gap: clamp(1.5rem, 4vw, 3.5rem);
+  padding: clamp(1rem, 3vw, 2rem);
+  border: 1px solid #dde5e8;
+  border-radius: 1rem;
+  background: #fff;
+  box-shadow: 0 8px 28px rgb(26 49 55 / 9%);
+}
+
+.portrait { width: 100%; aspect-ratio: 4 / 5; border-radius: 0.75rem; object-fit: cover; background: #e8eeef; }
+.placeholder { display: grid; place-items: center; color: #5c7777; font: 5rem Georgia, serif; background: linear-gradient(145deg, #e8f1ef, #d5e4e1); }
+.profile-content { padding-top: 0.5rem; }
+.eyebrow { color: #31726a; font-size: 0.75rem; font-weight: 700; letter-spacing: 0.14em; text-transform: uppercase; }
+h1 { color: #17252a; font-size: clamp(2rem, 5vw, 3.5rem); }
+.citation { color: #65747b; font-size: 1.1rem; }
+dl { margin: 2rem 0; }
+dl div { padding: 0.7rem 0; border-bottom: 1px solid #e5ebed; }
+dt { color: #65747b; font-size: 0.78rem; text-transform: uppercase; }
+dd { margin: 0.15rem 0 0; color: #24373c; }
+.external-links { display: flex; gap: 0.75rem; }
+.external-links a { padding: 0.5rem 0.8rem; border-radius: 0.5rem; background: #dceeea; color: #245c56; font-weight: 700; text-decoration: none; }
+
+.works {
+  padding: clamp(1rem, 3vw, 2rem);
+  border: 1px solid #dde5e8;
+  border-radius: 1rem;
+  background: #fff;
+  box-shadow: 0 8px 28px rgb(26 49 55 / 7%);
+}
+
+.works-heading {
+  display: flex;
+  align-items: end;
+  justify-content: space-between;
+  gap: 1rem;
+  margin-bottom: 1.25rem;
+}
+
+.works-heading h2 { margin: 0; color: #17252a; font-size: clamp(1.4rem, 3vw, 2rem); }
+.works-total { min-width: 2.5rem; padding: 0.4rem 0.7rem; border-radius: 999px; background: #dceeea; color: #245c56; font-weight: 700; text-align: center; }
+.works-list { display: grid; gap: 0.8rem; }
+.work-card { padding: 1rem; border: 1px solid #e0e7e9; border-radius: 0.75rem; background: #fbfcfc; }
+.work-meta, .work-footer { display: flex; flex-wrap: wrap; justify-content: space-between; gap: 0.5rem 1rem; color: #718087; font-size: 0.78rem; }
+.year { padding: 0.15rem 0.5rem; border-radius: 999px; background: #e8efef; color: #41595d; font-weight: 700; }
+.work-card h3 { margin: 0.55rem 0; color: #25383d; font-size: 1rem; line-height: 1.5; }
+.authors { margin: 0 0 0.75rem; color: #65747b; font-size: 0.88rem; }
+.work-footer a { color: #236c64; font-weight: 600; overflow-wrap: anywhere; }
+.empty-works { padding: 1.5rem; border-radius: 0.75rem; background: #f3f6f7; color: #65747b; text-align: center; }
+
+@media (max-width: 767.98px) {
+  .profile { grid-template-columns: 1fr; }
+  .profile > div:first-child { width: min(100%, 20rem); margin-inline: auto; }
+}
+
+:host-context(body.theme-master.theme-dark) .pensador-wrap { background: linear-gradient(180deg, #181d1f, #20282b); }
+:host-context(body.theme-master.theme-dark) .profile { border-color: #3b484b; background: #273033; }
+:host-context(body.theme-master.theme-dark) .works { border-color: #3b484b; background: #273033; }
+:host-context(body.theme-master.theme-dark) .work-card { border-color: #3b484b; background: #20282b; }
+:host-context(body.theme-master.theme-dark) h1,
+:host-context(body.theme-master.theme-dark) dd,
+:host-context(body.theme-master.theme-dark) .works-heading h2,
+:host-context(body.theme-master.theme-dark) .work-card h3 { color: #edf4f3; }
+:host-context(body.theme-master.theme-dark) .citation,
+:host-context(body.theme-master.theme-dark) dt,
+:host-context(body.theme-master.theme-dark) .authors,
+:host-context(body.theme-master.theme-dark) .work-meta,
+:host-context(body.theme-master.theme-dark) .work-footer { color: #aebcbe; }
+:host-context(body.theme-master.theme-dark) .empty-works { background: #20282b; color: #aebcbe; }

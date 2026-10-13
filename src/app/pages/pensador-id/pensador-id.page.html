@@ -1,0 +1,95 @@
+<section class="pensador-wrap py-4">
+  <div class="container">
+    <app-breadcrumbs></app-breadcrumbs>
+
+    @if (loading()) {
+      <div class="state" role="status">
+        <span class="spinner-border spinner-border-sm" aria-hidden="true"></span>
+        Carregando pensador...
+      </div>
+    } @else if (error()) {
+      <div class="alert alert-warning">{{ error() }}</div>
+      <a class="btn btn-outline-primary" routerLink="/pensadores">Voltar aos pensadores</a>
+    } @else if (pensador(); as item) {
+      <a class="back-link" routerLink="/pensadores">
+        <i class="bi bi-arrow-left" aria-hidden="true"></i> Todos os pensadores
+      </a>
+
+      <article class="profile mt-3">
+        <div>
+          @if (item.foto) {
+            <img class="portrait" [src]="item.foto" [alt]="'Retrato de ' + item.nome" />
+          } @else {
+            <div class="portrait placeholder" aria-hidden="true">{{ item.nome.charAt(0).toUpperCase() }}</div>
+          }
+        </div>
+        <div class="profile-content">
+          <p class="eyebrow mb-1">Pensador</p>
+          <h1>{{ item.nome }}</h1>
+          @if (item.nome_citacao) {
+            <p class="citation">{{ item.nome_citacao }}</p>
+          }
+
+          @if (item.dados; as dados) {
+            <dl>
+              @if (dados['data_nascimento']) { <div><dt>Nascimento</dt><dd>{{ dados['data_nascimento'] }}</dd></div> }
+              @if (dados['data_falecimento']) { <div><dt>Falecimento</dt><dd>{{ dados['data_falecimento'] }}</dd></div> }
+              @if (dados['local_nascimento']) { <div><dt>Local de nascimento</dt><dd>{{ dados['local_nascimento'] }}</dd></div> }
+              @if (dados['pais_nascimento']) { <div><dt>País</dt><dd>{{ dados['pais_nascimento'] }}</dd></div> }
+            </dl>
+          }
+
+          <div class="external-links">
+            @if (item.link_wikipedia) {
+              <a [href]="item.link_wikipedia" target="_blank" rel="noopener noreferrer">Wikipédia</a>
+            }
+            @if (item.link_wikidata) {
+              <a [href]="item.link_wikidata" target="_blank" rel="noopener noreferrer">Wikidata</a>
+            }
+          </div>
+        </div>
+      </article>
+
+      <section class="works mt-4" aria-labelledby="related-works-title">
+        <div class="works-heading">
+          <div>
+            <p class="eyebrow mb-1">Produção relacionada</p>
+            <h2 id="related-works-title">Obras relacionadas</h2>
+          </div>
+          <span class="works-total">{{ item.obras?.length ?? 0 }}</span>
+        </div>
+
+        @if (item.obras?.length) {
+          <div class="works-list">
+            @for (obra of item.obras; track obra.id_ca) {
+              <article class="work-card">
+                <div class="work-meta">
+                  <span>Referência #{{ obra.id_ca }}</span>
+                  @if (obra.ca_year) {
+                    <span class="year">{{ obra.ca_year }}</span>
+                  }
+                </div>
+                <h3>{{ obra.ca_text || 'Referência sem título cadastrado.' }}</h3>
+                @if (obra.ca_authors) {
+                  <p class="authors">{{ obra.ca_authors }}</p>
+                }
+                <div class="work-footer">
+                  @if (obra.ca_doi) {
+                    <a [href]="doiUrl(obra.ca_doi)" target="_blank" rel="noopener noreferrer">
+                      DOI: {{ obra.ca_doi }}
+                    </a>
+                  }
+                  @if (obra.cited_by !== null && obra.cited_by !== undefined) {
+                    <span>Citado por {{ obra.cited_by }}</span>
+                  }
+                </div>
+              </article>
+            }
+          </div>
+        } @else {
+          <p class="empty-works mb-0">Nenhuma obra relacionada foi cadastrada para este pensador.</p>
+        }
+      </section>
+    }
+  </div>
+</section>

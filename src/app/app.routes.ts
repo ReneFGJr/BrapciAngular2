@@ -68,6 +68,18 @@ export const routes: Routes = [
     loadComponent: () => import('./pages/eventos/eventos.page').then((m) => m.EventosPage),
   },
   {
+    path: 'pensadores',
+    title: 'Pensadores | Brapci',
+    loadComponent: () =>
+      import('./pages/pensadores/pensadores.page').then((m) => m.PensadoresPage),
+  },
+  {
+    path: 'pensadores/:id',
+    title: 'Pensador | Brapci',
+    loadComponent: () =>
+      import('./pages/pensador-id/pensador-id.page').then((m) => m.PensadorIdPage),
+  },
+  {
     path: 'livros',
     loadComponent: () => import('./pages/livros/livros.page').then((m) => m.LivrosPage),
   },

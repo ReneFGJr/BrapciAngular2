@@ -1,0 +1,7 @@
+{
+  "version": 3,
+  "sources": ["src/app/pages/error-501/error-501.page.scss"],
+  "sourcesContent": [":host { display: block; }\r\n.maintenance {\r\n  display: grid;\r\n  grid-template-columns: minmax(0, 3fr) minmax(0, 2fr);\r\n  align-items: center;\r\n  gap: clamp(2rem, 4vw, 4rem);\r\n  padding-top: 3rem;\r\n  padding-bottom: 3rem;\r\n}\r\nh1 {\r\n  color: #000;\r\n  font-size: clamp(2.5rem, 5vw, 4rem);\r\n  font-weight: 700;\r\n}\r\nh2 {\r\n  font-size: clamp(1.4rem, 2.5vw, 1.9rem);\r\n  margin-bottom: 2rem;\r\n}\r\np {\r\n  font-size: clamp(1.125rem, 1rem + 0.4vw, 1.375rem);\r\n  line-height: 1.75;\r\n}\r\n.maintenance-image img { display: block; width: 100%; height: auto; }\r\n@media (max-width: 767.98px) {\r\n  .maintenance { grid-template-columns: minmax(0, 1fr); padding-top: 2rem; }\r\n  .maintenance-image { width: min(100%, 28rem); margin-inline: auto; }\r\n}\r\n\r\n:host-context(body.theme-dark) h1 {\r\n  color: #fff;\r\n}\r\n"],
+  "mappings": ";AAAA;AAAQ,WAAA;;AACR,CAAA;AACE,WAAA;AACA,yBAAA,OAAA,CAAA,EAAA,KAAA,OAAA,CAAA,EAAA;AACA,eAAA;AACA,OAAA,MAAA,IAAA,EAAA,GAAA,EAAA;AACA,eAAA;AACA,kBAAA;;AAEF;AACE,SAAA;AACA,aAAA,MAAA,MAAA,EAAA,GAAA,EAAA;AACA,eAAA;;AAEF;AACE,aAAA,MAAA,MAAA,EAAA,KAAA,EAAA;AACA,iBAAA;;AAEF;AACE,aAAA,MAAA,QAAA,EAAA,KAAA,EAAA,KAAA,EAAA;AACA,eAAA;;AAEF,CAAA,kBAAA;AAAyB,WAAA;AAAgB,SAAA;AAAa,UAAA;;AACtD,OAAA,CAAA,SAAA,EAAA;AACE,GAvBF;AAuBiB,2BAAA,OAAA,CAAA,EAAA;AAAuC,iBAAA;;AACtD,GAHF;AAGuB,WAAA,IAAA,IAAA,EAAA;AAAyB,mBAAA;;;AAGhD,cAAA,IAAA,CAAA,YAAA;AACE,SAAA;;",
+  "names": []
+}

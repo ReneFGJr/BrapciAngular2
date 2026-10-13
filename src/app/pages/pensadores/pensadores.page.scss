@@ -1,0 +1,264 @@
+:host {
+  display: block;
+}
+
+.pensadores-wrap {
+  min-height: calc(100vh - 70px);
+  background: linear-gradient(180deg, #f8fafc 0%, #eef3f7 100%);
+}
+
+.page-heading {
+  display: flex;
+  align-items: end;
+  justify-content: space-between;
+  gap: 1rem;
+}
+
+.eyebrow {
+  color: #31726a;
+  font-size: 0.75rem;
+  font-weight: 700;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+}
+
+h1 {
+  color: #17252a;
+  font-size: clamp(1.8rem, 3vw, 2.5rem);
+  font-weight: 700;
+}
+
+.subtitle {
+  color: #65747b;
+}
+
+.total {
+  min-width: 2.5rem;
+  padding: 0.45rem 0.75rem;
+  border-radius: 999px;
+  background: #dceeea;
+  color: #245c56;
+  font-weight: 700;
+  text-align: center;
+}
+
+.search-box {
+  display: flex;
+  align-items: center;
+  width: min(100%, 42rem);
+  min-height: 3rem;
+  padding: 0 0.9rem;
+  border: 1px solid #ccd8dc;
+  border-radius: 0.75rem;
+  background: #fff;
+  box-shadow: 0 3px 12px rgb(26 49 55 / 6%);
+  color: #687a80;
+  transition: border-color 160ms ease, box-shadow 160ms ease;
+}
+
+.search-box:focus-within {
+  border-color: #438a81;
+  box-shadow: 0 0 0 0.2rem rgb(67 138 129 / 16%);
+}
+
+.search-box input {
+  flex: 1;
+  min-width: 0;
+  padding: 0.7rem;
+  border: 0;
+  outline: 0;
+  background: transparent;
+  color: #1e3035;
+}
+
+.search-box input::placeholder {
+  color: #849298;
+}
+
+.search-box button {
+  display: grid;
+  place-items: center;
+  width: 2rem;
+  height: 2rem;
+  border: 0;
+  border-radius: 50%;
+  background: transparent;
+  color: #64757b;
+}
+
+.search-box button:hover {
+  background: #e7efee;
+  color: #245c56;
+}
+
+.pensadores-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 1rem;
+}
+
+.pensador-card {
+  min-width: 0;
+  overflow: hidden;
+  border: 1px solid #dde5e8;
+  border-radius: 0.75rem;
+  background: #fff;
+  box-shadow: 0 3px 12px rgb(26 49 55 / 7%);
+  transition: box-shadow 180ms ease, transform 180ms ease;
+}
+
+.pensador-card:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 8px 22px rgb(26 49 55 / 14%);
+}
+
+.pensador-foto,
+.pensador-placeholder {
+  display: block;
+  width: 100%;
+  aspect-ratio: 4 / 5;
+  background: #e8eeef;
+}
+
+.profile-media {
+  display: block;
+  color: inherit;
+  text-decoration: none;
+}
+
+.pensador-foto {
+  object-fit: cover;
+}
+
+.pensador-placeholder {
+  display: grid;
+  place-items: center;
+  color: #5c7777;
+  font-family: Georgia, serif;
+  font-size: clamp(2.5rem, 5vw, 4rem);
+  background: linear-gradient(145deg, #e8f1ef, #d5e4e1);
+}
+
+.card-body {
+  padding: 0.85rem;
+}
+
+.card-body h2 {
+  margin: 0;
+  color: #1e3035;
+  font-size: 1rem;
+  font-weight: 700;
+  line-height: 1.3;
+  overflow-wrap: anywhere;
+}
+
+.card-body h2 a {
+  color: inherit;
+  text-decoration: none;
+}
+
+.card-body h2 a:hover {
+  color: #236c64;
+  text-decoration: underline;
+}
+
+.citation {
+  margin-top: 0.35rem;
+  color: #718087;
+  font-size: 0.8rem;
+  line-height: 1.35;
+}
+
+.links {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.35rem 0.7rem;
+  margin-top: 0.75rem;
+  font-size: 0.78rem;
+}
+
+.links a {
+  color: #236c64;
+  font-weight: 600;
+  text-decoration: none;
+}
+
+.links a:hover {
+  text-decoration: underline;
+}
+
+.profile-link {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.35rem;
+  margin-top: 0.8rem;
+  color: #236c64;
+  font-size: 0.78rem;
+  font-weight: 700;
+  text-decoration: none;
+}
+
+.profile-link:hover {
+  text-decoration: underline;
+}
+
+.state {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 0.6rem;
+  min-height: 12rem;
+  color: #65747b;
+}
+
+@media (min-width: 576px) {
+  .pensadores-grid {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+  }
+}
+
+@media (min-width: 992px) {
+  .pensadores-grid {
+    grid-template-columns: repeat(6, minmax(0, 1fr));
+  }
+}
+
+:host-context(body.theme-master.theme-dark) .pensadores-wrap {
+  background: linear-gradient(180deg, #181d1f 0%, #20282b 100%);
+}
+
+:host-context(body.theme-master.theme-dark) h1,
+:host-context(body.theme-master.theme-dark) .card-body h2 {
+  color: #edf4f3;
+}
+
+:host-context(body.theme-master.theme-dark) .subtitle,
+:host-context(body.theme-master.theme-dark) .citation,
+:host-context(body.theme-master.theme-dark) .state {
+  color: #aebcbe;
+}
+
+:host-context(body.theme-master.theme-dark) .pensador-card {
+  border-color: #3b484b;
+  background: #273033;
+}
+
+:host-context(body.theme-master.theme-dark) .search-box {
+  border-color: #465457;
+  background: #273033;
+  color: #aebcbe;
+}
+
+:host-context(body.theme-master.theme-dark) .search-box input {
+  color: #edf4f3;
+}
+
+:host-context(body.theme-master.theme-dark) .search-box button:hover {
+  background: #354244;
+  color: #b9d9d4;
+}
+
+:host-context(body.theme-master.theme-dark) .pensador-placeholder {
+  color: #a6c7c2;
+  background: linear-gradient(145deg, #344441, #263532);
+}

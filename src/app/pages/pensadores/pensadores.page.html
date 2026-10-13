@@ -1,0 +1,106 @@
+<section class="pensadores-wrap py-4" aria-labelledby="pensadores-title">
+  <div class="container">
+    <app-breadcrumbs></app-breadcrumbs>
+
+    <div class="page-heading mb-4">
+      <div>
+        <p class="eyebrow mb-1">Brapci</p>
+        <h1 id="pensadores-title" class="mb-1">Pensadores</h1>
+        <p class="subtitle mb-0">Autores que ajudam a construir o pensamento científico.</p>
+      </div>
+      @if (hasResults()) {
+        <span class="total" aria-label="Quantidade de pensadores exibidos">
+          {{ filteredPensadores().length }}
+        </span>
+      }
+    </div>
+
+    @if (loading()) {
+      <div class="state" role="status">
+        <span class="spinner-border spinner-border-sm" aria-hidden="true"></span>
+        Carregando pensadores...
+      </div>
+    } @else if (error()) {
+      <div class="alert alert-danger d-flex justify-content-between align-items-center" role="alert">
+        <span>{{ error() }}</span>
+        <button type="button" class="btn btn-sm btn-outline-danger" (click)="loadPensadores()">
+          Tentar novamente
+        </button>
+      </div>
+    } @else if (!hasResults()) {
+      <div class="state">Nenhum pensador encontrado.</div>
+    } @else {
+      <div class="search-box mb-4" role="search">
+        <i class="bi bi-search" aria-hidden="true"></i>
+        <label class="visually-hidden" for="pensadores-search">Pesquisar pensadores</label>
+        <input
+          id="pensadores-search"
+          type="search"
+          [value]="searchTerm()"
+          (input)="updateSearch($event)"
+          placeholder="Pesquisar por nome ou nome de citação"
+          autocomplete="off"
+        />
+        @if (searchTerm()) {
+          <button type="button" (click)="clearSearch()" aria-label="Limpar pesquisa">
+            <i class="bi bi-x-lg" aria-hidden="true"></i>
+          </button>
+        }
+      </div>
+
+      @if (filteredPensadores().length === 0) {
+        <div class="state" aria-live="polite">
+          Nenhum pensador encontrado para “{{ searchTerm() }}”.
+        </div>
+      } @else {
+        <div class="pensadores-grid">
+          @for (pensador of filteredPensadores(); track pensador.id) {
+            <article class="pensador-card">
+            <a class="profile-media" [routerLink]="['/pensadores', pensador.id]" [attr.aria-label]="'Ver perfil de ' + pensador.nome">
+            @if (pensador.foto) {
+              <img
+                class="pensador-foto"
+                [src]="pensador.foto"
+                [alt]="'Retrato de ' + pensador.nome"
+                loading="lazy"
+                (error)="hideBrokenImage($event)"
+              />
+            } @else {
+              <div class="pensador-placeholder" aria-hidden="true">
+                {{ pensador.nome.charAt(0).toUpperCase() }}
+              </div>
+            }
+            </a>
+
+            <div class="card-body">
+              <h2>
+                <a [routerLink]="['/pensadores', pensador.id]">{{ pensador.nome }}</a>
+              </h2>
+              @if (pensador.nome_citacao) {
+                <p class="citation mb-0">{{ pensador.nome_citacao }}</p>
+              }
+              @if (pensador.link_wikipedia || pensador.link_wikidata) {
+                <div class="links" aria-label="Fontes externas">
+                  @if (pensador.link_wikipedia) {
+                    <a [href]="pensador.link_wikipedia" target="_blank" rel="noopener noreferrer">
+                      Wikipédia
+                    </a>
+                  }
+                  @if (pensador.link_wikidata) {
+                    <a [href]="pensador.link_wikidata" target="_blank" rel="noopener noreferrer">
+                      Wikidata
+                    </a>
+                  }
+                </div>
+              }
+              <a class="profile-link" [routerLink]="['/pensadores', pensador.id]">
+                Ver perfil <i class="bi bi-arrow-right" aria-hidden="true"></i>
+              </a>
+            </div>
+            </article>
+          }
+        </div>
+      }
+    }
+  </div>
+</section>
