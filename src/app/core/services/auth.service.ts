@@ -9,6 +9,11 @@ type StoredAuthSession = {
   expiresAt: number;
 };
 
+export type RegisterResult = {
+  success: boolean;
+  message: string;
+};
+
 @Injectable({ providedIn: 'root' })
 export class AuthService {
   private readonly http = inject(HttpClient);
@@ -273,13 +278,35 @@ export class AuthService {
     );
   }
 
-  register(payload: RegisterPayload): Observable<User | null> {
-    return this.http.post<AuthResponse>(this.buildAuthUrl('/auth/register'), payload).pipe(
-      map((response) => response.user),
-      tap((user) => {
-        this.persistUser(user, true);
+  register(payload: RegisterPayload): Observable<RegisterResult> {
+    const email = payload.email.trim().toLocaleLowerCase('pt-BR');
+
+    return this.legacyPost('socials/signup', {
+      signup_name: payload.name.trim(),
+      signup_email: email,
+      signup_institution: ''
+    }).pipe(
+      map((response) => {
+        const result = response && typeof response === 'object'
+          ? response as Record<string, unknown>
+          : null;
+        const success = String(result?.['status'] ?? '') === '200';
+        const message = String(
+          result?.[success ? 'detail' : 'message']
+            ?? result?.['message']
+            ?? (success ? 'Cadastro realizado com sucesso.' : 'Não foi possível cadastrar.')
+        );
+        return { success, message };
       }),
-      catchError(() => of(null))
+      catchError((error: unknown) => {
+        const body = error instanceof HttpErrorResponse && error.error && typeof error.error === 'object'
+          ? error.error as Record<string, unknown>
+          : null;
+        return of({
+          success: false,
+          message: String(body?.['message'] ?? 'Não foi possível cadastrar. Verifique os dados e tente novamente.')
+        });
+      })
     );
   }
 

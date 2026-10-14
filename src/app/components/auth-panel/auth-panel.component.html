@@ -1,4 +1,17 @@
 @if (!currentUser()) {
+  @if (mode() === 'register') {
+    <h2 id="auth-title" class="h4 mb-1">Criar conta</h2>
+    <p class="signin-card-subtitle mb-4">
+      Informe seus dados. Você receberá por e-mail as instruções para definir sua senha.
+    </p>
+  } @else if (mode() === 'forgot') {
+    <h2 id="auth-title" class="h4 mb-1">Recuperar senha</h2>
+    <p class="signin-card-subtitle mb-4">Informe seu e-mail para receber as instruções.</p>
+  } @else {
+    <h2 id="auth-title" class="h4 mb-1">{{ 'auth.title' | translate }}</h2>
+    <p class="signin-card-subtitle mb-4">{{ 'signin.cardSubtitle' | translate }}</p>
+  }
+
   @if (mode() === 'login') {
     <form (ngSubmit)="login()" #loginForm="ngForm" class="auth-form" novalidate>
       <label for="username" class="form-label">{{ 'auth.username' | translate }}</label>
@@ -34,32 +47,26 @@
   }
 
   @if (mode() === 'register') {
-    <form (ngSubmit)="register()" #registerForm="ngForm" class="auth-form" novalidate>
+    <form
+      (ngSubmit)="register()"
+      #registerForm="ngForm"
+      class="auth-form"
+      [class.auth-form--loading]="loading()"
+      [attr.aria-busy]="loading()"
+      novalidate
+    >
       <label for="registerName" class="form-label">{{ 'auth.fullName' | translate }}</label>
-      <input id="registerName" name="registerName" required [(ngModel)]="registerPayload.name" class="form-control" />
-
-      <label for="registerUsername" class="form-label">{{ 'auth.username' | translate }}</label>
-      <input id="registerUsername" name="registerUsername" required [(ngModel)]="registerPayload.username" class="form-control" />
+      <input id="registerName" name="registerName" required [disabled]="loading()" [(ngModel)]="registerPayload.name" class="form-control" />
 
       <label for="registerEmail" class="form-label">{{ 'auth.email' | translate }}</label>
       <input
         id="registerEmail"
         name="registerEmail"
         required
+        [disabled]="loading()"
         type="email"
         [(ngModel)]="registerPayload.email"
         autocomplete="email"
-        class="form-control"
-      />
-
-      <label for="registerPassword" class="form-label">{{ 'auth.password' | translate }}</label>
-      <input
-        id="registerPassword"
-        name="registerPassword"
-        required
-        type="password"
-        [(ngModel)]="registerPayload.password"
-        autocomplete="new-password"
         class="form-control"
       />
 
@@ -68,9 +75,16 @@
       </button>
 
       <div class="auth-links auth-links--single">
-        <button type="button" class="btn btn-link p-0" (click)="switchMode('login')">{{ 'auth.backToLogin' | translate }}</button>
+        <button type="button" class="btn btn-link p-0" [disabled]="loading()" (click)="switchMode('login')">{{ 'auth.backToLogin' | translate }}</button>
       </div>
     </form>
+
+    @if (loading()) {
+      <div class="registration-loading" aria-live="polite">
+        <app-loading-spinner></app-loading-spinner>
+        <p class="mb-0 text-center">Criando sua conta e enviando as instruções por e-mail...</p>
+      </div>
+    }
   }
 
   @if (mode() === 'forgot') {
@@ -101,7 +115,7 @@
   }
 
   @if (successMessage()) {
-    <p class="success mt-3 mb-0">{{ successMessage() }}</p>
+    <p class="success mt-3 mb-0" role="status" aria-live="polite">{{ successMessage() }}</p>
   }
 } @else {
   <p class="mb-3">

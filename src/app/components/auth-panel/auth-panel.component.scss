@@ -3,6 +3,25 @@
   gap: 0.6rem;
 }
 
+.auth-form--loading {
+  opacity: 0.55;
+  pointer-events: none;
+}
+
+.registration-loading {
+  margin-top: 1rem;
+  padding: 0.75rem 1rem 1rem;
+  border: 1px solid color-mix(in srgb, var(--theme-hint) 35%, transparent);
+  border-radius: 0.75rem;
+  background: color-mix(in srgb, var(--theme-surface) 92%, var(--theme-primary));
+  color: var(--theme-ink);
+}
+
+.registration-loading app-loading-spinner {
+  display: block;
+  margin-bottom: -0.75rem;
+}
+
 .auth-form .form-label {
   color: var(--theme-ink);
 }

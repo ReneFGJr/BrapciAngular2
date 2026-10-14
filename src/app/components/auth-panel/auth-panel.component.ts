@@ -6,12 +6,13 @@ import { toSignal } from '@angular/core/rxjs-interop';
 import { TranslateModule, TranslateService } from '@ngx-translate/core';
 import { AuthService } from '../../core/services/auth.service';
 import { ForgotPasswordPayload, LoginPayload, RegisterPayload } from '../../core/models/user.model';
+import { LoadingSpinnerComponent } from '../loading-spinner/loading-spinner.component';
 
 type AuthMode = 'login' | 'register' | 'forgot';
 
 @Component({
   selector: 'app-auth-panel',
-  imports: [CommonModule, FormsModule, TranslateModule],
+  imports: [CommonModule, FormsModule, TranslateModule, LoadingSpinnerComponent],
   templateUrl: './auth-panel.component.html',
   styleUrl: './auth-panel.component.scss'
 })
@@ -34,9 +35,7 @@ export class AuthPanelComponent {
 
   readonly registerPayload: RegisterPayload = {
     name: '',
-    username: '',
-    email: '',
-    password: ''
+    email: ''
   };
 
   readonly forgotPasswordPayload: ForgotPasswordPayload = {
@@ -83,17 +82,22 @@ export class AuthPanelComponent {
     this.errorMessage.set('');
     this.successMessage.set('');
 
-    this.authService.register(this.registerPayload).subscribe((user) => {
+    this.authService.register(this.registerPayload).subscribe((result) => {
       this.loading.set(false);
 
-      if (!user) {
-        this.errorMessage.set(this.translate.instant('auth.messages.registerFailed'));
+      if (!result.success) {
+        this.errorMessage.set(result.message);
         return;
       }
 
-      this.successMessage.set(this.translate.instant('auth.messages.registerSuccess'));
-      this.registerPayload.password = '';
-      this.router.navigate(['/perfil']);
+      const registeredEmail = this.registerPayload.email.trim();
+      this.mode.set('login');
+      this.successMessage.set(
+        'Cadastro realizado com sucesso. Verifique seu e-mail e siga as instruções para definir sua senha.'
+      );
+      this.loginPayload.user = registeredEmail;
+      this.registerPayload.name = '';
+      this.registerPayload.email = '';
     });
   }
 
