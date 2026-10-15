@@ -60,6 +60,7 @@
   <section class="admin-modal__panel">
     <header><div><span class="admin-edit__eyebrow">{{ state.draft.c_class }}</span><h2>{{ (state.dataIndex === null ? 'adminEdit.addTitle' : 'adminEdit.editTitle') | translate }}</h2></div><button type="button" class="btn-close" [attr.aria-label]="'adminEdit.close' | translate" (click)="closeEditor()"></button></header>
     <div class="admin-modal__body">
+      <div *ngIf="error()" class="alert alert-danger" role="alert">{{ error() | translate }}</div>
       <app-admin-image-editor *ngIf="state.mode === 'image' || state.mode === 'file'; else valueEditor" [mode]="state.mode === 'image' ? 'image' : 'file'" [draft]="state.draft" (fileChange)="selectFile($event)" />
       <ng-template #valueEditor>
         <app-admin-literal-editor *ngIf="isLiteralDraft(state.draft); else conceptEditor" [draft]="state.draft" (change)="updateDraft($event.field, $event.value)" />

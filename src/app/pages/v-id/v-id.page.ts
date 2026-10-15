@@ -23,6 +23,7 @@ import type { NetworkGraph } from '../../core/models/network.model';
 import { BookPanelComponent } from '../../components/book-panel/book-panel.component';
 import { ViewCorporateBodyComponent } from '../../components/view-corporate-body/view-corporate-body.component';
 import { API_CONFIG } from '../../core/tokens/api-config.token';
+import { ViewCanceledComponent } from '../../components/view-canceled/view-canceled.component';
 
 type AuthorLink = {
   type: 'lattes' | 'orcid' | 'openalex' | 'googlescholar';
@@ -46,6 +47,7 @@ type AuthorLink = {
     ViewEventComponent,
     BookPanelComponent,
     ViewCorporateBodyComponent,
+    ViewCanceledComponent,
   ],
   templateUrl: './v-id.page.html',
   styleUrl: './v-id.page.scss',
@@ -87,6 +89,9 @@ export class VIdPage {
   });
 
   readonly isPerson = computed(() => this.classe().toLowerCase() === 'person');
+  readonly isCanceled = computed(() =>
+    ['canceled', 'cancelled', 'cancelad', 'cancelado'].includes(this.classe().trim().toLowerCase()),
+  );
   readonly isIssue = computed(() => this.classe().toLowerCase() === 'issue');
   readonly isArticle = computed(() => this.classe().toLowerCase() === 'article');
   readonly isBook = computed(() => this.classe().toLowerCase() === 'book');

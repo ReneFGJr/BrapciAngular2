@@ -276,6 +276,21 @@ h1 {
 	background: var(--theme-footer);
 }
 
+.footer-logos {
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	flex-wrap: wrap;
+	gap: 1rem;
+}
+
+.footer-logos img {
+	width: auto;
+	height: 2.5rem;
+	max-width: 7rem;
+	object-fit: contain;
+}
+
 .footer-social {
 	display: inline-flex;
 	align-items: center;
@@ -313,7 +328,7 @@ h1 {
 }
 
 .footer-session {
-	font-size: 0.72rem;
+	font-size: 0.468rem;
 	letter-spacing: 0.01em;
 }
 

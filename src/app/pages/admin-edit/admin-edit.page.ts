@@ -411,16 +411,26 @@ export class AdminEditPage {
       return;
     }
     const file = this.selectedFile();
+    if (state.mode === 'file' && !file) {
+      this.error.set('adminEdit.errors.upload');
+      return;
+    }
     if (state.mode === 'file' && file) {
       const payload = new FormData();
       payload.append('file', file, file.name);
       payload.append('property', 'hasFileStorage');
+      this.error.set('');
       this.uploading.set(true);
       this.api.post<unknown>(`upload/pdf/${encodeURIComponent(this.id())}`, payload)
         .pipe(takeUntilDestroyed(this.destroyRef))
         .subscribe({
-          next: () => {
+          next: (response) => {
             this.uploading.set(false);
+            const result = response && typeof response === 'object' ? response as JsonRecord : {};
+            if (String(result['status']) !== '200') {
+              this.error.set('adminEdit.errors.upload');
+              return;
+            }
             this.closeEditor();
             this.refreshData();
           },

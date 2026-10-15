@@ -1,58 +1,19 @@
 <div class="markdown-wrapper">
   <div class="markdown-toolbar">
-    <button
-      type="button"
-      class="markdown-process-btn"
-      (click)="onProcessFullText()"
-      aria-label="Processar texto completo"
-      title="Processar texto completo"
-    >
-      <span aria-hidden="true">&#9881;</span>
-    </button>
+    @if (processingUrl()) {
+      <a
+        class="markdown-process-btn"
+        [href]="processingUrl()"
+        target="_blank"
+        rel="noopener noreferrer"
+        (click)="onProcessFullText()"
+        aria-label="Processar texto completo (NLM) ? abre em nova aba"
+        title="Processar texto completo (NLM) ? abre em nova aba"
+      >
+        <span aria-hidden="true">&#9881;</span>
+      </a>
+    }
   </div>
-
-  @if (panelOpen()) {
-    <section class="markdown-panel-overlay" role="dialog" aria-label="Painel de processamento" aria-modal="true">
-      <div class="markdown-panel-card">
-        <header class="markdown-panel-header">
-          <strong>Processar texto completo (NLM)</strong>
-          <button
-            type="button"
-            class="markdown-panel-close"
-            (click)="closePanel()"
-            aria-label="Fechar painel"
-            title="Fechar painel"
-          >
-            <span aria-hidden="true">&#10005;</span>
-          </button>
-        </header>
-
-        @if (iframeUrl()) {
-          <div class="markdown-panel-content" [attr.aria-busy]="iframeLoading()">
-            @if (iframeLoading()) {
-              <div class="markdown-panel-loading" role="status" aria-live="polite">
-                <span class="markdown-loading-image">
-                  <img src="assets/img/loading.svg" width="64" height="64" alt="" aria-hidden="true" />
-                </span>
-                <p class="mb-0">Carregando ....</p>
-              </div>
-            }
-            <iframe
-              class="markdown-panel-iframe"
-              [src]="iframeSafeUrl()"
-              title="Ferramenta NLP de texto completo"
-              loading="eager"
-              (load)="iframeLoading.set(false)"
-              [style.visibility]="iframeLoading() ? 'hidden' : 'visible'"
-              referrerpolicy="no-referrer"
-            ></iframe>
-          </div>
-        } @else {
-          <p class="markdown-panel-empty mb-0">ID do artigo indisponível para processar.</p>
-        }
-      </div>
-    </section>
-  }
 
   @if (!markdownText().trim()) {
     <p class="markdown-empty">Sem conteúdo markdown disponível.</p>

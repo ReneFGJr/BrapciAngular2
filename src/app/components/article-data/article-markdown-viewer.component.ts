@@ -1,6 +1,5 @@
 import { CommonModule } from '@angular/common';
-import { Component, EventEmitter, Input, Output, computed, inject, signal } from '@angular/core';
-import { DomSanitizer, SafeResourceUrl } from '@angular/platform-browser';
+import { Component, EventEmitter, Input, Output, computed, signal } from '@angular/core';
 
 @Component({
   selector: 'app-article-markdown-viewer',
@@ -10,8 +9,6 @@ import { DomSanitizer, SafeResourceUrl } from '@angular/platform-browser';
   styleUrl: './article-markdown-viewer.component.scss',
 })
 export class ArticleMarkdownViewerComponent {
-  private readonly sanitizer = inject(DomSanitizer);
-
   @Input()
   set markdown(value: string) {
     this.markdownText.set(typeof value === 'string' ? value : '');
@@ -22,28 +19,15 @@ export class ArticleMarkdownViewerComponent {
   @Output() readonly processFullText = new EventEmitter<void>();
 
   readonly markdownText = signal('');
-  readonly panelOpen = signal(false);
-  readonly iframeLoading = signal(false);
-  readonly iframeUrl = computed(() => {
-    const rawId = this.articleId;
-    const id = rawId === null || rawId === undefined ? '' : String(rawId).trim();
-    return id ? `https://cip.brapci.inf.br/tools/nlp/fulltext/${id}` : '';
-  });
-  readonly iframeSafeUrl = computed<SafeResourceUrl | null>(() => {
-    const url = this.iframeUrl();
-    return url ? this.sanitizer.bypassSecurityTrustResourceUrl(url) : null;
-  });
   readonly renderedHtml = computed(() => this.renderMarkdown(this.markdownText()));
 
-  onProcessFullText(): void {
-    this.iframeLoading.set(!!this.iframeUrl());
-    this.panelOpen.set(true);
-    this.processFullText.emit();
+  processingUrl(): string {
+    const id = String(this.articleId ?? '').trim();
+    return id ? `https://cip.brapci.inf.br/tools/nlp/fulltext/${encodeURIComponent(id)}` : '';
   }
 
-  closePanel(): void {
-    this.panelOpen.set(false);
-    this.iframeLoading.set(false);
+  onProcessFullText(): void {
+    this.processFullText.emit();
   }
 
   private renderMarkdown(markdown: string): string {

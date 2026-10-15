@@ -32,7 +32,9 @@
             <img [src]="journalBannerUrl()" [alt]="journalBannerAlt()" />
           </figure>
         }
-        @if (isArticle()) {
+        @if (isCanceled()) {
+          <app-view-canceled></app-view-canceled>
+        } @else if (isArticle()) {
           <app-article-gadget
             class="mb-4 d-block"
             [data]="response()"

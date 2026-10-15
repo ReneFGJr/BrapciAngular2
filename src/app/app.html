@@ -221,10 +221,11 @@
 <footer class="footer mt-auto py-3 border-top">
   <div class="container d-flex flex-column flex-md-row justify-content-between align-items-center gap-2">
     <div class="footer-meta text-center text-md-start">
-      <small class="text-muted">{{ 'app.title' | translate }} © 2026</small>
-      @if (currentUser()) {
-        <small class="text-muted footer-session">{{ 'footer.session' | translate }}: {{ sessionUserLabel() }}</small>
-      }
+      <div class="footer-logos">
+        <img [src]="isDarkMode() ? 'assets/logos/ppgcin_pb.png' : 'assets/logos/ppgcin.png'" alt="PPGCIN" />
+        <img [src]="isDarkMode() ? 'assets/logos/ufrgs_pb.png' : 'assets/logos/ufrgs.png'" alt="UFRGS" />
+        <img [src]="isDarkMode() ? 'assets/logos/cnpq_pb.png' : 'assets/logos/cnpq.png'" alt="CNPq" />
+      </div>
     </div>
     <div class="footer-social" aria-label="{{ 'footer.socialMedia' | translate }}">
       <a
@@ -252,6 +253,11 @@
         </svg>
       </a>
     </div>
-    <small class="text-muted">BRAPCI | brapci.inf.br | v0.26.10.05</small>
+    <div class="footer-meta text-end align-self-end align-self-md-center">
+      <small class="text-muted">BRAPCI | brapci.inf.br | v0.26.10.05</small>
+      @if (currentUser()) {
+        <small class="text-muted footer-session">{{ 'footer.session' | translate }}: {{ sessionUserLabel() }}</small>
+      }
+    </div>
   </div>
 </footer>
