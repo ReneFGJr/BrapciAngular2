@@ -1,0 +1,14 @@
+User-agent: *
+Allow: /
+
+# Areas privadas ou sem valor para mecanismos de busca
+Disallow: /admin/
+Disallow: /api/
+Disallow: /basket/
+Disallow: /chat/
+Disallow: /monitor
+Disallow: /painel
+Disallow: /perfil
+Disallow: /signin
+
+Sitemap: https://brapci.inf.br/sitemap.xml

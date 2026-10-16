@@ -47,7 +47,7 @@
       <div *ngIf="hasMarked || (!loading() && works.length > 0)" class="selection-actions">
         <a
           *ngIf="hasMarked"
-          class="btn btn-outline-success btn-sm selection-summary"
+          class="btn btn-sm selection-action selection-summary"
           routerLink="/basket/selected"
         >
           <i class="bi bi-check2-square" aria-hidden="true"></i>
@@ -57,7 +57,7 @@
         <button
           *ngIf="hasMarked"
           type="button"
-          class="btn btn-outline-danger btn-sm"
+          class="btn btn-sm selection-action selection-clear"
           (click)="clearMarked()"
         >
           {{ 'search.clear_selected' | translate }}
@@ -65,7 +65,7 @@
         <button
           *ngIf="!loading() && works.length > 0"
           type="button"
-          class="btn btn-primary btn-sm selection-all"
+          class="btn btn-sm selection-action selection-all"
           (click)="selectAllWorks()"
         >
           {{ 'search.select_all_items' | translate: { total: works.length } }}

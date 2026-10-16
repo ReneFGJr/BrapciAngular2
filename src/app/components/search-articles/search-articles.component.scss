@@ -238,10 +238,97 @@
   display: inline-flex;
   align-items: center;
   gap: 0.5rem;
+  border: 0;
+  background: linear-gradient(135deg, #16844f, #20a663);
+  color: #fff !important;
+  box-shadow: 0 0.3rem 0.8rem rgba(22, 132, 79, 0.24);
+  animation: selection-attention 2.2s ease-in-out infinite;
+}
+
+.selection-summary:visited,
+.selection-summary:hover,
+.selection-summary:focus,
+.selection-summary:active,
+.selection-summary i {
+  color: #fff !important;
+}
+
+.selection-action {
+  min-height: 2.5rem;
+  padding: 0.5rem 0.9rem;
+  border-radius: 0.7rem;
+  font-weight: 600;
+  transition: transform 160ms ease, box-shadow 160ms ease, filter 160ms ease;
+}
+
+.selection-action:hover,
+.selection-action:focus-visible {
+  color: #fff;
+  filter: brightness(1.06);
+  transform: translateY(-1px);
+}
+
+.selection-summary:hover,
+.selection-summary:focus-visible {
+  animation-play-state: paused;
+  box-shadow: 0 0.45rem 1rem rgba(22, 132, 79, 0.34);
+}
+
+.selection-summary .badge {
+  background: rgba(255, 255, 255, 0.2) !important;
+  color: #fff !important;
+  font-size: 0.82em;
+  box-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0.22);
+}
+
+.selection-clear {
+  border: 1px solid #dc3545;
+  background: transparent;
+  color: #dc3545;
+  box-shadow: none;
+}
+
+.selection-clear:hover,
+.selection-clear:focus-visible,
+.selection-clear:active {
+  border-color: #dc3545;
+  background: #dc3545;
+  color: #fff;
+  box-shadow: 0 0.3rem 0.8rem rgba(220, 53, 69, 0.22);
 }
 
 .selection-all {
   margin-inline-start: 0;
+  border: 0;
+  background: linear-gradient(135deg, #0868df, #2185ff);
+  color: #fff;
+  box-shadow: 0 0.3rem 0.8rem rgba(8, 104, 223, 0.22);
+}
+
+@keyframes selection-attention {
+  0%,
+  100% {
+    opacity: 1;
+    transform: scale(1);
+    box-shadow: 0 0.3rem 0.8rem rgba(22, 132, 79, 0.24);
+  }
+
+  50% {
+    opacity: 0.82;
+    transform: scale(1.025);
+    box-shadow: 0 0 0 0.35rem rgba(32, 166, 99, 0.13),
+      0 0.45rem 1rem rgba(22, 132, 79, 0.3);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .selection-summary {
+    animation: none;
+  }
+
+  .selection-action {
+    transition: none;
+  }
 }
 
 @media (max-width: 575.98px) {

@@ -27,6 +27,7 @@ export class BasketSelectedPage implements OnInit {
     { type: 'ID', label: 'TT' },
     { type: 'net_authors', label: '.NET (Autores)' },
     { type: 'net_subjects', label: '.NET (Assuntos)' },
+    { type: 'net_subject_terms', label: 'NET (Assunto termo)' },
   ] as const;
 
 
