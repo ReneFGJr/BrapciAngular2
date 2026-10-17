@@ -99,8 +99,9 @@ export class BasketSelectedPage implements OnInit {
 
   export(typeE: string): void {
     const ids = this.basket.getMarked();
+    const apiToken = this.authService.getApiToken();
 
-    if (!ids.length || !this.canExport()) {
+    if (!ids.length || !this.canExport() || !apiToken) {
       return;
     }
 
@@ -110,6 +111,7 @@ export class BasketSelectedPage implements OnInit {
     formData.append('typeE', typeE);
     formData.append('type', typeE);
     formData.append('export', typeE);
+    formData.append('user', apiToken);
 
     this.http
       .post<unknown>(`${this.exportBaseUrl}${encodeURIComponent(typeE)}`, formData)
