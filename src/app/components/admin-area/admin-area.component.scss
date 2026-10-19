@@ -49,7 +49,9 @@
 }
 
 .admin-area__actions--edit-only {
-  grid-template-columns: 1fr;
+  grid-template-columns: none;
+  grid-auto-flow: column;
+  grid-auto-columns: minmax(0, 1fr);
 }
 
 .admin-action {
