@@ -4,7 +4,7 @@ import { takeUntilDestroyed, toSignal } from '@angular/core/rxjs-interop';
 import { FormsModule } from '@angular/forms';
 import { ActivatedRoute, RouterLink } from '@angular/router';
 import { TranslateModule } from '@ngx-translate/core';
-import { catchError, debounceTime, distinctUntilChanged, filter, map, of, Subject, switchMap, tap } from 'rxjs';
+import { catchError, debounceTime, distinctUntilChanged, filter, map, of, Subject, switchMap, tap, throwError } from 'rxjs';
 import { AuthService } from '../../core/services/auth.service';
 import { BrapciApiService } from '../../core/services/brapci-api.service';
 import { AdminConceptEditorComponent } from './admin-concept-editor.component';
@@ -228,7 +228,7 @@ export class AdminEditPage {
         propertyAllow: { ...allow },
         c_class: String(allowedClass ?? property.property),
         n_name: '',
-        n_lang: 'nn',
+        n_lang: 'pt',
       },
     });
     this.selectedFile.set(null);
@@ -372,12 +372,27 @@ export class AdminEditPage {
     }
     if (state.mode === 'literal') {
       const isNew = state.dataIndex === null;
-      const endpoint = isNew ? 'rdf/dataAddLiteral' : `rdf/updateLiteral/${state.draft.id_n}`;
-      const payload = isNew
-        ? { q: state.draft.n_name, prop: state.draft.property, ID: state.draft.ID || this.id(), c_class: state.draft.c_class, propertyAllow: state.draft.propertyAllow }
-        : { q: state.draft.n_name, prop: state.draft.property, ID: state.draft.ID, c_class: state.draft.c_class, propertyAllow: state.draft.propertyAllow };
+      const endpoint = isNew ? 'rdf/createLiteral' : `rdf/updateLiteral/${state.draft.id_n}`;
+      const payload = {
+        q: state.draft.n_name,
+        prop: state.draft.property,
+        ID: state.draft.ID || this.id(),
+        lang: state.draft.n_lang || 'pt',
+      };
       this.uploading.set(true);
-      this.api.post(endpoint, payload).pipe(takeUntilDestroyed(this.destroyRef)).subscribe({
+      const request$ = this.api.postForm<JsonRecord>(endpoint, payload).pipe(
+        switchMap((response) => {
+          if (!isNew) return of(response);
+
+          // O createLiteral do Brapci3.1 detecta o idioma automaticamente e ignora
+          // `lang`. Atualizamos o literal recém-criado para persistir a opção do usuário.
+          const literalId = String(response['idn'] ?? '').trim();
+          return literalId
+            ? this.api.postForm<JsonRecord>(`rdf/updateLiteral/${encodeURIComponent(literalId)}`, payload)
+            : throwError(() => new Error('createLiteral did not return idn'));
+        }),
+      );
+      request$.pipe(takeUntilDestroyed(this.destroyRef)).subscribe({
         next: () => { this.uploading.set(false); this.closeEditor(); this.refreshData(); },
         error: () => { this.uploading.set(false); this.error.set('adminEdit.errors.save'); },
       });
