@@ -59,6 +59,10 @@ export class AuthPanelComponent {
   }
 
   login(): void {
+    if (this.loading()) {
+      return;
+    }
+
     this.loading.set(true);
     this.errorMessage.set('');
     this.successMessage.set('');

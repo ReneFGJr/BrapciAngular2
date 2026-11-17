@@ -13,12 +13,20 @@
   }
 
   @if (mode() === 'login') {
-    <form (ngSubmit)="login()" #loginForm="ngForm" class="auth-form" novalidate>
+    <form
+      (ngSubmit)="login()"
+      #loginForm="ngForm"
+      class="auth-form"
+      [class.auth-form--submitting]="loading()"
+      [attr.aria-busy]="loading()"
+      novalidate
+    >
       <label for="username" class="form-label">{{ 'auth.username' | translate }}</label>
       <input
         id="username"
         name="username"
         required
+        [disabled]="loading()"
         [(ngModel)]="loginPayload.user"
         autocomplete="username"
         class="form-control"
@@ -29,21 +37,36 @@
         id="password"
         name="password"
         required
+        [disabled]="loading()"
         type="password"
         [(ngModel)]="loginPayload.pwd"
         autocomplete="current-password"
         class="form-control"
       />
 
-      <button type="submit" class="btn btn-primary mt-2" [disabled]="!loginForm.valid || loading()">
-        {{ 'auth.submit' | translate }}
+      <button type="submit" class="btn btn-primary auth-submit mt-2" [disabled]="!loginForm.valid || loading()">
+        @if (loading()) {
+          <span class="spinner-border spinner-border-sm" aria-hidden="true"></span>
+          <span>Entrando...</span>
+        } @else {
+          <span>{{ 'auth.submit' | translate }}</span>
+        }
       </button>
 
       <div class="auth-links">
-        <button type="button" class="btn btn-link p-0" (click)="switchMode('forgot')">{{ 'auth.resendPassword' | translate }}</button>
-        <button type="button" class="btn btn-link p-0" (click)="switchMode('register')">{{ 'auth.register' | translate }}</button>
+        <button type="button" class="btn btn-link p-0" [disabled]="loading()" (click)="switchMode('forgot')">{{ 'auth.resendPassword' | translate }}</button>
+        <button type="button" class="btn btn-link p-0" [disabled]="loading()" (click)="switchMode('register')">{{ 'auth.register' | translate }}</button>
       </div>
     </form>
+
+    @if (loading()) {
+      <div class="login-wait" role="status" aria-live="polite">
+        <span class="login-wait__pulse" aria-hidden="true">
+          <span></span><span></span><span></span>
+        </span>
+        <span>Aguardando a autenticação da API</span>
+      </div>
+    }
   }
 
   @if (mode() === 'register') {

@@ -8,6 +8,64 @@
   pointer-events: none;
 }
 
+.auth-form--submitting .form-control {
+  opacity: 0.72;
+}
+
+.auth-submit {
+  align-items: center;
+  display: inline-flex;
+  gap: 0.55rem;
+  justify-content: center;
+}
+
+.login-wait {
+  align-items: center;
+  animation: login-wait-enter 180ms ease-out;
+  background: color-mix(in srgb, var(--theme-primary) 8%, var(--theme-surface));
+  border: 1px solid color-mix(in srgb, var(--theme-primary) 25%, transparent);
+  border-radius: 0.75rem;
+  color: var(--theme-ink);
+  display: flex;
+  font-size: 0.9rem;
+  gap: 0.75rem;
+  margin-top: 1rem;
+  padding: 0.8rem 1rem;
+}
+
+.login-wait__pulse {
+  display: inline-flex;
+  gap: 0.22rem;
+}
+
+.login-wait__pulse span {
+  animation: login-dot 1.1s ease-in-out infinite;
+  background: var(--theme-primary);
+  border-radius: 50%;
+  height: 0.42rem;
+  width: 0.42rem;
+}
+
+.login-wait__pulse span:nth-child(2) { animation-delay: 140ms; }
+.login-wait__pulse span:nth-child(3) { animation-delay: 280ms; }
+
+@keyframes login-dot {
+  0%, 60%, 100% { opacity: 0.35; transform: translateY(0); }
+  30% { opacity: 1; transform: translateY(-0.25rem); }
+}
+
+@keyframes login-wait-enter {
+  from { opacity: 0; transform: translateY(-0.35rem); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .login-wait,
+  .login-wait__pulse span {
+    animation: none;
+  }
+}
+
 .registration-loading {
   margin-top: 1rem;
   padding: 0.75rem 1rem 1rem;
