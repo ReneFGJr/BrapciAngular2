@@ -4,6 +4,7 @@ import { Component, inject } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { finalize } from 'rxjs';
 import { BreadcrumbsComponent } from '../../components/breadcrumbs/breadcrumbs.component';
+import { API_CONFIG } from '../../core/tokens/api-config.token';
 
 interface TypologyAnalysis {
   quantidade: number;
@@ -40,6 +41,7 @@ interface CitationAnalysisData {
 })
 export class ToolsHalflivePage {
   private readonly http = inject(HttpClient);
+  private readonly apiBaseUrl = inject(API_CONFIG).brapciApiBaseUrl.replace(/\/$/, '');
 
   citations = '';
   result: unknown = null;
@@ -61,7 +63,7 @@ export class ToolsHalflivePage {
     this.activeTab = 'result';
 
     this.http
-      .post('/api/cite/halflive', { text }, { responseType: 'text' })
+      .post(`${this.apiBaseUrl}/cite/halflive`, { text }, { responseType: 'text' })
       .pipe(finalize(() => (this.loading = false)))
       .subscribe({
         next: (response) => {

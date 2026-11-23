@@ -5,6 +5,7 @@ import { FormsModule } from '@angular/forms';
 import { finalize } from 'rxjs';
 import { BreadcrumbsComponent } from '../../components/breadcrumbs/breadcrumbs.component';
 import { AuthService } from '../../core/services/auth.service';
+import { API_CONFIG } from '../../core/tokens/api-config.token';
 
 @Component({
   selector: 'app-tools-txt4network-page',
@@ -15,6 +16,7 @@ import { AuthService } from '../../core/services/auth.service';
 export class ToolsTxt4networkPage {
   private readonly http = inject(HttpClient);
   private readonly auth = inject(AuthService);
+  private readonly apiBaseUrl = inject(API_CONFIG).brapciApiBaseUrl.replace(/\/$/, '');
 
   text = '';
   selectedFileName = '';
@@ -49,7 +51,7 @@ export class ToolsTxt4networkPage {
     this.loading = true;
     this.error = '';
     this.http
-      .post('/api/tools/txt4network', { text }, {
+      .post(`${this.apiBaseUrl}/tools/txt4network`, { text }, {
         headers: new HttpHeaders({ APIKEY: apiKey }),
         params: new HttpParams().set('APIKEY', apiKey),
         observe: 'response',
