@@ -7,6 +7,7 @@ import { API_CONFIG } from '../tokens/api-config.token';
 
 export const apiLoggingInterceptor: HttpInterceptorFn = (req, next) => {
   if (!isPlatformBrowser(inject(PLATFORM_ID))) return next(req);
+  if (req.method === 'POST') return next(req);
 
   const auth = inject(AuthService);
   if (auth.user?.role !== 'admin') return next(req);
@@ -22,6 +23,7 @@ export const apiLoggingInterceptor: HttpInterceptorFn = (req, next) => {
   }) || /^\/(api|auth)(\/|$)/.test(url.pathname);
 
   if (!isApiRequest) return next(req);
+  if (req.method === 'GET' && /\/bugs\/user\//.test(url.pathname)) return next(req);
 
   // Keep credentials and personal authentication fields out of console output.
   for (const key of Array.from(url.searchParams.keys())) {

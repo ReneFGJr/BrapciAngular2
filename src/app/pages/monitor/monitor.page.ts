@@ -4,6 +4,7 @@ import { RouterLink } from '@angular/router';
 import { interval } from 'rxjs';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { BrapciApiService } from '../../core/services/brapci-api.service';
+import { AuthService } from '../../core/services/auth.service';
 import { TranslateModule } from '@ngx-translate/core';
 
 type MonitorComputer = {
@@ -21,6 +22,7 @@ type MonitorComputer = {
 })
 export class MonitorPage {
   private readonly api = inject(BrapciApiService);
+  private readonly auth = inject(AuthService);
   private readonly destroyRef = inject(DestroyRef);
 
   readonly computers = signal<MonitorComputer[]>([]);
@@ -44,7 +46,15 @@ export class MonitorPage {
     this.refreshing.set(true);
     this.error.set('');
 
-    this.api.get<unknown>('tools/monitor').subscribe({
+    const apiKey = this.auth.getApiToken();
+    if (!apiKey) {
+      this.error.set('monitor.error');
+      this.loading.set(false);
+      this.refreshing.set(false);
+      return;
+    }
+
+    this.api.get<unknown>('tools/monitor', undefined, { APIKEY: apiKey }).subscribe({
       next: (response) => {
         this.computers.set(this.normalize(response));
         this.updatedAt.set(new Date());

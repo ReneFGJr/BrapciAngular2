@@ -12,7 +12,11 @@ export class BrapciApiService {
     @Inject(API_CONFIG) private readonly apiConfig: ApiConfig
   ) {}
 
-  get<T>(endpoint = '', params?: Record<string, string | number | boolean>): Observable<T> {
+  get<T>(
+    endpoint = '',
+    params?: Record<string, string | number | boolean>,
+    headers?: Record<string, string>,
+  ): Observable<T> {
     let httpParams = new HttpParams();
 
     if (params) {
@@ -25,7 +29,7 @@ export class BrapciApiService {
     const url = cleanEndpoint
       ? `${this.apiConfig.brapciApiBaseUrl}/${cleanEndpoint}`
       : this.apiConfig.brapciApiBaseUrl;
-    return this.http.get<T>(url, { params: httpParams });
+    return this.http.get<T>(url, { params: httpParams, headers });
   }
 
   post<T>(endpoint: string, body: unknown): Observable<T> {

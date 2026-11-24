@@ -25,6 +25,9 @@
               <button type="button" role="tab" [class.active]="activeTab() === 'session'" [attr.aria-selected]="activeTab() === 'session'" (click)="setTab('session')">
                 <i class="bi bi-person-vcard" aria-hidden="true"></i> {{ 'profile.sessionTab' | translate }}
               </button>
+              <button type="button" role="tab" [class.active]="activeTab() === 'logins'" [attr.aria-selected]="activeTab() === 'logins'" (click)="setTab('logins')">
+                <i class="bi bi-shield-check" aria-hidden="true"></i> Últimos logins
+              </button>
               <button type="button" role="tab" [class.active]="activeTab() === 'likes'" [attr.aria-selected]="activeTab() === 'likes'" (click)="setTab('likes')">
                 <i class="bi bi-heart-fill text-danger" aria-hidden="true"></i> Curtidas
               </button>
@@ -141,6 +144,43 @@
                 {{ 'auth.logout' | translate }}
               </button>
             </div>
+            } @else if (activeTab() === 'logins') {
+              <section class="perfil-section" aria-labelledby="perfil-logins-title">
+                <div class="perfil-logins-header mb-3">
+                  <div>
+                    <h2 id="perfil-logins-title" class="h5 mb-1">Últimos logins</h2>
+                    <p class="mb-0">Tentativas de acesso bem e mal-sucedidas da sua conta.</p>
+                  </div>
+                  <button type="button" class="btn btn-sm btn-outline-primary" (click)="loadLoginHistory()" [disabled]="loginHistoryLoading()">
+                    <i class="bi bi-arrow-clockwise" aria-hidden="true"></i> Atualizar
+                  </button>
+                </div>
+
+                @if (loginHistoryLoading()) {
+                  <p class="mb-0" role="status">Consultando histórico de acessos...</p>
+                } @else if (loginHistoryError()) {
+                  <div class="alert alert-danger mb-0" role="alert">{{ loginHistoryError() }}</div>
+                } @else if (loginHistory().length) {
+                  <div class="table-responsive">
+                    <table class="table perfil-logins-table align-middle mb-0">
+                      <thead><tr><th>Data e hora</th><th>Resultado</th><th>Motivo</th><th>Endereço IP</th><th>Dispositivo</th></tr></thead>
+                      <tbody>
+                        @for (login of loginHistory(); track $index) {
+                          <tr>
+                            <td>{{ login.date ? (login.date | date: 'short') : '-' }}</td>
+                            <td><span class="perfil-login-status" [class.success]="login.success" [class.failure]="!login.success"><i class="bi" [class.bi-check-circle-fill]="login.success" [class.bi-x-circle-fill]="!login.success" aria-hidden="true"></i>{{ login.success ? 'Bem-sucedido' : 'Mal-sucedido' }}</span></td>
+                            <td>{{ login.reason || '-' }}</td>
+                            <td>{{ login.ip }}</td>
+                            <td class="perfil-login-agent">{{ login.agent }}</td>
+                          </tr>
+                        }
+                      </tbody>
+                    </table>
+                  </div>
+                } @else {
+                  <p class="mb-0">Nenhum registro de login foi encontrado.</p>
+                }
+              </section>
             } @else if (activeTab() === 'likes') {
               <app-user-liked [userKey]="userApiToken()" />
             } @else if (activeTab() === 'bugs') {

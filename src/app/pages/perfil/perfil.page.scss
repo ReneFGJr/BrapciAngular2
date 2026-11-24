@@ -108,6 +108,15 @@
   margin-top: 0.55rem;
 }
 
+.perfil-logins-header { align-items: center; display: flex; justify-content: space-between; gap: 1rem; }
+.perfil-logins-header p { color: var(--theme-muted); }
+.perfil-logins-table { color: var(--theme-ink); }
+.perfil-logins-table th { color: var(--theme-hint); font-size: .78rem; text-transform: uppercase; white-space: nowrap; }
+.perfil-login-status { align-items: center; display: inline-flex; gap: .4rem; font-weight: 600; white-space: nowrap; }
+.perfil-login-status.success { color: #198754; }
+.perfil-login-status.failure { color: #dc3545; }
+.perfil-login-agent { min-width: 12rem; max-width: 28rem; overflow-wrap: anywhere; }
+
 .perfil-monitor-header { display: flex; align-items: center; gap: .85rem; }
 .perfil-monitor-header p { color: var(--theme-muted); }
 .perfil-monitor-icon { display: grid; width: 3rem; height: 3rem; place-items: center; border-radius: .75rem; color: var(--theme-link); background: var(--theme-sand); font-size: 1.3rem; }
@@ -195,6 +204,40 @@
     background: rgb(18 32 51 / 92%);
     border-color: rgb(100 132 173 / 60%);
     color: var(--theme-ink);
+  }
+
+  .perfil-logins-table {
+    --bs-table-bg: rgb(13 27 45 / 72%);
+    --bs-table-color: var(--theme-ink);
+    --bs-table-border-color: rgb(82 111 148 / 48%);
+    --bs-table-striped-bg: rgb(25 43 66 / 72%);
+    --bs-table-hover-bg: rgb(35 55 81 / 82%);
+    --bs-table-hover-color: var(--theme-ink);
+    color: var(--theme-ink);
+  }
+
+  .perfil-logins-table thead th {
+    background: rgb(9 21 37 / 94%);
+    border-bottom-color: rgb(100 132 173 / 62%);
+    color: rgb(181 204 234);
+  }
+
+  .perfil-logins-table tbody td {
+    background-color: transparent;
+    border-color: rgb(82 111 148 / 42%);
+    color: rgb(222 232 247);
+  }
+
+  .perfil-logins-table tbody tr:hover td {
+    background-color: rgb(35 55 81 / 82%);
+  }
+
+  .perfil-login-status.success {
+    color: rgb(73 211 142);
+  }
+
+  .perfil-login-status.failure {
+    color: rgb(255 125 137);
   }
 }
 

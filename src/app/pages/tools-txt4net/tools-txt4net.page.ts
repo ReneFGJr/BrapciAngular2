@@ -1,5 +1,5 @@
 import { CommonModule } from '@angular/common';
-import { HttpClient, HttpErrorResponse, HttpHeaders, HttpParams, HttpResponse } from '@angular/common/http';
+import { HttpClient, HttpErrorResponse, HttpResponse } from '@angular/common/http';
 import { Component, inject } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { finalize } from 'rxjs';
@@ -26,9 +26,7 @@ export class ToolsTxt4netPage {
   async loadFile(event: Event): Promise<void> {
     const input = event.target as HTMLInputElement;
     const file = input.files?.[0];
-    if (!file) {
-      return;
-    }
+    if (!file) return;
 
     this.error = '';
     try {
@@ -42,9 +40,7 @@ export class ToolsTxt4netPage {
 
   convert(): void {
     const text = this.text.trim();
-    if (!text || this.loading) {
-      return;
-    }
+    if (!text || this.loading) return;
 
     const apiKey = this.auth.getLocalUser()?.token;
     if (!apiKey) {
@@ -55,23 +51,17 @@ export class ToolsTxt4netPage {
     this.loading = true;
     this.error = '';
 
-    this.http
-      .post(`${this.apiBaseUrl}/tools/txt4net`, { text }, {
-        headers: new HttpHeaders({ APIKEY: apiKey }),
-        params: new HttpParams().set('APIKEY', apiKey),
-        observe: 'response',
-        responseType: 'blob',
-      })
-      .pipe(finalize(() => (this.loading = false)))
-      .subscribe({
-        next: (response) => this.downloadResult(response),
-        error: (error: HttpErrorResponse) => {
-          this.error =
-            error.status === 401 || error.status === 403
-              ? 'APIKEY inválida ou sem permissão para realizar a conversão.'
-              : 'Não foi possível converter o texto. Tente novamente.';
-        },
-      });
+    this.http.post(`${this.apiBaseUrl}/tools/txt4net`, { APIKEY: apiKey, text }, {
+      observe: 'response',
+      responseType: 'blob',
+    }).pipe(finalize(() => (this.loading = false))).subscribe({
+      next: (response) => this.downloadResult(response),
+      error: (error: HttpErrorResponse) => {
+        this.error = error.status === 401 || error.status === 403
+          ? 'APIKEY inválida ou sem permissão para realizar a conversão.'
+          : 'Não foi possível converter o texto. Tente novamente.';
+      },
+    });
   }
 
   private downloadResult(response: HttpResponse<Blob>): void {
