@@ -1,8 +1,12 @@
 <section class="clusters-map" aria-labelledby="clusters-map-title">
   <header class="clusters-map__header">
     <div>
-      <h3 id="clusters-map-title">{{ 'author.clusters.overviewTitle' | translate }}</h3>
-      <p>{{ 'author.clusters.authorsWith' | translate }} <span class="clusters-map__emphasis">{{ 'author.clusters.moreThanOnePublication' | translate }}</span>. {{ 'author.clusters.biggerPoints' | translate }}</p>
+      <h3 id="clusters-map-title">{{ coupling() ? 'Clusters de acoplamento' : ('author.clusters.overviewTitle' | translate) }}</h3>
+      @if (coupling()) {
+        <p>O tamanho dos vértices segue o fator no arquivo .net. Arestas mais claras e finas indicam menor peso de acoplamento.</p>
+      } @else {
+        <p>{{ 'author.clusters.authorsWith' | translate }} <span class="clusters-map__emphasis">{{ 'author.clusters.moreThanOnePublication' | translate }}</span>. {{ 'author.clusters.biggerPoints' | translate }}</p>
+      }
     </div>
     @if (layout().groups.length) {
       <div class="clusters-map__actions">
@@ -17,8 +21,25 @@
     }
   </header>
   @if (layout().groups.length) {
+    @if (coupling()) {
+      <div class="clusters-map__filter">
+        <label>
+          Mínimo de conexões por aresta
+          <input #minimum type="number" class="form-control form-control-sm" min="1" step="1"
+            [value]="minimumConnections()"
+            (input)="setMinimumConnections(minimum.valueAsNumber)"
+            (change)="minimum.value = minimumConnections().toString()">
+        </label>
+        <span role="status">{{ visibleLinks().length }} de {{ layout().links?.length ?? 0 }} arestas visíveis</span>
+      </div>
+    }
     <div class="clusters-map__viewport">
-      <svg #clusterSvg class="clusters-map__svg" [attr.viewBox]="'0 0 ' + layout().width + ' ' + layout().height" [style.width.%]="zoom()" [style.min-height.px]="layout().height * zoom() / 100" role="img" [attr.aria-label]="'author.clusters.overviewAria' | translate">
+      <svg #clusterSvg class="clusters-map__svg" [attr.viewBox]="'0 0 ' + layout().width + ' ' + layout().height" [style.width.%]="zoom()" [style.min-height.px]="layout().height * zoom() / 100" role="img" [attr.aria-label]="coupling() ? 'Rede de acoplamento entre autores' : ('author.clusters.overviewAria' | translate)">
+        @for (link of visibleLinks(); track link.id) {
+          <line class="author-link" [attr.x1]="link.x1" [attr.y1]="link.y1" [attr.x2]="link.x2" [attr.y2]="link.y2" [attr.stroke-width]="link.thickness" [style.stroke]="link.color">
+            <title>{{ link.label }} · Peso {{ link.weight }}</title>
+          </line>
+        }
         <g class="cluster-bridges">
           @for (bridge of layout().bridges; track bridge.id) {
             <line [attr.x1]="bridge.x1" [attr.y1]="bridge.y1" [attr.x2]="bridge.x2" [attr.y2]="bridge.y2" [attr.stroke-width]="Math.min(5, 1 + bridge.weight * 0.25)"><title>{{ bridge.label }} · {{ bridge.weight }} {{ 'author.clusters.connections' | translate }}</title></line>
@@ -30,11 +51,11 @@
             <text class="cluster-subtitle" [attr.x]="group.x + group.width / 2" [attr.y]="group.y + 45">{{ group.nodes.length }} {{ 'author.clusters.authors' | translate }}</text>
             @for (line of group.lines; track line.id) { <line class="author-link" [attr.x1]="line.x1" [attr.y1]="line.y1" [attr.x2]="line.x2" [attr.y2]="line.y2" [attr.stroke-width]="Math.min(3, 0.7 + line.weight * 0.2)"></line> }
             @for (node of group.nodes; track node.id) {
-              <a [attr.href]="'/v/' + node.id" [attr.aria-label]="('author.clusters.openProfile' | translate) + ' ' + node.label">
+              <a [attr.href]="coupling() ? null : '/v/' + node.id" [attr.aria-label]="coupling() ? null : ('author.clusters.openProfile' | translate) + ' ' + node.label">
                 <circle class="author-node__halo" [attr.cx]="node.x" [attr.cy]="node.y" [attr.r]="node.radius + 5" [attr.stroke]="group.color"></circle>
                 <circle class="author-node" [attr.cx]="node.x" [attr.cy]="node.y" [attr.r]="node.radius" [attr.fill]="group.color"></circle>
                 <text class="author-node__label" [attr.x]="node.x" [attr.y]="node.y + node.radius + 12">{{ node.label }}</text>
-                <title>{{ node.label }} · {{ node.publications }} {{ 'author.clusters.publications' | translate }}</title>
+                <title>{{ node.label }} · {{ coupling() ? 'Fator ' + node.size : node.publications + ' ' + ('author.clusters.publications' | translate) }}</title>
               </a>
             }
           </g>
@@ -42,6 +63,8 @@
         <text class="clusters-map__chart-source" [attr.x]="layout().width - 16" [attr.y]="layout().height - 12">{{ 'author.clusters.source' | translate }}: Brapci ({{ currentYear }})</text>
       </svg>
     </div>
-    <div class="clusters-map__legend"><span></span> {{ 'author.clusters.clickAuthor' | translate }}</div>
+    @if (!coupling()) {
+      <div class="clusters-map__legend"><span></span> {{ 'author.clusters.clickAuthor' | translate }}</div>
+    }
   } @else { <p class="clusters-map__empty">{{ 'author.clusters.noRepresentativeAuthors' | translate }}</p> }
 </section>

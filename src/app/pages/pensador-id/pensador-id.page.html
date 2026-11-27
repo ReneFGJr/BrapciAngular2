@@ -53,10 +53,25 @@
         </div>
       </article>
 
-      <section class="works mt-4" aria-labelledby="related-works-title">
+      <div class="nav nav-tabs mt-4" role="tablist" aria-label="Conteúdo do perfil" (keydown)="navegarAbas($event, abaProducao, abaAcoplamento)">
+        <button #abaProducao id="producao-tab" type="button" class="nav-link" role="tab"
+          aria-controls="producao-panel" [class.active]="abaAtiva() === 'producao'"
+          [attr.aria-selected]="abaAtiva() === 'producao'" [tabIndex]="abaAtiva() === 'producao' ? 0 : -1"
+          (click)="abaAtiva.set('producao')">
+          Produção relacionada
+        </button>
+        <button #abaAcoplamento id="acoplamento-tab" type="button" class="nav-link" role="tab"
+          aria-controls="acoplamento-panel" [class.active]="abaAtiva() === 'acoplamento'"
+          [attr.aria-selected]="abaAtiva() === 'acoplamento'" [tabIndex]="abaAtiva() === 'acoplamento' ? 0 : -1"
+          (click)="abaAtiva.set('acoplamento')">
+          Acoplamento com outros autores (citações)
+        </button>
+      </div>
+
+      <section id="producao-panel" class="works mt-2" role="tabpanel" aria-labelledby="producao-tab"
+        tabindex="0" [hidden]="abaAtiva() !== 'producao'">
         <div class="works-heading">
           <div>
-            <p class="eyebrow mb-1">Produção relacionada</p>
             <div class="works-title-row">
               <h2 id="related-works-title">{{ 'thinkerWorks.title' | translate }}</h2>
               <button type="button" class="beta-button" [attr.aria-expanded]="betaNoticeOpen()" aria-controls="works-beta-notice" (click)="betaNoticeOpen.set(!betaNoticeOpen())">
@@ -102,6 +117,66 @@
           </div>
         } @else {
           <p class="empty-works mb-0">Nenhuma obra relacionada foi cadastrada para este pensador.</p>
+        }
+      </section>
+
+      <section id="acoplamento-panel" class="works mt-2" role="tabpanel" aria-labelledby="acoplamento-tab"
+        tabindex="0" [hidden]="abaAtiva() !== 'acoplamento'">
+        <div class="works-heading">
+          <h2>Rede de acoplamento</h2>
+          <span class="works-total" aria-label="Autores na rede">{{ grafoAcoplamento()?.nodes?.length ?? redeAcoplamento().length }}</span>
+        </div>
+        @if (grafoAcoplamento(); as grafo) {
+          @if (grafo.nodes.length && abaAtiva() === 'acoplamento') {
+            <app-author-clusters-overview class="mb-4" [networkData]="grafo" [coupling]="true" />
+          } @else if (!grafo.nodes.length) {
+            <p class="empty-works mb-4">Nenhum dado de acoplamento disponível para este pensador.</p>
+          }
+        } @else if (redeAcoplamento().length) {
+          <p class="works-description mb-3">Conexões de <strong>{{ item.nome }}</strong>, ordenadas pelo total de acoplamento.</p>
+          <ol class="coupling-ranking list-unstyled mb-3">
+            @for (autor of acoplamentosVisiveis(); track autor.id) {
+              <li>
+                <a class="coupling-row" [routerLink]="['/pensadores', autor.id]">
+                  <span class="coupling-label">{{ autor.nome }} <i class="bi bi-arrow-up-right" aria-hidden="true"></i></span>
+                  <span class="coupling-track" aria-hidden="true">
+                    <span class="coupling-bar" [style.width.%]="autor.percentual"></span>
+                  </span>
+                  <strong class="coupling-total">{{ autor.total }}</strong>
+                </a>
+              </li>
+            }
+          </ol>
+          @if (redeAcoplamento().length > limiteInicialAcoplamentos) {
+            <button type="button" class="btn btn-sm coupling-toggle mb-4"
+              [attr.aria-expanded]="mostrarTodosAcoplamentos()"
+              (click)="mostrarTodosAcoplamentos.set(!mostrarTodosAcoplamentos())">
+              {{ mostrarTodosAcoplamentos() ? 'Mostrar os ' + limiteInicialAcoplamentos + ' principais' : 'Mostrar todos os ' + redeAcoplamento().length + ' autores' }}
+            </button>
+          }
+        } @else if (erroAcoplamento()) {
+          <p class="empty-works mb-4">Não foi possível carregar a rede de acoplamento.</p>
+        } @else {
+          <p class="empty-works mb-4">Nenhum dado de acoplamento disponível para este pensador.</p>
+        }
+
+        <div class="works-heading">
+          <h2>Coautores</h2>
+          <span class="works-total">{{ coautores().length }}</span>
+        </div>
+        @if (coautores().length) {
+          <ul class="list-unstyled works-list mb-0">
+            @for (coautor of coautores(); track coautor.id) {
+              <li>
+                <a class="work-card coautor-link" [routerLink]="['/pensadores', coautor.id]">
+                  <span>{{ coautor.nome }}</span>
+                  <i class="bi bi-arrow-right" aria-hidden="true"></i>
+                </a>
+              </li>
+            }
+          </ul>
+        } @else {
+          <p class="empty-works mb-0">Nenhum coautor disponível para este pensador.</p>
         }
       </section>
     }

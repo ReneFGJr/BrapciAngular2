@@ -14,6 +14,10 @@
 .clusters-map__zoom .zoom-value { min-width: 3.25rem; }
 .clusters-map__download { display: inline-flex; padding: .42rem .7rem; align-items: center; gap: .35rem; border: 1px solid var(--theme-line); border-radius: .45rem; font-weight: 700; white-space: nowrap; }
 .clusters-map__zoom button:hover:not(:disabled), .clusters-map__download:hover { color: var(--theme-link); }
+.clusters-map__filter { display: flex; flex-wrap: wrap; align-items: center; gap: .5rem 1rem; padding: .65rem 1.25rem; border-bottom: 1px solid var(--theme-line); font-size: .85rem; }
+.clusters-map__filter label { display: inline-flex; flex-wrap: wrap; align-items: center; gap: .5rem; }
+.clusters-map__filter input { width: 5.5rem; }
+.clusters-map__filter [role='status'] { color: var(--theme-muted); }
 .clusters-map__viewport { overflow: auto; background: #f8fafc; }
 .clusters-map__svg { display: block; width: 100%; min-width: 720px; height: auto; }
 .cluster-title { font: 600 18px monospace; text-anchor: middle; }
